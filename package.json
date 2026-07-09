@@ -1,0 +1,20 @@
+{
+  "name": "luckiest-co",
+  "version": "1.0.1",
+  "description": "Luckiest for Claude Code: plan, go, finish. Your luckiest.co skills and tribe, inside Claude.",
+  "bin": {
+    "luckiest-co": "./bin/install.js"
+  },
+  "files": [
+    "bin",
+    "commands",
+    "references",
+    "templates",
+    "skills",
+    ".claude-plugin"
+  ],
+  "license": "SEE LICENSE IN LICENSE",
+  "engines": {
+    "node": ">=18"
+  }
+}

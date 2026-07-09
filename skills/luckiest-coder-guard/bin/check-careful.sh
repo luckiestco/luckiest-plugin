@@ -1,0 +1,65 @@
+#!/usr/bin/env bash
+# check-careful.sh — PreToolUse(Bash) hook for luckiest-coder-guard.
+# Reads JSON from stdin, checks the Bash command for destructive patterns.
+# Emits {"permissionDecision":"ask","message":"..."} to warn, or {} to allow.
+set -euo pipefail
+
+INPUT=$(cat)
+
+# Extract the "command" field from tool_input. grep/sed handles the common case;
+# fall back to python3 for commands containing escaped quotes.
+CMD=$(printf '%s' "$INPUT" | grep -o '"command"[[:space:]]*:[[:space:]]*"[^"]*"' | head -1 | sed 's/.*:[[:space:]]*"//;s/"$//' || true)
+if [ -z "$CMD" ]; then
+  CMD=$(printf '%s' "$INPUT" | python3 -c 'import sys,json; print(json.loads(sys.stdin.read()).get("tool_input",{}).get("command",""))' 2>/dev/null || true)
+fi
+if [ -z "$CMD" ]; then echo '{}'; exit 0; fi
+
+CMD_LOWER=$(printf '%s' "$CMD" | tr '[:upper:]' '[:lower:]')
+
+# Safe exceptions: recursive delete of well-known build artifacts is allowed silently.
+if printf '%s' "$CMD" | grep -qE 'rm\s+(-[a-zA-Z]*r[a-zA-Z]*\s+|--recursive\s+)' 2>/dev/null; then
+  SAFE_ONLY=true
+  RM_ARGS=$(printf '%s' "$CMD" | sed -E 's/.*rm[[:space:]]+(-[a-zA-Z]+[[:space:]]+)*//;s/--recursive[[:space:]]*//')
+  for target in $RM_ARGS; do
+    case "$target" in
+      */node_modules|node_modules|*/\.next|\.next|*/dist|dist|*/__pycache__|__pycache__|*/\.cache|\.cache|*/build|build|*/\.turbo|\.turbo|*/coverage|coverage) ;;
+      -*) ;;
+      *) SAFE_ONLY=false; break ;;
+    esac
+  done
+  if [ "$SAFE_ONLY" = true ]; then echo '{}'; exit 0; fi
+fi
+
+WARN=""
+
+if printf '%s' "$CMD" | grep -qE 'rm\s+(-[a-zA-Z]*r|--recursive)' 2>/dev/null; then
+  WARN="Destructive: recursive delete (rm -r). This permanently removes files."
+fi
+if [ -z "$WARN" ] && printf '%s' "$CMD_LOWER" | grep -qE 'drop\s+(table|database)' 2>/dev/null; then
+  WARN="Destructive: SQL DROP detected. This permanently deletes database objects."
+fi
+if [ -z "$WARN" ] && printf '%s' "$CMD_LOWER" | grep -qE '\btruncate\b' 2>/dev/null; then
+  WARN="Destructive: SQL TRUNCATE detected. This deletes all rows from a table."
+fi
+if [ -z "$WARN" ] && printf '%s' "$CMD" | grep -qE 'git\s+push\s+.*(-f\b|--force)' 2>/dev/null; then
+  WARN="Destructive: git force-push rewrites remote history. Other contributors may lose work."
+fi
+if [ -z "$WARN" ] && printf '%s' "$CMD" | grep -qE 'git\s+reset\s+--hard' 2>/dev/null; then
+  WARN="Destructive: git reset --hard discards all uncommitted changes."
+fi
+if [ -z "$WARN" ] && printf '%s' "$CMD" | grep -qE 'git\s+(checkout|restore)\s+\.' 2>/dev/null; then
+  WARN="Destructive: discards all uncommitted changes in the working tree."
+fi
+if [ -z "$WARN" ] && printf '%s' "$CMD" | grep -qE 'kubectl\s+delete' 2>/dev/null; then
+  WARN="Destructive: kubectl delete removes Kubernetes resources. May impact production."
+fi
+if [ -z "$WARN" ] && printf '%s' "$CMD" | grep -qE 'docker\s+(rm\s+-f|system\s+prune)' 2>/dev/null; then
+  WARN="Destructive: Docker force-remove or prune. May delete running containers or cached images."
+fi
+
+if [ -n "$WARN" ]; then
+  WARN_ESCAPED=$(printf '%s' "$WARN" | sed 's/"/\\"/g')
+  printf '{"permissionDecision":"ask","message":"[guard] %s"}\n' "$WARN_ESCAPED"
+else
+  echo '{}'
+fi

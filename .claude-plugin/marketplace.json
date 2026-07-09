@@ -1,0 +1,16 @@
+{
+  "name": "luckiest",
+  "owner": { "name": "Luckiest", "url": "https://luckiest.co" },
+  "metadata": {
+    "description": "Luckiest skills, commands, and your tribe inside Claude. Works in Claude Code, web chat, and Cowork."
+  },
+  "plugins": [
+    {
+      "name": "luckiest",
+      "source": "./",
+      "description": "Plan, go, finish, plus bundled free Luckiest skills that work in Claude Code, web chat, and Cowork.",
+      "version": "0.1.0",
+      "author": { "name": "Luckiest" }
+    }
+  ]
+}

@@ -1,0 +1,8 @@
+interface:
+  display_name: "Luckiest Trends"
+  short_description: "Research any topic across Reddit, X, YouTube, TikTok, Hacker News, Polymarket, GitHub, and the web over a time window you choose. Returns synthesized community-voice answers with vote-ranked citations."
+  default_prompt: "Research this topic over the last 30 days across Reddit, X, YouTube, TikTok, and the web. Synthesize what people are actually saying, upvoting, and sharing right now."
+  brand_color: "#FF6B35"
+
+policy:
+  allow_implicit_invocation: true

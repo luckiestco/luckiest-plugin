@@ -1,0 +1,19 @@
+{
+  "skill_name": "luckiest-aeo-grader",
+  "evals": [
+    {
+      "id": 0,
+      "name": "explicit-aeo-audit-marketing-site",
+      "prompt": "Do an AEO audit of https://www.notion.so — I want to know how well it shows up when people ask ChatGPT and Perplexity for a notes/productivity app. Give it a grade.",
+      "expected_output": "Asks 1-3 clarifying questions (target queries / page intent) before or alongside grading, runs the scanner, returns a letter grade with the 5-category weighted table, names the biggest lever, and gives ranked, page-specific (non-generic) fixes.",
+      "files": []
+    },
+    {
+      "id": 1,
+      "name": "casual-url-paste",
+      "prompt": "how does https://www.anthropic.com do for ai search / getting cited by llms? just curious how it scores",
+      "expected_output": "Recognizes this as an AEO grade request, clarifies what to grade for, scans the page, and produces a graded report with specific fixes grounded in the actual scan rather than boilerplate.",
+      "files": []
+    }
+  ]
+}
