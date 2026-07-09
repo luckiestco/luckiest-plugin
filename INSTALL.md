@@ -6,12 +6,17 @@ Claude web chat, Cowork, and Claude Code, all from one install.
 ## In Claude (web or desktop)
 
 1. Open Claude and look in the left sidebar for **Customize**, then **Plugins**.
-2. Click **Add marketplace** and paste this address:
-   `https://api.luckiest.co/api/skills/marketplace.json`
+2. Click **Add marketplace**. When it asks for a source, choose **GitHub repo**
+   and, in the input at the top (the git URL field), enter exactly:
+   `luckiestco/luckiest-plugin`
 3. Find **Luckiest** in the list and click **Install**.
 
-That is it. Now type `/` or click the **+** in any chat and you will see the
-skills. In Cowork they are there automatically.
+That is it. Now **start a new chat** (skills will not appear in a chat that was
+already open), type `/` or click the **+**, and you will see the skills. In
+Cowork they are there automatically.
+
+> Enter the repo name `luckiestco/luckiest-plugin`, not a web address. The
+> `api.luckiest.co` link below is only for the Claude Code terminal.
 
 ## If you use Claude Code (the terminal app)
 
