@@ -21,7 +21,7 @@ Open the interview with a short line that says no plan is active and you are sta
 
 Then ask question 1 using the AskUserQuestion tool so the user can click an answer instead of typing one. Do not put the examples in plain text for them to copy. Present them as selectable options:
 
-1. What outcome do you want this week?
+1. What do you want to tackle most on this task?
 
 Build 3 to 4 options for that question. Draw them from their brief if one exists, otherwise use plausible outcomes for their project (for example: "About page rewritten to explain the full skills network, live on luckiest.co"). Keep the "Other" free-text choice available so they can still write their own outcome if none fit.
 
@@ -29,28 +29,33 @@ Use the picked option (or their typed answer) plus the brief, if present, to sha
 
 Use the answer (plus the brief, if present) to shape a draft task list of 3 to 7 tasks. Each task title must be a single clean line under 200 characters, describing one piece of work. Do not append "done means" text or any acceptance-criteria text to the title.
 
-For each draft task, call the `skill_router` tool from the luckiest MCP server to suggest a matching owned skill for that task. Attach the suggested skill(s) to the task.
+Include non-coding work too. Marketing, content, design, research, and ops tasks belong in the plan alongside code. Never drop a task just because it is not a coding task; route it to its matching skill like any other.
 
-For each task, state a one-line "done means..." in chat (not in the title, not stored anywhere) so the user sees what complete looks like for that task.
+For each draft task, call the `skill_router` tool from the luckiest MCP server. It returns `skills` (matching owned skills) and `who` (up to 3 tribe members who finished a similar task before). Attach the suggested skill(s) to the task, and attach `who` so the plan can carry who has done this kind of work.
+
+For each task, state a one-line "done means..." in chat (not in the title, not stored anywhere) so the user sees what complete looks like for that task. When `who` is not empty, add a short line naming those people, for example "Done before by: Sam, Alex."
 
 ## Step 4: Present the plan
 
-Show the full draft plan: each task's title, its suggested skill(s), and its "done means..." line. Then ask exactly one approval question, nothing else:
+Show the full draft plan: each task's title, its suggested skill(s), and its "done means..." line. Then ask exactly one approval question using the AskUserQuestion tool so the user can click instead of typing. Use "Here's your plan, good to go?" as the question, with these options (keep the "Other" free-text choice available for anything else):
 
-"Here's your plan, good to go?"
+- "Good to go" — stage the plan as shown.
+- "Make changes" — the user wants edits before staging.
 
 Wait for the answer.
 
-- If the user wants changes, revise the plan and ask the same approval question again.
-- If the user says yes, continue to Step 5.
+- If the user picks "Make changes" (or types their own edit), revise the plan and ask the same approval question again.
+- If the user picks "Good to go", continue to Step 5.
 
 ## Step 5: Stage the plan
 
 Call the `plan` tool from the luckiest MCP server with:
 
 ```
-{ phase: <short phase name if any>, tasks: [{ title, skills }] }
+{ phase: <short phase name if any>, tasks: [{ title, skills, who }] }
 ```
+
+Pass the `who` list you got from `skill_router` for each task so the plan keeps who has done this kind of work before.
 
 Include at most 25 tasks. Each title must stay under 200 characters. Do not include acceptance criteria or "done means" text in any task field.
 

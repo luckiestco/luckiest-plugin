@@ -8,24 +8,32 @@ Read `references/vocabulary.md` first and follow it for all output in this comma
 
 Call the `status` tool from the luckiest MCP server. This is a zero-context resume, treat its result as the full picture of where things stand: don't assume anything about prior state beyond what it returns.
 
-## Step 2: Execute in-session
+## Step 2: Pick how to run
 
-Do all task work yourself, in this session, message by message.
+Default: do all task work yourself, in this session, message by message. This is the safe, reviewable mode.
 
-- Forbidden: spawning subagents to execute tasks. Never hand off the actual work of a ready task to a subagent.
-- Allowed: spawning subagents for research only (for example, looking something up, exploring the codebase for context). The work itself, writing code, making changes, running commands, stays in this session.
+Fast mode (subagents): if the user wants tasks done faster, you may hand a ready task to a subagent instead of doing it yourself. Only do this when the user has asked to go fast, or says yes when you offer it. When you dispatch a subagent for a task:
+
+- Run it on the task's `model` hint from `status` (light work like haiku, heavy work like opus), so each task uses the smallest model that fits and saves tokens.
+- Independent tasks can run in parallel; tasks that depend on an earlier one wait for it.
+- You still own Step 3's checks: read the subagent's result, hold it to the "done means..." line, and only then apply and verify.
+
+Research subagents (looking something up, exploring the codebase) are always allowed in either mode.
 
 ## Step 3: Work through ready tasks, one at a time
 
 Take the ready tasks one at a time, in order. For each one:
 
-1. Do the work using the task's suggested skill. If that skill is installed, invoke it via the Skill tool. If it isn't installed, do the work directly without it.
-2. Check your result against the task's "done means..." line. Don't move on until it's actually met.
-3. If the result is something the user can try themselves (a page, a feature, a flow), ask exactly this: "Try it yourself, does it work? yes / needs fixes." Wait for their answer.
-4. On a pass, call the `apply` tool with `{ taskId }` for that task, then call the `verify` tool with `{ results: [{ taskId, pass: true }] }`.
-5. On a fail, fix the problem before moving on to the next task. Only call `verify` with `pass: false` for that task if the user explicitly chooses to defer the fix instead of having you fix it now.
+1. First, turn the task into a tight working prompt with the `luckiest-prompt-rewrite` skill, targeting whoever will do the work (yourself, or the subagent and its model from Step 2). Use that rewritten prompt to do the task. If the skill is not installed, write a clear prompt yourself and continue. Do this before every task, in both default and fast mode.
+2. Do the work using the task's suggested skill. If that skill is installed, invoke it via the Skill tool. If it isn't installed, do the work directly without it.
+3. Check your result against the task's "done means..." line. Don't move on until it's actually met.
+4. If the result is something the user can try themselves (a page, a feature, a flow), ask with the AskUserQuestion tool so they can click instead of typing. Question: "Try it yourself, does it work?" Options: "Works" and "Needs fixes" (keep the "Other" free-text choice available). Wait for their answer.
+5. On a pass, call the `apply` tool with `{ taskId }` for that task, then call the `verify` tool with `{ results: [{ taskId, pass: true }] }`.
+6. On a fail, fix the problem before moving on to the next task. Only call `verify` with `pass: false` for that task if the user explicitly chooses to defer the fix instead of having you fix it now.
 
 Only move to the next ready task once the current one is applied and verified (or deferred).
+
+After a task passes and is verified, run a quick automation check. Ask yourself: was this task repeatable, rule-based, or the kind of thing that will come up again? If yes, offer it with the AskUserQuestion tool so the user can click instead of typing. Question: "This looks worth automating. Turn it into a skill you can schedule or run as a routine?" Options: "Automate it" and "Skip" (keep the "Other" free-text choice available). Only offer, never build it without a yes. If they say yes, create the skill (with the skill-builder or skill-creator skill) and set it up to run on a schedule or as a routine. If the task was a one-off, skip the offer and move on.
 
 ## Step 4: Stop conditions
 
