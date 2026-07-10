@@ -83,7 +83,7 @@ if (hasHelp) {
     npx luckiest-co --sync-only
 
   ${yellow}What gets installed:${reset}
-    commands/luckiest/   - Slash commands (/luckiest:plan, /luckiest:go, etc.)
+    commands/            - Slash commands (/luckiest:plan, /luckiest:go, etc.)
     references/          - Vocabulary and chart-renderer references
     templates/            - Brief templates
     .claude-plugin/       - Plugin manifest
@@ -310,11 +310,13 @@ function install(isGlobal) {
 
   console.log(`  Installing to ${cyan}${locationLabel}${reset}\n`);
 
-  // Copy commands/luckiest into commands/luckiest
+  // Copy flat commands/ into commands/luckiest so the subfolder becomes the
+  // `luckiest:` command namespace (=> /luckiest:plan). The repo keeps commands
+  // flat so the plugin install path yields the same single namespace.
   const commandsDir = path.join(claudeDir, 'commands');
   fs.mkdirSync(commandsDir, { recursive: true });
 
-  const commandsSrc = path.join(src, 'commands', 'luckiest');
+  const commandsSrc = path.join(src, 'commands');
   const commandsDest = path.join(commandsDir, 'luckiest');
   if (fs.existsSync(commandsSrc)) {
     copyWithPathReplacement(commandsSrc, commandsDest, pathPrefix);
