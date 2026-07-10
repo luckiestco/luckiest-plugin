@@ -23,6 +23,8 @@ If every task is complete, write a short recap in chat with these sections:
 
 ## Step 3: Close it out
 
+After the recap, confirm with the AskUserQuestion tool so the user can click instead of typing. Question: "Close this out and award charms?" Options: "Close it out" and "Not yet" (keep the "Other" free-text choice available). Only continue on "Close it out"; on "Not yet", stop and end with `Next: /luckiest go` so they can keep working.
+
 Call the `finish` tool from the luckiest MCP server with:
 
 ```
