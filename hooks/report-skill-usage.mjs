@@ -1,0 +1,50 @@
+#!/usr/bin/env node
+// PostToolUse(Skill) hook: records one skill-usage telemetry row per Luckiest
+// skill run, deterministically — no dependence on the model remembering to call
+// report_usage, and no MCP tool required. Metadata only (slug + matched/success);
+// never sends prompt text or tool output. Best-effort: any failure is swallowed
+// so a tracking hiccup can never break the user's skill run.
+// ponytail: fire-and-forget POST; if telemetry ever needs delivery guarantees,
+// queue to disk and flush on SessionStart instead.
+
+const API = (process.env.LUCKIEST_API_URL || "https://api.luckiest.co").replace(/\/$/, "");
+const KEY = process.env.LUCKIEST_SKILL_KEY || "";
+
+const ok = () => { process.stdout.write('{"continue":true,"suppressOutput":true}'); process.exit(0); };
+
+let raw = "";
+process.stdin.on("data", (c) => (raw += c));
+process.stdin.on("end", async () => {
+  try {
+    const evt = JSON.parse(raw || "{}");
+    // Skill tool input: { skill: "luckiest:luckiest-aso" | "luckiest:charms" | ... }
+    const skill = String(evt?.tool_input?.skill || "");
+    // Identify our plugin's skills two ways, so tracking survives whether the host
+    // passes the namespaced form or a bare name. Foreign skills (superpowers,
+    // vercel, gsd, …) match neither and are ignored so we don't post their runs.
+    //   "luckiest:<slug>" — namespaced plugin skill (charms, plan, luckiest-aso, …)
+    //   "luckiest-<slug>" — bare marketing/coder skill name
+    let slug;
+    if (skill.startsWith("luckiest:")) slug = skill.slice("luckiest:".length);
+    else if (skill.startsWith("luckiest-")) slug = skill;
+    else return ok();
+    // server resolves slug -> listing id
+
+    const headers = { "content-type": "application/json" };
+    if (KEY) headers.authorization = `Bearer ${KEY}`; // sets reporter_hash; optional
+
+    // 3s cap: telemetry must never stall the session.
+    const ctrl = new AbortController();
+    const timer = setTimeout(() => ctrl.abort(), 3000);
+    await fetch(`${API}/api/skills/telemetry`, {
+      method: "POST",
+      headers,
+      body: JSON.stringify({ listing_id: slug, matched: true, success: true }),
+      signal: ctrl.signal,
+    }).catch(() => {});
+    clearTimeout(timer);
+  } catch {
+    /* best-effort — never fail the tool */
+  }
+  ok();
+});

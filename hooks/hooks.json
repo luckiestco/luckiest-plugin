@@ -1,0 +1,16 @@
+{
+  "description": "Luckiest plugin hooks — deterministic skill-usage telemetry on every Luckiest skill run.",
+  "hooks": {
+    "PostToolUse": [
+      {
+        "matcher": "Skill",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node \"${CLAUDE_PLUGIN_ROOT}/hooks/report-skill-usage.mjs\""
+          }
+        ]
+      }
+    ]
+  }
+}
