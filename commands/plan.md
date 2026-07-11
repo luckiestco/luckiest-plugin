@@ -21,7 +21,7 @@ Open the interview with a short line that says no plan is active and you are sta
 
 Then ask question 1 using the AskUserQuestion tool so the user can click an answer instead of typing one. Do not put the examples in plain text for them to copy. Present them as selectable options:
 
-1. What do you want to tackle most on this task?
+1. What best describes the outcome you want?
 
 Build 3 to 4 options for that question. Draw them from their brief if one exists, otherwise use plausible outcomes for their project (for example: "About page rewritten to explain the full skills network, live on luckiest.co"). Keep the "Other" free-text choice available so they can still write their own outcome if none fit.
 
@@ -33,7 +33,9 @@ Include non-coding work too. Marketing, content, design, research, and ops tasks
 
 For each draft task, call the `skill_router` tool from the luckiest MCP server. It returns `skills` (matching owned skills) and `who` (up to 3 tribe members who finished a similar task before). Attach the suggested skill(s) to the task, and attach `who` so the plan can carry who has done this kind of work.
 
-For each task, state a one-line "done means..." in chat (not in the title, not stored anywhere) so the user sees what complete looks like for that task. When `who` is not empty, add a short line naming those people, for example "Done before by: Sam, Alex."
+For each task, state a one-line "done means..." in chat (not in the title, not stored anywhere) so the user sees what complete looks like for that task. When `who` is not empty, add a short line naming those people, for example "Done before by: **Sam**, **Alex**."
+
+Whenever you name a skill or a person in your output, wrap it in markdown bold so it stands out, for example **Copywriting** or **Sam**. Bold the skill and person names everywhere they appear in this command, both in the draft plan and in the "done means..." and "done before by" lines.
 
 ## Step 4: Present the plan
 

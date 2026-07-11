@@ -37,6 +37,11 @@ Report the Charms earned in friendly, plain terms, for example: "You earned 3 ch
 
 ## Step 4: Wrap up
 
-End your response with exactly one line, nothing after it:
+Offer the next move with the AskUserQuestion tool so the user can click instead of retyping a command. Question: "What's next?" Options (keep the "Other" free-text choice available):
+
+- "Plan the next piece" — on this pick, start the `/luckiest plan` flow now, fresh, as if newly invoked.
+- "See where I stand" — on this pick, run the `/luckiest home` flow now.
+
+Whichever they click, start that flow immediately in this session so they never have to type the command themselves. If they pick "Other" or dismiss, end with exactly one line, nothing after it:
 
 Next: /luckiest plan for the next piece, or /luckiest home to see where you stand.

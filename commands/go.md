@@ -12,11 +12,18 @@ Call the `status` tool from the luckiest MCP server. This is a zero-context resu
 
 Default: do all task work yourself, in this session, message by message. This is the safe, reviewable mode.
 
-Fast mode (subagents): if the user wants tasks done faster, you may hand a ready task to a subagent instead of doing it yourself. Only do this when the user has asked to go fast, or says yes when you offer it. When you dispatch a subagent for a task:
+Fast mode (subagents): if the user wants tasks done faster, you may hand a ready task to a subagent instead of doing it yourself. Only do this when the user has asked to go fast, or says yes when you offer it.
 
-- Run it on the task's `model` hint from `status` (light work like haiku, heavy work like opus), so each task uses the smallest model that fits and saves tokens.
-- Independent tasks can run in parallel; tasks that depend on an earlier one wait for it.
-- You still own Step 3's checks: read the subagent's result, hold it to the "done means..." line, and only then apply and verify.
+Before dispatching anything, check that you can actually assign agents: confirm the Agent (or Task) tool is available in this session. If it is not, say so plainly and fall back to default mode. Never claim work was handed off to a subagent you could not launch.
+
+When you do run in fast mode, assign work top down in this order: subagents > tasks > skills > model.
+
+- Subagents: one subagent owns a task. Independent tasks run in parallel; tasks that depend on an earlier one wait for it.
+- Tasks: give each subagent one ready task from `status`, turned into a tight working prompt.
+- Skills: inside its task, the subagent invokes the task's suggested skill via the Skill tool.
+- Model: run each subagent on the task's `model` hint from `status` (light work like haiku, heavy work like opus), so each task uses the smallest model that fits and saves tokens.
+
+You still own Step 3's checks: read the subagent's result, hold it to the "done means..." line, and only then apply and verify.
 
 Research subagents (looking something up, exploring the codebase) are always allowed in either mode.
 
