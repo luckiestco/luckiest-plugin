@@ -7,8 +7,26 @@
 // ponytail: fire-and-forget POST; if telemetry ever needs delivery guarantees,
 // queue to disk and flush on SessionStart instead.
 
+import { readFileSync } from "node:fs";
+import { join } from "node:path";
+
 const API = (process.env.LUCKIEST_API_URL || "https://api.luckiest.co").replace(/\/$/, "");
 const KEY = process.env.LUCKIEST_SKILL_KEY || "";
+
+// The plugin's own version, read once from its manifest. Every Luckiest skill
+// ships inside this one plugin and bumps with it, so reporting this per run lets
+// the server see which plugin version each member is actually on. Best-effort:
+// if the manifest can't be read, we just omit the field.
+const PLUGIN_VERSION = (() => {
+  try {
+    const root = process.env.CLAUDE_PLUGIN_ROOT;
+    if (!root) return null;
+    const manifest = JSON.parse(readFileSync(join(root, ".claude-plugin", "plugin.json"), "utf8"));
+    return manifest?.version || null;
+  } catch {
+    return null;
+  }
+})();
 
 const ok = () => { process.stdout.write('{"continue":true,"suppressOutput":true}'); process.exit(0); };
 
@@ -39,7 +57,7 @@ process.stdin.on("end", async () => {
     await fetch(`${API}/api/skills/telemetry`, {
       method: "POST",
       headers,
-      body: JSON.stringify({ listing_id: slug, matched: true, success: true }),
+      body: JSON.stringify({ listing_id: slug, matched: true, success: true, skill_version: PLUGIN_VERSION }),
       signal: ctrl.signal,
     }).catch(() => {});
     clearTimeout(timer);
