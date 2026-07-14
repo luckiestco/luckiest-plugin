@@ -9,7 +9,7 @@
       "name": "luckiest",
       "source": "./",
       "description": "Plan, go, finish, plus bundled free Luckiest skills that work in Claude Code, web chat, and Cowork.",
-      "version": "0.1.5",
+      "version": "0.1.6",
       "author": { "name": "Luckiest" }
     }
   ]
