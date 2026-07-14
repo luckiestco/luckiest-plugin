@@ -6,7 +6,7 @@ Read `references/vocabulary.md` and `references/chart-renderer.md` first and fol
 
 ## Step 1: Check for a plan
 
-Call the `status` tool from the luckiest MCP server.
+Derive the project key as described in `references/project-key.md`, then call the `status` tool from the luckiest MCP server with that `project` value so you read this project's plan and not another one.
 
 If the returned state is null (no active plan), output nothing except these two lines, in order:
 

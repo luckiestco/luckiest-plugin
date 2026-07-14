@@ -10,7 +10,9 @@ Check whether `.luckiest/BRIEF.md` exists in the current project. If it exists, 
 
 ## Step 2: Check for active work
 
-Call the `status` tool from the luckiest MCP server.
+Derive the project key as described in `references/project-key.md`. Pass this same `project` value on every luckiest plan tool call in this command (`status` here and `plan` in Step 5), so this project gets its own plan and does not collide with another project's.
+
+Call the `status` tool from the luckiest MCP server with that `project` value.
 
 - If the returned state's position is active (already in progress), stop here. Tell the user a plan is already active and offer `/luckiest go` to resume it instead. Do not stage a new plan over an active one unless the user explicitly confirms they want to replace it. If they confirm, continue to Step 3.
 - Otherwise, continue to Step 3.
@@ -54,7 +56,7 @@ Wait for the answer.
 Call the `plan` tool from the luckiest MCP server with:
 
 ```
-{ phase: <short phase name if any>, tasks: [{ title, skills, who }] }
+{ project: <the project key from Step 2>, phase: <short phase name if any>, tasks: [{ title, skills, who }] }
 ```
 
 Pass the `who` list you got from `skill_router` for each task so the plan keeps who has done this kind of work before.

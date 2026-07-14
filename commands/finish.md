@@ -6,7 +6,9 @@ Read `references/vocabulary.md` first and follow it for all output in this comma
 
 ## Step 1: Check that everything is done
 
-Call the `status` tool from the luckiest MCP server.
+Derive the project key as described in `references/project-key.md`. Pass this same `project` value on both luckiest plan tool calls in this command (`status` here and `finish` in Step 3), so you close this project's plan and not another one.
+
+Call the `status` tool from the luckiest MCP server with that `project` value.
 
 If any task is still open (not complete), list those tasks for the user and stop here. Do not proceed to the rest of this command. End your response with exactly one line, nothing after it:
 
@@ -28,7 +30,7 @@ After the recap, confirm with the AskUserQuestion tool so the user can click ins
 Call the `finish` tool from the luckiest MCP server with:
 
 ```
-{ decisions, keyFiles, deferred }
+{ project: <the project key from Step 1>, decisions, keyFiles, deferred }
 ```
 
 using the same lists from your recap. This awards Charms and archives the history automatically.

@@ -6,7 +6,9 @@ Read `references/vocabulary.md` first and follow it for all output in this comma
 
 ## Step 1: Load the plan
 
-Call the `status` tool from the luckiest MCP server. This is a zero-context resume, treat its result as the full picture of where things stand: don't assume anything about prior state beyond what it returns.
+Derive the project key as described in `references/project-key.md`. Pass this same `project` value on every luckiest plan tool call in this command (`status`, `apply`, `verify`, `pause`), so you run this project's plan and not another one.
+
+Call the `status` tool from the luckiest MCP server with that `project` value. This is a zero-context resume, treat its result as the full picture of where things stand: don't assume anything about prior state beyond what it returns.
 
 ## Step 2: Pick how to run
 
@@ -35,7 +37,7 @@ Take the ready tasks one at a time, in order. For each one:
 2. Do the work using the task's suggested skill. If that skill is installed, invoke it via the Skill tool. If it isn't installed, do the work directly without it.
 3. Check your result against the task's "done means..." line. Don't move on until it's actually met.
 4. If the result is something the user can try themselves (a page, a feature, a flow), ask with the AskUserQuestion tool so they can click instead of typing. Question: "Try it yourself, does it work?" Options: "Works" and "Needs fixes" (keep the "Other" free-text choice available). Wait for their answer.
-5. On a pass, call the `apply` tool with `{ taskId }` for that task, then call the `verify` tool with `{ results: [{ taskId, pass: true }] }`.
+5. On a pass, call the `apply` tool with `{ project, taskId }` for that task, then call the `verify` tool with `{ project, results: [{ taskId, pass: true }] }`. Use the same `project` from Step 1.
 6. On a fail, fix the problem before moving on to the next task. Only call `verify` with `pass: false` for that task if the user explicitly chooses to defer the fix instead of having you fix it now.
 
 Only move to the next ready task once the current one is applied and verified (or deferred).
@@ -50,7 +52,7 @@ Pause and ask the user before doing any of the following, even if it seems like 
 - Adding a new dependency.
 - Any schema change.
 
-If the session has to end before the plan is done, call the `pause` tool with `{ reason }`, a one-line reason describing where things were left.
+If the session has to end before the plan is done, call the `pause` tool with `{ project, reason }` (same `project` from Step 1), a one-line reason describing where things were left.
 
 ## Step 5: Wrap up
 
