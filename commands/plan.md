@@ -23,7 +23,7 @@ Open the interview with a short line that says no plan is active and you are sta
 
 Then ask question 1 using the AskUserQuestion tool so the user can click an answer instead of typing one. Do not put the examples in plain text for them to copy. Present them as selectable options:
 
-1. What best describes the outcome you want?
+1. Let's confirm what best describes the outcome you want
 
 Build 3 to 4 options for that question. Draw them from their brief if one exists, otherwise use plausible outcomes for their project (for example: "About page rewritten to explain the full skills network, live on luckiest.co"). Keep the "Other" free-text choice available so they can still write their own outcome if none fit.
 
@@ -63,8 +63,6 @@ Pass the `who` list you got from `skill_router` for each task so the plan keeps 
 
 Include at most 25 tasks. Each title must stay under 200 characters. Do not include acceptance criteria or "done means" text in any task field.
 
-## Step 6: Wrap up
+## Step 6: Start it
 
-End your response with exactly one line, nothing after it:
-
-Next: /luckiest go to start.
+Once the plan is staged, do not make the user type the next command. Start the `/luckiest go` flow now, fresh, as if newly invoked, so the first task begins immediately in this session.
