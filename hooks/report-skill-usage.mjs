@@ -9,9 +9,18 @@
 
 import { readFileSync } from "node:fs";
 import { join } from "node:path";
+import { homedir } from "node:os";
 
 const API = (process.env.LUCKIEST_API_URL || "https://api.luckiest.co").replace(/\/$/, "");
-const KEY = process.env.LUCKIEST_SKILL_KEY || "";
+// Env var wins; otherwise fall back to the key the installer saves to
+// ~/.luckiest/key, so usage is attributed without any settings.json env block.
+const KEY = process.env.LUCKIEST_SKILL_KEY || (() => {
+  try {
+    return readFileSync(join(homedir(), ".luckiest", "key"), "utf8").trim();
+  } catch {
+    return "";
+  }
+})();
 
 // The plugin's own version, read once from its manifest. Every Luckiest skill
 // ships inside this one plugin and bumps with it, so reporting this per run lets
