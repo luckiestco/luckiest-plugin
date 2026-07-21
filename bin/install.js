@@ -195,6 +195,16 @@ function hasUnzip() {
  * Never logs the key or the Authorization header.
  */
 async function syncSkills() {
+  // Self-heal the /luckiest:luckiest:* duplicate: older installers copied
+  // commands into ~/.claude/commands/luckiest even when the marketplace
+  // plugin already registers them. Sync runs every session, so clean it here.
+  const globalDir = expandTilde(explicitConfigDir) || expandTilde(process.env.CLAUDE_CONFIG_DIR) || path.join(os.homedir(), '.claude');
+  const staleCommands = path.join(globalDir, 'commands', 'luckiest');
+  if (hasMarketplacePlugin(globalDir) && fs.existsSync(staleCommands)) {
+    fs.rmSync(staleCommands, { recursive: true, force: true });
+    console.log(`  ${green}✓${reset} Removed duplicate commands/luckiest (plugin marketplace already provides them)`);
+  }
+
   const key = readSavedKey();
   if (!key) {
     console.log(`  ${dim}No luckiest.co connection key saved yet. Run ${cyan}npx luckiest-co${dim} and paste one to sync your owned skills.${reset}`);
@@ -289,6 +299,21 @@ async function syncSkills() {
 }
 
 /**
+ * True when the luckiest plugin is already installed through the Claude Code
+ * plugin marketplace (which registers commands itself).
+ */
+function hasMarketplacePlugin(globalClaudeDir) {
+  try {
+    const manifest = JSON.parse(
+      fs.readFileSync(path.join(globalClaudeDir, 'plugins', 'installed_plugins.json'), 'utf8')
+    );
+    return Object.keys(manifest.plugins || {}).some((k) => k.startsWith('luckiest@'));
+  } catch {
+    return false;
+  }
+}
+
+/**
  * Install to the specified directory
  */
 function install(isGlobal) {
@@ -313,12 +338,24 @@ function install(isGlobal) {
   // Copy flat commands/ into commands/luckiest so the subfolder becomes the
   // `luckiest:` command namespace (=> /luckiest:plan). The repo keeps commands
   // flat so the plugin install path yields the same single namespace.
+  //
+  // If the luckiest plugin is already installed via the Claude Code plugin
+  // marketplace, its commands are registered there; a file copy here would
+  // register them a second time and produce /luckiest:luckiest:* duplicates.
+  // In that case skip the copy and remove any stale copy from past installs.
   const commandsDir = path.join(claudeDir, 'commands');
   fs.mkdirSync(commandsDir, { recursive: true });
 
   const commandsSrc = path.join(src, 'commands');
   const commandsDest = path.join(commandsDir, 'luckiest');
-  if (fs.existsSync(commandsSrc)) {
+  if (hasMarketplacePlugin(defaultGlobalDir)) {
+    if (fs.existsSync(commandsDest)) {
+      fs.rmSync(commandsDest, { recursive: true, force: true });
+      console.log(`  ${green}✓${reset} Removed duplicate commands/luckiest (plugin marketplace already provides them)`);
+    } else {
+      console.log(`  ${dim}Skipped commands/luckiest (plugin marketplace already provides them)${reset}`);
+    }
+  } else if (fs.existsSync(commandsSrc)) {
     copyWithPathReplacement(commandsSrc, commandsDest, pathPrefix);
     console.log(`  ${green}✓${reset} Installed commands/luckiest`);
   }
