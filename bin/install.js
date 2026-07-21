@@ -299,15 +299,42 @@ async function syncSkills() {
 }
 
 /**
- * True when the luckiest plugin is already installed through the Claude Code
- * plugin marketplace (which registers commands itself).
+ * True when the luckiest plugin is installed AND enabled through the Claude
+ * Code plugin marketplace (which registers commands itself). A disabled
+ * plugin still appears in installed_plugins.json but registers nothing, so
+ * treating it as present would delete the user's commands/luckiest copy and
+ * leave them with no /luckiest:* commands at all.
  */
 function hasMarketplacePlugin(globalClaudeDir) {
   try {
     const manifest = JSON.parse(
       fs.readFileSync(path.join(globalClaudeDir, 'plugins', 'installed_plugins.json'), 'utf8')
     );
-    return Object.keys(manifest.plugins || {}).some((k) => k.startsWith('luckiest@'));
+    const entries = Object.entries(manifest.plugins || {}).filter(([k]) => k.startsWith('luckiest@'));
+    if (entries.length === 0) return false;
+
+    // Some Claude Code versions record enabled state on the install entry itself.
+    const entryDisabled = entries.every(([, v]) => {
+      const items = Array.isArray(v) ? v : [v];
+      return items.every((item) => item && typeof item === 'object' && item.enabled === false);
+    });
+    if (entryDisabled) return false;
+
+    // Others track it in settings.json under enabledPlugins ("name@marketplace": bool).
+    try {
+      const settings = JSON.parse(
+        fs.readFileSync(path.join(globalClaudeDir, 'settings.json'), 'utf8')
+      );
+      const enabledMap = settings.enabledPlugins || {};
+      const flags = entries
+        .map(([k]) => enabledMap[k])
+        .filter((flag) => typeof flag === 'boolean');
+      if (flags.length > 0 && flags.every((flag) => flag === false)) return false;
+    } catch {
+      // No readable settings.json — fall through to "installed means enabled".
+    }
+
+    return true;
   } catch {
     return false;
   }
