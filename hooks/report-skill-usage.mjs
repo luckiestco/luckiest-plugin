@@ -10,6 +10,7 @@
 import { readFileSync } from "node:fs";
 import { join } from "node:path";
 import { homedir } from "node:os";
+import { createHash } from "node:crypto";
 
 const API = (process.env.LUCKIEST_API_URL || "https://api.luckiest.co").replace(/\/$/, "");
 // Env var wins; otherwise fall back to the key the installer saves to
@@ -66,7 +67,17 @@ process.stdin.on("end", async () => {
     await fetch(`${API}/api/skills/telemetry`, {
       method: "POST",
       headers,
-      body: JSON.stringify({ listing_id: slug, matched: true, success: true, skill_version: PLUGIN_VERSION }),
+      // No success flag: the hook fires at PostToolUse time and never observes
+      // the outcome. Real outcomes arrive via report_usage (outcome_known=true).
+      body: JSON.stringify({
+        listing_id: slug,
+        matched: true,
+        skill_version: PLUGIN_VERSION,
+        surface: "hook",
+        session_hash: evt?.session_id
+          ? createHash("sha256").update(String(evt.session_id)).digest("hex")
+          : undefined,
+      }),
       signal: ctrl.signal,
     }).catch(() => {});
     clearTimeout(timer);
