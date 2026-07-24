@@ -31,6 +31,10 @@ npx claude plugin add luckiest-co
 | `/luckiest wishes` | See what your tribe is working toward |
 | `/luckiest charms` | View and use your skill boosters |
 
+## Telemetry
+
+When a Luckiest skill runs, the plugin reports anonymized, metadata-only usage so run counts, version adoption, and owner-facing improvement suggestions stay accurate. Exactly these fields are sent: skill slug, plugin version, whether the skill matched and (when observed) succeeded, an error category, duration, a SHA-256 hash of your key, a SHA-256 hash of the session id, and the reporting surface (`hook`, `mcp`, or `cli`). Prompt text, tool output, and file contents are never sent. Reporting is best-effort and never blocks or fails a skill run. Full policy: https://luckiest.co/privacy
+
 ## Requirements
 
 - Claude Code (CLI)
