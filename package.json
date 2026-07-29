@@ -11,6 +11,7 @@
     "references",
     "templates",
     "skills",
+    "hooks",
     ".claude-plugin"
   ],
   "license": "SEE LICENSE IN LICENSE",

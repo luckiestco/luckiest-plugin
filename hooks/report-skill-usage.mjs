@@ -8,7 +8,8 @@
 // queue to disk and flush on SessionStart instead.
 
 import { readFileSync } from "node:fs";
-import { join } from "node:path";
+import { join, dirname } from "node:path";
+import { fileURLToPath } from "node:url";
 import { homedir, hostname } from "node:os";
 import { createHash } from "node:crypto";
 
@@ -41,15 +42,25 @@ const INSTALL_ID = KEY
 // ships inside this one plugin and bumps with it, so reporting this per run lets
 // the server see which plugin version each member is actually on. Best-effort:
 // if the manifest can't be read, we just omit the field.
+// CLAUDE_PLUGIN_ROOT is set only for marketplace plugin installs. An npx
+// install registers this hook by absolute path with no such env var, so fall
+// back to the manifest sitting next to the installed hook (…/hooks/../
+// .claude-plugin/plugin.json). Without this every npx row reported a null
+// version and silently skewed version-adoption numbers.
 const PLUGIN_VERSION = (() => {
-  try {
-    const root = process.env.CLAUDE_PLUGIN_ROOT;
-    if (!root) return null;
-    const manifest = JSON.parse(readFileSync(join(root, ".claude-plugin", "plugin.json"), "utf8"));
-    return manifest?.version || null;
-  } catch {
-    return null;
+  const roots = [
+    process.env.CLAUDE_PLUGIN_ROOT,
+    join(dirname(fileURLToPath(import.meta.url)), ".."),
+  ].filter(Boolean);
+  for (const root of roots) {
+    try {
+      const manifest = JSON.parse(readFileSync(join(root, ".claude-plugin", "plugin.json"), "utf8"));
+      if (manifest?.version) return manifest.version;
+    } catch {
+      /* try the next root */
+    }
   }
+  return null;
 })();
 
 const ok = () => { process.stdout.write('{"continue":true,"suppressOutput":true}'); process.exit(0); };
