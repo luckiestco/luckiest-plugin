@@ -38,6 +38,11 @@ const args = process.argv.slice(2);
 const hasGlobal = args.includes('--global') || args.includes('-g');
 const hasLocal = args.includes('--local') || args.includes('-l');
 const syncOnly = args.includes('--sync-only');
+// Usage-hook registration writes to the user's settings.json, so it's opt-in by
+// a prompt rather than silent. These flags answer that prompt ahead of time for
+// scripted installs, where there's no terminal to ask at.
+const hasHook = args.includes('--hook');
+const hasNoHook = args.includes('--no-hook');
 
 // Parse --config-dir argument
 function parseConfigDirArg() {
@@ -388,7 +393,7 @@ function install(isGlobal) {
   }
 
   // Copy references/, templates/, .claude-plugin/ into the target root
-  const topLevelDirs = ['references', 'templates', 'skills', '.claude-plugin'];
+  const topLevelDirs = ['references', 'templates', 'skills', '.claude-plugin', 'hooks'];
   for (const dir of topLevelDirs) {
     const dirSrc = path.join(src, dir);
     const dirDest = path.join(claudeDir, dir);
@@ -401,6 +406,129 @@ function install(isGlobal) {
   console.log(`
   ${green}Done!${reset} Launch Claude Code and run ${cyan}/luckiest:plan${reset}.
 `);
+
+  return { claudeDir, globalClaudeDir: defaultGlobalDir };
+}
+
+/**
+ * Ask before touching settings.json. Returns true when we may register.
+ *
+ * Order: explicit flags win, then a prompt when there's a terminal to ask at.
+ * With no TTY (CI, piped installs) we decline rather than default to yes —
+ * silently editing a config file nobody was asked about is not a default worth
+ * having. --hook opts in for those cases.
+ */
+async function shouldRegisterHook() {
+  if (hasNoHook) return false;
+  if (hasHook) return true;
+  if (!process.stdin.isTTY) {
+    console.log(`  ${dim}Skipped usage-hook setup (no terminal to ask at). Re-run with ${cyan}--hook${dim} to enable.${reset}`);
+    return false;
+  }
+
+  console.log(`
+  ${yellow}Track your skill usage?${reset}
+  ${dim}Adds a hook to settings.json that reports which Luckiest skill ran, and
+  its version — never your prompts, tool output, or file contents. Powers your
+  usage stats at luckiest.co. You can remove it any time.${reset}
+`);
+  return new Promise((resolve) => {
+    const rl = readline.createInterface({ input: process.stdin, output: process.stdout });
+    let answered = false;
+    rl.question(`  Enable? ${dim}[Y/n]${reset}: `, (answer) => {
+      answered = true;
+      rl.close();
+      resolve(!/^n/i.test(answer.trim()));
+    });
+    // Input closed before an answer arrived (piped stdin that ran dry, ^D).
+    // Decline: an unanswered consent prompt is not consent.
+    rl.on('close', () => {
+      if (!answered) resolve(false);
+    });
+  });
+}
+
+/**
+ * Register the PostToolUse(Skill) telemetry hook in the user's settings.json.
+ *
+ * The marketplace plugin ships hooks/hooks.json and Claude Code registers it
+ * automatically; an npx install has no such mechanism, so until now the npx
+ * path shipped no hook at all and reported nothing. This closes that gap.
+ *
+ * settings.json belongs to the user, so this is a merge, never an overwrite:
+ * unknown keys are preserved, an existing PostToolUse array is appended to, and
+ * a previous Luckiest entry is replaced rather than duplicated (the install path
+ * can change between runs). Best-effort — an unreadable or malformed settings
+ * file warns and leaves the install otherwise complete.
+ */
+function registerUsageHook(claudeDir, globalClaudeDir, consented) {
+  const hookPath = path.join(claudeDir, 'hooks', 'report-skill-usage.mjs');
+  const settingsPath = path.join(claudeDir, 'settings.json');
+  // Identifies our entry across installs even when the absolute path changed.
+  const isOurs = (entry) =>
+    (entry?.hooks || []).some((h) => String(h?.command || '').includes('report-skill-usage.mjs'));
+
+  let settings = {};
+  if (fs.existsSync(settingsPath)) {
+    try {
+      settings = JSON.parse(fs.readFileSync(settingsPath, 'utf8'));
+    } catch {
+      console.log(`  ${yellow}!${reset} Couldn't parse settings.json — skipped hook registration.`);
+      console.log(`  ${dim}Skill usage won't be tracked from Claude Code until it's valid JSON.${reset}`);
+      return;
+    }
+  }
+
+  settings.hooks = settings.hooks || {};
+  const existing = Array.isArray(settings.hooks.PostToolUse) ? settings.hooks.PostToolUse : [];
+  const others = existing.filter((e) => !isOurs(e));
+  const hadOurs = others.length !== existing.length;
+
+  // Declining is also an instruction to remove a hook a past install added.
+  // Cleanup never needs consent — only adding does.
+  if (!consented) {
+    if (!hadOurs) return;
+    settings.hooks.PostToolUse = others;
+    if (writeSettings(settingsPath, settings)) {
+      console.log(`  ${green}✓${reset} Removed the usage hook from settings.json`);
+    }
+    return;
+  }
+
+  // The marketplace plugin already registers this hook via hooks.json. Adding a
+  // second registration would fire it twice and double every usage count, so
+  // when the plugin is present we only clean up a stale copy of our own.
+  if (hasMarketplacePlugin(globalClaudeDir)) {
+    if (!hadOurs) {
+      console.log(`  ${dim}Skipped usage hook (plugin marketplace already provides it)${reset}`);
+      return;
+    }
+    settings.hooks.PostToolUse = others;
+    writeSettings(settingsPath, settings);
+    console.log(`  ${green}✓${reset} Removed duplicate usage hook (plugin marketplace already provides it)`);
+    return;
+  }
+
+  settings.hooks.PostToolUse = [
+    ...others,
+    {
+      matcher: 'Skill',
+      hooks: [{ type: 'command', command: `node "${hookPath}"` }],
+    },
+  ];
+  if (writeSettings(settingsPath, settings)) {
+    console.log(`  ${green}✓${reset} Registered skill usage hook in settings.json`);
+  }
+}
+
+function writeSettings(settingsPath, settings) {
+  try {
+    fs.writeFileSync(settingsPath, `${JSON.stringify(settings, null, 2)}\n`);
+    return true;
+  } catch (err) {
+    console.log(`  ${yellow}!${reset} Couldn't write settings.json (${err.message}) — skipped hook registration.`);
+    return false;
+  }
 }
 
 /**
@@ -454,7 +582,14 @@ async function main() {
     isGlobal = await promptLocation();
   }
 
-  install(isGlobal);
+  const { claudeDir, globalClaudeDir } = install(isGlobal);
+
+  // Global installs only: a project-level hook would land in a shared repo and
+  // fire for every collaborator, so ./.claude installs get the files but no
+  // registration.
+  if (isGlobal) {
+    registerUsageHook(claudeDir, globalClaudeDir, await shouldRegisterHook());
+  }
 
   const alreadyHasKey = !!readSavedKey();
   if (!alreadyHasKey) {
