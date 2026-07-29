@@ -75,6 +75,8 @@ if (hasHelp) {
     ${cyan}-l, --local${reset}               Install locally (to ./.claude in current directory)
     ${cyan}-c, --config-dir <path>${reset}   Specify custom Claude config directory
     ${cyan}--sync-only${reset}               Skip install, only sync owned skills from luckiest.co
+    ${cyan}--hook${reset}                    Enable skill usage tracking without prompting
+    ${cyan}--no-hook${reset}                 Skip it (and remove it if a past install added it)
     ${cyan}-h, --help${reset}                Show this help message
 
   ${yellow}Examples:${reset}
@@ -209,6 +211,8 @@ async function syncSkills() {
     fs.rmSync(staleCommands, { recursive: true, force: true });
     console.log(`  ${green}✓${reset} Removed duplicate commands/luckiest (plugin marketplace already provides them)`);
   }
+
+  nudgeUsageHook(globalDir);
 
   const key = readSavedKey();
   if (!key) {
@@ -448,6 +452,32 @@ async function shouldRegisterHook() {
   });
 }
 
+// Identifies our hook entry across installs even when the absolute path changed.
+const isOurHookEntry = (entry) =>
+  (entry?.hooks || []).some((h) => String(h?.command || '').includes('report-skill-usage.mjs'));
+
+function usageHookRegistered(claudeDir) {
+  try {
+    const settings = JSON.parse(fs.readFileSync(path.join(claudeDir, 'settings.json'), 'utf8'));
+    return (settings.hooks?.PostToolUse || []).some(isOurHookEntry);
+  } catch {
+    return false;
+  }
+}
+
+/**
+ * Tell, don't act. --sync-only runs unattended at session start, so there's no
+ * terminal to ask at and registering there would mean silently editing
+ * settings.json on a call the user never typed. Instead, say the tracking is off
+ * once and let them opt in deliberately. Silent when it's already handled, so
+ * this adds nothing to the common session-start path.
+ */
+function nudgeUsageHook(globalClaudeDir) {
+  if (hasMarketplacePlugin(globalClaudeDir)) return; // plugin registers its own
+  if (usageHookRegistered(globalClaudeDir)) return;
+  console.log(`  ${dim}Skill usage tracking is off. Run ${cyan}npx luckiest-co@latest --hook${dim} to turn it on.${reset}`);
+}
+
 /**
  * Register the PostToolUse(Skill) telemetry hook in the user's settings.json.
  *
@@ -464,9 +494,6 @@ async function shouldRegisterHook() {
 function registerUsageHook(claudeDir, globalClaudeDir, consented) {
   const hookPath = path.join(claudeDir, 'hooks', 'report-skill-usage.mjs');
   const settingsPath = path.join(claudeDir, 'settings.json');
-  // Identifies our entry across installs even when the absolute path changed.
-  const isOurs = (entry) =>
-    (entry?.hooks || []).some((h) => String(h?.command || '').includes('report-skill-usage.mjs'));
 
   let settings = {};
   if (fs.existsSync(settingsPath)) {
@@ -481,7 +508,7 @@ function registerUsageHook(claudeDir, globalClaudeDir, consented) {
 
   settings.hooks = settings.hooks || {};
   const existing = Array.isArray(settings.hooks.PostToolUse) ? settings.hooks.PostToolUse : [];
-  const others = existing.filter((e) => !isOurs(e));
+  const others = existing.filter((e) => !isOurHookEntry(e));
   const hadOurs = others.length !== existing.length;
 
   // Declining is also an instruction to remove a hook a past install added.
