@@ -9,7 +9,7 @@
 
 import { readFileSync } from "node:fs";
 import { join } from "node:path";
-import { homedir } from "node:os";
+import { homedir, hostname } from "node:os";
 import { createHash } from "node:crypto";
 
 const API = (process.env.LUCKIEST_API_URL || "https://api.luckiest.co").replace(/\/$/, "");
@@ -22,6 +22,20 @@ const KEY = process.env.LUCKIEST_SKILL_KEY || (() => {
     return "";
   }
 })();
+
+// Marketplace installs never run bin/install.js, so they have no key and used to
+// report with a null reporter_hash — invisible to count(DISTINCT reporter_hash),
+// which undercounted unique installs to zero for that whole population. When no
+// key exists, send a stable per-install id instead: a salted sha256 of hostname
+// + home dir. Not an account and not reversible to one; it only says "same
+// install as last time". A real key always wins, so keyed members still link to
+// their member id server-side.
+// ponytail: hostname+homedir is the cheapest stable pair available to a hook;
+// if installs ever need to survive a machine rename, write a random id to
+// ~/.luckiest/install-id instead.
+const INSTALL_ID = KEY
+  ? ""
+  : createHash("sha256").update(`luckiest-install:${hostname()}:${homedir()}`).digest("hex");
 
 // The plugin's own version, read once from its manifest. Every Luckiest skill
 // ships inside this one plugin and bumps with it, so reporting this per run lets
@@ -74,6 +88,8 @@ process.stdin.on("end", async () => {
         matched: true,
         skill_version: PLUGIN_VERSION,
         surface: "hook",
+        // Only sent when there's no key; the server prefers the key's hash.
+        install_hash: INSTALL_ID || undefined,
         session_hash: evt?.session_id
           ? createHash("sha256").update(String(evt.session_id)).digest("hex")
           : undefined,
