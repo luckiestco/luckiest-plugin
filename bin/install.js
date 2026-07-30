@@ -212,6 +212,7 @@ async function syncSkills() {
     console.log(`  ${green}✓${reset} Removed duplicate commands/luckiest (plugin marketplace already provides them)`);
   }
 
+  nudgeStaleInstall(globalDir);
   nudgeUsageHook(globalDir);
 
   const key = readSavedKey();
@@ -476,6 +477,51 @@ function nudgeUsageHook(globalClaudeDir) {
   if (hasMarketplacePlugin(globalClaudeDir)) return; // plugin registers its own
   if (usageHookRegistered(globalClaudeDir)) return;
   console.log(`  ${dim}Skill usage tracking is off. Run ${cyan}npx luckiest-co@latest --hook${dim} to turn it on.${reset}`);
+}
+
+/**
+ * Numeric semver-ish compare. Returns >0 when a is newer than b.
+ * String compare would read "0.1.10" as older than "0.1.9", which is exactly
+ * the version pair this shipped on.
+ */
+function compareVersions(a, b) {
+  const pa = String(a).split('.').map((n) => parseInt(n, 10) || 0);
+  const pb = String(b).split('.').map((n) => parseInt(n, 10) || 0);
+  for (let i = 0; i < Math.max(pa.length, pb.length); i += 1) {
+    const diff = (pa[i] || 0) - (pb[i] || 0);
+    if (diff !== 0) return diff;
+  }
+  return 0;
+}
+
+function readPluginVersion(root) {
+  try {
+    return JSON.parse(fs.readFileSync(path.join(root, '.claude-plugin', 'plugin.json'), 'utf8')).version || null;
+  } catch {
+    return null;
+  }
+}
+
+/**
+ * Tell people when their installed copy is behind.
+ *
+ * Both update paths are pull-based, so someone who installed once can sit on an
+ * old copy indefinitely with nothing to tell them. Sync runs every session, and
+ * `npx luckiest-co@latest` always fetches the newest package, so the version
+ * this process is running from is by definition current — comparing it against
+ * the copy on disk needs no server call.
+ *
+ * Silent when current, when nothing is installed to compare against, or when
+ * the marketplace plugin is in charge (that copy updates through Claude's own
+ * plugin menu, not this installer).
+ */
+function nudgeStaleInstall(globalClaudeDir) {
+  if (hasMarketplacePlugin(globalClaudeDir)) return;
+  const installed = readPluginVersion(globalClaudeDir);
+  const current = readPluginVersion(path.join(__dirname, '..'));
+  if (!installed || !current) return;
+  if (compareVersions(current, installed) <= 0) return;
+  console.log(`  ${dim}Your Luckiest install is ${cyan}v${installed}${dim}, latest is ${cyan}v${current}${dim}. Run ${cyan}npx luckiest-co@latest${dim} to update.${reset}`);
 }
 
 /**
