@@ -4,6 +4,33 @@ description: Plan your next piece of work. Guided questions, then a plan Claude 
 
 Read `references/vocabulary.md` first and follow it for all output in this command: plain language, no em dashes, no internal terms, one next-step recommendation at the end.
 
+Asking the user a question: this command tells you to use the AskUserQuestion tool
+so the user can click instead of typing. That tool only exists in Claude Code. In
+web chat and Cowork it is not there, and waiting for it will stall the command.
+
+So, every time this command says to use AskUserQuestion:
+
+- If the tool is available, use it exactly as written.
+- If it is not, ask the same question in plain chat as a numbered list of the
+  same options, and tell the user to reply with a number or type their own
+  answer. Treat a typed answer the same as the "Other" free-text choice.
+
+The options, their order, and their wording stay the same either way. Only the
+delivery changes. Never skip a question, never answer it on the user's behalf,
+and never merge several questions into one just because they are text.
+
+For example, "Here's your plan, good to go?" with options "Good to go" and
+"Make changes" becomes:
+
+```
+Here's your plan, good to go?
+
+1. Good to go
+2. Make changes
+
+Reply with a number, or tell me what to change.
+```
+
 ## Step 1: Gather context
 
 Check whether `.luckiest/BRIEF.md` exists in the current project. If it exists, read it and use it as context for the interview below (what they're building, who it's for, what winning looks like). If it does not exist, continue without it.
