@@ -4,6 +4,33 @@ description: Run your plan, one task at a time, checked as it goes.
 
 Read `references/vocabulary.md` first and follow it for all output in this command: plain language, no em dashes, no internal terms, one next-step recommendation at the end.
 
+Asking the user a question: this command tells you to use the AskUserQuestion tool
+so the user can click instead of typing. That tool only exists in Claude Code. In
+web chat and Cowork it is not there, and waiting for it will stall the command.
+
+So, every time this command says to use AskUserQuestion:
+
+- If the tool is available, use it exactly as written.
+- If it is not, ask the same question in plain chat as a numbered list of the
+  same options, and tell the user to reply with a number or type their own
+  answer. Treat a typed answer the same as the "Other" free-text choice.
+
+The options, their order, and their wording stay the same either way. Only the
+delivery changes. Never skip a question, never answer it on the user's behalf,
+and never merge several questions into one just because they are text.
+
+For example, "Here's your plan, good to go?" with options "Good to go" and
+"Make changes" becomes:
+
+```
+Here's your plan, good to go?
+
+1. Good to go
+2. Make changes
+
+Reply with a number, or tell me what to change.
+```
+
 ## Step 1: Load the plan
 
 Derive the project key as described in `references/project-key.md`. Pass this same `project` value on every luckiest plan tool call in this command (`status`, `apply`, `verify`, `pause`), so you run this project's plan and not another one.
