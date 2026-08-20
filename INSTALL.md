@@ -32,6 +32,16 @@ Run these two lines:
 Start a new chat and type `/brainstorm`, or just say "brainstorm an idea with
 me." If the skill kicks in, you are set.
 
+## How to start the plan flow on each surface
+
+- **Claude Code (terminal)**: type `/luckiest:plan`
+- **Claude web chat**: type `/luckiest-plan`
+- **Cowork**: just say it in plain words, "run luckiest plan". Cowork does not
+  list plugin skills in the `/` menu, but saying it works.
+
+Same for `go` and `finish`: `/luckiest:go` in the terminal, `/luckiest-go` in
+chat, "run luckiest go" in Cowork.
+
 Stuck on any step? Send me a screenshot and I will sort it.
 
 ---
