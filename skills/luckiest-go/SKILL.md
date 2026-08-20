@@ -1,6 +1,6 @@
 ---
 name: luckiest-go
-description: Run the active Luckiest plan, one task at a time, checked as it goes. Use when the user says /luckiest go, luckiest go, or wants to continue their staged Luckiest plan.
+description: "Run the active Luckiest plan, one task at a time, checked as it goes. Use when the user says /luckiest go, luckiest go, or wants to continue their staged Luckiest plan."
 ---
 
 Vocabulary rules for all output: plain language, no em dashes, no internal terms. Never surface internal words like PLAN, APPLY, UNIFY, skill_loop, UAT, AC, HANDOFF, DRAFT, DOING in user-visible output; say plan, go, finish, status, testing, requirements, ready for review, in progress, active, complete instead. End every response with exactly one next-step line in the form `Next: <one action>`.
