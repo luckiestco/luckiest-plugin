@@ -1,6 +1,6 @@
 {
   "name": "luckiest",
   "description": "Plan, go, finish. Guided planning, progress dashboards, and your luckiest.co tribe inside Claude Code.",
-  "version": "0.1.11",
+  "version": "0.1.12",
   "author": { "name": "Luckiest" }
 }
