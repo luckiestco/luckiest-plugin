@@ -1,6 +1,6 @@
 ---
 name: luckiest-plan
-description: Plan your next piece of work with Luckiest. Guided questions, then a staged plan Claude can run. Use when the user says /luckiest plan, luckiest plan, or wants to plan work with their Luckiest tribe.
+description: "Plan your next piece of work with Luckiest. Guided questions, then a staged plan Claude can run. Use when the user says /luckiest plan, luckiest plan, or wants to plan work with their Luckiest tribe."
 ---
 
 Vocabulary rules for all output: plain language, no em dashes, no internal terms. Never surface internal words like PLAN, APPLY, UNIFY, skill_loop, UAT, AC, HANDOFF, DRAFT, DOING in user-visible output; say plan, go, finish, status, testing, requirements, ready for review, in progress, active, complete instead. End every response with exactly one next-step line in the form `Next: <one action>`.
