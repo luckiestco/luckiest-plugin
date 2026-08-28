@@ -2,7 +2,7 @@
 description: Wrap up, what shipped, what changed, what's next.
 ---
 
-Read `references/vocabulary.md` first and follow it for all output in this command: plain language, no em dashes, no internal terms, one next-step recommendation at the end.
+Output rules for this command: plain language, no em dashes, no internal terms, and end with exactly one next-step line in the form `Next: <one action>`. The server may return internal words; translate them and never show them: PLAN means plan, APPLY means go, UNIFY means finish, DRAFT means in progress, DOING means active, DONE means complete, UAT means testing, AC means requirements, HANDOFF means ready for review, skill_loop means status.
 
 Asking the user a question: this command tells you to use the AskUserQuestion tool
 so the user can click instead of typing. That tool only exists in Claude Code. In
@@ -33,7 +33,7 @@ Reply with a number, or tell me what to change.
 
 ## Step 1: Check that everything is done
 
-Derive the project key as described in `references/project-key.md`. Pass this same `project` value on both luckiest plan tool calls in this command (`status` here and `finish` in Step 3), so you close this project's plan and not another one.
+Derive the project key once per session: run `git config --get remote.origin.url` and normalize the result to lowercase `host/owner/repo` with any `.git` suffix removed (for example `git@github.com:acme/app.git` becomes `github.com/acme/app`). If it is not a git repo, use the absolute working directory path. If there is no local shell (web chat, Cowork), omit `project` entirely. Pass this same `project` value on both luckiest plan tool calls in this command (`status` here and `finish` in Step 3), so you close this project's plan and not another one.
 
 Call the `status` tool from the luckiest MCP server with that `project` value.
 

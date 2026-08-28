@@ -2,7 +2,9 @@
 description: See how the tribe ranks. Top scores, one bar chart.
 ---
 
-Read `references/vocabulary.md` and `references/chart-renderer.md` first and follow them for all output in this command.
+Output rules for this command: plain language, no em dashes, no internal terms, and end with exactly one next-step line in the form `Next: <one action>`. The server may return internal words; translate them and never show them: PLAN means plan, APPLY means go, UNIFY means finish, DRAFT means in progress, DOING means active, DONE means complete, UAT means testing, AC means requirements, HANDOFF means ready for review, skill_loop means status.
+
+Read `references/chart-renderer.md` before rendering any chart and follow it.
 
 ## Step 1: Get the data
 
@@ -28,7 +30,7 @@ Render one fenced code block following the chart-renderer grammar.
 
 4. **Footer**: last line in the block is `→ /luckiest leaderboard` (or the range-qualified form if a range was passed, e.g. `→ /luckiest leaderboard 30d`).
 
-Use only user-facing vocabulary from `references/vocabulary.md`. Never surface PLAN, APPLY, UNIFY, DRAFT, DOING, DONE, HANDOFF, or any internal term.
+Use only user-facing vocabulary. Never surface PLAN, APPLY, UNIFY, DRAFT, DOING, DONE, HANDOFF, or any internal term.
 
 ## Step 3: Recommend next action
 

@@ -63,7 +63,7 @@ Research subagents (looking something up, exploring the codebase) are always all
 
 Take the ready tasks one at a time, in order. For each one:
 
-1. First, turn the task into a tight working prompt with the `luckiest-prompt-rewrite` skill, targeting whoever will do the work (yourself, or the subagent and its model from Step 2). Use that rewritten prompt to do the task. If the skill is not installed, write a clear prompt yourself and continue. Do this before every task, in both default and fast mode.
+1. If the task is being handed to a subagent (fast mode), first turn it into a tight working prompt with the `luckiest-prompt-rewrite` skill, targeting that subagent and its model from Step 2; if the skill is not installed, write a clear prompt yourself. When you are doing the task yourself, skip the rewrite and start working; the task title and its "done means..." line are the prompt.
 2. Do the work using the task's suggested skill. If that skill is installed, invoke it via the Skill tool. If it isn't installed, do the work directly without it.
 3. Check your result against the task's "done means..." line. Don't move on until it's actually met.
 4. If the result is something the user can try themselves (a page, a feature, a flow), ask with the AskUserQuestion tool so they can click instead of typing. Question: "Try it yourself, does it work?" Options: "Works" and "Needs fixes" (keep the "Other" free-text choice available). Wait for their answer.
@@ -73,6 +73,9 @@ Take the ready tasks one at a time, in order. For each one:
 Only move to the next ready task once the current one is applied and verified (or deferred).
 
 After a task passes and is verified, run a quick automation check. Ask yourself: was this task repeatable, rule-based, or the kind of thing that will come up again? If yes, offer it with the AskUserQuestion tool so the user can click instead of typing. Question: "This looks worth automating. Turn it into a skill you can schedule or run as a routine?" Options: "Automate it" and "Skip" (keep the "Other" free-text choice available). Only offer, never build it without a yes. If they say yes, create the skill (with the skill-builder or skill-creator skill) and set it up to run on a schedule or as a routine. If the task was a one-off, skip the offer and move on.
+
+
+Shell note: always quote file paths in shell commands. Paths with parentheses or brackets (for example `app/(public)/orders`) break zsh globbing when unquoted and waste turns on retries. Prefer the dedicated file tools (Read, Glob, Grep) over shell listing commands when either works.
 
 ## Step 4: Stop conditions
 

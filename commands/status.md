@@ -2,11 +2,13 @@
 description: Where you are. Progress, tasks, and your one next step.
 ---
 
-Read `references/vocabulary.md` and `references/chart-renderer.md` first and follow them for all output in this command.
+Output rules for this command: plain language, no em dashes, no internal terms, and end with exactly one next-step line in the form `Next: <one action>`. The server may return internal words; translate them and never show them: PLAN means plan, APPLY means go, UNIFY means finish, DRAFT means in progress, DOING means active, DONE means complete, UAT means testing, AC means requirements, HANDOFF means ready for review, skill_loop means status.
+
+Read `references/chart-renderer.md` before rendering any chart and follow it.
 
 ## Step 1: Check for a plan
 
-Derive the project key as described in `references/project-key.md`, then call the `status` tool from the luckiest MCP server with that `project` value so you read this project's plan and not another one.
+Derive the project key once per session: run `git config --get remote.origin.url` and normalize the result to lowercase `host/owner/repo` with any `.git` suffix removed (for example `git@github.com:acme/app.git` becomes `github.com/acme/app`). If it is not a git repo, use the absolute working directory path. If there is no local shell (web chat, Cowork), omit `project` entirely. Then call the `status` tool from the luckiest MCP server with that `project` value so you read this project's plan and not another one.
 
 If the returned state is null (no active plan), output nothing except these two lines, in order:
 
@@ -35,7 +37,7 @@ If a plan exists, render one fenced code block following the chart-renderer gram
 5. **Bookmark line (if paused)**: If the state includes a bookmark (pause), add a line showing the bookmark message.
 6. **Footer**: Last line in the block ends with the command to check status again (e.g. `→ /luckiest status`).
 
-Use only the user-facing vocabulary from `references/vocabulary.md`. Never surface PLAN, APPLY, UNIFY, DRAFT, DOING, DONE, HANDOFF, or any internal term.
+Use only user-facing vocabulary. Never surface PLAN, APPLY, UNIFY, DRAFT, DOING, DONE, HANDOFF, or any internal term.
 
 Map each task's status to a glyph (these are the task status values, not the plan position):
 - "done" -> `✓`

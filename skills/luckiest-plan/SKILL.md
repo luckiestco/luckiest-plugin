@@ -49,7 +49,9 @@ Call the `status` tool from the luckiest MCP server with that `project` value.
 
 ## Step 3: Run the interview
 
-Open the interview with a short line that says no plan is active and you are starting the interview.
+If the user's invocation already states the outcome they want (they passed arguments describing a goal, a feature, or a problem to solve), skip the interview question entirely. Say in one line that you are planning from what they gave you, use their stated outcome directly, and jump ahead to drafting the task list below. The approval question in Step 4 still runs; it is the only question they get.
+
+Otherwise, open the interview with a short line that says no plan is active and you are starting the interview.
 
 Then ask question 1 using the AskUserQuestion tool so the user can click an answer instead of typing one. Do not put the examples in plain text for them to copy. Present them as selectable options:
 
@@ -63,7 +65,7 @@ Use the answer (plus the brief, if present) to shape a draft task list of 3 to 7
 
 Include non-coding work too. Marketing, content, design, research, and ops tasks belong in the plan alongside code. Never drop a task just because it is not a coding task; route it to its matching skill like any other.
 
-For each draft task, call the `skill_router` tool from the luckiest MCP server. It returns `skills` (matching owned skills) and `who` (up to 3 tribe members who finished a similar task before). Attach the suggested skill(s) to the task, and attach `who` so the plan can carry who has done this kind of work.
+Route all draft tasks in ONE `skill_router` call from the luckiest MCP server: pass `prompts` as an array of every task title. It returns `results`, one entry per task with `skills` (matching owned skills) and `who` (up to 3 tribe members who finished a similar task before). Attach the suggested skill(s) to each task, and attach `who` so the plan can carry who has done this kind of work. If the server rejects `prompts` (older server), fall back to one `skill_router` call per task, issued in parallel in a single message, never one at a time.
 
 For each task, state a one-line "done means..." in chat (not in the title, not stored anywhere) so the user sees what complete looks like for that task. When `who` is not empty, add a short line naming those people, for example "Done before by: **Sam**, **Alex**."
 

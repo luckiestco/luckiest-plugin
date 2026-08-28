@@ -2,7 +2,7 @@
 description: Plan your next piece of work. Guided questions, then a plan Claude can run.
 ---
 
-Read `references/vocabulary.md` first and follow it for all output in this command: plain language, no em dashes, no internal terms, one next-step recommendation at the end.
+Output rules for this command: plain language, no em dashes, no internal terms, and end with exactly one next-step line in the form `Next: <one action>`. The server may return internal words; translate them and never show them: PLAN means plan, APPLY means go, UNIFY means finish, DRAFT means in progress, DOING means active, DONE means complete, UAT means testing, AC means requirements, HANDOFF means ready for review, skill_loop means status.
 
 Asking the user a question: this command tells you to use the AskUserQuestion tool
 so the user can click instead of typing. That tool only exists in Claude Code. In
@@ -37,7 +37,7 @@ Check whether `.luckiest/BRIEF.md` exists in the current project. If it exists, 
 
 ## Step 2: Check for active work
 
-Derive the project key as described in `references/project-key.md`. Pass this same `project` value on every luckiest plan tool call in this command (`status` here and `plan` in Step 5), so this project gets its own plan and does not collide with another project's.
+Derive the project key once per session: run `git config --get remote.origin.url` and normalize the result to lowercase `host/owner/repo` with any `.git` suffix removed (for example `git@github.com:acme/app.git` becomes `github.com/acme/app`). If it is not a git repo, use the absolute working directory path. If there is no local shell (web chat, Cowork), omit `project` entirely. Pass this same `project` value on every luckiest plan tool call in this command (`status` here and `plan` in Step 5), so this project gets its own plan and does not collide with another project's.
 
 Call the `status` tool from the luckiest MCP server with that `project` value.
 
@@ -46,7 +46,9 @@ Call the `status` tool from the luckiest MCP server with that `project` value.
 
 ## Step 3: Run the interview
 
-Open the interview with a short line that says no plan is active and you are starting the interview.
+If the user's invocation already states the outcome they want (they passed arguments describing a goal, a feature, or a problem to solve), skip the interview question entirely. Say in one line that you are planning from what they gave you, use their stated outcome directly, and jump ahead to drafting the task list below. The approval question in Step 4 still runs; it is the only question they get.
+
+Otherwise, open the interview with a short line that says no plan is active and you are starting the interview.
 
 Then ask question 1 using the AskUserQuestion tool so the user can click an answer instead of typing one. Do not put the examples in plain text for them to copy. Present them as selectable options:
 
@@ -60,7 +62,7 @@ Use the answer (plus the brief, if present) to shape a draft task list of 3 to 7
 
 Include non-coding work too. Marketing, content, design, research, and ops tasks belong in the plan alongside code. Never drop a task just because it is not a coding task; route it to its matching skill like any other.
 
-For each draft task, call the `skill_router` tool from the luckiest MCP server. It returns `skills` (matching owned skills) and `who` (up to 3 tribe members who finished a similar task before). Attach the suggested skill(s) to the task, and attach `who` so the plan can carry who has done this kind of work.
+Route all draft tasks in ONE `skill_router` call from the luckiest MCP server: pass `prompts` as an array of every task title. It returns `results`, one entry per task with `skills` (matching owned skills) and `who` (up to 3 tribe members who finished a similar task before). Attach the suggested skill(s) to each task, and attach `who` so the plan can carry who has done this kind of work. If the server rejects `prompts` (older server), fall back to one `skill_router` call per task, issued in parallel in a single message, never one at a time.
 
 For each task, state a one-line "done means..." in chat (not in the title, not stored anywhere) so the user sees what complete looks like for that task. When `who` is not empty, add a short line naming those people, for example "Done before by: **Sam**, **Alex**."
 

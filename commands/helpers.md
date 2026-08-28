@@ -2,7 +2,9 @@
 description: See who needs a hand right now, and claim a request to help.
 ---
 
-Read `references/vocabulary.md` and `references/chart-renderer.md` first and follow them for all output in this command.
+Output rules for this command: plain language, no em dashes, no internal terms, and end with exactly one next-step line in the form `Next: <one action>`. The server may return internal words; translate them and never show them: PLAN means plan, APPLY means go, UNIFY means finish, DRAFT means in progress, DOING means active, DONE means complete, UAT means testing, AC means requirements, HANDOFF means ready for review, skill_loop means status.
+
+Read `references/chart-renderer.md` before rendering any chart and follow it.
 
 ## Step 1: Get the data
 
@@ -55,7 +57,7 @@ Example:
  → tell me "claim a13" and I'll pick it up with respond_to_assist
 ```
 
-Use only user-facing vocabulary from `references/vocabulary.md`. Never surface PLAN, APPLY, UNIFY, DRAFT, DOING, DONE, HANDOFF, or any internal term. Do not fabricate requests, posters, or rewards beyond what the tools return.
+Use only user-facing vocabulary. Never surface PLAN, APPLY, UNIFY, DRAFT, DOING, DONE, HANDOFF, or any internal term. Do not fabricate requests, posters, or rewards beyond what the tools return.
 
 ## Step 3: Recommend next action
 
