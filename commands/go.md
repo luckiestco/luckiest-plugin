@@ -2,7 +2,7 @@
 description: Run your plan, one task at a time, checked as it goes.
 ---
 
-Read `references/vocabulary.md` first and follow it for all output in this command: plain language, no em dashes, no internal terms, one next-step recommendation at the end.
+Output rules for this command: plain language, no em dashes, no internal terms, and end with exactly one next-step line in the form `Next: <one action>`. The server may return internal words; translate them and never show them: PLAN means plan, APPLY means go, UNIFY means finish, DRAFT means in progress, DOING means active, DONE means complete, UAT means testing, AC means requirements, HANDOFF means ready for review, skill_loop means status.
 
 Asking the user a question: this command tells you to use the AskUserQuestion tool
 so the user can click instead of typing. That tool only exists in Claude Code. In
@@ -33,7 +33,7 @@ Reply with a number, or tell me what to change.
 
 ## Step 1: Load the plan
 
-Derive the project key as described in `references/project-key.md`. Pass this same `project` value on every luckiest plan tool call in this command (`status`, `apply`, `verify`, `pause`), so you run this project's plan and not another one.
+Derive the project key once per session: run `git config --get remote.origin.url` and normalize the result to lowercase `host/owner/repo` with any `.git` suffix removed (for example `git@github.com:acme/app.git` becomes `github.com/acme/app`). If it is not a git repo, use the absolute working directory path. If there is no local shell (web chat, Cowork), omit `project` entirely. Pass this same `project` value on every luckiest plan tool call in this command (`status`, `apply`, `verify`, `pause`), so you run this project's plan and not another one.
 
 Call the `status` tool from the luckiest MCP server with that `project` value. This is a zero-context resume, treat its result as the full picture of where things stand: don't assume anything about prior state beyond what it returns.
 
@@ -60,7 +60,7 @@ Research subagents (looking something up, exploring the codebase) are always all
 
 Take the ready tasks one at a time, in order. For each one:
 
-1. First, turn the task into a tight working prompt with the `luckiest-prompt-rewrite` skill, targeting whoever will do the work (yourself, or the subagent and its model from Step 2). Use that rewritten prompt to do the task. If the skill is not installed, write a clear prompt yourself and continue. Do this before every task, in both default and fast mode.
+1. If the task is being handed to a subagent (fast mode), first turn it into a tight working prompt with the `luckiest-prompt-rewrite` skill, targeting that subagent and its model from Step 2; if the skill is not installed, write a clear prompt yourself. When you are doing the task yourself, skip the rewrite and start working; the task title and its "done means..." line are the prompt.
 2. Do the work using the task's suggested skill. If that skill is installed, invoke it via the Skill tool. If it isn't installed, do the work directly without it.
 3. Check your result against the task's "done means..." line. Don't move on until it's actually met.
 4. If the result is something the user can try themselves (a page, a feature, a flow), ask with the AskUserQuestion tool so they can click instead of typing. Question: "Try it yourself, does it work?" Options: "Works" and "Needs fixes" (keep the "Other" free-text choice available). Wait for their answer.
@@ -70,6 +70,9 @@ Take the ready tasks one at a time, in order. For each one:
 Only move to the next ready task once the current one is applied and verified (or deferred).
 
 After a task passes and is verified, run a quick automation check. Ask yourself: was this task repeatable, rule-based, or the kind of thing that will come up again? If yes, offer it with the AskUserQuestion tool so the user can click instead of typing. Question: "This looks worth automating. Turn it into a skill you can schedule or run as a routine?" Options: "Automate it" and "Skip" (keep the "Other" free-text choice available). Only offer, never build it without a yes. If they say yes, create the skill (with the skill-builder or skill-creator skill) and set it up to run on a schedule or as a routine. If the task was a one-off, skip the offer and move on.
+
+
+Shell note: always quote file paths in shell commands. Paths with parentheses or brackets (for example `app/(public)/orders`) break zsh globbing when unquoted and waste turns on retries. Prefer the dedicated file tools (Read, Glob, Grep) over shell listing commands when either works.
 
 ## Step 4: Stop conditions
 
