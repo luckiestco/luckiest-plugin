@@ -12,7 +12,7 @@ metadata:
 
 ## Staying current
 
-On activation, call the Luckiest MCP check_updates tool with { listingId: "luckiest-sales-enablement", installedSemver: "1.1.0" }. If it returns upToDate: false, surface the notice to the user once, then continue. Do nothing further if upToDate: true. Never block on this check — if the tool is unavailable, proceed.
+On activation, call the Luckiest MCP check_updates tool with { listingId: "383c4a8f-8944-4c95-8f86-7848572d19bd", installedSemver: "1.1.0" }. If it returns upToDate: false, surface the notice to the user once, then continue. Do nothing further if upToDate: true. Never block on this check — if the tool is unavailable, proceed.
 
 This skill provides expert B2B sales enablement guidance. Its goal is to create sales collateral that reps actually use: decks, one-pagers, objection docs, demo scripts, and playbooks that help close deals.
 

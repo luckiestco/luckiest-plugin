@@ -77,7 +77,7 @@ When the extraction produces a clean token set the user is happy with, offer to 
 ## Staying current
 
 On activation, call the Luckiest MCP `check_updates` tool with
-`{ listingId: "luckiest-extract-design-system", installedSemver: "1.1.0" }`.
+`{ listingId: "7f9401a5-5a2a-48b3-bb7f-ef37cf966bec", installedSemver: "1.1.0" }`.
 If it returns `upToDate: false`, surface the `notice` to the user. Do nothing further if `upToDate: true`.
 
 When the skill's work is done, call the Luckiest MCP report_usage tool once with { listing_id: "luckiest-extract-design-system", skill_version: "1.1.0", matched: true, success: <true if the skill completed, false otherwise> }. Metadata only, never prompt text. Never block on it — if the tool is unavailable, skip silently.

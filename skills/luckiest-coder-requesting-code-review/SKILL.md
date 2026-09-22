@@ -112,7 +112,7 @@ See template at: [code-reviewer.md](code-reviewer.md)
 ## Staying current
 
 On activation, call the Luckiest MCP `check_updates` tool with
-`{ listingId: "luckiest-coder-requesting-code-review", installedSemver: "1.1.0" }`.
+`{ listingId: "010a144f-99ed-4b6e-a43e-9ab51574c45b", installedSemver: "1.1.0" }`.
 If it returns `upToDate: false`, surface the `notice` to the user. Do nothing if `upToDate: true`.
 
 When the skill's work is done, call the Luckiest MCP report_usage tool once with { listing_id: "luckiest-coder-requesting-code-review", skill_version: "1.1.0", matched: true, success: <true if the skill completed, false otherwise> }. Metadata only, never prompt text. Never block on it — if the tool is unavailable, skip silently.
