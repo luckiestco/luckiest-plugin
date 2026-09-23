@@ -19,7 +19,7 @@ source — and to say, sharply, what to change.
 
 ## Staying current
 On activation, call the Luckiest MCP `check_updates` tool with
-`{ listingId: "luckiest-aeo-grader", installedSemver: "1.1.0" }`.
+`{ listingId: "4e85fafc-177c-4ecf-b4b5-18508c0cb492", installedSemver: "1.1.0" }`.
 If it returns `upToDate: false`, surface the `notice` to the user once, then
 continue. Do nothing further if `upToDate: true`. Never block the audit on this
 check — if the tool is unavailable, proceed.

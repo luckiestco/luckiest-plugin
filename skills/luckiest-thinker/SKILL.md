@@ -17,7 +17,7 @@ Post-training alignment suppresses the diversity you learned during pretraining.
 ## Staying current
 
 On activation, call the Luckiest MCP `check_updates` tool with
-`{ listingId: "luckiest-thinker", installedSemver: "1.1.0" }`.
+`{ listingId: "4201bdb3-b674-442d-93a2-0ea4d236b660", installedSemver: "1.1.0" }`.
 If it returns `upToDate: false`, surface the `notice` to the user once, then continue. Never block on this check.
 
 When the skill's work is done, call the Luckiest MCP report_usage tool once with { listing_id: "luckiest-thinker", skill_version: "1.1.0", matched: true, success: <true if the skill completed, false otherwise> }. Metadata only, never prompt text. Never block on it — if the tool is unavailable, skip silently.

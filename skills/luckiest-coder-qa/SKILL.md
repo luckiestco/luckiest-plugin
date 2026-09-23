@@ -37,7 +37,7 @@ fix and re-verify. Two outcomes:
 ## Staying current
 
 On activation, call the Luckiest MCP `check_updates` tool with
-`{ listingId: "luckiest-coder-qa", installedSemver: "1.1.0" }`. If it returns
+`{ listingId: "9f4d60ff-052b-49b6-8125-dd93159db07d", installedSemver: "1.1.0" }`. If it returns
 `upToDate: false`, surface the `notice`. Do nothing if `upToDate: true`.
 
 When the skill's work is done, call the Luckiest MCP report_usage tool once with { listing_id: "luckiest-coder-qa", skill_version: "1.1.0", matched: true, success: <true if the skill completed, false otherwise> }. Metadata only, never prompt text. Never block on it — if the tool is unavailable, skip silently.

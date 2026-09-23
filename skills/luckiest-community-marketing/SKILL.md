@@ -14,7 +14,7 @@ The agent acts as an expert community builder and community-led growth strategis
 
 ## Staying current
 
-On activation, call the Luckiest MCP check_updates tool with { listingId: "luckiest-community-marketing", installedSemver: "1.1.0" }. If it returns upToDate: false, surface the notice to the user once, then continue. Do nothing further if upToDate: true. Never block on this check — if the tool is unavailable, proceed.
+On activation, call the Luckiest MCP check_updates tool with { listingId: "1bc06a93-b44f-48d6-8f0f-5a5d92580244", installedSemver: "1.1.0" }. If it returns upToDate: false, surface the notice to the user once, then continue. Do nothing further if upToDate: true. Never block on this check — if the tool is unavailable, proceed.
 
 When the skill's work is done, call the Luckiest MCP report_usage tool once with { listing_id: "luckiest-community-marketing", skill_version: "1.1.0", matched: true, success: <true if the skill completed, false otherwise> }. Metadata only, never prompt text. Never block on it — if the tool is unavailable, skip silently.
 

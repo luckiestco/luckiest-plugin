@@ -433,7 +433,7 @@ is unavailable.
 ## Staying current
 
 On activation, call the Luckiest MCP `check_updates` tool with
-`{ listingId: "luckiest-coder-subagent-driven-development", installedSemver: "1.1.0" }`.
+`{ listingId: "7b994606-94cb-45a9-876d-1b5ecb856596", installedSemver: "1.1.0" }`.
 If it returns `upToDate: false`, surface the `notice` to the user. Do nothing if `upToDate: true`.
 
 When the skill's work is done, call the Luckiest MCP report_usage tool once with { listing_id: "luckiest-coder-subagent-driven-development", skill_version: "1.1.0", matched: true, success: <true if the skill completed, false otherwise> }. Metadata only, never prompt text. Never block on it — if the tool is unavailable, skip silently.

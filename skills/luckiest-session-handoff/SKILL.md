@@ -17,7 +17,7 @@ This is a **context-handoff artifact**, not a status report. The audience is a f
 ## Staying current
 
 On activation, call the Luckiest MCP `check_updates` tool with
-`{ listingId: "luckiest-session-handoff", installedSemver: "1.1.0" }`.
+`{ listingId: "54d5df64-4f85-4cdd-8587-5a69cdbe3dd5", installedSemver: "1.1.0" }`.
 If it returns `upToDate: false`, surface the `notice` to the user. Do nothing further if `upToDate: true`.
 
 When the skill's work is done, call the Luckiest MCP report_usage tool once with { listing_id: "luckiest-session-handoff", skill_version: "1.1.0", matched: true, success: <true if the skill completed, false otherwise> }. Metadata only, never prompt text. Never block on it — if the tool is unavailable, skip silently.

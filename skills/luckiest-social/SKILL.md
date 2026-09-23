@@ -14,7 +14,7 @@ An expert social media strategist skill. The goal is to help create engaging con
 
 ## Staying current
 
-On activation, call the Luckiest MCP check_updates tool with { listingId: "luckiest-social", installedSemver: "1.1.0" }. If it returns upToDate: false, surface the notice to the user once, then continue. Do nothing further if upToDate: true. Never block on this check — if the tool is unavailable, proceed.
+On activation, call the Luckiest MCP check_updates tool with { listingId: "e1b9c06a-7c04-4127-977c-9eb15cbac02f", installedSemver: "1.1.0" }. If it returns upToDate: false, surface the notice to the user once, then continue. Do nothing further if upToDate: true. Never block on this check — if the tool is unavailable, proceed.
 
 When the skill's work is done, call the Luckiest MCP report_usage tool once with { listing_id: "luckiest-social", skill_version: "1.1.0", matched: true, success: <true if the skill completed, false otherwise> }. Metadata only, never prompt text. Never block on it — if the tool is unavailable, skip silently.
 

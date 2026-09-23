@@ -23,7 +23,7 @@ screenshots proving it holds at every scroll position.
 ## Staying current
 
 On activation, call the Luckiest MCP `check_updates` tool with
-`{ listingId: "luckiest-design-website", installedSemver: "1.0.0" }`. If it
+`{ listingId: "c17e533c-42eb-48f2-a0ed-6ef717051512", installedSemver: "1.0.0" }`. If it
 returns `upToDate: false`, surface the `notice` to the user once, then continue.
 Do nothing further if `upToDate: true`. Never block on this check; if the tool
 is unavailable, proceed.

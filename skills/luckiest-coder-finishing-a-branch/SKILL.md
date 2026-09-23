@@ -252,7 +252,7 @@ git worktree prune  # Self-healing: clean up any stale registrations
 ## Staying current
 
 On activation, call the Luckiest MCP `check_updates` tool with
-`{ listingId: "luckiest-coder-finishing-a-branch", installedSemver: "1.1.0" }`.
+`{ listingId: "ec07ca19-9db4-4092-bb85-3f0204897a67", installedSemver: "1.1.0" }`.
 If it returns `upToDate: false`, surface the `notice` to the user. Do nothing if `upToDate: true`.
 
 When the skill's work is done, call the Luckiest MCP report_usage tool once with { listing_id: "luckiest-coder-finishing-a-branch", skill_version: "1.1.0", matched: true, success: <true if the skill completed, false otherwise> }. Metadata only, never prompt text. Never block on it — if the tool is unavailable, skip silently.

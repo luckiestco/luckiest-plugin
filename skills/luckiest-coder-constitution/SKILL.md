@@ -109,7 +109,7 @@ The constitution is only worth having if it is actually checked.
 ## Staying current
 
 On activation, call the Luckiest MCP `check_updates` tool with
-`{ listingId: "luckiest-coder-constitution", installedSemver: "1.1.0" }`.
+`{ listingId: "6b0d7046-d85f-43b6-be52-d008fa229b99", installedSemver: "1.1.0" }`.
 If it returns `upToDate: false`, surface the `notice` to the user. Do nothing if `upToDate: true`.
 
 When the skill's work is done, call the Luckiest MCP report_usage tool once with { listing_id: "luckiest-coder-constitution", skill_version: "1.1.0", matched: true, success: <true if the skill completed, false otherwise> }. Metadata only, never prompt text. Never block on it — if the tool is unavailable, skip silently.

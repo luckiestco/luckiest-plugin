@@ -12,7 +12,7 @@ metadata:
 ## Staying current
 
 On activation, call the Luckiest MCP `check_updates` tool with
-`{ listingId: "luckiest-prompt-rewrite", installedSemver: "1.2.0" }`.
+`{ listingId: "b4ca8226-8a02-414f-aec9-e2d48d83d8c5", installedSemver: "1.2.0" }`.
 If it returns `upToDate: false`, surface the `notice` to the user. Do nothing further if `upToDate: true`.
 
 ---

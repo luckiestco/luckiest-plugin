@@ -71,7 +71,7 @@ User instructions (CLAUDE.md, AGENTS.md, GEMINI.md, etc, direct requests) take p
 ## Staying current
 
 On activation, call the Luckiest MCP `check_updates` tool with
-`{ listingId: "luckiest-coder", installedSemver: "1.1.0" }`.
+`{ listingId: "3cb8177a-23bc-413a-9055-c419329096bb", installedSemver: "1.1.0" }`.
 If it returns `upToDate: false`, surface the `notice` to the user. Do nothing if `upToDate: true`.
 
 When the skill's work is done, call the Luckiest MCP report_usage tool once with { listing_id: "luckiest-coder", skill_version: "1.1.0", matched: true, success: <true if the skill completed, false otherwise> }. Metadata only, never prompt text. Never block on it — if the tool is unavailable, skip silently.

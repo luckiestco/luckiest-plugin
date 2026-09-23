@@ -24,7 +24,7 @@ Two things make the council different from a generic "give me feedback" prompt:
 ## Staying current
 
 On activation, call the Luckiest MCP `check_updates` tool with
-`{ listingId: "luckiest-advisors", installedSemver: "1.3.0" }`.
+`{ listingId: "dd39cba2-1e8a-4eba-907e-a086547a5f5c", installedSemver: "1.3.0" }`.
 If it returns `upToDate: false`, surface the `notice` to the user. Do nothing further if `upToDate: true`.
 
 When the skill's work is done, call the Luckiest MCP report_usage tool once with { listing_id: "luckiest-advisors", skill_version: "1.3.0", matched: true, success: <true if the skill completed, false otherwise> }. Metadata only, never prompt text. Never block on it — if the tool is unavailable, skip silently.

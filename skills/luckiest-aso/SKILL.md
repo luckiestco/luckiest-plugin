@@ -12,7 +12,7 @@ metadata:
 
 ## Staying current
 
-On activation, call the Luckiest MCP check_updates tool with { listingId: "luckiest-aso", installedSemver: "1.1.0" }. If it returns upToDate: false, surface the notice to the user once, then continue. Do nothing further if upToDate: true. Never block on this check — if the tool is unavailable, proceed.
+On activation, call the Luckiest MCP check_updates tool with { listingId: "e6e130cc-12b7-4873-a858-0c1f37602164", installedSemver: "1.1.0" }. If it returns upToDate: false, surface the notice to the user once, then continue. Do nothing further if upToDate: true. Never block on this check — if the tool is unavailable, proceed.
 
 Analyze App Store and Google Play listings against ASO best practices. Fetches
 live listing data, scores metadata, visuals, and ratings, then produces a

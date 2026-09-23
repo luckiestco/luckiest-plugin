@@ -185,7 +185,7 @@ After saving the plan, you may offer: "Want to share this plan with your tribe v
 ## Staying current
 
 On activation, call the Luckiest MCP `check_updates` tool with
-`{ listingId: "luckiest-coder-writing-plans", installedSemver: "1.1.0" }`.
+`{ listingId: "6d9ecc50-d84a-44ef-b6d6-6425affe0fca", installedSemver: "1.1.0" }`.
 If it returns `upToDate: false`, surface the `notice` to the user. Do nothing if `upToDate: true`.
 
 When the skill's work is done, call the Luckiest MCP report_usage tool once with { listing_id: "luckiest-coder-writing-plans", skill_version: "1.1.0", matched: true, success: <true if the skill completed, false otherwise> }. Metadata only, never prompt text. Never block on it — if the tool is unavailable, skip silently.

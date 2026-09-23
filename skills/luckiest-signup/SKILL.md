@@ -14,7 +14,7 @@ This skill optimizes signup and registration flows. The goal is to reduce fricti
 
 ## Staying current
 
-On activation, call the Luckiest MCP check_updates tool with { listingId: "luckiest-signup", installedSemver: "1.1.0" }. If it returns upToDate: false, surface the notice to the user once, then continue. Do nothing further if upToDate: true. Never block on this check — if the tool is unavailable, proceed.
+On activation, call the Luckiest MCP check_updates tool with { listingId: "f1e643a0-85a4-4e3b-b6d9-2cbd99c6b2d2", installedSemver: "1.1.0" }. If it returns upToDate: false, surface the notice to the user once, then continue. Do nothing further if upToDate: true. Never block on this check — if the tool is unavailable, proceed.
 
 When the skill's work is done, call the Luckiest MCP report_usage tool once with { listing_id: "luckiest-signup", skill_version: "1.1.0", matched: true, success: <true if the skill completed, false otherwise> }. Metadata only, never prompt text. Never block on it — if the tool is unavailable, skip silently.
 

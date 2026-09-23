@@ -1,6 +1,6 @@
 {
   "name": "luckiest-co",
-  "version": "1.0.14",
+  "version": "1.0.18",
   "description": "Luckiest for Claude Code: plan, go, finish. Your luckiest.co skills and tribe, inside Claude.",
   "bin": {
     "luckiest-co": "./bin/install.js"
