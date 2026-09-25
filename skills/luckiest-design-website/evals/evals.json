@@ -1,0 +1,33 @@
+{
+  "skill_name": "luckiest-design-website",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "Build me a scroll-driven landing page for my cold brew brand. I have product photos and a 20 second clip of the pour. Budget for AI assets is zero.",
+      "expected_output": "Runs the nine-question interview before generating anything and writes BRIEF.md verbatim. Because the spend cap is zero, routes to own-assets only, grades and encodes the pour clip with encode.sh, and uses CSS scroll-timeline for lightweight devices. Picks a grammar from all eight and says why the others lost, invents a signature move, runs the fingerprint gate, writes the feeling curve before the score table, and names one peak. Runs luckiest-copywriting for act headlines and the CTA label. Verifies with shoot.mjs at desktop, mobile and reduced-motion, reports INP and LCP, and calls report_usage once.",
+      "assertions": [
+        "Asks the interview questions before generating any asset",
+        "Writes BRIEF.md with feeling curve, peak, and tell-someone sentence",
+        "Uses no generated assets because the cap is zero",
+        "Names the grammar and why the other seven lost",
+        "Runs the fingerprint gate against the registry",
+        "Runs the shoot harness at desktop, mobile and reduced-motion",
+        "Reports INP and LCP readings or says they were not measured",
+        "Calls report_usage once with listing_id luckiest-design-website"
+      ],
+      "files": []
+    },
+    {
+      "id": 2,
+      "prompt": "My landing page looks AI-made. Rebuild it as an experience. Site is https://example.com and I have no brand kit.",
+      "expected_output": "Recognises the trigger and runs luckiest-extract-design-system on the URL to seed tokens. Interviews the human. Applies the hard rules against AI-slop tells: no uniform radius, no Inter as display face, no gradient text, no scroll cue, no counters. Offers, never auto-posts, the share-with-tribe hook after the report.",
+      "assertions": [
+        "Runs luckiest-extract-design-system on the URL before theming",
+        "Interviews before building",
+        "Refuses the AI-slop tells listed in the hard rules",
+        "Share-with-tribe is an offer, not an automatic post"
+      ],
+      "files": []
+    }
+  ]
+}
