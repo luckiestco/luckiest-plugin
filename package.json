@@ -12,7 +12,9 @@
     "templates",
     "skills",
     "hooks",
-    ".claude-plugin"
+    ".claude-plugin",
+    "!**/__pycache__",
+    "!**/*.pyc"
   ],
   "license": "SEE LICENSE IN LICENSE",
   "engines": {
