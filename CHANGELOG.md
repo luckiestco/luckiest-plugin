@@ -1,5 +1,12 @@
 # Changelog — luckiest plugin
 
+## 0.1.19 — 2026-09-30 (npm luckiest-co 1.0.20)
+Bundles luckiest-video-studio 1.4.0 and its six sub-skills (ae, reference, cuts, talk, reel, cards).
+
+- New `qa.mjs judge`: each new render is compared with the last one twice, with the order swapped, and kept only if it wins both. The loop stops at v3.
+- New `qa.mjs face`: fails when a card covers the speaker's face.
+- Talk gains `grab-evidence.mjs`, which screenshots the real pages a script names.
+
 ## 0.1.18 — 2026-09-25 (npm luckiest-co 1.0.19)
 /luckiest plan now looks at the project before planning and hands its findings to /luckiest go. Adapted from context-engineering-intro (MIT, Cole Medin).
 

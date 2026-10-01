@@ -1,0 +1,40 @@
+<!doctype html>
+<html lang="en" data-resolution="{{resolution}}">
+<head>
+<!-- talk overlay scene (luckiest-video-studio-talk). The cleaned clip plays muted with its own audio track,
+     a lower-third card builds on spoken words. Fill {{W}} {{H}} {{DUR}} {{START}} (scene start on the clip),
+     {{paper}} {{ink}} {{accent}} from brand.md, and the card text. Keep {{DUR}} equal to the storyboard duration. -->
+<meta charset="UTF-8" />
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+html,body{width:{{W}}px;height:{{H}}px;overflow:hidden;background:#000}
+#root{position:relative;width:100%;height:100%}
+.cam{position:absolute;inset:0}
+.cam video{width:100%;height:100%;object-fit:cover}
+.card{position:absolute;left:50%;bottom:8%;width:70%;max-width:1260px;transform:translateX(-50%);
+  padding:28px 40px;border-radius:22px;background:color-mix(in srgb,{{paper}} 82%,transparent);
+  color:{{ink}};font:600 42px/1.15 Inter,system-ui,sans-serif;opacity:0}
+.card .sub{margin-top:10px;font-weight:400;font-size:30px;opacity:0}
+.card b{color:{{accent}}}
+</style></head>
+<body>
+<div id="root" data-composition-id="main" data-start="0" data-duration="{{DUR}}" data-width="{{W}}" data-height="{{H}}">
+  <div class="cam">
+    <video id="clip" src="assets/clean.mp4" data-start="0" data-duration="{{DUR}}" data-media-start="{{START}}" data-track-index="0" muted playsinline></video>
+  </div>
+  <audio id="voice" src="assets/clean.mp4" data-start="0" data-duration="{{DUR}}" data-media-start="{{START}}" data-track-index="1" data-volume="1"></audio>
+  <div class="card clip" data-start="0" data-duration="{{DUR}}" data-track-index="2">
+    {{headline}}<div class="sub">{{subline}}</div>
+  </div>
+</div>
+<script>
+// Times are seconds inside this scene. Put each entrance 0.2 s before its anchor word in clean.json.
+const tl=gsap.timeline({paused:true});
+tl.fromTo(".card",{opacity:0,y:24},{opacity:1,y:0,duration:0.5,ease:"expo.out"},{{T_HEADLINE}});
+tl.to(".card .sub",{opacity:1,duration:0.4,ease:"power2.out"},{{T_SUBLINE}});
+tl.to(".card",{opacity:0,y:12,duration:0.3,ease:"power2.in"},{{DUR}}-0.45);
+tl.to({},{duration:{{DUR}}},0);
+window.__timelines=window.__timelines||{}; window.__timelines["main"]=tl; tl.seek(0);
+</script>
+</body></html>
