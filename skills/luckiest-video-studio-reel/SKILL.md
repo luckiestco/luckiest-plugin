@@ -140,6 +140,8 @@ HUD, all timed with `B(n)` beats. Extend or replace chapters from
   `Math.random()`.
 - Measure layout once at build time, never inside `onUpdate`.
 - Staggers finish before their cut: start plus largest delay plus duration.
+- New or changed chapters follow `luckiest-video-studio-motion` for easing,
+  origin, and overshoot.
 - `background-clip: text` renders invisible; use solid fills and `text-shadow`.
 
 Add the scene to `storyboard.json`:

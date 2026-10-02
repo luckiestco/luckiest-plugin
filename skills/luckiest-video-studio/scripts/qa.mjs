@@ -4,6 +4,7 @@
 //
 //   node qa.mjs tokens      <composition-dir> [--tokens tokens.json]   off-system stroke, type, radius
 //   node qa.mjs crossfade   <composition-dir>                          full-frame layers tweening opacity
+//   node qa.mjs motion      <composition-dir>                          ease-in entrances, scale 0 cards, one-off linear moves
 //   node qa.mjs legibility  <video> [--every 1] [--min 180]            frames with nothing bright enough to read
 //   node qa.mjs pops        <video> [--seams 5.2,9.8]                  one-frame pops and jumps (seams reported apart)
 //   node qa.mjs deadframes  <video> [--freeze 3]                       black frames and long freezes
@@ -84,6 +85,47 @@ export function scanCrossfades(html) {
   for (const m of html.matchAll(/\.(to|from|fromTo)\(\s*["'`]([^"'`]+)["'`]\s*,([^;]*?)\)\s*[;,]/gs)) {
     const targets = m[2].split(",").map((s) => s.trim()).filter((s) => full.has(s));
     if (targets.length && /opacity\s*:/.test(m[3]) && !/duration\s*:\s*0\s*[,}]/.test(m[3])) out.push({ tween: m[1], targets });
+  }
+  return out;
+}
+
+// ---------- motion ----------
+
+// Text from the "(" at `open` to its matching ")", skipping quoted strings.
+function balanced(s, open) {
+  let depth = 0, q = null;
+  for (let i = open; i < s.length; i++) {
+    const c = s[i];
+    if (q) { if (c === "\\") i++; else if (c === q) q = null; continue; }
+    if (c === '"' || c === "'" || c === "`") q = c;
+    else if (c === "(" || c === "{" || c === "[") depth++;
+    else if (c === ")" || c === "}" || c === "]") { if (--depth === 0) return s.slice(open + 1, i); }
+  }
+  return s.slice(open + 1);
+}
+
+const EASE_IN = /^(power\d|expo|circ|sine|quad|cubic|quart|quint|strong)\.in\b|easeIn$|^ease-in$/i;
+const POP_EASE = /^(back|elastic|bounce)\.|^steps\(/;
+const MOVES = /\b(x|y|xPercent|yPercent|scale)\s*:/;
+const HIDDEN = /\b(opacity|autoAlpha)\s*:\s*0(\.0+)?\s*[,}]|\bscale\s*:\s*0(\.[0-4]\d*)?\s*[,}]/;
+
+// Tweens where an element appears (starts hidden) and breaks the motion rules: an ease-in
+// start, a card growing from scale 0 without an overshoot, or a short one-off linear move.
+// Moves of visible things are left alone: a gravity drop may ease in, a slow push may be linear.
+// ponytail: regex over source, not a JS parser; tweens built from variables or helpers are not seen.
+export function scanMotion(src) {
+  const out = [];
+  for (const m of src.matchAll(/\.(from|fromTo)\(/g)) {
+    const args = balanced(src, m.index + m[0].length - 1);
+    const start = `${m[1] === "fromTo" ? balanced(args, args.indexOf("{")) : args}}`;
+    if (!HIDDEN.test(start)) continue;
+    const ease = args.match(/ease\s*:\s*["'`]([^"'`]+)/)?.[1] ?? "";
+    const duration = Number(args.match(/duration\s*:\s*([\d.]+)/)?.[1] ?? 0.5);
+    const line = src.slice(0, m.index).split("\n").length;
+    const hit = (rule, why) => out.push({ line, rule, ease, why });
+    if (EASE_IN.test(ease)) hit("ease-in-entrance", "entrances start slow on the frame the viewer is watching; use power3.out");
+    if (/\bscale\s*:\s*0(\.0+)?\s*[,}]/.test(start) && !POP_EASE.test(ease)) hit("scale-zero", "nothing appears from nothing; start at scale 0.9-0.97 with autoAlpha 0");
+    if (/^(none|linear)$/.test(ease) && !/\brepeat\s*:/.test(args) && duration < 2 && MOVES.test(start)) hit("linear-entrance", "linear is for loops, pushes, and progress; use power3.out");
   }
   return out;
 }
@@ -248,7 +290,7 @@ export function contactSheet(video, out, { rate = 2, cols = 6 } = {}) {
 export const judgePrompt = (a, b) => `You are judging two versions of the same short video. Each image is a contact sheet: frames left to right, top to bottom, two per second.
 A: ${a}
 B: ${b}
-Open both images. Judge which reads better to a viewer: every card legible, the speaker's face never covered, visuals change with what is said, no empty or cluttered stretches, real evidence instead of filler.
+Open both images. Judge which reads better to a viewer: every card legible, the speaker's face never covered, visuals change with what is said, no empty or cluttered stretches, real evidence instead of filler, and motion that feels designed: elements arrive fast and settle instead of creeping in or popping from nothing, moves match each other in speed and easing, and nothing drifts while it is being read.
 Name the two biggest differences, then end with exactly one line: WINNER: A or WINNER: B`;
 
 // ---------- CLI ----------
@@ -258,7 +300,7 @@ if (process.argv[1] && resolve(process.argv[1]) === fileURLToPath(import.meta.ur
   if (gate === "judge" && rest[0] && !rest[0].startsWith("--")) rest.unshift("--old", rest.shift());
   const opt = (n, d) => { const i = rest.indexOf(n); return i >= 0 ? rest[i + 1] : d; };
   const num = (n, d) => Number(opt(n, d));
-  if (!gate || !target) { console.error("Usage: qa.mjs <tokens|crossfade|legibility|pops|deadframes|presence|beatsync|beatgrid|face|judge> <path> [options]"); process.exit(1); }
+  if (!gate || !target) { console.error("Usage: qa.mjs <tokens|crossfade|motion|legibility|pops|deadframes|presence|beatsync|beatgrid|face|judge> <path> [options]"); process.exit(1); }
   let result;
   if (gate === "tokens") {
     const tokens = opt("--tokens") ? JSON.parse(readFileSync(opt("--tokens"), "utf8")) : DEFAULT_TOKENS;
@@ -268,6 +310,10 @@ if (process.argv[1] && resolve(process.argv[1]) === fileURLToPath(import.meta.ur
   } else if (gate === "crossfade") {
     const files = statSync(target).isDirectory() ? htmlFiles(target) : [target];
     const found = files.flatMap((f) => scanCrossfades(readFileSync(f, "utf8")).map((v) => ({ file: f, ...v })));
+    result = { ok: found.length === 0, found };
+  } else if (gate === "motion") {
+    const files = statSync(target).isDirectory() ? htmlFiles(target) : [target];
+    const found = files.flatMap((f) => scanMotion(readFileSync(f, "utf8")).map((v) => ({ file: `${f}:${v.line}`, ...v })));
     result = { ok: found.length === 0, found };
   } else if (gate === "legibility") result = legibility(target, { every: num("--every", 1), min: num("--min", 180) });
   else if (gate === "pops") {

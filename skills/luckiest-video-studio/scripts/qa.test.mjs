@@ -7,7 +7,7 @@ import { tmpdir } from "node:os";
 import { join } from "node:path";
 import { spawnSync } from "node:child_process";
 import {
-  scanTokens, scanCrossfades, legibility, findPops, deadFrames, presence,
+  scanTokens, scanCrossfades, scanMotion, legibility, findPops, deadFrames, presence,
   beatSync, findAnchor, cutTimes, beatGrid, grayFrames, probe,
   faceCover, pairVerdict, parseWinner,
 } from "./qa.mjs";
@@ -46,6 +46,23 @@ test("crossfade: the shipped reel and talk templates pass", () => {
   for (const f of ["../../luckiest-video-studio-reel/templates/reel.html", "../../luckiest-video-studio-talk/templates/talk-overlay.html"]) {
     assert.deepEqual(scanCrossfades(readFileSync(join(import.meta.dirname, f), "utf8")), [], f);
   }
+});
+
+test("motion: ease-in entrances, scale 0 cards, and short linear moves fail; visible moves and pops pass", () => {
+  const rules = (js) => scanMotion(`<script>${js}</script>`).map((v) => v.rule);
+  assert.deepEqual(rules(`tl.from(".card",{autoAlpha:0,y:40,duration:0.5,ease:"power2.in"},0);`), ["ease-in-entrance"]);
+  assert.deepEqual(rules(`tl.from(".card",{scale:0,duration:0.5,ease:"power3.out"},0);`), ["scale-zero"]);
+  assert.deepEqual(rules(`tl.fromTo(".card",{autoAlpha:0,x:-80},{autoAlpha:1,x:0,duration:0.6,ease:"none"},0);`), ["linear-entrance"]);
+  assert.deepEqual(rules(`tl.from(".card",{autoAlpha:0,scale:0.95,duration:0.5,ease:"power3.out"},0);`), []);
+  assert.deepEqual(rules(`tl.from(".dot",{scale:0,duration:0.3,ease:"back.out(1.6)"},0);`), []);
+  assert.deepEqual(rules(`tl.fromTo(".ball",{y:-400},{y:0,duration:0.5,ease:"power2.in"},0);`), []);
+  assert.deepEqual(rules(`tl.fromTo(".stage",{scale:1},{scale:1.06,duration:6,ease:"none"},0);`), []);
+  assert.equal(cli("motion", join(import.meta.dirname, "../../luckiest-video-studio-reel/templates/reel.html")).status, 0);
+  const bad = join(dir, "motion-bad.html");
+  writeFileSync(bad, `<script>\ntl.from(".card",{scale:0,ease:"power2.in"});</script>`);
+  const r = cli("motion", bad);
+  assert.equal(r.status, 1);
+  assert.match(JSON.parse(r.stdout).found[0].file, /motion-bad\.html:2$/);
 });
 
 test("legibility: an all-dim video fails, a bright test pattern passes", () => {

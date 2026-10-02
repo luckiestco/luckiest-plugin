@@ -1,5 +1,20 @@
 # Changelog — luckiest plugin
 
+## 0.1.22 — 2026-10-02 (npm luckiest-co 1.0.23)
+Write the script before the storyboard.
+
+- New `luckiest-video-studio-script` sub-skill: five-part, three-act voiceover scripts with a word budget, a per-act timing table measured from 11 Grumo Media explainers, a line-by-line SUCCESS score, and one line per storyboard scene.
+- luckiest-video-studio 1.5.1 routes narrated videos of 30 seconds or more to it.
+- Also ships luckiest-video-studio 1.5.0 (`luckiest-video-studio-motion`, #91).
+- First npm release since 1.0.21, so it also carries 0.1.21 (`luckiest-video-studio-recreate`).
+
+## 0.1.21 — 2026-10-01 (npm luckiest-co 1.0.22)
+Recreate a video from prompts.
+
+- New `luckiest-video-studio-recreate` sub-skill: splits a URL or mp4 into shots, writes one generation prompt per shot, generates and stitches the shots through the creative MCP after a cost check, and compares the result to the source. `--prompts-only` stops after the prompts.
+- luckiest-video-studio 1.4.1 routes AI-generation remakes to it.
+- `marketplace.json` version now matches `plugin.json`.
+
 ## 0.1.20 — 2026-10-01 (npm luckiest-co 1.0.21)
 Update notices in chat.
 

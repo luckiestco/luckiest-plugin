@@ -119,7 +119,8 @@ One pack per video, branded from `brand.json`.
 
 ## Step 4: Build and check
 
-Follow the coordinator's Step 3 for HyperFrames rules. Then:
+Follow the coordinator's Step 3 for HyperFrames rules and
+`luckiest-video-studio-motion` for how overlays enter, hold, and leave. Then:
 
 ```bash
 node <skill-dir>/scripts/validate-plan.mjs <run-dir>/talk
@@ -136,6 +137,7 @@ coverage, frame alignment, anchors, and visual gaps over 2.2 s without a
 node <qa> beatsync   <run-dir>/talk               # every anchor enters 0.2 s after to 1.8 s before its word
 node <qa> tokens     <run-dir>/composition        # long form: only the locked stroke, type, radius values
 node <qa> crossfade  <run-dir>/composition        # no full-frame layer fades its opacity
+node <qa> motion     <run-dir>/composition        # no ease-in entrances, scale 0 cards, short linear moves
 node <qa> pops       <run-dir>/final.mp4          # no one-frame pops, seams included
 node <qa> deadframes <run-dir>/final.mp4          # no black frames, no freeze over 3 s
 node <qa> legibility <run-dir>/final.mp4          # something bright enough to read in every second
