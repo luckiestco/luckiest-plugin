@@ -1,5 +1,12 @@
 # Changelog — luckiest plugin
 
+## 0.1.23 — 2026-10-02 (npm luckiest-co 1.0.24)
+Skill sync installs skills where Claude Code finds them.
+
+- `--sync-only` was unzipping each skill into `~/.claude/skills/<name>/<name>/`, one level too deep, so bundled sub-skills (video-studio, coder) never showed up. Each zip now extracts to a temp folder inside `~/.claude/skills`, and each skill folder moves to the top level, replacing the old copy and any nested leftovers. Zips with `SKILL.md` at the root still install under the listing name.
+- Two syncs running at once no longer overwrite each other's files, because each run extracts to its own temp folder.
+- The sync summary lists bundled sub-skills as `bundled with <listing>`.
+
 ## 0.1.22 — 2026-10-02 (npm luckiest-co 1.0.23)
 Write the script before the storyboard.
 
