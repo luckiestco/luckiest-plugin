@@ -64,7 +64,7 @@ function parseConfigDirArg() {
 const explicitConfigDir = parseConfigDirArg();
 const hasHelp = args.includes('--help') || args.includes('-h');
 
-console.log(banner);
+if (require.main === module) console.log(banner);
 
 // Show help if requested
 if (hasHelp) {
@@ -201,6 +201,28 @@ function hasUnzip() {
  * Sync owned skills from luckiest.co into ~/.claude/skills/<name>/.
  * Never logs the key or the Authorization header.
  */
+/**
+ * Move extracted skill folders into skillsRoot, replacing older copies.
+ * Published zips hold one top-level <skill>/ folder per skill (a bundle holds
+ * several). Older zips put SKILL.md at the root; those install as fallbackName.
+ * Returns the names placed. Entries without a SKILL.md or with an unsafe name
+ * are skipped.
+ */
+function placeSkills(extractDir, skillsRoot, fallbackName) {
+  const moves = fs.existsSync(path.join(extractDir, 'SKILL.md'))
+    ? [[extractDir, fallbackName]]
+    : fs.readdirSync(extractDir, { withFileTypes: true })
+        .filter((e) => e.isDirectory() && !e.name.startsWith('.'))
+        .filter((e) => fs.existsSync(path.join(extractDir, e.name, 'SKILL.md')))
+        .map((e) => [path.join(extractDir, e.name), e.name]);
+  for (const [src, name] of moves) {
+    const dest = path.join(skillsRoot, name);
+    fs.rmSync(dest, { recursive: true, force: true });
+    fs.renameSync(src, dest);
+  }
+  return moves.map(([, name]) => name);
+}
+
 async function syncSkills() {
   // Self-heal the /luckiest:luckiest:* duplicate: older installers copied
   // commands into ~/.claude/commands/luckiest even when the marketplace
@@ -273,15 +295,23 @@ async function syncSkills() {
       const buf = Buffer.from(await zipRes.arrayBuffer());
 
       if (unzipAvailable) {
-        const dest = path.join(skillsRoot, safeName);
-        fs.mkdirSync(dest, { recursive: true });
-        const tmpZip = path.join(os.tmpdir(), `luckiest-skill-${safeName}-${Date.now()}.zip`);
-        fs.writeFileSync(tmpZip, buf);
+        // Extract into a private temp dir under skillsRoot (same disk, so the
+        // final move is a rename), then place each skill folder at the top level.
+        const tmpDir = fs.mkdtempSync(path.join(skillsRoot, '.luckiest-sync-'));
         try {
-          execFileSync('unzip', ['-q', '-o', tmpZip, '-d', dest]);
-          results.push({ name, version: version || 'unknown', path: dest });
+          const tmpZip = path.join(tmpDir, 'skill.zip');
+          fs.writeFileSync(tmpZip, buf);
+          const extractDir = path.join(tmpDir, 'x');
+          execFileSync('unzip', ['-q', tmpZip, '-d', extractDir]);
+          for (const placed of placeSkills(extractDir, skillsRoot, safeName)) {
+            results.push({
+              name: placed,
+              version: placed === safeName ? (version || 'unknown') : `bundled with ${safeName}`,
+              path: path.join(skillsRoot, placed),
+            });
+          }
         } finally {
-          fs.unlinkSync(tmpZip);
+          fs.rmSync(tmpDir, { recursive: true, force: true });
         }
       } else {
         const zipPath = path.join(skillsRoot, `${safeName}.zip`);
@@ -681,7 +711,11 @@ async function main() {
   await syncSkills();
 }
 
-main().catch((err) => {
-  console.error(`  ${red}Install failed: ${err.message}${reset}`);
-  process.exit(1);
-});
+if (require.main === module) {
+  main().catch((err) => {
+    console.error(`  ${red}Install failed: ${err.message}${reset}`);
+    process.exit(1);
+  });
+}
+
+module.exports = { placeSkills };
