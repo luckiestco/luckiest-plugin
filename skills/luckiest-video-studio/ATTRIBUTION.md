@@ -9,6 +9,7 @@ projects. Upstream license texts are kept beside this file.
 | **motion-graphics** (`motion-broll`) by Bart (`Barty-Bart/motion-graphics`) | MIT | The rule that every frame is a pure function of time, per-clip rendering, the approve-the-plan table, and `TIMING.md` | `LICENSE-motion-graphics` |
 | **diagram-design** by Cathryn Lavery | MIT | Brand extraction from a website and the restraint rules (accent on one or two elements, low density) | `LICENSE-diagram-design` |
 | **Kenney** sound effects (`kenney.nl`) | CC0 | `assets/sfx/` | Public domain, credit given here |
+| **skills** by Emil Kowalski (`emilkowalski/skills`) | MIT | Motion and taste rules, the review posture, and the motion vocabulary, rewritten for video in the `luckiest-video-studio-motion` sub-skill | `luckiest-video-studio-motion/LICENSE-emil` |
 | **HyperFrames student kit** by Nate Herk and contributors (`hyperframes-student-kit`) | MIT for the original kit; the Student Kit Use Permission for its pipeline skills, style library, templates, and editing tools | Rewritten rules and ported scripts in the `luckiest-video-studio-cuts`, `-talk`, and `-reel` sub-skills | `LICENSE-student-kit`, `LICENSE-student-kit-pipeline` |
 
 Used at runtime, not bundled:

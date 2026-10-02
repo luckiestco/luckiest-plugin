@@ -4,7 +4,7 @@ description: "Make product launch videos, product demos with motion design betwe
 license: See ATTRIBUTION.md
 allowed-tools: Bash, Read, Write, Edit, Glob, Grep, AskUserQuestion
 metadata:
-  version: "1.4.0"
+  version: "1.5.1"
   listing_id: luckiest-video-studio
   author: luckiest
 ---
@@ -19,13 +19,13 @@ an MP4.
 ## Staying current
 
 On activation, call the Luckiest MCP `check_updates` tool with
-`{ listingId: "aff888e4-9ee9-4f73-af08-74d5d09d3c10", installedSemver: "1.4.0" }`. If it returns
+`{ listingId: "aff888e4-9ee9-4f73-af08-74d5d09d3c10", installedSemver: "1.5.1" }`. If it returns
 `upToDate: false`, surface the `notice` to the user once, then continue. Do nothing
 further if `upToDate: true`. Never block on this check; if the tool is unavailable,
 proceed.
 
 When the skill's work is done, call the Luckiest MCP `report_usage` tool once with
-`{ listing_id: "luckiest-video-studio", skill_version: "1.4.0", matched: true, success: <true if the skill completed, false otherwise> }`.
+`{ listing_id: "luckiest-video-studio", skill_version: "1.5.1", matched: true, success: <true if the skill completed, false otherwise> }`.
 Metadata only, never prompt text. Never block on it; if the tool is unavailable,
 skip silently.
 
@@ -123,6 +123,12 @@ the `luckiest-video-studio-reference` sub-skill first. It writes
 The reference shapes structure and motion only; its footage never appears in the
 output.
 
+When the user wants the video remade with AI generation instead of motion
+graphics ("recreate this video", "turn it into Veo/Kling prompts"), hand it to the
+`luckiest-video-studio-recreate` sub-skill. It writes one prompt per shot,
+generates and stitches the shots through the creative MCP after a cost check, and
+compares the result to the source.
+
 When the user supplies a recording of someone speaking (a founder intro, a
 tutorial, a talking-head take), hand it to the `luckiest-video-studio-cuts`
 sub-skill before planning. It trims silences, reviews mistake cuts with the user,
@@ -136,6 +142,12 @@ exists on disk.
 
 **Read:** [references/step-2-plan.md](references/step-2-plan.md) and
 [references/storyboard.md](references/storyboard.md)
+
+When the video carries narration (`--voice`, or the user will record a
+voiceover) and runs 30 seconds or longer, hand the script to the
+`luckiest-video-studio-script` sub-skill first. Its approved `script.md` has one
+line per scene with estimated seconds; copy each into `scenes[].line` and its
+`duration`.
 
 Write `plan.md`, then `storyboard.json` with one entry per scene. Each scene is
 `motion` (built in HyperFrames), `demo` (screen recording or supplied footage), or
@@ -153,6 +165,10 @@ These sub-skills plan and build their own scenes into the same `storyboard.json`
 If a sub-skill is not installed, say so in one line and build the scene with this
 skill's own steps.
 
+Every motion beat names its purpose in one word (reveal, emphasis, bridge,
+explain, cause, rhythm, or delight) as `luckiest-video-studio-motion` describes. A
+beat without one holds still or cuts.
+
 **Gate:** the user approved the scene table, and scene durations sum to the mode's
 length.
 
@@ -160,8 +176,9 @@ length.
 
 **Read:** the HyperFrames skills `hyperframes-core`, `hyperframes-animation`,
 `hyperframes-keyframes`, `hyperframes-creative`, `hyperframes-cli`, then
-[references/step-3-compose.md](references/step-3-compose.md) and
-[references/audio.md](references/audio.md). Do not enter the `hyperframes` intent
+[references/step-3-compose.md](references/step-3-compose.md),
+[references/audio.md](references/audio.md), and the `luckiest-video-studio-motion`
+sub-skill for easing, duration, origin, and transitions. Do not enter the `hyperframes` intent
 interview or its generic launch-video workflow; this skill owns the story.
 
 Build each motion and logo scene as its own sub-composition. For demo scenes,
@@ -186,7 +203,12 @@ node <skill-dir>/scripts/qa.mjs pops       <output-dir>/final.mp4     # one-fram
 node <skill-dir>/scripts/qa.mjs deadframes <output-dir>/final.mp4     # black frames, freezes over 3 s
 node <skill-dir>/scripts/qa.mjs legibility <output-dir>/final.mp4     # nothing readable on screen
 node <skill-dir>/scripts/qa.mjs crossfade  <output-dir>/composition   # full-frame opacity fades
+node <skill-dir>/scripts/qa.mjs motion     <output-dir>/composition   # ease-in entrances, scale 0 cards, short linear moves
 ```
+
+Then run `luckiest-video-studio-motion --review` on the run. It writes
+`qa/motion-review.md` with a verdict per scene. Fix and re-render every scene it
+blocks before the judge.
 
 The talk and reel sub-skills add `beatsync`, `tokens`, `presence`, `face`, and `beatgrid`.
 
@@ -210,7 +232,8 @@ differences the judge named. Stop at v3, when a version loses, or when only
 changes too small to see are left.
 
 **Gate:** `final.mp4` plays end to end, every scene in `storyboard.json` has a
-clip, the four gates pass or each failure is explained in `TIMING.md`, and
+clip, the five gates pass or each failure is explained in `TIMING.md`, no scene is
+left blocked in `qa/motion-review.md`, and
 every judge verdict from v2 on is recorded there.
 
 ## Step 5: Hand off for editing
@@ -249,6 +272,7 @@ rebuild untouched scenes. With `--editor diffusion`, rerun
 - **Motion between, product in the middle.** In `demo`, motion scenes set up and
   punctuate; demo shots carry the proof.
 - **No generic SaaS language.** Use the project's own words.
+- **Motion has a reason.** Fast in, then hold. Nothing appears from nothing.
 - **Accent with restraint.** The brand accent marks the one or two things the
   viewer should see first.
 

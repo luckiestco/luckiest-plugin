@@ -98,6 +98,8 @@ points for a whole scene rather than one card.
 
 ## Step 4: Check
 
+Easing, duration, and stagger edits to a card follow `luckiest-video-studio-motion`.
+
 Render the scene with the coordinator's `render-scenes.mjs` and look at the hero
 frame at full size and phone size: every slot filled with real copy, no text
 clipped at the longest slot value, the brand colors in place of the pack

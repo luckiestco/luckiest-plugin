@@ -76,6 +76,10 @@ shot record:
 | Type | Size relative to frame, weight, animation per word or per line |
 | Color | Background, accent, contrast |
 
+Name motion, easing, and transitions with the terms in
+`luckiest-video-studio-motion/references/vocabulary.md` (for example "pop in",
+"blur dissolve", "match cut") so Step 4 can build them directly.
+
 Middle frames can miss a quick move; compare the in and out frames to infer it.
 Say when a guess is a guess.
 

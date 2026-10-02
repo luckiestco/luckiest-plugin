@@ -1,5 +1,25 @@
 # Changelog — luckiest-video-studio
 
+## 1.5.1 (2026-10-02)
+- Step 2 routes narrated videos of 30 seconds or more to the new
+  `luckiest-video-studio-script` sub-skill, whose lines become scenes.
+
+## 1.5.0 (2026-10-02)
+- New `luckiest-video-studio-motion` sub-skill: motion purpose, GSAP easing,
+  video durations, origin, masked transitions, and a per-scene review, adapted from
+  Emil Kowalski's skills (MIT).
+- `qa.mjs motion`: flags ease-in entrances, scale 0 cards without an overshoot,
+  and short one-off linear moves, with file and line.
+- Step 2 gives every motion beat a purpose. Step 3 reads the motion rules. Step 4
+  runs the motion gate and review before the judge, and the judge now weighs
+  motion craft.
+- The cards, reel, and talk sub-skills follow the motion rules. The reference
+  and recreate sub-skills name moves with its vocabulary.
+
+## 1.4.1 (2026-10-01)
+- Step 1 routes AI-generation remakes of a shared video to the new
+  `luckiest-video-studio-recreate` sub-skill.
+
 ## 1.4.0 (2026-09-30)
 - `qa.mjs judge`: compares new and old renders using contact sheets, asking twice
   with the order swapped. The new version is kept only if it wins both. The
