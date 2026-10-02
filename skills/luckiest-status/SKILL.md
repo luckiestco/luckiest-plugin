@@ -80,6 +80,16 @@ Map each task's status to a glyph (these are the task status values, not the pla
 - "assist" -> `?`
 - "blocked" -> `✗`
 
+## Update notice
+
+If earlier in this session the Luckiest session-start hook reported a newer version (a line like "Luckiest X is available (you have Y)"), add one line under the dashboard, outside the code block:
+
+```
+Update available: Y → X. Update the luckiest plugin from /plugin.
+```
+
+Otherwise add nothing. Do not call any tool for this.
+
 ## Step 3: Recommend next action
 
 End your response with exactly one line, nothing after it, derived from the MCP `nextAction` field:

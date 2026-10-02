@@ -1,5 +1,11 @@
 # Changelog — luckiest plugin
 
+## 0.1.20 — 2026-10-01 (npm luckiest-co 1.0.21)
+Update notices in chat.
+
+- New SessionStart hook `update-notice.mjs`: at most once a week it checks the published plugin version and, only when yours is older, shows one line saying an update is available. It is silent when you are current or offline, and it sends no data.
+- `/luckiest status` repeats that line under the dashboard when this session got a notice.
+
 ## 0.1.19 — 2026-09-30 (npm luckiest-co 1.0.20)
 Bundles luckiest-video-studio 1.4.0 and its six sub-skills (ae, reference, cuts, talk, reel, cards).
 
