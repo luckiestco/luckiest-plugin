@@ -1,5 +1,8 @@
 # Changelog — luckiest-design-website
 
+## 1.0.1 — 2026-10-03
+- Points at `luckiest-video-studio-composition` (when installed) for focal point, grid, white space, and safe areas.
+
 ## 1.0.0 — 2026-09-04
 Rebranded from scrollcraft (scroll-craft by Nate Herk, MIT, upstream v0.2.0).
 

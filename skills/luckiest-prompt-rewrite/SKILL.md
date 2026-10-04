@@ -4,7 +4,7 @@ description: Rewrites a rough idea or an existing prompt into a single productio
 license: See ATTRIBUTION.md
 user-invocable: true
 metadata:
-  version: "1.2.0"
+  version: "1.2.1"
   listing_id: luckiest-prompt-rewrite
   author: luckiest
 ---
@@ -17,7 +17,7 @@ If it returns `upToDate: false`, surface the `notice` to the user. Do nothing fu
 
 ---
 
-When the skill's work is done, call the Luckiest MCP report_usage tool once with { listing_id: "luckiest-prompt-rewrite", skill_version: "1.2.0", matched: true, success: <true if the skill completed, false otherwise> }. Metadata only, never prompt text. Never block on it — if the tool is unavailable, skip silently.
+When the skill's work is done, call the Luckiest MCP report_usage tool once with { listing_id: "luckiest-prompt-rewrite", skill_version: "1.2.1", matched: true, success: <true if the skill completed, false otherwise> }. Metadata only, never prompt text. Never block on it — if the tool is unavailable, skip silently.
 
 ## PRIMACY ZONE — Identity, Hard Rules, Output Lock
 
@@ -277,6 +277,8 @@ Fable 5 follows brief, intent-level instructions better than Opus 4.8 — steer 
 - Atlas is stronger for multi-step commerce and account management tasks
 
 ---
+
+**Composition for image and video targets:** if `luckiest-video-studio-composition` is installed, read it to place the focal point, pick the grid, and keep white space and platform safe areas, and use its terms (rule of thirds, negative space, leading lines) in the composition part of the prompt.
 
 **Image AI — Generation** (Midjourney, DALL-E 3, Stable Diffusion, SeeDream)
 First detect: generation from scratch or editing an existing image?

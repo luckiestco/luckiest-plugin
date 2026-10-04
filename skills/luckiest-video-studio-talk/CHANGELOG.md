@@ -1,5 +1,8 @@
 # Changelog: luckiest-video-studio-talk
 
+## 1.2.1 (2026-10-03)
+- Points at `luckiest-video-studio-composition` (when installed) for focal point, grid, white space, and safe areas.
+
 ## 1.2.0 (2026-09-30)
 - `scripts/grab-evidence.mjs`: screenshots the real pages a talk names and
   records where and when each was captured, so scenes show real evidence.

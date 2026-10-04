@@ -1,5 +1,13 @@
 # Changelog — luckiest-video-studio
 
+## 1.6.0 (2026-10-03)
+- New `luckiest-video-studio-composition` sub-skill: focal placement (thirds, phi
+  grid, golden spiral and triangles), white-space budgets, platform safe areas,
+  and the 20 photo composition rules adapted to video.
+- Step 3 reads it for each scene's hold frame. Step 4 runs
+  `luckiest-video-studio-composition --review` (writes `qa/composition-review.md`)
+  before the motion review.
+
 ## 1.5.1 (2026-10-02)
 - Step 2 routes narrated videos of 30 seconds or more to the new
   `luckiest-video-studio-script` sub-skill, whose lines become scenes.

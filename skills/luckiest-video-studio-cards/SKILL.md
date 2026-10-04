@@ -14,7 +14,7 @@ user-invocable: false
 license: MIT. See ATTRIBUTION.md
 allowed-tools: Bash, Read, Write, Edit, Glob, Grep, AskUserQuestion
 metadata:
-  version: "1.0.0"
+  version: "1.0.1"
   listing_id: luckiest-video-studio-cards
   author: luckiest
 ---
@@ -32,7 +32,7 @@ On activation, call the Luckiest MCP `check_updates` tool with
 `upToDate: false`, surface the `notice` once and continue. Never block on it.
 
 When done, call `report_usage` once with
-`{ listing_id: "luckiest-video-studio-cards", skill_version: "1.0.0", matched: true, success: <true|false> }`.
+`{ listing_id: "luckiest-video-studio-cards", skill_version: "1.0.1", matched: true, success: <true|false> }`.
 Metadata only. Skip silently if unavailable.
 
 ## Standing rules
@@ -81,6 +81,8 @@ It copies the pack to `<run-dir>/composition/cards/<pack-id>/` and rewrites its
 loaded from `composition/assets/fonts/` when the files are there.
 
 ## Step 3: Place
+
+Read `luckiest-video-studio-composition` for the card's focal point, grid, and white space at its hold frame.
 
 - **tier1:** copy the branded card to `composition/compositions/<scene-id>.html`
   (its `tokens.css` link, `cards/<pack-id>/tokens.css`, is already relative to

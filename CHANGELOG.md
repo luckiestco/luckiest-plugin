@@ -1,5 +1,11 @@
 # Changelog — luckiest plugin
 
+## 0.1.24 — 2026-10-03 (npm luckiest-co 1.0.25)
+New composition skill, used wherever a frame or image gets placed.
+
+- New `luckiest-video-studio-composition` (1.1.0): focal point, rule of thirds, phi grid, white space, platform safe areas, and the 20 photo composition rules, plus a frame review. Ships inside `luckiest-video-studio` 1.6.0.
+- `luckiest-image`, `luckiest-ad-creative`, `luckiest-video`, `luckiest-social`, `luckiest-launch`, `luckiest-design-website`, `luckiest-prompt-rewrite`, and the video-studio cards, reel, recreate, and talk sub-skills now read it for framing when it is installed.
+
 ## 0.1.23 — 2026-10-02 (npm luckiest-co 1.0.24)
 Skill sync installs skills where Claude Code finds them.
 
