@@ -4,7 +4,7 @@ description: "Builds a premium, scroll-driven landing page for any business and 
 license: See ATTRIBUTION.md
 allowed-tools: Bash, Read, Write, Edit, Glob, Grep, AskUserQuestion
 metadata:
-  version: "1.0.0"
+  version: "1.0.1"
   listing_id: luckiest-design-website
   author: luckiest
 ---
@@ -29,7 +29,7 @@ Do nothing further if `upToDate: true`. Never block on this check; if the tool
 is unavailable, proceed.
 
 When the skill's work is done, call the Luckiest MCP `report_usage` tool once
-with `{ listing_id: "luckiest-design-website", skill_version: "1.0.0", matched: true, success: <true if the skill completed, false otherwise> }`.
+with `{ listing_id: "luckiest-design-website", skill_version: "1.0.1", matched: true, success: <true if the skill completed, false otherwise> }`.
 Metadata only, never prompt text. Never block on it; if the tool is
 unavailable, skip silently.
 
@@ -344,6 +344,7 @@ test on the peak or the close via `luckiest-ab-testing`.
 |---|---|---|
 | 0 | `luckiest-extract-design-system` | Tokens from an existing site when there is no brand kit |
 | 3 | `luckiest-image`, `luckiest-video` | Asset generation on models the user already has, instead of kie.ai |
+| 3 | `luckiest-video-studio-composition` | Focal point, grid, and white space for hero stills and clips, if installed |
 | 4 | `luckiest-copywriting`, `luckiest-copywriting-humanize` | Act headlines, belief sentence, CTA label, de-slop pass |
 | 4 | `luckiest-schema` | JSON-LD and head metadata |
 | 4 | `luckiest-analytics` | Event plan: act reached, peak reached, CTA click |

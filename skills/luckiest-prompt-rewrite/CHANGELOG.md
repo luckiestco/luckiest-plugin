@@ -1,5 +1,8 @@
 # Changelog — luckiest-prompt-rewrite
 
+## 1.2.1 — 2026-10-03
+- Points at `luckiest-video-studio-composition` (when installed) for focal point, grid, white space, and safe areas.
+
 ## 1.2.0 — 2026-07-06
 ### luckiest-thinker integration + analytics
 - Added a **Variant diversity** technique to Safe Techniques: when a request asks

@@ -3,7 +3,7 @@ name: luckiest-launch
 description: "When the user wants to plan a product launch, feature announcement, or release strategy. Also use when the user mentions 'launch,' 'Product Hunt,' 'feature release,' 'announcement,' 'go-to-market,' 'beta launch,' 'early access,' 'waitlist,' 'product update,' 'how do I launch this,' 'launch checklist,' 'GTM plan,' or 'we're about to ship.' Use this whenever someone is preparing to release something publicly. For ongoing marketing after launch, see luckiest-marketing-ideas. For the offer being launched (bonuses, guarantees, scarcity, naming), see luckiest-offers."
 license: See ATTRIBUTION.md
 metadata:
-  version: "1.1.0"
+  version: "1.1.1"
   listing_id: luckiest-launch
   author: luckiest
 ---
@@ -16,7 +16,7 @@ This skill helps the user plan SaaS product launches and feature announcements t
 
 On activation, call the Luckiest MCP check_updates tool with { listingId: "b65cba33-d644-4eda-b14b-aea9b19f203e", installedSemver: "1.1.0" }. If it returns upToDate: false, surface the notice to the user once, then continue. Do nothing further if upToDate: true. Never block on this check — if the tool is unavailable, proceed.
 
-When the skill's work is done, call the Luckiest MCP report_usage tool once with { listing_id: "luckiest-launch", skill_version: "1.1.0", matched: true, success: <true if the skill completed, false otherwise> }. Metadata only, never prompt text. Never block on it — if the tool is unavailable, skip silently.
+When the skill's work is done, call the Luckiest MCP report_usage tool once with { listing_id: "luckiest-launch", skill_version: "1.1.1", matched: true, success: <true if the skill completed, false otherwise> }. Metadata only, never prompt text. Never block on it — if the tool is unavailable, skip silently.
 
 ## Before Starting
 
@@ -332,7 +332,7 @@ Even small changelog updates remind customers the product is evolving. This buil
 - [ ] Rented channel presence (social profiles optimized)
 - [ ] Borrowed channel opportunities identified (podcasts, influencers)
 - [ ] Product Hunt listing prepared (if using), launch date deconflicted
-- [ ] Launch assets created (screenshots, demo video, GIFs)
+- [ ] Launch assets created (screenshots, demo video, GIFs). For framing, if `luckiest-video-studio-composition` is installed, read it to place the focal point, pick the grid, and keep white space and platform safe areas
 - [ ] Onboarding flow ready
 - [ ] Analytics/tracking in place
 - [ ] Pre-mortem run: top failure modes identified and mitigated

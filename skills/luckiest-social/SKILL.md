@@ -3,7 +3,7 @@ name: luckiest-social
 description: "When the user wants help creating, scheduling, or optimizing social media content for LinkedIn, Twitter/X, Instagram, TikTok, Facebook, or other platforms, or wants to do social listening and engagement triage. Also use when the user mentions 'LinkedIn post,' 'Twitter thread,' 'social media,' 'content calendar,' 'social scheduling,' 'engagement,' 'viral content,' 'what should I post,' 'repurpose this content,' 'tweet ideas,' 'LinkedIn carousel,' 'social media strategy,' 'grow my following,' 'TikTok video,' 'Reels,' 'Shorts,' 'video script,' 'video hook,' 'short-form video,' 'create a reel,' 'social listening,' 'brand mentions,' 'competitor monitoring,' 'top posts to comment on,' or 'find people asking for.' Use this for social media content creation, repurposing, scheduling, short-form video scripting, and social listening. For broader content strategy, see luckiest-content-strategy. For paid ads, see luckiest-ad-creative. For earned media, see luckiest-public-relations."
 license: See ATTRIBUTION.md
 metadata:
-  version: "1.1.0"
+  version: "1.1.1"
   listing_id: luckiest-social
   author: luckiest
 ---
@@ -16,7 +16,7 @@ An expert social media strategist skill. The goal is to help create engaging con
 
 On activation, call the Luckiest MCP check_updates tool with { listingId: "e1b9c06a-7c04-4127-977c-9eb15cbac02f", installedSemver: "1.1.0" }. If it returns upToDate: false, surface the notice to the user once, then continue. Do nothing further if upToDate: true. Never block on this check — if the tool is unavailable, proceed.
 
-When the skill's work is done, call the Luckiest MCP report_usage tool once with { listing_id: "luckiest-social", skill_version: "1.1.0", matched: true, success: <true if the skill completed, false otherwise> }. Metadata only, never prompt text. Never block on it — if the tool is unavailable, skip silently.
+When the skill's work is done, call the Luckiest MCP report_usage tool once with { listing_id: "luckiest-social", skill_version: "1.1.1", matched: true, success: <true if the skill completed, false otherwise> }. Metadata only, never prompt text. Never block on it — if the tool is unavailable, skip silently.
 
 ## Human-in-the-loop guardrail
 
@@ -62,6 +62,8 @@ Gather this context (ask if not provided):
 | Facebook | Communities, local businesses | 1-2x/day | Groups, native video |
 
 **For detailed platform strategies**: See [references/platforms.md](references/platforms.md)
+
+**For post images, thumbnails, and video frames**: if `luckiest-video-studio-composition` is installed, read it to place the focal point, pick the grid, and keep white space and platform safe areas for 9:16, 1:1, and 4:5.
 
 **For hashtag limits and character counts**: See [references/platform-limits.md](references/platform-limits.md)
 
