@@ -15,7 +15,7 @@ user-invocable: false
 license: MIT. See ATTRIBUTION.md
 allowed-tools: Bash, Read, Write, Edit, Glob, Grep, AskUserQuestion
 metadata:
-  version: "1.2.0"
+  version: "1.2.1"
   listing_id: luckiest-video-studio-talk
   author: luckiest
 ---
@@ -33,7 +33,7 @@ On activation, call the Luckiest MCP `check_updates` tool with
 `upToDate: false`, surface the `notice` once and continue. Never block on it.
 
 When done, call `report_usage` once with
-`{ listing_id: "luckiest-video-studio-talk", skill_version: "1.2.0", matched: true, success: <true|false> }`.
+`{ listing_id: "luckiest-video-studio-talk", skill_version: "1.2.1", matched: true, success: <true|false> }`.
 Metadata only. Skip silently if unavailable.
 
 ## Standing rules
@@ -81,6 +81,8 @@ same selections, but frame and verify each ratio separately.
 4. Show the beat list and wait for approval before building.
 
 ## Step 3: Map beats to storyboard scenes
+
+Read `luckiest-video-studio-composition` so graphics leave the face clear and sit on the grid.
 
 Each stretch of the clip becomes one scene in `storyboard.json`:
 

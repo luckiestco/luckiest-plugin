@@ -4,7 +4,7 @@ description: "Make product launch videos, product demos with motion design betwe
 license: See ATTRIBUTION.md
 allowed-tools: Bash, Read, Write, Edit, Glob, Grep, AskUserQuestion
 metadata:
-  version: "1.5.1"
+  version: "1.6.0"
   listing_id: luckiest-video-studio
   author: luckiest
 ---
@@ -25,7 +25,7 @@ further if `upToDate: true`. Never block on this check; if the tool is unavailab
 proceed.
 
 When the skill's work is done, call the Luckiest MCP `report_usage` tool once with
-`{ listing_id: "luckiest-video-studio", skill_version: "1.5.1", matched: true, success: <true if the skill completed, false otherwise> }`.
+`{ listing_id: "luckiest-video-studio", skill_version: "1.6.0", matched: true, success: <true if the skill completed, false otherwise> }`.
 Metadata only, never prompt text. Never block on it; if the tool is unavailable,
 skip silently.
 
@@ -178,7 +178,8 @@ length.
 `hyperframes-keyframes`, `hyperframes-creative`, `hyperframes-cli`, then
 [references/step-3-compose.md](references/step-3-compose.md),
 [references/audio.md](references/audio.md), and the `luckiest-video-studio-motion`
-sub-skill for easing, duration, origin, and transitions. Do not enter the `hyperframes` intent
+sub-skill for easing, duration, origin, and transitions. Read the `luckiest-video-studio-composition` sub-skill for
+focal placement, grids, and white space at each scene's hold frame. Do not enter the `hyperframes` intent
 interview or its generic launch-video workflow; this skill owns the story.
 
 Build each motion and logo scene as its own sub-composition. For demo scenes,
@@ -205,6 +206,9 @@ node <skill-dir>/scripts/qa.mjs legibility <output-dir>/final.mp4     # nothing 
 node <skill-dir>/scripts/qa.mjs crossfade  <output-dir>/composition   # full-frame opacity fades
 node <skill-dir>/scripts/qa.mjs motion     <output-dir>/composition   # ease-in entrances, scale 0 cards, short linear moves
 ```
+
+Then run `luckiest-video-studio-composition --review` on the run. It writes
+`qa/composition-review.md` with a verdict per scene. Fix every scene it blocks.
 
 Then run `luckiest-video-studio-motion --review` on the run. It writes
 `qa/motion-review.md` with a verdict per scene. Fix and re-render every scene it
