@@ -2,7 +2,7 @@
 description: Wrap up, what shipped, what changed, what's next.
 ---
 
-Output rules for this command: plain language, no em dashes, no internal terms, and end with exactly one next-step line in the form `Next: <one action>`. The server may return internal words; translate them and never show them: PLAN means plan, APPLY means go, UNIFY means finish, DRAFT means in progress, DOING means active, DONE means complete, UAT means testing, AC means requirements, HANDOFF means ready for review, skill_loop means status.
+Output rules for this command: plain language, no em dashes, no internal terms, and end with exactly one next-step line in the form `Next: <one action> (say /next to do it)`. Every Next line, including fixed ones written below, ends with " (say /next to do it)", so the user can run it by typing /next. The server may return internal words; translate them and never show them: PLAN means plan, APPLY means go, UNIFY means finish, DRAFT means in progress, DOING means active, DONE means complete, UAT means testing, AC means requirements, HANDOFF means ready for review, skill_loop means status.
 
 Asking the user a question: this command tells you to use the AskUserQuestion tool
 so the user can click instead of typing. That tool only exists in Claude Code. In
@@ -52,9 +52,7 @@ If every task is complete, write a short recap in chat with these sections:
 
 ## Step 3: Close it out
 
-After the recap, confirm with the AskUserQuestion tool so the user can click instead of typing. Question: "Close this out and award charms?" Options: "Close it out" and "Not yet" (keep the "Other" free-text choice available). Only continue on "Close it out"; on "Not yet", stop and end with `Next: /luckiest go` so they can keep working.
-
-Call the `finish` tool from the luckiest MCP server with:
+Running this command is the go-ahead to close, so do not ask for confirmation. Right after the recap, call the `finish` tool from the luckiest MCP server with:
 
 ```
 { project: <the project key from Step 1>, decisions, keyFiles, deferred }
@@ -77,8 +75,9 @@ Don't ask an open "what's next?". Recommend it.
 
 Then ask with the AskUserQuestion tool so the user can click instead of typing. Question: "Which one should we plan next?" Options: the recommendations in the same order, with " (Recommended)" added to the first one's label. Keep the "Other" free-text choice available so they can name their own.
 
-- On any recommendation, start the `/luckiest plan` flow now, fresh, as if newly invoked, with that recommendation as the stated outcome, so plan skips its interview and goes straight to looking at the project.
-- On "Other" with their own idea, start `/luckiest plan` the same way with their words as the outcome.
+- On any recommendation, or on "Other" with their own idea, that pick is the outcome. Ask with the AskUserQuestion tool so the user can click instead of typing. Question: "Plan it here or in a new session?" Options: "Plan it here (Recommended)" and "Start a new session" (keep the "Other" free-text choice available).
+  - On "Plan it here", start the `/luckiest plan` flow now, fresh, as if newly invoked, with the outcome as the stated outcome, so plan skips its interview and goes straight to looking at the project.
+  - On "Start a new session", a fresh session starts with a clean context. If a tool that starts a new Claude session is available (for example the desktop app's spawn task tool), use it with the self-contained prompt `/luckiest plan <outcome>`, tell the user the new session is waiting for them, and end with exactly one line: `Next: open the new session to plan <outcome>.` Otherwise show the two commands to run, `/clear` and then `/luckiest plan <outcome>`, and end with exactly one line: `Next: /clear, then /luckiest plan <outcome>.`
 - If they dismiss the question, end with exactly one line, nothing after it:
 
 Next: /luckiest plan to start the top pick, or /luckiest home to see where you stand.

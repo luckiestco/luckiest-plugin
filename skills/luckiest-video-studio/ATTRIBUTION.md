@@ -23,6 +23,10 @@ Used at runtime, not bundled:
   licensed rendering engine. Optional editor for `--editor diffusion`. Installed by
   the user; this edition writes a project for it and calls its bundled CLI, and
   copies none of its code.
+- **Concat** (`jub0t/Concat`), AGPL-3.0-or-later. Default editor for
+  `--editor concat`. Installed by the user; this edition sends JSON requests to its
+  `concat-cli` and copies none of its code, so the AGPL does not extend to this
+  skill.
 
 ## Changes in this edition
 

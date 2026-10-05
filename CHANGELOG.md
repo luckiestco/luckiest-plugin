@@ -1,5 +1,18 @@
 # Changelog — luckiest plugin
 
+## 0.1.26 — 2026-10-05 (npm luckiest-co 1.0.27)
+Video Studio 1.7.1.
+
+- `luckiest-video-studio` makes Concat the default editor, adds an asset and storyboard approval step before any scene is built, and fixes the Concat script after a live test (vertical sizing, reruns, music length).
+
+## 0.1.25 — 2026-10-04 (npm luckiest-co 1.0.26)
+Fewer stops between finishing one piece of work and starting the next.
+
+- `/luckiest finish` closes the plan and awards charms right after the recap. The separate "Close this out?" question is gone.
+- After you pick what to plan next, finish asks whether to plan it here or in a new session. A new session starts with a clean context, through the app when it can, or with `/clear` and `/luckiest plan <pick>` to paste.
+- New `/luckiest next` (or `/next`): does the last suggested `Next:` step. In a fresh session it picks up the plan where it stands, or recommends what to plan next.
+- Every command ends its `Next:` line with "(say /next to do it)", so any suggestion can be run by typing `/next`.
+
 ## 0.1.24 — 2026-10-03 (npm luckiest-co 1.0.25)
 New composition skill, used wherever a frame or image gets placed.
 

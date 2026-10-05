@@ -3,7 +3,7 @@ name: luckiest-finish
 description: "Wrap up a completed Luckiest plan: recap what shipped, close it out, award charms. Use when the user says /luckiest finish, luckiest finish, or all plan tasks are done."
 ---
 
-Vocabulary rules for all output: plain language, no em dashes, no internal terms. Never surface internal words like PLAN, APPLY, UNIFY, skill_loop, UAT, AC, HANDOFF, DRAFT, DOING in user-visible output; say plan, go, finish, status, testing, requirements, ready for review, in progress, active, complete instead. End every response with exactly one next-step line in the form `Next: <one action>`.
+Vocabulary rules for all output: plain language, no em dashes, no internal terms. Never surface internal words like PLAN, APPLY, UNIFY, skill_loop, UAT, AC, HANDOFF, DRAFT, DOING in user-visible output; say plan, go, finish, status, testing, requirements, ready for review, in progress, active, complete instead. End every response with exactly one next-step line in the form `Next: <one action> (say /next to do it)`. Every Next line, including fixed ones written below, ends with " (say /next to do it)", so the user can run it by typing /next.
 
 Project key for luckiest MCP plan tool calls: if a shell is available, run `git config --get remote.origin.url` and normalize to `host/owner/repo` (lowercase, no `.git`); if not a git repo, use the absolute path from `pwd`. If there is no shell at all (web chat, Cowork), omit `project` entirely. Use the same value on every plan tool call this whole session.
 
@@ -55,9 +55,7 @@ If every task is complete, write a short recap in chat with these sections:
 
 ## Step 3: Close it out
 
-After the recap, confirm with the AskUserQuestion tool so the user can click instead of typing. Question: "Close this out and award charms?" Options: "Close it out" and "Not yet" (keep the "Other" free-text choice available). Only continue on "Close it out"; on "Not yet", stop and end with `Next: /luckiest go` so they can keep working.
-
-Call the `finish` tool from the luckiest MCP server with:
+Running this command is the go-ahead to close, so do not ask for confirmation. Right after the recap, call the `finish` tool from the luckiest MCP server with:
 
 ```
 { project: <the project key from Step 1>, decisions, keyFiles, deferred }
@@ -80,8 +78,9 @@ Don't ask an open "what's next?". Recommend it.
 
 Then ask with the AskUserQuestion tool so the user can click instead of typing. Question: "Which one should we plan next?" Options: the recommendations in the same order, with " (Recommended)" added to the first one's label. Keep the "Other" free-text choice available so they can name their own.
 
-- On any recommendation, start the `/luckiest plan` flow now, fresh, as if newly invoked, with that recommendation as the stated outcome, so plan skips its interview and goes straight to looking at the project.
-- On "Other" with their own idea, start `/luckiest plan` the same way with their words as the outcome.
+- On any recommendation, or on "Other" with their own idea, that pick is the outcome. Ask with the AskUserQuestion tool so the user can click instead of typing. Question: "Plan it here or in a new session?" Options: "Plan it here (Recommended)" and "Start a new session" (keep the "Other" free-text choice available).
+  - On "Plan it here", start the `/luckiest plan` flow now, fresh, as if newly invoked, with the outcome as the stated outcome, so plan skips its interview and goes straight to looking at the project.
+  - On "Start a new session", a fresh session starts with a clean context. If a tool that starts a new Claude session is available (for example the desktop app's spawn task tool), use it with the self-contained prompt `/luckiest plan <outcome>`, tell the user the new session is waiting for them, and end with exactly one line: `Next: open the new session to plan <outcome>.` Otherwise show the two commands to run, `/clear` and then `/luckiest plan <outcome>`, and end with exactly one line: `Next: /clear, then /luckiest plan <outcome>.`
 - If they dismiss the question, end with exactly one line, nothing after it:
 
 Next: /luckiest plan to start the top pick, or /luckiest home to see where you stand.

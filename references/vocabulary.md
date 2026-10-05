@@ -21,7 +21,7 @@ Every command file MUST read this file and follow it in all output.
 
 1. **Never show internal terms to the user.** All output must use user-facing vocabulary only. Never surface PLAN, APPLY, UNIFY, skill_loop, UAT, AC, HANDOFF, DRAFT, DOING, or any internal database term in user-visible output.
 
-2. **Exactly one suggested next action per response.** Every command output ends with a single next-step recommendation in the format: `Next: <one action>`
+2. **Exactly one suggested next action per response.** Every command output ends with a single next-step recommendation in the format: `Next: <one action> (say /next to do it)`. Typing /next runs it.
 
 3. **Plain language, no jargon, no em dashes.** Use direct, accessible language. No em dashes. No filler phrases. No marketing speak.
 

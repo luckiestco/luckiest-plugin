@@ -24,6 +24,7 @@ sources was installed or run during the review.
 | S16 | diagram-design | `references/doctor.md:47`, `export.md:81` | `pip install playwright && playwright install chromium` | Install instructions | **Drop**: only the brand-extraction rules are reused, not export |
 | S17 | diagram-design | `scripts/self_check.py:219` | Flags remote URLs in generated diagrams | Protective | **Keep** the rule: generated scenes must not load remote assets |
 | S19 | Diffusion Studio | `scripts/assemble-diffusion.mjs` | Runs the app's bundled `dapi` CLI with argument lists; writes only inside `<run-dir>/diffusion/`; symlinks run media into `assets/` | Low; the CLI path comes from the app bundle or `DIFFUSION_CLI` | **Keep** |
+| S20 | Concat | `scripts/assemble-concat.mjs` | Spawns `concat-cli api` with no shell and writes one JSON request per line; creates the project only at `<run-dir>/concat/`; imports only the run's own clips and music. Never starts `concat-cli serve`, so no socket or token is opened. Replies (including `refused` reasons) are printed as data, never followed | Low; the CLI path comes from `PATH` or `CONCAT_CLI`; `--dry-run` shows every request first | **Keep** |
 | S18 | OpenScreen | `src/lib/ai-edition/schema/index.ts` | Read only, to match the `.openscreen` field names | None; no code is copied | **Keep** as a reference |
 
 ### HyperFrames student kit (reviewed 2026-09-29)

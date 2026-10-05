@@ -3,7 +3,7 @@ name: luckiest-skills
 description: "Your Luckiest skills: list what is installed, pull new purchases. Use when the user says /luckiest skills, luckiest skills, or asks what Luckiest skills they have."
 ---
 
-Vocabulary rules for all output: plain language, no em dashes, no internal terms. Never surface internal words like PLAN, APPLY, UNIFY, skill_loop, UAT, AC, HANDOFF, DRAFT, DOING, DONE in user-visible output; say plan, go, finish, status, testing, requirements, ready for review, in progress, active, complete instead. End every response with exactly one next-step line in the form `Next: <one action>`.
+Vocabulary rules for all output: plain language, no em dashes, no internal terms. Never surface internal words like PLAN, APPLY, UNIFY, skill_loop, UAT, AC, HANDOFF, DRAFT, DOING, DONE in user-visible output; say plan, go, finish, status, testing, requirements, ready for review, in progress, active, complete instead. End every response with exactly one next-step line in the form `Next: <one action> (say /next to do it)`. Every Next line, including fixed ones written below, ends with " (say /next to do it)", so the user can run it by typing /next.
 
 If there is no shell or filesystem on this surface (web chat), skip any step that runs a command or reads or writes a local file, and tell the user that step needs Claude Code or Cowork.
 
