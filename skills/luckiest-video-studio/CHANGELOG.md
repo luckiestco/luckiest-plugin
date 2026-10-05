@@ -1,5 +1,10 @@
 # Changelog — luckiest-video-studio
 
+## 1.8.0 — 2026-10-05
+- Step 2 hands off to `luckiest-video-studio-director` (intent, hook, shot list)
+  and `luckiest-video-studio-art-director` (`art-direction.json`) before planning.
+- Step 4 adds the art-direction review and the director's score loop (all 8+).
+
 ## 1.7.2 (2026-10-05)
 From a real luckiest.co launch video run end to end (storyboard approvals, render, QA gates, Concat export matching the render at 58 dB PSNR):
 - Step 2b: capture live site pages with headless Chrome (wait budget, crop out cookie banners); the style frame is now a `hyperframes snapshot` still, no video render.

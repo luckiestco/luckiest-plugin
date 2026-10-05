@@ -4,7 +4,7 @@ description: "Make product launch videos, product demos with motion design betwe
 license: See ATTRIBUTION.md
 allowed-tools: Bash, Read, Write, Edit, Glob, Grep, AskUserQuestion
 metadata:
-  version: "1.7.2"
+  version: "1.8.0"
   listing_id: luckiest-video-studio
   author: luckiest
 ---
@@ -19,13 +19,13 @@ an MP4.
 ## Staying current
 
 On activation, call the Luckiest MCP `check_updates` tool with
-`{ listingId: "aff888e4-9ee9-4f73-af08-74d5d09d3c10", installedSemver: "1.7.2" }`. If it returns
+`{ listingId: "aff888e4-9ee9-4f73-af08-74d5d09d3c10", installedSemver: "1.8.0" }`. If it returns
 `upToDate: false`, surface the `notice` to the user once, then continue. Do nothing
 further if `upToDate: true`. Never block on this check; if the tool is unavailable,
 proceed.
 
 When the skill's work is done, call the Luckiest MCP `report_usage` tool once with
-`{ listing_id: "luckiest-video-studio", skill_version: "1.7.2", matched: true, success: <true if the skill completed, false otherwise> }`.
+`{ listing_id: "luckiest-video-studio", skill_version: "1.8.0", matched: true, success: <true if the skill completed, false otherwise> }`.
 Metadata only, never prompt text. Never block on it; if the tool is unavailable,
 skip silently.
 
@@ -153,6 +153,11 @@ voiceover) and runs 30 seconds or longer, hand the script to the
 line per scene with estimated seconds; copy each into `scenes[].line` and its
 `duration`.
 
+Before writing the plan, hand the request to the `luckiest-video-studio-director`
+sub-skill for the creative intent, angle, hook, energy map, and shot list, then to
+`luckiest-video-studio-art-director` for `art-direction.json` (tone cell, palette,
+faces, motion language). Every scene obeys that file.
+
 Write `plan.md`, then `storyboard.json` with one entry per scene. Each scene is
 `motion` (built in HyperFrames), `demo` (screen recording or supplied footage), or
 `logo` (a recipe from [references/logo-recipes.md](references/logo-recipes.md)).
@@ -226,6 +231,12 @@ node <skill-dir>/scripts/qa.mjs motion     <output-dir>/composition   # ease-in 
 
 Then run `luckiest-video-studio-composition --review` on the run. It writes
 `qa/composition-review.md` with a verdict per scene. Fix every scene it blocks.
+
+Then run `luckiest-video-studio-art-director --review` on the run. It writes
+`qa/art-direction-review.md`. Fix every scene it blocks.
+
+Then run `luckiest-video-studio-director --score` on the clips. Fix the three
+lowest scores and repeat until every score is 8 or higher before the judge.
 
 Then run `luckiest-video-studio-motion --review` on the run. It writes
 `qa/motion-review.md` with a verdict per scene. Fix and re-render every scene it

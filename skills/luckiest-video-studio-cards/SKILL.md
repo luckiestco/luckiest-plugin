@@ -14,7 +14,7 @@ user-invocable: false
 license: MIT. See ATTRIBUTION.md
 allowed-tools: Bash, Read, Write, Edit, Glob, Grep, AskUserQuestion
 metadata:
-  version: "1.0.1"
+  version: "1.1.0"
   listing_id: luckiest-video-studio-cards
   author: luckiest
 ---
@@ -28,11 +28,11 @@ consistent than drawing each beat from scratch.
 ## Staying current
 
 On activation, call the Luckiest MCP `check_updates` tool with
-`{ listingId: "luckiest-video-studio-cards", installedSemver: "1.0.0" }`. If
+`{ listingId: "luckiest-video-studio-cards", installedSemver: "1.1.0" }`. If
 `upToDate: false`, surface the `notice` once and continue. Never block on it.
 
 When done, call `report_usage` once with
-`{ listing_id: "luckiest-video-studio-cards", skill_version: "1.0.1", matched: true, success: <true|false> }`.
+`{ listing_id: "luckiest-video-studio-cards", skill_version: "1.1.0", matched: true, success: <true|false> }`.
 Metadata only. Skip silently if unavailable.
 
 ## Standing rules
@@ -83,6 +83,8 @@ loaded from `composition/assets/fonts/` when the files are there.
 ## Step 3: Place
 
 Read `luckiest-video-studio-composition` for the card's focal point, grid, and white space at its hold frame.
+
+If the run already has `art-direction.json`, follow it; otherwise, if `luckiest-video-studio-art-director` is installed, run it first. Map its palette, faces, and easing onto the pack tokens; the pack never overrides them.
 
 - **tier1:** copy the branded card to `composition/compositions/<scene-id>.html`
   (its `tokens.css` link, `cards/<pack-id>/tokens.css`, is already relative to

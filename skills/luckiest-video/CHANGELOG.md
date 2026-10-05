@@ -1,5 +1,8 @@
 # Changelog — luckiest-video
 
+## 1.2.0 — 2026-10-05
+- Runs the director and art director before multi-shot prompts when installed.
+
 ## 1.1.1 — 2026-10-03
 - Points at `luckiest-video-studio-composition` (when installed) for focal point, grid, white space, and safe areas.
 

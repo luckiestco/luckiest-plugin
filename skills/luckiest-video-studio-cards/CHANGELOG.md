@@ -1,5 +1,8 @@
 # Changelog: luckiest-video-studio-cards
 
+## 1.1.0 — 2026-10-05
+- Cards follow `art-direction.json` when installed.
+
 ## 1.0.1 (2026-10-03)
 - Points at `luckiest-video-studio-composition` (when installed) for focal point, grid, white space, and safe areas.
 

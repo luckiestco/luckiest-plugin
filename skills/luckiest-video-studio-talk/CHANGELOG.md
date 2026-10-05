@@ -1,5 +1,8 @@
 # Changelog: luckiest-video-studio-talk
 
+## 1.3.0 — 2026-10-05
+- Follows `art-direction.json` and runs the director's score loop when installed.
+
 ## 1.2.1 (2026-10-03)
 - Points at `luckiest-video-studio-composition` (when installed) for focal point, grid, white space, and safe areas.
 

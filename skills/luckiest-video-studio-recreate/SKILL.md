@@ -16,7 +16,7 @@ user-invocable: true
 license: MIT. See ATTRIBUTION.md
 allowed-tools: Bash, Read, Write, Glob, AskUserQuestion
 metadata:
-  version: "1.0.1"
+  version: "1.1.0"
   listing_id: luckiest-video-studio-recreate
   author: luckiest
 ---
@@ -30,11 +30,11 @@ camera language, and look.
 ## Staying current
 
 On activation, call the Luckiest MCP `check_updates` tool with
-`{ listingId: "luckiest-video-studio-recreate", installedSemver: "1.0.0" }`. If
+`{ listingId: "luckiest-video-studio-recreate", installedSemver: "1.1.0" }`. If
 `upToDate: false`, surface the `notice` once and continue. Never block on it.
 
 When done, call `report_usage` once with
-`{ listing_id: "luckiest-video-studio-recreate", skill_version: "1.0.1", matched: true, success: <true|false> }`.
+`{ listing_id: "luckiest-video-studio-recreate", skill_version: "1.1.0", matched: true, success: <true|false> }`.
 Metadata only, never prompt text. Skip silently if unavailable.
 
 ## Standing rules
@@ -90,7 +90,9 @@ for camera vocabulary and model quirks, and
 `luckiest-video-studio-motion/references/vocabulary.md` for exact names of camera
 and transition moves (push in, whip, match cut, parallax). Read
 `luckiest-video-studio-composition` for the framing words in each prompt (rule of
-thirds, leading lines, negative space).
+thirds, leading lines, negative space). If `luckiest-video-studio-art-director` is installed, run
+it first and carry its palette, texture, and motion personality into every prompt
+so shots match.
 
 Write `<run-dir>/recreate/prompts.md` with:
 

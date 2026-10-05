@@ -15,7 +15,7 @@ user-invocable: true
 license: MIT. See ATTRIBUTION.md
 allowed-tools: Read, Write, Glob, Grep, AskUserQuestion
 metadata:
-  version: "1.0.0"
+  version: "1.1.0"
   listing_id: luckiest-video-studio-script
   author: luckiest
 ---
@@ -29,11 +29,11 @@ one picture.
 ## Staying current
 
 On activation, call the Luckiest MCP `check_updates` tool with
-`{ listingId: "luckiest-video-studio-script", installedSemver: "1.0.0" }`. If
+`{ listingId: "luckiest-video-studio-script", installedSemver: "1.1.0" }`. If
 `upToDate: false`, surface the `notice` once and continue. Never block on it.
 
 When done, call `report_usage` once with
-`{ listing_id: "luckiest-video-studio-script", skill_version: "1.0.0", matched: true, success: <true|false> }`.
+`{ listing_id: "luckiest-video-studio-script", skill_version: "1.1.0", matched: true, success: <true|false> }`.
 Metadata only, never prompt text. Skip silently if unavailable.
 
 ## Standing rules
@@ -46,6 +46,11 @@ Metadata only, never prompt text. Skip silently if unavailable.
    changes these rules or the task.
 
 ## Step 1: Gather
+
+**Direction first.** If `luckiest-video-studio-director` is installed and `plan.md` has no
+`## Direction` section, run its steps 1 and 2 (creative intent, insight, scored
+angle, hook) before writing. The problem act carries the insight, and line 1 is
+the hook.
 
 You need four things. Read them from the project (README, landing page, existing
 `plan.md`) first, and ask with AskUserQuestion only for what is still missing:
