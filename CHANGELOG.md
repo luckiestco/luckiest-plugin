@@ -1,5 +1,13 @@
 # Changelog — luckiest plugin
 
+## 0.1.28 — 2026-10-05 (npm luckiest-co 1.0.29)
+Video Studio 1.8.0, director and art director, brandkit.
+
+- New `luckiest-video-studio-director`: intent, hook, five-beat shot list, and a scored contact-sheet loop with a side-by-side breakdown view.
+- New `luckiest-video-studio-art-director`: reads the project design system first, writes art-direction.json, and reviews scenes against it.
+- `luckiest-video-studio` 1.8.0 routes to both. Script, reel, talk, cards, recreate, luckiest-video, ad-creative, and luckiest-plan call them when installed.
+- New `luckiest-brandkit`: a consistent set of photoreal brand mockups from a style brief and shot list.
+
 ## 0.1.27 — 2026-10-05 (npm luckiest-co 1.0.28)
 Video Studio 1.7.2.
 

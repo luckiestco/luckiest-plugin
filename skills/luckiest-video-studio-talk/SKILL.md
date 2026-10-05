@@ -15,7 +15,7 @@ user-invocable: false
 license: MIT. See ATTRIBUTION.md
 allowed-tools: Bash, Read, Write, Edit, Glob, Grep, AskUserQuestion
 metadata:
-  version: "1.2.1"
+  version: "1.3.0"
   listing_id: luckiest-video-studio-talk
   author: luckiest
 ---
@@ -29,11 +29,11 @@ word and earns its place, or it is cut.
 ## Staying current
 
 On activation, call the Luckiest MCP `check_updates` tool with
-`{ listingId: "luckiest-video-studio-talk", installedSemver: "1.1.0" }`. If
+`{ listingId: "luckiest-video-studio-talk", installedSemver: "1.3.0" }`. If
 `upToDate: false`, surface the `notice` once and continue. Never block on it.
 
 When done, call `report_usage` once with
-`{ listing_id: "luckiest-video-studio-talk", skill_version: "1.2.1", matched: true, success: <true|false> }`.
+`{ listing_id: "luckiest-video-studio-talk", skill_version: "1.3.0", matched: true, success: <true|false> }`.
 Metadata only. Skip silently if unavailable.
 
 ## Standing rules
@@ -83,6 +83,8 @@ same selections, but frame and verify each ratio separately.
 ## Step 3: Map beats to storyboard scenes
 
 Read `luckiest-video-studio-composition` so graphics leave the face clear and sit on the grid.
+
+If the run already has `art-direction.json`, follow it; otherwise, if `luckiest-video-studio-art-director` is installed, run it first. Before the full render, run `luckiest-video-studio-director` `--score` when it is installed.
 
 Each stretch of the clip becomes one scene in `storyboard.json`:
 

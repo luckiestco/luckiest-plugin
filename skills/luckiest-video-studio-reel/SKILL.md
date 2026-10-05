@@ -13,7 +13,7 @@ user-invocable: false
 license: MIT. See ATTRIBUTION.md
 allowed-tools: Bash, Read, Write, Edit, Glob, Grep, AskUserQuestion
 metadata:
-  version: "1.1.1"
+  version: "1.2.0"
   listing_id: luckiest-video-studio-reel
   author: luckiest
 ---
@@ -26,11 +26,11 @@ chapters that look nothing alike, cut on the beat, and end on the motif.
 ## Staying current
 
 On activation, call the Luckiest MCP `check_updates` tool with
-`{ listingId: "luckiest-video-studio-reel", installedSemver: "1.1.0" }`. If
+`{ listingId: "luckiest-video-studio-reel", installedSemver: "1.2.0" }`. If
 `upToDate: false`, surface the `notice` once and continue. Never block on it.
 
 When done, call `report_usage` once with
-`{ listing_id: "luckiest-video-studio-reel", skill_version: "1.1.1", matched: true, success: <true|false> }`.
+`{ listing_id: "luckiest-video-studio-reel", skill_version: "1.2.0", matched: true, success: <true|false> }`.
 Metadata only. Skip silently if unavailable.
 
 ## Standing rules
@@ -130,6 +130,8 @@ Do not also set `storyboard.json` `music`, or the bed plays twice.
 ## Step 4: Build
 
 Read `luckiest-video-studio-composition` for each chapter's hold frame: focal point, grid, and the 9:16 safe areas.
+
+If the run already has `art-direction.json`, follow it; otherwise, if `luckiest-video-studio-art-director` is installed, run it first. Palette, faces, easing, and the one wow moment come from that file. Before the full render, run `luckiest-video-studio-director` `--score` when it is installed.
 
 Copy [templates/reel.html](templates/reel.html) to
 `composition/compositions/reel.html` and fill its tokens. It already has the
