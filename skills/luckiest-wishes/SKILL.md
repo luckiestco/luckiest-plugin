@@ -3,7 +3,7 @@ name: luckiest-wishes
 description: "Your Luckiest wishes balance and recent related activity. Use when the user says /luckiest wishes, luckiest wishes, or asks about their wishes."
 ---
 
-Vocabulary rules for all output: plain language, no em dashes, no internal terms. Never surface internal words like PLAN, APPLY, UNIFY, skill_loop, UAT, AC, HANDOFF, DRAFT, DOING, DONE in user-visible output; say plan, go, finish, status, testing, requirements, ready for review, in progress, active, complete instead. End every response with exactly one next-step line in the form `Next: <one action>`.
+Vocabulary rules for all output: plain language, no em dashes, no internal terms. Never surface internal words like PLAN, APPLY, UNIFY, skill_loop, UAT, AC, HANDOFF, DRAFT, DOING, DONE in user-visible output; say plan, go, finish, status, testing, requirements, ready for review, in progress, active, complete instead. End every response with exactly one next-step line in the form `Next: <one action> (say /next to do it)`. Every Next line, including fixed ones written below, ends with " (say /next to do it)", so the user can run it by typing /next.
 
 Chart grammar for any dashboard output in this skill:
 

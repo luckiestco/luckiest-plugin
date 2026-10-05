@@ -3,7 +3,7 @@ name: luckiest-helpers
 description: "See who in your Luckiest tribe needs a hand right now, and claim a request to help. Use when the user says /luckiest helpers, luckiest helpers, or asks who needs help."
 ---
 
-Vocabulary rules for all output: plain language, no em dashes, no internal terms. Never surface internal words like PLAN, APPLY, UNIFY, skill_loop, UAT, AC, HANDOFF, DRAFT, DOING, DONE in user-visible output; say plan, go, finish, status, testing, requirements, ready for review, in progress, active, complete instead. End every response with exactly one next-step line in the form `Next: <one action>`.
+Vocabulary rules for all output: plain language, no em dashes, no internal terms. Never surface internal words like PLAN, APPLY, UNIFY, skill_loop, UAT, AC, HANDOFF, DRAFT, DOING, DONE in user-visible output; say plan, go, finish, status, testing, requirements, ready for review, in progress, active, complete instead. End every response with exactly one next-step line in the form `Next: <one action> (say /next to do it)`. Every Next line, including fixed ones written below, ends with " (say /next to do it)", so the user can run it by typing /next.
 
 Chart grammar for any dashboard output in this skill:
 

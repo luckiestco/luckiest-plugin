@@ -1,5 +1,26 @@
 # Changelog — luckiest-video-studio
 
+## 1.7.1 (2026-10-04)
+- `assemble-concat.mjs` tested end to end against Concat 0.2.5. Fixes found by the
+  live run and by reading Concat's source: progress events between replies no
+  longer break the script; the project gets the storyboard's frame size and fps
+  (Concat defaulted to 1080p30); a rerun moves the old project aside instead of
+  failing; music longer than the video is trimmed to it; an empty `CONCAT_CLI`
+  falls back to `concat-cli`.
+- `references/concat.md`: the app download lacks `concat-cli`; how to build it.
+
+## 1.7.0 (2026-10-04)
+- Concat (`jub0t/Concat`, AGPL-3.0) is the default editor. New
+  `scripts/assemble-concat.mjs` builds a Concat project from a run through
+  `concat-cli api`, places every clip in storyboard order in one batch, and
+  exports with `--export`. `--dry-run` prints the requests. Reference in
+  `references/concat.md`. OpenScreen and Diffusion Studio stay available with
+  `--editor`.
+- New Step 2b, assets and storyboard: every asset is collected and shown per scene
+  on `storyboard/board.html` for approval, then one style frame of the hook is
+  approved before any other scene is built. Rejected assets cost a still, not a
+  rendered scene.
+
 ## 1.6.0 (2026-10-03)
 - New `luckiest-video-studio-composition` sub-skill: focal placement (thirds, phi
   grid, golden spiral and triangles), white-space budgets, platform safe areas,

@@ -3,7 +3,7 @@ name: luckiest-go
 description: "Run the active Luckiest plan, one task at a time, checked as it goes. Use when the user says /luckiest go, luckiest go, or wants to continue their staged Luckiest plan."
 ---
 
-Vocabulary rules for all output: plain language, no em dashes, no internal terms. Never surface internal words like PLAN, APPLY, UNIFY, skill_loop, UAT, AC, HANDOFF, DRAFT, DOING in user-visible output; say plan, go, finish, status, testing, requirements, ready for review, in progress, active, complete instead. End every response with exactly one next-step line in the form `Next: <one action>`.
+Vocabulary rules for all output: plain language, no em dashes, no internal terms. Never surface internal words like PLAN, APPLY, UNIFY, skill_loop, UAT, AC, HANDOFF, DRAFT, DOING in user-visible output; say plan, go, finish, status, testing, requirements, ready for review, in progress, active, complete instead. End every response with exactly one next-step line in the form `Next: <one action> (say /next to do it)`. Every Next line, including fixed ones written below, ends with " (say /next to do it)", so the user can run it by typing /next.
 
 Project key for luckiest MCP plan tool calls: if a shell is available, run `git config --get remote.origin.url` and normalize to `host/owner/repo` (lowercase, no `.git`); if not a git repo, use the absolute path from `pwd`. If there is no shell at all (web chat, Cowork), omit `project` entirely. Use the same value on every plan tool call this whole session.
 

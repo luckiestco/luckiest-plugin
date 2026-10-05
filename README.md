@@ -22,7 +22,8 @@ npx claude plugin add luckiest-co
 | `/luckiest start` | Begin a new skill or goal |
 | `/luckiest plan` | Guided planning for a skill or project |
 | `/luckiest go` | Move a bookmark to DOING |
-| `/luckiest finish` | Mark work done and close |
+| `/luckiest finish` | Recap, close, and pick what's next |
+| `/luckiest next` | Do the suggested next step |
 | `/luckiest status` | Show current work state: DRAFT, DOING, or DONE |
 | `/luckiest skills` | List all your bookmarked skills |
 | `/luckiest home` | Jump to your luckiest.co home dashboard |

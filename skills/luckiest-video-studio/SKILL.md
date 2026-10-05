@@ -1,10 +1,10 @@
 ---
 name: luckiest-video-studio
-description: "Make product launch videos, product demos with motion design between the demo shots, and logo motion showcases of a design portfolio, and keep every one editable after it is rendered. Reads the project or portfolio, plans a storyboard, builds motion scenes with HyperFrames, records or places demo footage, renders each scene as its own clip, then hands back an MP4 plus the editable pieces: a storyboard.json that re-renders one scene at a time, an OpenScreen timeline project to trim and re-zoom, and optional After Effects compositions. Use for 'make a launch video', 'product demo video', 'demo with motion graphics', 'logo animation', 'logo reveal', 'motion showcase of my work', 'portfolio reel', 'animate my logos', 'brand reel', 'turn my talking-head recording into a reel', 'add graphics over me talking', 'turn this into a video', 'change scene 3 of the video', or 'let me edit the video after'. For AI-generated footage, avatars, and text-to-video models use luckiest-video. For what to post and when use luckiest-social."
+description: "Make product launch videos, product demos with motion design between the demo shots, and logo motion showcases of a design portfolio, and keep every one editable after it is rendered. Reads the project or portfolio, plans a storyboard, builds motion scenes with HyperFrames, records or places demo footage, renders each scene as its own clip, then hands back an MP4 plus the editable pieces: a storyboard.json that re-renders one scene at a time, a Concat editor project to trim, caption, and export (OpenScreen or Diffusion Studio on request), and optional After Effects compositions. Use for 'make a launch video', 'product demo video', 'demo with motion graphics', 'logo animation', 'logo reveal', 'motion showcase of my work', 'portfolio reel', 'animate my logos', 'brand reel', 'turn my talking-head recording into a reel', 'add graphics over me talking', 'turn this into a video', 'change scene 3 of the video', or 'let me edit the video after'. For AI-generated footage, avatars, and text-to-video models use luckiest-video. For what to post and when use luckiest-social."
 license: See ATTRIBUTION.md
 allowed-tools: Bash, Read, Write, Edit, Glob, Grep, AskUserQuestion
 metadata:
-  version: "1.6.0"
+  version: "1.7.1"
   listing_id: luckiest-video-studio
   author: luckiest
 ---
@@ -19,13 +19,13 @@ an MP4.
 ## Staying current
 
 On activation, call the Luckiest MCP `check_updates` tool with
-`{ listingId: "aff888e4-9ee9-4f73-af08-74d5d09d3c10", installedSemver: "1.5.1" }`. If it returns
+`{ listingId: "aff888e4-9ee9-4f73-af08-74d5d09d3c10", installedSemver: "1.7.1" }`. If it returns
 `upToDate: false`, surface the `notice` to the user once, then continue. Do nothing
 further if `upToDate: true`. Never block on this check; if the tool is unavailable,
 proceed.
 
 When the skill's work is done, call the Luckiest MCP `report_usage` tool once with
-`{ listing_id: "luckiest-video-studio", skill_version: "1.6.0", matched: true, success: <true if the skill completed, false otherwise> }`.
+`{ listing_id: "luckiest-video-studio", skill_version: "1.7.1", matched: true, success: <true if the skill completed, false otherwise> }`.
 Metadata only, never prompt text. Never block on it; if the tool is unavailable,
 skip silently.
 
@@ -75,7 +75,7 @@ in `<skill-dir>/assets/sfx/`. Resolve it; never assume an install path.
 | `--scene <id>` | re-render one scene of an existing run | none |
 | `--ae` | also build After Effects compositions | off |
 | `--ref <url-or-mp4>` | inspiration video to study first | none |
-| `--editor` | `openscreen`, `diffusion`, or both for the editing handoff | `openscreen` |
+| `--editor` | `concat`, `openscreen`, `diffusion`, or several for the editing handoff | `concat` |
 
 If the user asks to change an existing video ("make scene 3 slower", "swap the
 logo in the outro"), skip to **Edit an existing run** below.
@@ -89,6 +89,8 @@ one already exists. One timestamp per run for every path:
 video-studio-output/
   plan.md             angle, rubric answers, storyboard in prose
   storyboard.json     the source of truth for scenes (see references/storyboard.md)
+  assets/             every approved asset the scenes show
+  storyboard/         board.html, board.png, style-frame.png (Step 2b approvals)
   composition/        one HyperFrames sub-composition per motion scene
   demo/               screen recordings for demo scenes
   footage/            talking-head source, cut lists, clean.mp4 and clean.json (cuts sub-skill)
@@ -97,17 +99,19 @@ video-studio-output/
   final.mp4           all clips joined, poster baked as frame 0
   poster.jpg
   TIMING.md           every scene with its in/out time and the line it covers
-  project.openscreen.txt  path to the OpenScreen timeline in ~/Movies/Openscreen/<slug>/
+  concat/             the Concat project (default editor); project.concat.txt holds its path
+  project.openscreen.txt  path to the OpenScreen timeline in ~/Movies/Openscreen/<slug>/ (with --editor openscreen)
   share-copy.txt
 ```
 
 ## Step 0: Check tools
 
 Confirm `node`, `ffmpeg`, and `ffprobe`. HyperFrames runs via `npx hyperframes`.
-For demo recordings and timeline editing, OpenScreen 1.13.0 at
-`/Applications/Openscreen.app` is optional. Report what is missing in one line and
-continue with what exists: without OpenScreen the run still produces `final.mp4`
-and `storyboard.json`.
+For timeline editing, Concat (`concat-cli` on `PATH`, see
+[references/concat.md](references/concat.md)) is optional. For demo recordings,
+OpenScreen 1.13.0 at `/Applications/Openscreen.app` is optional. Report what is
+missing in one line and continue with what exists: without an editor the run still
+produces `final.mp4` and `storyboard.json`.
 
 ## Step 1: Inspect
 
@@ -171,6 +175,19 @@ beat without one holds still or cuts.
 
 **Gate:** the user approved the scene table, and scene durations sum to the mode's
 length.
+
+## Step 2b: Assets and storyboard
+
+**Read:** [references/step-2b-storyboard.md](references/step-2b-storyboard.md)
+
+Collect every asset each scene will show into `assets/` and lay them out per scene
+in `storyboard/board.html` and `board.png`. Get the user's yes on each scene's
+assets, swapping and re-asking only for rejected scenes. Then build and render only
+the hook scene, show its hold frame as `storyboard/style-frame.png`, and get a yes
+on the look. A rejected asset costs a still image here, not a rendered scene.
+
+**Gate:** every scene's assets and the style frame are approved. Build no other
+scene before both.
 
 ## Step 3: Compose
 
@@ -242,18 +259,21 @@ every judge verdict from v2 on is recorded there.
 
 ## Step 5: Hand off for editing
 
-**Read:** [references/openscreen.md](references/openscreen.md)
+**Read:** [references/concat.md](references/concat.md)
 
-Write the OpenScreen timeline with `scripts/assemble-openscreen.mjs`. Tell the user the
-three ways to edit, in this order:
+Write the Concat project with `scripts/assemble-concat.mjs <run-dir>`. If
+`concat-cli` is missing, say so in one line and offer `--editor openscreen`. Tell
+the user the three ways to edit, in this order:
 
 1. **Ask again.** "Change scene 3's headline" edits `storyboard.json` and
    re-renders only that scene.
-2. **Timeline.** Open the project named in `project.openscreen.txt` in OpenScreen to trim, reorder, re-zoom,
-   caption, and click **Export**.
-   With `--editor diffusion`, run `scripts/assemble-diffusion.mjs <run-dir> --open`
-   instead (or as well): logo scenes become native Diffusion Studio scenes with
-   inspector controls, and export runs without clicking. See
+2. **Timeline.** Open the project named in `project.concat.txt` in Concat to trim,
+   reorder, caption, add effects, and export.
+   With `--editor openscreen`, run `scripts/assemble-openscreen.mjs` instead (or as
+   well) for cursor zoom on demo recordings. See
+   [references/openscreen.md](references/openscreen.md).
+   With `--editor diffusion`, run `scripts/assemble-diffusion.mjs <run-dir> --open`:
+   logo scenes become native Diffusion Studio scenes with inspector controls. See
    [references/diffusion.md](references/diffusion.md).
 3. **After Effects** (with `--ae`). Hand the run folder to the
    `luckiest-video-studio-ae` sub-skill, which rebuilds motion and logo scenes as
@@ -263,9 +283,11 @@ three ways to edit, in this order:
 
 Read `storyboard.json` from the run folder. Change only the scenes the request
 touches, re-render them with `scripts/render-scenes.mjs --scene <id>`, rejoin
-`final.mp4` and `TIMING.md`, then rerun `scripts/assemble-openscreen.mjs`. Never
-rebuild untouched scenes. With `--editor diffusion`, rerun
-`scripts/assemble-diffusion.mjs` too.
+`final.mp4` and `TIMING.md`, then rerun `scripts/assemble-concat.mjs`. Never
+rebuild untouched scenes. Rerunning it starts a fresh Concat project and keeps the
+old one as `concat-<timestamp>/`, so tell the user where any edits they made in
+Concat now live. With `--editor openscreen` or `diffusion`, rerun
+that editor's script too.
 
 ## Creative laws
 
