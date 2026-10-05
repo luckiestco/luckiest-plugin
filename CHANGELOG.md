@@ -1,5 +1,10 @@
 # Changelog — luckiest plugin
 
+## 0.1.27 — 2026-10-05 (npm luckiest-co 1.0.28)
+Video Studio 1.7.2.
+
+- `luckiest-video-studio` documents what a real launch video run needed: live site screenshots, a snapshot style frame, and the HyperFrames project layout.
+
 ## 0.1.26 — 2026-10-05 (npm luckiest-co 1.0.27)
 Video Studio 1.7.1.
 

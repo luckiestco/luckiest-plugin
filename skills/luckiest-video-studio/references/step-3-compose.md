@@ -192,6 +192,18 @@ After `<output-dir>/plan.md`, `<output-dir>/composition-brief.md`, and selected 
 
 Do not manually copy stale composition snippets from this skill into the output. The point of delegating is to benefit from the latest Hyperframes guidance.
 
+### Project layout that passes check and `render-scenes.mjs`
+
+Learned on a real run with HyperFrames 0.8.x:
+
+- Scaffold with `hyperframes init composition --example blank --resolution <landscape|portrait|square> --non-interactive` inside `<output-dir>`.
+- One file per scene at `composition/compositions/<scene-id>.html`, each a full composition with its own `data-composition-id="<scene-id>"` and a paused timeline registered as `window.__timelines["<scene-id>"]`. `render-scenes.mjs` renders these one at a time.
+- The root `composition/index.html` must host every scene back to back: `<div id="scene-<id>" class="clip" data-composition-id="<id>" data-composition-src="compositions/<id>.html" data-start=".." data-duration="..">`. A root with no scenes fails `check` with "Timeline did not advance under seek".
+- Copy every approved asset into `composition/assets/`, and reference it as `assets/...` from the project root, never `../`.
+- Fonts: declare each family with `@font-face` pointing at a local file in `composition/assets/fonts/`. Leave out named fallbacks such as Georgia; HyperFrames maps them to a Google font and fetches it.
+- Give every timed element an `id`, or check warns that Studio cannot edit it.
+- Before the full render, check every scene's hold frame in one pass: `hyperframes snapshot . --at <hold1>,<hold2>,... --no-end -o ../qa/holds`, then read `qa/holds/contact-sheet.jpg`.
+
 ---
 
 ## Self-review checklist

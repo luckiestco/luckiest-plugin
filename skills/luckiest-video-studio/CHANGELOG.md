@@ -1,5 +1,10 @@
 # Changelog — luckiest-video-studio
 
+## 1.7.2 (2026-10-05)
+From a real luckiest.co launch video run end to end (storyboard approvals, render, QA gates, Concat export matching the render at 58 dB PSNR):
+- Step 2b: capture live site pages with headless Chrome (wait budget, crop out cookie banners); the style frame is now a `hyperframes snapshot` still, no video render.
+- Step 3: the project layout HyperFrames 0.8 needs: root `index.html` hosts every scene, per-scene files with their own composition id, assets and fonts under `composition/assets/` with root-relative paths, no named font fallbacks, ids on timed elements, and a one-pass hold-frame snapshot before the full render.
+
 ## 1.7.1 (2026-10-04)
 - `assemble-concat.mjs` tested end to end against Concat 0.2.5. Fixes found by the
   live run and by reading Concat's source: progress events between replies no
