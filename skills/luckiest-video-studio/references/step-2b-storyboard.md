@@ -17,6 +17,18 @@ screen and put each file in `<output-dir>/assets/`:
 - Demo footage the scene will play (`demo/`), as a single frame grab:
   `ffmpeg -ss <in> -i <file> -frames:v 1 assets/<scene-id>-demo.png`.
 
+To capture a page of the user's live site, headless Chrome works with no install:
+
+```bash
+"/Applications/Google Chrome.app/Contents/MacOS/Google Chrome" --headless=new --hide-scrollbars \
+  --window-size=1920,1400 --virtual-time-budget=25000 --screenshot=<abs-path>.png "<url>"
+```
+
+Read the screenshot before using it. Pages that load data late come back empty
+with a short budget, so raise `--virtual-time-budget`. Crop with ffmpeg
+(`-vf crop=w:h:x:y`) to the part the scene shows, and keep cookie banners, promo
+bars, and anything personal out of the crop.
+
 Every file must exist on disk before the board is shown. Never show a placeholder
 as if it were the real asset.
 
@@ -51,14 +63,14 @@ in `storyboard.json`.
 
 ## 4. Approve one style frame
 
-Build only the hook scene (the first scene) as Step 3 describes, render it alone
-at draft quality, and grab its hold frame. Use HyperFrames directly here, because
-`render-scenes.mjs` expects every scene's composition to exist:
+Build only the hook scene (the first scene) as Step 3 describes, with the root
+`index.html` hosting just that scene for now, pass `hyperframes check`, and capture
+its hold frame as a still. No video render is needed:
 
 ```bash
 cd <output-dir>/composition
-npx hyperframes render -c compositions/<hook-id>.html -o ../storyboard/style-frame.mp4 --quality draft
-ffmpeg -ss <hold-seconds> -i ../storyboard/style-frame.mp4 -frames:v 1 ../storyboard/style-frame.png
+npx hyperframes snapshot . --at <hold-seconds> --no-end -o ../storyboard/snap
+cp ../storyboard/snap/frame-00-*.png ../storyboard/style-frame.png
 ```
 
 Show the frame and ask: "Does this look right for the whole video?" with the
