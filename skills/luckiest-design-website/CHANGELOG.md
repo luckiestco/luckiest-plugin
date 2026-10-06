@@ -1,5 +1,9 @@
 # Changelog — luckiest-design-website
 
+## 1.1.0 — 2026-10-05
+- Step 3 adds "Real, not generated": apply `luckiest-video-studio-art-director`
+  section 3b and its shot prompting reference to every generated still and clip.
+
 ## 1.0.1 — 2026-10-03
 - Points at `luckiest-video-studio-composition` (when installed) for focal point, grid, white space, and safe areas.
 

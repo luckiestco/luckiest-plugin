@@ -10,8 +10,8 @@ description: >-
   art-direction.json that every scene obeys, approves the style frame, and audits
   each scene. Trigger on "art direct this", "define the look",
   "set the visual style", "motion language", "make it feel consistent", "it looks
-  cheap", "it looks generic", "style frame", "pick the fonts and colors for the
-  video", or "/luckiest-video-studio-art-director". For story, hook, and shot list
+  cheap", "it looks generic", "looks AI generated", "style frame", "pick the
+  fonts and colors", or "/luckiest-video-studio-art-director". For story, hook, and shot list
   use luckiest-video-studio-director. For where things sit in a frame use
   luckiest-video-studio-composition. For individual easing values use
   luckiest-video-studio-motion.
@@ -20,7 +20,7 @@ user-invocable: true
 license: MIT. See ATTRIBUTION.md
 allowed-tools: Bash, Read, Write, Edit, Glob, Grep, AskUserQuestion
 metadata:
-  version: "1.3.0"
+  version: "1.4.0"
   listing_id: luckiest-video-studio-art-director
   author: luckiest
 ---
@@ -35,11 +35,11 @@ confidence. Variety reads as noise.
 ## Staying current
 
 On activation, call the Luckiest MCP `check_updates` tool with
-`{ listingId: "luckiest-video-studio-art-director", installedSemver: "1.3.0" }`. If
+`{ listingId: "luckiest-video-studio-art-director", installedSemver: "1.4.0" }`. If
 `upToDate: false`, surface the `notice` once and continue. Never block on it.
 
 When done, call `report_usage` once with
-`{ listing_id: "luckiest-video-studio-art-director", skill_version: "1.3.0", matched: true, success: <true|false> }`.
+`{ listing_id: "luckiest-video-studio-art-director", skill_version: "1.4.0", matched: true, success: <true|false> }`.
 Metadata only, never prompt text. Skip silently if unavailable.
 
 ## Standing rules
@@ -183,6 +183,28 @@ recompression. Pick for that, not for a static frame.
 - Entrances 0.25 to 0.5s, exits no longer than the entrance and matched to the
   cut. At most one weight or size accent per line. Nothing pulses or loops.
 
+## 3b. Real, not generated
+
+Applies to every generated still, video frame, or clip, and every image a
+website uses. Generated work looks generated when it is averaged: light from
+nowhere, a centered subject, perfect skin, a background that could be anywhere.
+Each rule below removes one of those averages. Write shot prompts with
+`references/shot-prompting.md`.
+
+| Property | Rule |
+|---|---|
+| Light | One named source and direction ("window light from the left"). Shadows fall hard on the opposite side. Never soft, even light with no source |
+| Film and lens | Name a film stock or camera look (Portra 400, HP5). Add fine grain, natural highlight rolloff, and slight chromatic aberration at the edges. Keep it subliminal |
+| Skin and surfaces | Visible pores, natural skin texture, small color shifts, wear on objects. Never airbrushed or glossy |
+| Framing | Subject off-center, slightly asymmetric, framed as if caught in the moment. Use negative space on purpose. No perfectly centered, balanced staging |
+| Place | One specific place with concrete details ("a fence post at the left edge, weeds at knee height"). Never a generic or averaged background |
+| Banned words | "perfect", "flawless", "masterpiece", "8k", "ultra detailed", "trending on artstation", "hyperrealistic". They push the model toward the average |
+| Model settings | Where the model exposes guidance (CFG), keep it near 3.5 to 4, not 7. Use pose or depth control for natural poses, and inpaint hands, text, and faces instead of regenerating the whole frame |
+| Real first | Real product UI, real logos, and real photos of the team beat any generated stand-in. Generate only what does not exist |
+
+These rules make work look made by a person. They never hide that a model was
+used: when the parent skill has a disclosure or provenance rule, it still applies.
+
 ## 4. Lock the motion language
 
 | Property | Rule |
@@ -233,18 +255,20 @@ studio's Step 2b.
 
 At studio Step 2b, judge `storyboard/style-frame.png` against the spec before
 showing it to the user. Fix any of these first: more than two accent uses, a
-third face, a banned default, a texture that reads above subliminal, or a hero
-that does not win the squint check from `luckiest-video-studio-composition`.
+third face, a banned default, a texture that reads above subliminal, a hero
+that does not win the squint check from `luckiest-video-studio-composition`, or
+a frame that fails **Looks generated** (any section 3b rule).
 
 ## 8. Review mode
 
 `--review` reads `art-direction.json`, the composition files, and a rendered
 hold frame per scene. Write `<run-dir>/qa/art-direction-review.md`:
 
-| Scene | Matches design system | Repeats a logged correction | Color safe | Type holds | Easing in spec | Durations on base unit | Transition in family | One hero | Accent budget | Banned default | Verdict |
-|---|---|---|---|---|---|---|---|---|---|---|---|
+| Scene | Matches design system | Repeats a logged correction | Color safe | Type holds | Easing in spec | Durations on base unit | Transition in family | One hero | Accent budget | Banned default | Looks generated | Verdict |
+|---|---|---|---|---|---|---|---|---|---|---|---|---|
 
-Verdict is **Approve** or **Block**. Any "no" is a direction defect. Block it and
+Verdict is **Approve** or **Block**. Any "no", or a "yes" under
+Looks generated, is a direction defect. Block it and
 name the fix. Grep the composition files for stray `linear`, `ease`, or easing
 values not in the spec, and durations that are not multiples of the base unit.
 
@@ -286,6 +310,7 @@ corrections. In `--review`, a scene that repeats a correction already logged in
 | Two wow moments | Keep the one on the strongest beat, tone the other down to support |
 | Everything moves | Run the restraint pass and freeze texture and labels |
 | Same correction as last run | Section 9: find why the rule missed it, then fix the rule |
+| Looks generated (soft light from nowhere, centered subject, airbrushed skin, generic background) | Apply section 3b and rewrite the prompt with `references/shot-prompting.md` |
 | Every video looks like the last one | Too much is locked. Move concept and layout back to open |
 | "In the style of" a famous designer | Replace the name with the decisions it stands for |
 
@@ -294,4 +319,6 @@ corrections. In `--review`, a scene that repeats a correction already logged in
 Built on iart.ai `motion-art-direction` (MIT), with color and type rules from
 Skill Me `motion-color-and-light` and `kinetic-typography` (MIT). The rule format,
 freedom levels, and corrections loop follow ideas from The Design Guy, "AI finally
-designs like me" (YouTube, 2026-09-27). See ATTRIBUTION.md.
+designs like me" (YouTube, 2026-09-27). Section 3b follows ideas from Pixova,
+"How to make AI images look less like AI". `references/shot-prompting.md` is
+adapted from Replicate `prompt-images` (Apache-2.0). See ATTRIBUTION.md.

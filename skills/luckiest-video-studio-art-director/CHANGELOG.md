@@ -1,5 +1,18 @@
 # Changelog — luckiest-video-studio-art-director
 
+## 1.4.0 — 2026-10-05
+- Section 3b "Real, not generated": named light direction with hard shadows,
+  film stock and grain, skin texture, off-center candid framing, specific
+  places, banned prompt words, guidance near 3.5 to 4, real assets first.
+  Never hides provenance.
+- `references/shot-prompting.md`, adapted from Replicate `prompt-images`
+  (Apache-2.0): shot written as sentences, vocabulary, quoted text, edits,
+  consistency, model settings, before and after.
+- "Looks generated" in style-frame approval, the review table (Block), and
+  anti-patterns.
+- Now a sub-skill of luckiest-image, luckiest-brandkit, and
+  luckiest-design-website.
+
 ## 1.3.0 — 2026-10-05
 - Section 0: point to existing files instead of describing them; read
   `.luckiest/corrections.md` first.

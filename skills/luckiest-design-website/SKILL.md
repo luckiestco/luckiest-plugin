@@ -4,7 +4,7 @@ description: "Builds a premium, scroll-driven landing page for any business and 
 license: See ATTRIBUTION.md
 allowed-tools: Bash, Read, Write, Edit, Glob, Grep, AskUserQuestion
 metadata:
-  version: "1.0.1"
+  version: "1.1.0"
   listing_id: luckiest-design-website
   author: luckiest
 ---
@@ -23,13 +23,13 @@ screenshots proving it holds at every scroll position.
 ## Staying current
 
 On activation, call the Luckiest MCP `check_updates` tool with
-`{ listingId: "c17e533c-42eb-48f2-a0ed-6ef717051512", installedSemver: "1.0.0" }`. If it
+`{ listingId: "c17e533c-42eb-48f2-a0ed-6ef717051512", installedSemver: "1.1.0" }`. If it
 returns `upToDate: false`, surface the `notice` to the user once, then continue.
 Do nothing further if `upToDate: true`. Never block on this check; if the tool
 is unavailable, proceed.
 
 When the skill's work is done, call the Luckiest MCP `report_usage` tool once
-with `{ listing_id: "luckiest-design-website", skill_version: "1.0.1", matched: true, success: <true if the skill completed, false otherwise> }`.
+with `{ listing_id: "luckiest-design-website", skill_version: "1.1.0", matched: true, success: <true if the skill completed, false otherwise> }`.
 Metadata only, never prompt text. Never block on it; if the tool is
 unavailable, skip silently.
 
@@ -180,12 +180,18 @@ Route by the spend cap from question 9:
 | Small | Stills from `luckiest-image` or kie.ai, at most two clips. |
 | Real budget | kie.ai stills and camera moves via `scripts/kie.mjs`, or `luckiest-video` for a model the user already pays for. |
 
-Whatever generates them, three things decide premium versus generated:
+Whatever generates them, four things decide premium versus generated:
 
 - **One style preamble, reused verbatim in every prompt.** Six images become
   one shoot. Write it once, never paraphrase.
 - **Look at every asset before using it.** Rerolling is cheaper than shipping a
   bad frame.
+- **Real, not generated.** Before writing the style preamble, apply
+  `luckiest-video-studio-art-director` section 3b (directional light, film texture,
+  off-center framing, a specific place, no "perfect" or "8k") and write each
+  scene with its `references/shot-prompting.md`. Skip its motion, timing, and
+  `art-direction.json` sections. If it is not installed, say so in one line and
+  follow references/assets.md.
 - **Encode for scrubbing, not playback.** `scripts/encode.sh` sets a dense GOP;
   a normal web encode scrubs like mud. Cut phone clips portrait.
 
@@ -344,6 +350,7 @@ test on the peak or the close via `luckiest-ab-testing`.
 |---|---|---|
 | 0 | `luckiest-extract-design-system` | Tokens from an existing site when there is no brand kit |
 | 3 | `luckiest-image`, `luckiest-video` | Asset generation on models the user already has, instead of kie.ai |
+| 3 | `luckiest-video-studio-art-director` | Section 3b and shot prompting so hero stills and clips do not look generated, if installed |
 | 3 | `luckiest-video-studio-composition` | Focal point, grid, and white space for hero stills and clips, if installed |
 | 4 | `luckiest-copywriting`, `luckiest-copywriting-humanize` | Act headlines, belief sentence, CTA label, de-slop pass |
 | 4 | `luckiest-schema` | JSON-LD and head metadata |

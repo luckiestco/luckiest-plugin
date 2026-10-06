@@ -36,7 +36,7 @@ remaining shots use it word for word.
 
 ## Contact sheet review
 
-Open `final/contact-sheet.png` and review the set as a whole before any single frame:
+Open `raw/work/contact-sheet.png` (the raw picks) and review the set as a whole before any single frame:
 
 1. **Squint.** The accent color appears once per frame, in the same role.
 2. **Light.** Every shadow falls the same way. Flag any shot lit from another side.
