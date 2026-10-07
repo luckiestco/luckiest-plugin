@@ -1,5 +1,8 @@
 # Changelog — luckiest-ad-creative
 
+## 1.3.0 — 2026-10-05
+- Ad visual prompts apply `luckiest-video-studio-art-director` section 3b and its shot prompting reference, so generated ads do not look AI-made. Bundle ships the art director.
+
 ## 1.2.0 — 2026-10-05
 - Video ads use the director and art director when installed.
 

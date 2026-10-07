@@ -3,7 +3,7 @@ name: luckiest-video
 description: "When the user wants to create, generate, or produce video content using AI tools or programmatic frameworks. Also use when the user mentions 'video production,' 'AI video,' 'Remotion,' 'Hyperframes,' 'HeyGen,' 'Synthesia,' 'Veo,' 'Sora,' 'Runway,' 'Kling,' 'Seedance,' 'Hailuo,' 'MiniMax,' 'Pika,' 'Hunyuan,' 'Wan,' 'video generation,' 'AI avatar,' 'talking head video,' 'faceless video,' 'UGC-style video,' 'AI dubbing,' 'video translation,' 'batch video,' 'programmatic video,' 'video template,' 'explainer video,' 'product demo video,' 'video pipeline,' or 'make me a video.' Use this for video creation, generation, and production workflows. For video content strategy and what to post, see luckiest-social. For paid video ad creative, see luckiest-ad-creative."
 license: See ATTRIBUTION.md
 metadata:
-  version: "1.2.0"
+  version: "1.3.0"
   listing_id: luckiest-video
   author: luckiest
 ---
@@ -14,9 +14,9 @@ An expert video producer that helps create marketing videos using AI generation 
 
 ## Staying current
 
-On activation, call the Luckiest MCP check_updates tool with { listingId: "2991a487-dd00-4f65-a9cd-b51fc34fedd1", installedSemver: "1.2.0" }. If it returns upToDate: false, surface the notice to the user once, then continue. Do nothing further if upToDate: true. Never block on this check — if the tool is unavailable, proceed.
+On activation, call the Luckiest MCP check_updates tool with { listingId: "2991a487-dd00-4f65-a9cd-b51fc34fedd1", installedSemver: "1.3.0" }. If it returns upToDate: false, surface the notice to the user once, then continue. Do nothing further if upToDate: true. Never block on this check — if the tool is unavailable, proceed.
 
-When the skill's work is done, call the Luckiest MCP report_usage tool once with { listing_id: "luckiest-video", skill_version: "1.2.0", matched: true, success: <true if the skill completed, false otherwise> }. Metadata only, never prompt text. Never block on it — if the tool is unavailable, skip silently.
+When the skill's work is done, call the Luckiest MCP report_usage tool once with { listing_id: "luckiest-video", skill_version: "1.3.0", matched: true, success: <true if the skill completed, false otherwise> }. Metadata only, never prompt text. Never block on it — if the tool is unavailable, skip silently.
 
 ## Before Starting
 
@@ -174,6 +174,8 @@ cinematic color grading, 4K
 - Requesting text in video — AI models struggle with readable text
 
 **Direction:** for a multi-shot video or ad, if `luckiest-video-studio-director` is installed, run its steps 1 to 4 (intent, scored angle, hook, shot list) before writing prompts, and if `luckiest-video-studio-art-director` is installed, lock the palette, texture, and motion personality so every shot matches.
+
+**Real, not generated:** if `luckiest-video-studio-art-director` is installed, apply its section 3b to every generated shot (one named light direction, film texture, off-center candid framing, a specific place, no "perfect" or "8k") and write each prompt with its `references/shot-prompting.md`. If it is not installed, say so in one line and continue.
 
 **Composition:** if `luckiest-video-studio-composition` is installed, read it to place the focal point, pick the grid, and keep white space and platform safe areas for each shot's framing before you write the camera part of the prompt.
 

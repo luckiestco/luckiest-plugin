@@ -1,5 +1,8 @@
 # Changelog — luckiest-video-studio
 
+## 1.8.1 — 2026-10-05
+- Bundle ships art director 1.4.0 (section 3b Real, not generated, and shot prompting).
+
 ## 1.8.0 — 2026-10-05
 - Step 2 hands off to `luckiest-video-studio-director` (intent, hook, shot list)
   and `luckiest-video-studio-art-director` (`art-direction.json`) before planning.

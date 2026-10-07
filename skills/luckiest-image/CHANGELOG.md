@@ -1,5 +1,10 @@
 # Changelog — luckiest-image
 
+## 1.2.0 — 2026-10-05
+- Uses `luckiest-video-studio-art-director` section 3b and its shot prompting
+  reference before any prompt, so images do not look AI-made. Prompt example
+  drops "4K" and gets a named light direction and film grain.
+
 ## 1.1.1 — 2026-10-03
 - Points at `luckiest-video-studio-composition` (when installed) for focal point, grid, white space, and safe areas.
 

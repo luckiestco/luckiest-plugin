@@ -5,7 +5,7 @@
 
 Files sort by name, so prefix shots with 01-, 02-, ... Labels come from the file name.
 """
-import argparse, glob, os
+import argparse, glob, os, re
 from PIL import Image, ImageDraw, ImageFont
 
 a = argparse.ArgumentParser()
@@ -13,7 +13,8 @@ a.add_argument("dir"); a.add_argument("out")
 a.add_argument("--cols", type=int, default=5); a.add_argument("--cell", type=int, default=640)
 o = a.parse_args()
 fs = sorted(f for f in glob.glob(os.path.join(o.dir, "*")) if f.lower().endswith((".png", ".jpg", ".jpeg", ".webp"))
-            and os.path.abspath(f) != os.path.abspath(o.out))
+            and os.path.abspath(f) != os.path.abspath(o.out)
+            and not re.search(r"-[a-z]\.\w+$", os.path.basename(f)))  # skip raw A/B variants
 if not fs: raise SystemExit("no images")
 cols, cell, g, lab = o.cols, o.cell, 32, 40
 rows = -(-len(fs) // cols)

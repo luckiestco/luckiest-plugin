@@ -1,5 +1,8 @@
 # Changelog — luckiest-video
 
+## 1.3.0 — 2026-10-05
+- Every generated shot applies `luckiest-video-studio-art-director` section 3b and its shot prompting reference. Bundle ships the art director.
+
 ## 1.2.0 — 2026-10-05
 - Runs the director and art director before multi-shot prompts when installed.
 

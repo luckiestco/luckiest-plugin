@@ -1,5 +1,8 @@
 # Changelog — luckiest-social
 
+## 1.2.0 — 2026-10-05
+- Generated post images, thumbnails, and clips apply `luckiest-video-studio-art-director` section 3b and its shot prompting reference. Bundle ships the art director.
+
 ## 1.1.1 — 2026-10-03
 - Points at `luckiest-video-studio-composition` (when installed) for focal point, grid, white space, and safe areas.
 

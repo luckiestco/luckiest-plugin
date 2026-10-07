@@ -1,4 +1,17 @@
+## 0.1.30 — 2026-10-06 (npm luckiest-co 1.0.31)
+Brandkit reviews raw shots first.
+
+- `luckiest-brandkit` 1.4.0: raws generate at the image tool's smallest, fastest setting; the review page (Keep or Reshoot plus notes) runs right after the raws, before fixes and upscaling; the upscale asks for look (sharp detail, photo and faces, logos and UI, or none) and size (2x, 3x, 4x) instead of a fixed remacri-4x at 2x.
+
 # Changelog — luckiest plugin
+
+## 0.1.29 — 2026-10-05 (npm luckiest-co 1.0.30)
+Real, not generated: rules so generated images, video, and site imagery do not look AI-made.
+
+- `luckiest-video-studio-art-director` 1.4.0: section 3b (named light direction, film texture, off-center candid framing, specific places, banned prompt words, guidance near 3.5 to 4), `references/shot-prompting.md` adapted from Replicate prompt-images (Apache-2.0), and a "Looks generated" review check.
+- Now applied by `luckiest-image` 1.2.0, `luckiest-design-website` 1.1.0, `luckiest-ad-creative` 1.3.0, `luckiest-social` 1.2.0, and `luckiest-video` 1.3.0.
+- `luckiest-brandkit` 1.3.0: review page with Keep or Reshoot and notes per shot, plus 3b in its art director row.
+- `luckiest-video-studio` 1.8.1.
 
 ## 0.1.28 — 2026-10-05 (npm luckiest-co 1.0.29)
 Video Studio 1.8.0, director and art director, brandkit.
