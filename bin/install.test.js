@@ -37,3 +37,14 @@ test('legacy zip with SKILL.md at the root installs under the listing name', () 
   assert.deepStrictEqual(placeSkills(x, root, 'legacy'), ['legacy']);
   assert.ok(fs.existsSync(path.join(root, 'legacy/references/a.md')));
 });
+
+test('plugin duplicates: only skills the plugin ships are removed', () => {
+  const { dropPluginDuplicates } = require('./install.js');
+  const root = fs.mkdtempSync(path.join(os.tmpdir(), 'dup-'));
+  tree(root, { 'luckiest-ads/SKILL.md': 'a', 'luckiest-owned/SKILL.md': 'b', 'other/notes.md': 'c' });
+
+  assert.deepStrictEqual(dropPluginDuplicates(root, new Set(['luckiest-ads', 'other', 'missing'])), ['luckiest-ads']);
+  assert.ok(!fs.existsSync(path.join(root, 'luckiest-ads')));
+  assert.ok(fs.existsSync(path.join(root, 'luckiest-owned/SKILL.md')), 'owned skill not in the plugin is kept');
+  assert.ok(fs.existsSync(path.join(root, 'other/notes.md')), 'folders without SKILL.md are left alone');
+});

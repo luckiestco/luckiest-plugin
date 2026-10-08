@@ -224,6 +224,58 @@ function placeSkills(extractDir, skillsRoot, fallbackName) {
 }
 
 async function syncSkills() {
+  try {
+    await syncOwnedSkills();
+  } finally {
+    // Self-heal the luckiest-x + luckiest:luckiest-x duplicate: the marketplace
+    // plugin already registers its skills, so a copy in ~/.claude/skills (from
+    // older installers or from this sync) lists every one of them twice.
+    const globalDir = expandTilde(explicitConfigDir) || expandTilde(process.env.CLAUDE_CONFIG_DIR) || path.join(os.homedir(), '.claude');
+    const removed = dropPluginDuplicates(path.join(globalDir, 'skills'), pluginSkillNames(globalDir));
+    if (removed.length) {
+      console.log(`  ${green}✓${reset} Removed ${removed.length} duplicate skill(s) from skills/ (plugin marketplace already provides them)`);
+    }
+  }
+}
+
+/**
+ * Skill folder names shipped by the enabled marketplace plugin, read from its
+ * installPath. Empty when the plugin is absent or disabled.
+ */
+function pluginSkillNames(globalClaudeDir) {
+  const names = new Set();
+  if (!hasMarketplacePlugin(globalClaudeDir)) return names;
+  try {
+    const manifest = JSON.parse(
+      fs.readFileSync(path.join(globalClaudeDir, 'plugins', 'installed_plugins.json'), 'utf8')
+    );
+    for (const [key, value] of Object.entries(manifest.plugins || {})) {
+      if (!key.startsWith('luckiest@')) continue;
+      for (const item of Array.isArray(value) ? value : [value]) {
+        const dir = item && item.installPath && path.join(item.installPath, 'skills');
+        if (dir && fs.existsSync(dir)) fs.readdirSync(dir).forEach((n) => names.add(n));
+      }
+    }
+  } catch {
+    // Unreadable manifest: remove nothing.
+  }
+  return names;
+}
+
+/** Remove skills/<name> for every name the plugin ships. Returns removed names. */
+function dropPluginDuplicates(skillsRoot, names) {
+  const removed = [];
+  for (const name of names) {
+    const dest = path.join(skillsRoot, name);
+    if (fs.existsSync(path.join(dest, 'SKILL.md'))) {
+      fs.rmSync(dest, { recursive: true, force: true });
+      removed.push(name);
+    }
+  }
+  return removed;
+}
+
+async function syncOwnedSkills() {
   // Self-heal the /luckiest:luckiest:* duplicate: older installers copied
   // commands into ~/.claude/commands/luckiest even when the marketplace
   // plugin already registers them. Sync runs every session, so clean it here.
@@ -428,8 +480,12 @@ function install(isGlobal) {
   }
 
   // Copy references/, templates/, .claude-plugin/ into the target root
+  // skills/ is skipped when the marketplace plugin ships them, for the same
+  // reason as commands/ above (luckiest-x and luckiest:luckiest-x).
+  const pluginPresent = hasMarketplacePlugin(defaultGlobalDir);
   const topLevelDirs = ['references', 'templates', 'skills', '.claude-plugin', 'hooks'];
   for (const dir of topLevelDirs) {
+    if (dir === 'skills' && pluginPresent) continue;
     const dirSrc = path.join(src, dir);
     const dirDest = path.join(claudeDir, dir);
     if (fs.existsSync(dirSrc)) {
@@ -718,4 +774,4 @@ if (require.main === module) {
   });
 }
 
-module.exports = { placeSkills };
+module.exports = { placeSkills, dropPluginDuplicates };
