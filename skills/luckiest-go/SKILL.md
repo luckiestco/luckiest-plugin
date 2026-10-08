@@ -1,5 +1,6 @@
 ---
 name: luckiest-go
+user-invocable: false
 description: "Run the active Luckiest plan, one task at a time, checked as it goes. Use when the user says /luckiest go, luckiest go, or wants to continue their staged Luckiest plan."
 ---
 

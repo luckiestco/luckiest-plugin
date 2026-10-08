@@ -1,5 +1,6 @@
 ---
 name: luckiest-updates
+user-invocable: false
 description: "Check for updates to your installed Luckiest skills and plugin. Use when the user says /luckiest updates, luckiest updates, or asks if their Luckiest install is current."
 ---
 

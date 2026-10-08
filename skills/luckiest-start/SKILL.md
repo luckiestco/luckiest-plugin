@@ -1,5 +1,6 @@
 ---
 name: luckiest-start
+user-invocable: false
 description: "A short interview about your project that writes your Brand Brief. Use when the user says /luckiest start, luckiest start, or wants to set up Luckiest for a project."
 ---
 

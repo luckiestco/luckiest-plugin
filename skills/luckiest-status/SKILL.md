@@ -1,5 +1,6 @@
 ---
 name: luckiest-status
+user-invocable: false
 description: "Where you are in your Luckiest plan: progress, tasks, and your one next step. Use when the user says /luckiest status, luckiest status, or asks where their plan stands."
 ---
 
