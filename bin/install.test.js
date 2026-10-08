@@ -48,3 +48,34 @@ test('plugin duplicates: only skills the plugin ships are removed', () => {
   assert.ok(fs.existsSync(path.join(root, 'luckiest-owned/SKILL.md')), 'owned skill not in the plugin is kept');
   assert.ok(fs.existsSync(path.join(root, 'other/notes.md')), 'folders without SKILL.md are left alone');
 });
+
+test('npx copy: plugin short names go back to the folder name, other skills untouched', () => {
+  const { restoreSkillNames } = require('./install.js');
+  const root = fs.mkdtempSync(path.join(os.tmpdir(), 'names-'));
+  tree(root, {
+    'luckiest-ads/SKILL.md': '---\nname: ads\ndescription: x\n---\n\nExample:\n---\nname: Other\n---\n',
+    'mine/SKILL.md': '---\nname: my-custom\n---\n',
+  });
+  restoreSkillNames(root, ['luckiest-ads']);
+  const ads = fs.readFileSync(path.join(root, 'luckiest-ads/SKILL.md'), 'utf8');
+  assert.match(ads, /^---\nname: luckiest-ads\n/);
+  assert.match(ads, /name: Other/);
+  assert.strictEqual(fs.readFileSync(path.join(root, 'mine/SKILL.md'), 'utf8'), '---\nname: my-custom\n---\n');
+});
+
+test('a plugin added through Claude desktop counts as installed, and its skills are not copied', () => {
+  const { hasMarketplacePlugin, pluginSkillNames } = require('./install.js');
+  const home = fs.mkdtempSync(path.join(os.tmpdir(), 'desk-'));
+  assert.strictEqual(hasMarketplacePlugin(home), false);
+
+  const other = { rows: [{ name: 'x', source: { source: 'github', repo: 'someone/else' } }] };
+  tree(home, { 'plugins/synced/acct_org/.marketplaces.json': JSON.stringify(other) });
+  assert.strictEqual(hasMarketplacePlugin(home), false);
+
+  const ours = { rows: [{ name: 'luckiest-plugin', scope: 'account', source: { source: 'github', repo: 'luckiestco/luckiest-plugin' } }] };
+  tree(home, { 'plugins/synced/acct_org/.marketplaces.json': JSON.stringify(ours) });
+  assert.strictEqual(hasMarketplacePlugin(home), true);
+  const names = pluginSkillNames(home);
+  assert.ok(names.has('luckiest-ads'));
+  assert.ok(names.has('luckiest-plan'));
+});

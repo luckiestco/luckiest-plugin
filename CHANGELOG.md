@@ -1,3 +1,8 @@
+## 0.1.36 — 2026-10-08 (npm luckiest-co 1.0.37)
+- `/luckiest:plan`, `/luckiest:go`, `/luckiest:finish` and the other 13 work again when the plugin is added through Claude desktop. They are now skills named `plan`, `go`, `finish` and so on, instead of separate command files that desktop plugins do not load. Each one shows once in every install. Without the plugin, npx installs them as `/luckiest-plan`, `/luckiest-go` and so on.
+- The installer now sees a Luckiest plugin added through Claude desktop, so `--sync-only` stops copying the skills the plugin already ships into `~/.claude/skills`, and removes copies left there.
+- New test: every plugin skill name is unique and none clashes with a command.
+
 ## 0.1.35 — 2026-10-08 (npm luckiest-co 1.0.36)
 - The 16 plan, go, finish, next, status, home, start, charms, helpers, leaderboard, merge, overlaps, skills, updates, vouch, and wishes skills are hidden from the slash menu (`user-invocable: false`), so `/luckiest:plan` no longer also appears as `/luckiest:luckiest-plan`. Claude still picks them up from "luckiest plan" in claude.ai and Cowork.
 - `npm publish` now stops before upload when the `package.json` version is already on npm, and names the 4 files to bump. Maintainer-only, not in the npm package.

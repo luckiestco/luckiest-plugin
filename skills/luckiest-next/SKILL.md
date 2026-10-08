@@ -1,6 +1,5 @@
 ---
-name: luckiest-next
-user-invocable: false
+name: next
 description: "Do the suggested next step: runs the last Next line from this chat, or picks up the plan where it stands. Use when the user says /next, /luckiest next, luckiest next, or next step."
 ---
 

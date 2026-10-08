@@ -1,6 +1,5 @@
 ---
-name: luckiest-finish
-user-invocable: false
+name: finish
 description: "Wrap up a completed Luckiest plan: recap what shipped, close it out, award charms. Use when the user says /luckiest finish, luckiest finish, or all plan tasks are done."
 ---
 

@@ -90,7 +90,7 @@ if (hasHelp) {
     npx luckiest-co --sync-only
 
   ${yellow}What gets installed:${reset}
-    commands/            - Slash commands (/luckiest:plan, /luckiest:go, etc.)
+    skills/              - Skills, including /luckiest-plan and /luckiest-go
     references/          - Vocabulary and chart-renderer references
     templates/            - Brief templates
     .claude-plugin/       - Plugin manifest
@@ -132,6 +132,22 @@ function copyWithPathReplacement(srcDir, destDir, pathPrefix) {
     } else {
       fs.copyFileSync(srcPath, destPath);
     }
+  }
+}
+
+/**
+ * Plugin skills carry short names (name: ads) so the plugin menu shows
+ * /luckiest:ads. A copy in ~/.claude/skills has no namespace, so a bare /ads
+ * could clash with other skills: put the folder name (luckiest-ads) back.
+ * Only the given folders are touched, never the user's own skills.
+ */
+function restoreSkillNames(skillsRoot, folders) {
+  for (const folder of folders) {
+    const file = path.join(skillsRoot, folder, 'SKILL.md');
+    if (!fs.existsSync(file)) continue;
+    const text = fs.readFileSync(file, 'utf8');
+    const fixed = text.replace(/^(---\r?\n(?:(?!---).*\r?\n)*?)name:[^\r\n]*/, `$1name: ${folder}`);
+    if (fixed !== text) fs.writeFileSync(file, fixed);
   }
 }
 
@@ -245,6 +261,11 @@ async function syncSkills() {
 function pluginSkillNames(globalClaudeDir) {
   const names = new Set();
   if (!hasMarketplacePlugin(globalClaudeDir)) return names;
+  // A desktop plugin has no folder to read; it ships the same skills as this package.
+  if (desktopPlugin(globalClaudeDir)) {
+    const own = path.join(__dirname, '..', 'skills');
+    if (fs.existsSync(own)) fs.readdirSync(own).forEach((n) => names.add(n));
+  }
   try {
     const manifest = JSON.parse(
       fs.readFileSync(path.join(globalClaudeDir, 'plugins', 'installed_plugins.json'), 'utf8')
@@ -398,6 +419,32 @@ async function syncOwnedSkills() {
  * leave them with no /luckiest:* commands at all.
  */
 function hasMarketplacePlugin(globalClaudeDir) {
+  return cliPlugin(globalClaudeDir) || desktopPlugin(globalClaudeDir);
+}
+
+/**
+ * True when the Luckiest marketplace is on the account through Claude desktop.
+ * Desktop plugins are served by the app and leave no install folder; the only
+ * trace is the account marketplace list under plugins/synced/.
+ */
+function desktopPlugin(globalClaudeDir) {
+  const synced = path.join(globalClaudeDir, 'plugins', 'synced');
+  try {
+    return fs.readdirSync(synced).some((bucket) => {
+      try {
+        const list = JSON.parse(fs.readFileSync(path.join(synced, bucket, '.marketplaces.json'), 'utf8'));
+        return (list.rows || []).some((r) => r && r.source && r.source.repo === 'luckiestco/luckiest-plugin');
+      } catch {
+        return false;
+      }
+    });
+  } catch {
+    return false;
+  }
+}
+
+/** True when the plugin is installed and enabled from the Claude Code command line. */
+function cliPlugin(globalClaudeDir) {
   try {
     const manifest = JSON.parse(
       fs.readFileSync(path.join(globalClaudeDir, 'plugins', 'installed_plugins.json'), 'utf8')
@@ -490,12 +537,13 @@ function install(isGlobal) {
     const dirDest = path.join(claudeDir, dir);
     if (fs.existsSync(dirSrc)) {
       copyWithPathReplacement(dirSrc, dirDest, pathPrefix);
+      if (dir === 'skills') restoreSkillNames(dirDest, fs.readdirSync(dirSrc));
       console.log(`  ${green}✓${reset} Installed ${dir}`);
     }
   }
 
   console.log(`
-  ${green}Done!${reset} Launch Claude Code and run ${cyan}/luckiest:plan${reset}.
+  ${green}Done!${reset} Launch Claude Code and run ${cyan}${pluginPresent ? '/luckiest:plan' : '/luckiest-plan'}${reset}.
 `);
 
   return { claudeDir, globalClaudeDir: defaultGlobalDir };
@@ -774,4 +822,4 @@ if (require.main === module) {
   });
 }
 
-module.exports = { placeSkills, dropPluginDuplicates };
+module.exports = { placeSkills, dropPluginDuplicates, restoreSkillNames, hasMarketplacePlugin, pluginSkillNames };
