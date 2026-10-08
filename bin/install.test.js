@@ -97,4 +97,6 @@ test('npx copy: short command folders install as luckiest-<x> and never touch a 
   assert.strictEqual(fs.readFileSync(path.join(home, 'plan/SKILL.md'), 'utf8'), '---\nname: plan\n---\nmine');
   assert.strictEqual(homeName('go'), 'luckiest-go');
   assert.strictEqual(homeName('luckiest-ads'), 'luckiest-ads');
+  assert.strictEqual(homeName('ads'), 'luckiest-ads');
+  assert.strictEqual(homeName('remix'), 'remix');
 });
