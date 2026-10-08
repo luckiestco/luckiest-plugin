@@ -1,6 +1,5 @@
 ---
-name: luckiest-wishes
-user-invocable: false
+name: wishes
 description: "Your Luckiest wishes balance and recent related activity. Use when the user says /luckiest wishes, luckiest wishes, or asks about their wishes."
 ---
 

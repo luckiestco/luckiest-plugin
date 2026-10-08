@@ -1,6 +1,5 @@
 ---
-name: luckiest-leaderboard
-user-invocable: false
+name: leaderboard
 description: "See how the Luckiest tribe ranks: top scores, one bar chart. Use when the user says /luckiest leaderboard, luckiest leaderboard, or asks for tribe rankings."
 ---
 

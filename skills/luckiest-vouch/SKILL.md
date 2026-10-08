@@ -1,6 +1,5 @@
 ---
-name: luckiest-vouch
-user-invocable: false
+name: vouch
 description: "Request or approve a warm intro to someone outside your Luckiest tribe. Use when the user says /luckiest vouch, luckiest vouch, or asks for an intro."
 ---
 

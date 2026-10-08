@@ -1,6 +1,5 @@
 ---
-name: luckiest-overlaps
-user-invocable: false
+name: overlaps
 description: "Find installed Luckiest skills that overlap with your own, and resolve them. Use when the user says /luckiest overlaps, luckiest overlaps, or asks about duplicate skills."
 ---
 

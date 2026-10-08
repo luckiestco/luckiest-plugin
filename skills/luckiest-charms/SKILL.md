@@ -1,6 +1,5 @@
 ---
-name: luckiest-charms
-user-invocable: false
+name: charms
 description: "Your Luckiest charms balance and recent related activity. Use when the user says /luckiest charms, luckiest charms, or asks about their charms."
 ---
 

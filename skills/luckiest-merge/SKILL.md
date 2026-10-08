@@ -1,6 +1,5 @@
 ---
-name: luckiest-merge
-user-invocable: false
+name: merge
 description: "Merge two overlapping Luckiest skills into one, after the user reviews the diff. Use when the user says /luckiest merge, luckiest merge, or wants to combine overlapping skills."
 ---
 

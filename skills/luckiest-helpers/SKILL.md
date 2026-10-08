@@ -1,6 +1,5 @@
 ---
-name: luckiest-helpers
-user-invocable: false
+name: helpers
 description: "See who in your Luckiest tribe needs a hand right now, and claim a request to help. Use when the user says /luckiest helpers, luckiest helpers, or asks who needs help."
 ---
 

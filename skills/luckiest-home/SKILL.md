@@ -1,6 +1,5 @@
 ---
-name: luckiest-home
-user-invocable: false
+name: home
 description: "The Luckiest community dashboard: wishes and charms, plan progress, tribe pulse, and who needs help. Use when the user says /luckiest home, luckiest home, or asks for their Luckiest dashboard."
 ---
 
