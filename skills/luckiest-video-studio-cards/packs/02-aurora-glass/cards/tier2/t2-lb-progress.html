@@ -15,14 +15,14 @@
       html, body { margin: 0; background: transparent; }
 
       #t2-lb-prog {
-        position: absolute; inset: 0; width: 1920px; height: 1080px;
+        position: absolute; inset: 0; width: var(--w); height: var(--h);
         background: transparent; overflow: hidden;
         font-family: var(--font-display);
       }
 
       /* Localized glow - right side, centered on the ring */
       #t2-lb-prog .local-glow {
-        position: absolute; right: 80px; top: 360px;
+        position: absolute; right: var(--safe-r); top: calc(var(--safe-t) + 306px);
         width: 440px; height: 380px; border-radius: 50%;
         background: radial-gradient(ellipse at 50% 50%,
           rgba(var(--accent-rgb), 0.28) 0%,
@@ -34,7 +34,7 @@
 
       /* Outer glass card */
       #t2-lb-prog .chip {
-        position: absolute; right: 80px; top: 390px;
+        position: absolute; right: var(--safe-r); top: calc(var(--safe-t) + 336px);
         width: 340px;
         background: var(--glass-bg-dark);
         backdrop-filter: var(--glass-blur);
@@ -96,7 +96,7 @@
         inset: 0;
         display: flex; align-items: center; justify-content: center;
         font-family: var(--font-mono); font-weight: 700;
-        font-size: 34px; letter-spacing: -0.02em;
+        font-size: calc(34px * var(--type)); letter-spacing: -0.02em;
         background: linear-gradient(115deg, #FFFFFF 0%, var(--accent) 100%);
         -webkit-background-clip: text; background-clip: text;
         -webkit-text-fill-color: transparent; color: transparent;
@@ -106,7 +106,7 @@
       /* Term - metric name */
       #t2-lb-prog .term {
         font-family: var(--font-display); font-weight: var(--wt-bold);
-        font-size: 26px; letter-spacing: var(--track-snug);
+        font-size: calc(26px * var(--type)); letter-spacing: var(--track-snug);
         color: var(--white); text-shadow: var(--textglow);
         text-align: center; margin-bottom: 8px;
       }
@@ -123,9 +123,18 @@
       /* Detail */
       #t2-lb-prog .detail {
         font-family: var(--font-body); font-weight: var(--wt-reg);
-        font-size: 19px; line-height: 1.45; letter-spacing: 0.01em;
+        font-size: calc(19px * var(--type)); line-height: 1.45; letter-spacing: 0.01em;
         color: var(--text-dim); text-align: center;
       }
+      /* Vertical and square: the card drops to the bottom of the safe area, left aligned, its glow following. */
+      [data-format="vertical"] #t2-lb-prog .chip, [data-format="square"] #t2-lb-prog .chip {
+        top: auto; right: auto; left: var(--safe-l); bottom: var(--safe-b);
+        max-width: calc(var(--w) - var(--safe-l) - var(--safe-r));
+      }
+      [data-format="vertical"] #t2-lb-prog .local-glow, [data-format="square"] #t2-lb-prog .local-glow {
+        top: auto; right: auto; left: calc(var(--safe-l) - 50px); bottom: calc(var(--safe-b) - 30px);
+      }
+      [data-format="vertical"] #t2-lb-prog [data-slot], [data-format="square"] #t2-lb-prog [data-slot] { white-space: normal; }
     </style>
   </head>
   <body>

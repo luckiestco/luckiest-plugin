@@ -14,7 +14,7 @@
       html, body { margin: 0; }
 
       #t1-ov-notif {
-        position: absolute; inset: 0; width: 1920px; height: 1080px;
+        position: absolute; inset: 0; width: var(--w); height: var(--h);
         background: var(--canvas); color: var(--text);
         font-family: var(--font-body); overflow: hidden;
       }
@@ -34,7 +34,7 @@
       #t1-ov-notif .layout {
         position: absolute; inset: 0; z-index: 3;
         display: flex; flex-direction: column;
-        padding: 90px var(--pad) 80px;
+        padding: calc(var(--safe-t) + 36px) var(--safe-r) calc(var(--safe-b) + 26px) var(--safe-l);
       }
 
       /* Title */
@@ -98,7 +98,7 @@
       #t1-ov-notif .row-text { flex: 1; min-width: 0; }
       #t1-ov-notif .row-title {
         font-family: var(--font-display); font-weight: var(--wt-semi);
-        font-size: 34px; color: var(--white);
+        font-size: calc(34px * var(--type)); color: var(--white);
         letter-spacing: var(--track-snug); margin-bottom: 8px; line-height: 1.2;
       }
       #t1-ov-notif .row-body {
@@ -122,6 +122,24 @@
         background-size: 200px 200px; mix-blend-mode: overlay; opacity: 0.10;
         pointer-events: none; z-index: 7;
       }
+
+      /* Vertical and square: each row becomes a 2-column grid - avatar left, title + body right,
+         timestamp tucked under the body - so the copy gets the full width. */
+      [data-format="vertical"] #t1-ov-notif .card-title, [data-format="square"] #t1-ov-notif .card-title { margin-bottom: 40px; }
+      [data-format="vertical"] #t1-ov-notif .rows, [data-format="square"] #t1-ov-notif .rows { gap: 16px; flex: none; }
+      [data-format="vertical"] #t1-ov-notif .row, [data-format="square"] #t1-ov-notif .row {
+        display: grid; grid-template-columns: 56px 1fr; column-gap: 20px; row-gap: 0; align-items: start;
+        padding: 24px 28px 24px 24px;
+      }
+      [data-format="vertical"] #t1-ov-notif .avatar, [data-format="square"] #t1-ov-notif .avatar { width: 56px; height: 56px; grid-row: 1 / span 2; }
+      [data-format="vertical"] #t1-ov-notif .avatar svg, [data-format="square"] #t1-ov-notif .avatar svg { width: 26px; height: 26px; }
+      [data-format="vertical"] #t1-ov-notif .ts, [data-format="square"] #t1-ov-notif .ts { grid-column: 2; text-align: left; margin-top: 8px; }
+      [data-format="vertical"] #t1-ov-notif .row-body { font-size: calc(24px * var(--type)); line-height: 1.35; }
+      [data-format="square"] #t1-ov-notif .row-body { font-size: 28px; }
+      [data-format="vertical"] #t1-ov-notif .ts, [data-format="square"] #t1-ov-notif .ts { margin-top: 4px; }
+      [data-format="vertical"] #t1-ov-notif .row-title, [data-format="square"] #t1-ov-notif .row-title { margin-bottom: 4px; }
+      [data-format="vertical"] #t1-ov-notif .layout { padding: var(--safe-t) var(--safe-r) var(--safe-b) calc(var(--safe-l) + 12px); }
+      [data-format="square"] #t1-ov-notif .layout { padding: var(--safe-t) var(--safe-r) var(--safe-b) calc(var(--safe-l) + 8px); }
     </style>
   </head>
   <body>

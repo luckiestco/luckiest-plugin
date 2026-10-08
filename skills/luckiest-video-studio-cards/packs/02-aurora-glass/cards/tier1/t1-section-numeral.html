@@ -15,7 +15,7 @@
       html, body { margin: 0; }
 
       #t1-sec-num {
-        position: absolute; inset: 0; width: 1920px; height: 1080px;
+        position: absolute; inset: 0; width: var(--w); height: var(--h);
         background: var(--canvas); color: var(--text);
         font-family: var(--font-display); overflow: hidden;
       }
@@ -39,7 +39,7 @@
         position: absolute;
         left: 50%; top: 50%;
         font-family: var(--font-display); font-weight: var(--wt-black);
-        font-size: 680px; line-height: 1; letter-spacing: -0.06em;
+        font-size: calc(680px * var(--type)); line-height: 1; letter-spacing: -0.06em;
         /* gradient fill + translucent so it recedes */
         background: linear-gradient(
           170deg,
@@ -60,8 +60,8 @@
 
       /* Foreground content */
       #t1-sec-num .content {
-        position: absolute; left: var(--pad); right: var(--pad);
-        bottom: 200px;
+        position: absolute; left: calc(var(--safe-l) + 24px); right: var(--safe-r);
+        bottom: calc(var(--safe-b) + 146px);
         z-index: 4;
       }
 
@@ -104,6 +104,15 @@
         background-size: 200px 200px; mix-blend-mode: overlay; opacity: 0.10;
         pointer-events: none; z-index: 7;
       }
+
+      /* Vertical and square: ghost numeral sits in the upper safe area, smaller so it fits the width;
+         the text block anchors to the bottom of the safe area with a smaller headline. */
+      [data-format="vertical"] #t1-sec-num .bg-numeral { font-size: calc(400px * var(--type)); top: calc(var(--safe-t) + 250px); }
+      [data-format="square"] #t1-sec-num .bg-numeral { font-size: 440px; top: calc(var(--safe-t) + 240px); }
+      [data-format="vertical"] #t1-sec-num .content, [data-format="square"] #t1-sec-num .content { bottom: calc(var(--safe-b) + 30px); }
+      [data-format="vertical"] #t1-sec-num .bg-numeral, [data-format="square"] #t1-sec-num .bg-numeral { left: calc((var(--safe-l) + var(--w) - var(--safe-r)) / 2); }
+      [data-format="vertical"] #t1-sec-num .headline { font-size: calc(80px * var(--type)); }
+      [data-format="square"] #t1-sec-num .headline { font-size: 96px; }
     </style>
   </head>
   <body>

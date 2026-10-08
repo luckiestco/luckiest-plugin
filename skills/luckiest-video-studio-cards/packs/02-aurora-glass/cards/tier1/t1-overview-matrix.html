@@ -14,7 +14,7 @@
       html, body { margin: 0; }
 
       #t1-ov-matrix {
-        position: absolute; inset: 0; width: 1920px; height: 1080px;
+        position: absolute; inset: 0; width: var(--w); height: var(--h);
         background: var(--canvas); color: var(--text);
         font-family: var(--font-display); overflow: hidden;
       }
@@ -32,7 +32,7 @@
 
       /* Title */
       #t1-ov-matrix .title-row {
-        position: absolute; left: 0; right: 0; top: 60px; text-align: center; z-index: 4;
+        position: absolute; left: var(--safe-l); right: var(--safe-r); top: calc(var(--safe-t) + 6px); text-align: center; z-index: 4;
       }
       #t1-ov-matrix .title {
         font-family: var(--font-display); font-weight: var(--wt-bold);
@@ -47,7 +47,7 @@
       /* Matrix canvas */
       #t1-ov-matrix .matrix-wrap {
         position: absolute;
-        left: 240px; right: 240px; top: 185px; bottom: 100px;
+        left: calc(var(--safe-l) + 144px); right: calc(var(--safe-r) + 144px); top: calc(var(--safe-t) + 131px); bottom: calc(var(--safe-b) + 46px);
         z-index: 4;
       }
 
@@ -79,12 +79,12 @@
       #t1-ov-matrix .lbl-x-lo { bottom: -60px; left: 0; }
       #t1-ov-matrix .lbl-x-hi { bottom: -60px; right: 0; text-align: right; }
       #t1-ov-matrix .lbl-y-lo {
-        left: -200px; bottom: 0;
+        left: -60px; bottom: 0;
         writing-mode: vertical-rl; transform: rotate(180deg);
         text-align: left;
       }
       #t1-ov-matrix .lbl-y-hi {
-        left: -200px; top: 0;
+        left: -60px; top: 0;
         writing-mode: vertical-rl; transform: rotate(180deg);
         text-align: right;
       }
@@ -112,7 +112,7 @@
         -webkit-backdrop-filter: var(--glass-blur);
         padding: 16px 30px;
         font-family: var(--font-body); font-weight: var(--wt-semi);
-        font-size: 26px; color: var(--text); text-align: center;
+        font-size: calc(26px * var(--type)); color: var(--text); text-align: center;
         position: relative; overflow: hidden;
         box-shadow: var(--glass-shadow);
       }
@@ -151,6 +151,24 @@
         background-size: 200px 200px; mix-blend-mode: overlay; opacity: 0.10;
         pointer-events: none; z-index: 7;
       }
+
+      /* Vertical and square: the matrix fills the safe box under the title, axis labels hug the axes,
+         quadrant chips shrink so each stays inside its quadrant. */
+      [data-format="vertical"] #t1-ov-matrix .title-row, [data-format="square"] #t1-ov-matrix .title-row { top: var(--safe-t); }
+      [data-format="vertical"] #t1-ov-matrix .title { font-size: calc(60px * var(--type)); }
+      [data-format="square"] #t1-ov-matrix .title { font-size: 60px; }
+      [data-format="vertical"] #t1-ov-matrix .matrix-wrap, [data-format="square"] #t1-ov-matrix .matrix-wrap {
+        left: calc(var(--safe-l) + 56px); right: var(--safe-r); bottom: calc(var(--safe-b) + 56px);
+      }
+      [data-format="vertical"] #t1-ov-matrix .matrix-wrap { top: calc(var(--safe-t) + 210px); }
+      [data-format="square"] #t1-ov-matrix .matrix-wrap { top: calc(var(--safe-t) + 110px); }
+      [data-format="vertical"] #t1-ov-matrix .lbl-x-lo, [data-format="vertical"] #t1-ov-matrix .lbl-x-hi,
+      [data-format="square"] #t1-ov-matrix .lbl-x-lo, [data-format="square"] #t1-ov-matrix .lbl-x-hi { bottom: -50px; }
+      [data-format="vertical"] #t1-ov-matrix .lbl-y-lo, [data-format="vertical"] #t1-ov-matrix .lbl-y-hi,
+      [data-format="square"] #t1-ov-matrix .lbl-y-lo, [data-format="square"] #t1-ov-matrix .lbl-y-hi { left: -52px; }
+      [data-format="vertical"] #t1-ov-matrix .axis-label { font-size: calc(18px * var(--type)); }
+      [data-format="vertical"] #t1-ov-matrix .q-chip { font-size: calc(20px * var(--type)); padding: 12px 20px; }
+      [data-format="square"] #t1-ov-matrix .q-chip { font-size: 24px; padding: 14px 22px; }
     </style>
   </head>
   <body>

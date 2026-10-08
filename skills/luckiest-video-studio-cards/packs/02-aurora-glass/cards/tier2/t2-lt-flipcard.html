@@ -16,7 +16,7 @@
       html, body { margin: 0; background: transparent; }
 
       #t2-lt-flip {
-        position: absolute; inset: 0; width: 1920px; height: 1080px;
+        position: absolute; inset: 0; width: var(--w); height: var(--h);
         background: transparent; overflow: hidden;
         font-family: var(--font-display);
       }
@@ -24,7 +24,7 @@
       /* Bloom behind the card */
       #t2-lt-flip .local-bloom {
         position: absolute;
-        left: 50px; bottom: 88px;
+        left: calc(var(--safe-l) - 30px); bottom: calc(var(--safe-b) + 34px);
         width: 520px; height: 240px;
         border-radius: 50%;
         background: radial-gradient(ellipse at 40% 75%,
@@ -39,7 +39,7 @@
       /* 3D scene wrapper - sets perspective */
       #t2-lt-flip .scene {
         position: absolute;
-        left: 80px; bottom: 118px;
+        left: var(--safe-l); bottom: calc(var(--safe-b) + 64px);
         width: 480px;
         height: 124px;
         perspective: 900px;
@@ -99,7 +99,7 @@
       #t2-lt-flip .name {
         font-family: var(--font-display);
         font-weight: var(--wt-bold);
-        font-size: 36px;
+        font-size: calc(36px * var(--type));
         letter-spacing: var(--track-snug);
         color: var(--white);
         text-shadow: var(--textglow);
@@ -111,7 +111,7 @@
       #t2-lt-flip .role {
         font-family: var(--font-body);
         font-weight: var(--wt-med);
-        font-size: 21px;
+        font-size: calc(21px * var(--type));
         letter-spacing: 0.01em;
         color: var(--text-dim);
         line-height: 1.3;
@@ -125,6 +125,16 @@
         background: var(--accent);
         box-shadow: 0 0 8px rgba(var(--accent-rgb), 0.85);
       }
+      /* Vertical and square: card sits at the bottom of the safe area, bloom follows, slots wrap. */
+      [data-format="vertical"] #t2-lt-flip .scene, [data-format="square"] #t2-lt-flip .scene {
+        bottom: var(--safe-b); max-width: calc(var(--w) - var(--safe-l) - var(--safe-r));
+      }
+      [data-format="vertical"] #t2-lt-flip .local-bloom, [data-format="square"] #t2-lt-flip .local-bloom { bottom: calc(var(--safe-b) - 30px); }
+      [data-format="vertical"] #t2-lt-flip [data-slot], [data-format="square"] #t2-lt-flip [data-slot] { white-space: normal; }
+      /* the card grows to the larger type instead of clipping it: the front face sets the height */
+      [data-format="vertical"] #t2-lt-flip .scene, [data-format="square"] #t2-lt-flip .scene { width: auto; min-width: 480px; height: auto; }
+      [data-format="vertical"] #t2-lt-flip .flipper, [data-format="square"] #t2-lt-flip .flipper { height: auto; min-height: 124px; }
+      [data-format="vertical"] #t2-lt-flip .face-front, [data-format="square"] #t2-lt-flip .face-front { position: relative; inset: auto; min-height: 124px; box-sizing: border-box; }
     </style>
   </head>
   <body>

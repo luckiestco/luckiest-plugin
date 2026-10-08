@@ -18,7 +18,7 @@
       html, body { margin: 0; }
 
       #t1-ov-kpi {
-        position: absolute; inset: 0; width: 1920px; height: 1080px;
+        position: absolute; inset: 0; width: var(--w); height: var(--h);
         background: var(--canvas); color: var(--text);
         font-family: var(--font-display); overflow: hidden;
       }
@@ -35,7 +35,7 @@
 
       /* Title */
       #t1-ov-kpi .title-row {
-        position: absolute; left: 0; right: 0; top: 80px;
+        position: absolute; left: var(--safe-l); right: var(--safe-r); top: calc(var(--safe-t) + 26px);
         text-align: center; z-index: 4;
       }
       #t1-ov-kpi .title {
@@ -50,7 +50,7 @@
 
       /* KPI row */
       #t1-ov-kpi .kpi-row {
-        position: absolute; left: 120px; right: 120px;
+        position: absolute; left: calc(var(--safe-l) + 24px); right: calc(var(--safe-r) + 24px);
         top: 50%;
         display: flex; gap: 36px; z-index: 4;
       }
@@ -92,7 +92,7 @@
       /* Big number */
       #t1-ov-kpi .kpi-num {
         font-family: var(--font-display); font-weight: var(--wt-black);
-        font-size: 130px; line-height: 1; letter-spacing: var(--track-tight);
+        font-size: calc(112px * var(--type)); line-height: 1; letter-spacing: var(--track-tight);
         background: linear-gradient(150deg, #ffffff 15%, rgba(var(--accent-rgb), 0.80) 85%);
         -webkit-background-clip: text; background-clip: text;
         -webkit-text-fill-color: transparent; text-fill-color: transparent;
@@ -110,7 +110,7 @@
       #t1-ov-kpi .kpi-delta {
         position: absolute; top: 52px; right: 48px;
         display: flex; align-items: center; gap: 6px;
-        font-family: var(--font-mono); font-size: 26px; font-weight: var(--wt-bold);
+        font-family: var(--font-mono); font-size: calc(26px * var(--type)); font-weight: var(--wt-bold);
         letter-spacing: 0.02em;
         padding: 6px 16px; border-radius: var(--radius-sm);
         background: rgba(255,255,255,0.06);
@@ -119,7 +119,7 @@
       #t1-ov-kpi .kpi-delta.up   { color: #4ADE80; text-shadow: 0 0 12px rgba(74,222,128,0.60); }
       #t1-ov-kpi .kpi-delta.down { color: var(--alert); text-shadow: 0 0 12px rgba(var(--alert-rgb),0.55); }
       #t1-ov-kpi .caret {
-        display: inline-block; font-size: 22px; line-height: 1;
+        display: inline-block; font-size: calc(22px * var(--type)); line-height: 1;
       }
 
       /* Divider rule under number */
@@ -140,6 +140,24 @@
         background-size: 200px 200px; mix-blend-mode: overlay; opacity: 0.10;
         pointer-events: none; z-index: 7;
       }
+
+      /* Vertical and square: the three KPI tiles stack in a fixed-height column under the title
+         (top is set so GSAP's yPercent -44 lands the column right under the title). */
+      [data-format="vertical"] #t1-ov-kpi .title-row, [data-format="square"] #t1-ov-kpi .title-row { top: var(--safe-t); }
+      [data-format="vertical"] #t1-ov-kpi .title { font-size: calc(60px * var(--type)); }
+      [data-format="square"] #t1-ov-kpi .title { font-size: 60px; }
+      [data-format="vertical"] #t1-ov-kpi .kpi-row, [data-format="square"] #t1-ov-kpi .kpi-row {
+        left: var(--safe-l); right: var(--safe-r); flex-direction: column; gap: 20px;
+      }
+      [data-format="vertical"] #t1-ov-kpi .kpi-row { height: 740px; top: calc(var(--safe-t) + 210px + 325.6px); }
+      [data-format="square"] #t1-ov-kpi .kpi-row { height: 790px; top: calc(var(--safe-t) + 120px + 347.6px); }
+      [data-format="vertical"] #t1-ov-kpi .kpi-tile, [data-format="square"] #t1-ov-kpi .kpi-tile { padding: 26px 34px; justify-content: center; }
+      [data-format="vertical"] #t1-ov-kpi .kpi-delta, [data-format="square"] #t1-ov-kpi .kpi-delta { top: 24px; right: 30px; }
+      [data-format="vertical"] #t1-ov-kpi .kpi-num { font-size: calc(80px * var(--type)); }
+      [data-format="square"] #t1-ov-kpi .kpi-num { font-size: 96px; }
+      [data-format="vertical"] #t1-ov-kpi .kpi-rule, [data-format="square"] #t1-ov-kpi .kpi-rule { margin-top: 12px; }
+      [data-format="vertical"] #t1-ov-kpi .kpi-unit, [data-format="square"] #t1-ov-kpi .kpi-unit { margin-top: 8px; }
+      [data-format="vertical"] #t1-ov-kpi .kpi-unit { font-size: calc(24px * var(--type)); }
     </style>
   </head>
   <body>

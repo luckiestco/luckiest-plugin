@@ -15,7 +15,7 @@
       html, body { margin: 0; background: transparent; }
 
       #t2-lb-spot {
-        position: absolute; inset: 0; width: 1920px; height: 1080px;
+        position: absolute; inset: 0; width: var(--w); height: var(--h);
         background: transparent; font-family: var(--font-display);
       }
 
@@ -43,7 +43,7 @@
       #t2-lb-spot .term {
         font-family: var(--font-display);
         font-weight: var(--wt-black);
-        font-size: 72px;
+        font-size: calc(72px * var(--type));
         letter-spacing: var(--track-tight);
         color: var(--ink);
         background: var(--paper);
@@ -65,6 +65,19 @@
         color: var(--paper);
         max-width: 600px;
       }
+
+      /* Vertical and square: sit at the bottom of the safe area, clear of the speaker's face. */
+      [data-format="vertical"] #t2-lb-spot .wrap, [data-format="square"] #t2-lb-spot .wrap {
+        top: auto; left: var(--safe-l); bottom: calc(var(--safe-b) + 24px);
+        width: auto; max-width: calc(var(--w) - var(--safe-l) - var(--safe-r));
+      }
+      [data-format="vertical"] #t2-lb-spot .vignette, [data-format="square"] #t2-lb-spot .vignette {
+        background: radial-gradient(
+          ellipse 680px 560px at calc(var(--safe-l) + 190px) calc(var(--h) - var(--safe-b) - 120px),
+          transparent 0%, rgba(23, 19, 14, 0.10) 42%, rgba(23, 19, 14, 0.35) 70%, rgba(23, 19, 14, 0.44) 100%
+        );
+      }
+      [data-format="vertical"] #t2-lb-spot [data-slot], [data-format="square"] #t2-lb-spot [data-slot] { white-space: normal; }
     </style>
   </head>
   <body>

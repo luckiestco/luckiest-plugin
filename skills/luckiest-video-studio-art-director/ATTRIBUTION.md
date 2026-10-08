@@ -12,6 +12,7 @@
 
 ## Changes in this edition
 
+- 1.5.0: "Do not repeat earlier runs", a practice studied from the Motion Studio skill bundle; no code or text copied.
 - 1.4.0: section 3b "Real, not generated", `references/shot-prompting.md`, and the "Looks generated" check.
 
 - 1.3.0: rule format, freedom levels, corrections loop, and the "repeats a logged correction" review column.

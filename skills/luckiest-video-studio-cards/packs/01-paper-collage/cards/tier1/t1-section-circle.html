@@ -12,7 +12,7 @@
     <style>
       html, body { margin: 0; }
       #t1-sec-circle {
-        position: absolute; inset: 0; width: 1920px; height: 1080px;
+        position: absolute; inset: 0; width: var(--w); height: var(--h);
         background: var(--paper); color: var(--ink);
         font-family: var(--font-display); overflow: hidden;
       }
@@ -36,7 +36,7 @@
         border-radius: 50%; background: var(--yellow); z-index: 1;
       }
       #t1-sec-circle .kicker {
-        position: absolute; left: 150px; top: 300px; z-index: 3;
+        position: absolute; left: calc(var(--safe-l) + 54px); top: calc(var(--safe-t) + 246px); z-index: 3;
         font-family: var(--font-label); font-weight: var(--wt-bold);
         font-size: var(--size-label); letter-spacing: var(--track-wide);
         text-transform: uppercase; color: var(--ink);
@@ -46,13 +46,13 @@
         background: var(--red); margin-right: 18px; vertical-align: middle;
       }
       #t1-sec-circle .headline {
-        position: absolute; left: 150px; top: 360px; width: 1160px; z-index: 3;
+        position: absolute; left: calc(var(--safe-l) + 54px); top: calc(var(--safe-t) + 306px); width: 1160px; z-index: 3;
         font-weight: var(--wt-thin); font-size: var(--size-display);
         line-height: 0.96; letter-spacing: var(--track-tight); color: var(--ink);
       }
       #t1-sec-circle .headline em { font-style: italic; font-weight: var(--wt-black); }
       #t1-sec-circle .scrap {
-        position: absolute; right: 150px; top: 250px; width: 470px; height: 560px;
+        position: absolute; right: calc(var(--safe-r) + 54px); top: calc(var(--safe-t) + 196px); width: 470px; height: 560px;
         background-color: var(--paper-2); background-image: var(--tex-halftone);
         background-size: var(--tex-halftone-size);
         outline: 10px solid var(--orange); outline-offset: -10px;
@@ -64,11 +64,27 @@
         font-size: var(--size-tiny); letter-spacing: var(--track-wide);
         color: var(--muted); background: var(--yellow); padding: 2px 10px;
       }      #t1-sec-circle .source {
-        position: absolute; left: 150px; bottom: 96px; z-index: 3;
+        position: absolute; left: calc(var(--safe-l) + 54px); bottom: calc(var(--safe-b) + 42px); z-index: 3;
         font-family: var(--font-label); font-weight: var(--wt-bold);
         font-size: var(--size-tiny); letter-spacing: var(--track-wide);
         text-transform: uppercase; color: var(--muted);
       }
+
+      /* Vertical and square: kicker and headline stacked from the top of the safe area, the
+         circle behind "rewired", the scrap tucked lower right, source at the safe bottom. */
+      [data-format="vertical"] #t1-sec-circle .stage { transform-origin: 46% 40%; }
+      /* text keeps ~40px clear of the safe edges because the stage zooms 6% toward its origin */
+      [data-format="vertical"] #t1-sec-circle .kicker, [data-format="square"] #t1-sec-circle .kicker { left: calc(var(--safe-l) + 40px); top: calc(var(--safe-t) + 36px); }
+      [data-format="vertical"] #t1-sec-circle .headline, [data-format="square"] #t1-sec-circle .headline {
+        left: calc(var(--safe-l) + 40px); top: calc(var(--safe-t) + 96px); width: calc(var(--w) - var(--safe-l) - var(--safe-r) - 80px);
+      }
+      [data-format="vertical"] #t1-sec-circle .headline { font-size: calc(120px * var(--type)); }
+      [data-format="square"] #t1-sec-circle .headline { font-size: 116px; width: 560px; }
+      [data-format="vertical"] #t1-sec-circle .circle { left: calc(var(--safe-l) + 170px); top: calc(var(--safe-t) + 340px); width: 290px; height: 290px; }
+      [data-format="square"] #t1-sec-circle .circle { left: calc(var(--safe-l) + 150px); top: calc(var(--safe-t) + 270px); width: 260px; height: 260px; }
+      [data-format="vertical"] #t1-sec-circle .scrap { right: calc(var(--safe-r) + 30px); top: auto; bottom: calc(var(--safe-b) + 84px); width: 280px; height: 240px; }
+      [data-format="square"] #t1-sec-circle .scrap { right: calc(var(--safe-r) + 30px); top: calc(var(--safe-t) + 200px); width: 300px; height: 400px; }
+      [data-format="vertical"] #t1-sec-circle .source, [data-format="square"] #t1-sec-circle .source { left: calc(var(--safe-l) + 40px); bottom: calc(var(--safe-b) + 34px); }
     </style>
   </head>
   <body>

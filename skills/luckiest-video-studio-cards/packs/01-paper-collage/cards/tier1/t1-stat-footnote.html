@@ -13,7 +13,7 @@
     <style>
       html, body { margin: 0; }
       #t1-stat-fn {
-        position: absolute; inset: 0; width: 1920px; height: 1080px;
+        position: absolute; inset: 0; width: var(--w); height: var(--h);
         background: var(--paper); color: var(--ink);
         font-family: var(--font-display); overflow: hidden;
       }
@@ -32,14 +32,14 @@
         background: radial-gradient(120% 120% at 50% 50%, transparent 56%, rgba(23,19,14,0.16) 100%);
       }
       #t1-stat-fn .kicker {
-        position: absolute; left: 50%; top: 164px; transform: translateX(-50%);
+        position: absolute; left: calc(var(--safe-l) + (var(--w) - var(--safe-l) - var(--safe-r)) / 2); top: calc(var(--safe-t) + 110px); transform: translateX(-50%);
         font-family: var(--font-label); font-weight: var(--wt-bold);
         font-size: var(--size-label); letter-spacing: var(--track-wide);
         text-transform: uppercase; color: var(--red); white-space: nowrap;
       }
       /* centered figure lockup */
       #t1-stat-fn .figure {
-        position: absolute; left: 50%; top: 50%; transform: translate(-50%, -54%);
+        position: absolute; left: calc(var(--safe-l) + (var(--w) - var(--safe-l) - var(--safe-r)) / 2); top: calc(var(--safe-t) + (var(--h) - var(--safe-t) - var(--safe-b)) / 2); transform: translate(-50%, -54%);
         text-align: center;
       }
       #t1-stat-fn .stat-wrap {
@@ -47,23 +47,23 @@
         clip-path: inset(0 50% 0 50%); /* revealed horizontally from center */
       }
       #t1-stat-fn .stat {
-        font-weight: var(--wt-black); font-size: 380px; line-height: 0.88;
+        font-weight: var(--wt-black); font-size: calc(380px * var(--type)); line-height: 0.88;
         letter-spacing: -0.04em; color: var(--ink); font-variant-numeric: tabular-nums;
       }
       #t1-stat-fn .dagger {
         position: absolute; top: 20px; right: -62px;
         font-family: var(--font-label); font-weight: var(--wt-black);
-        font-size: 80px; color: var(--yellow); line-height: 1;
+        font-size: calc(80px * var(--type)); color: var(--yellow); line-height: 1;
       }
       #t1-stat-fn .label {
         margin-top: 40px; font-weight: var(--wt-thin);
-        font-size: 58px; line-height: 1.1; letter-spacing: var(--track-tight);
+        font-size: calc(58px * var(--type)); line-height: 1.1; letter-spacing: var(--track-tight);
         color: var(--ink); white-space: nowrap;
       }
       #t1-stat-fn .label em { font-style: italic; font-weight: var(--wt-black); }
       /* footnote block at very bottom */
       #t1-stat-fn .fn-block {
-        position: absolute; left: 130px; right: 130px; bottom: 72px;
+        position: absolute; left: calc(var(--safe-l) + 34px); right: calc(var(--safe-r) + 34px); bottom: calc(var(--safe-b) + 18px);
       }
       #t1-stat-fn .fn-rule {
         height: 2px; background: var(--ink); width: 320px; transform-origin: left center;
@@ -77,12 +77,24 @@
         color: var(--yellow); font-weight: var(--wt-black);
       }
       #t1-stat-fn .source {
-        position: absolute; right: 130px; bottom: 96px;
+        position: absolute; right: calc(var(--safe-r) + 34px); bottom: calc(var(--safe-b) + 42px);
         font-family: var(--font-label); font-weight: var(--wt-bold);
         font-size: var(--size-tiny); letter-spacing: var(--track-wide);
         text-transform: uppercase; color: var(--muted);
       }
+
+      /* Vertical and square: kicker at the safe top, figure centered in the safe box with the
+         label wrapping at safe width, footnote above the source, both left on the safe bottom. */
+      [data-format="vertical"] #t1-stat-fn .kicker, [data-format="square"] #t1-stat-fn .kicker { top: var(--safe-t); }
+      [data-format="vertical"] #t1-stat-fn .label, [data-format="square"] #t1-stat-fn .label {
+        white-space: normal; width: calc(var(--w) - var(--safe-l) - var(--safe-r));
+      }
+      [data-format="square"] #t1-stat-fn .stat { font-size: 340px; }
+      [data-format="square"] #t1-stat-fn .label { font-size: 54px; }
+      [data-format="vertical"] #t1-stat-fn .fn-block, [data-format="square"] #t1-stat-fn .fn-block { left: var(--safe-l); right: var(--safe-r); bottom: calc(var(--safe-b) + 48px); }
+      [data-format="vertical"] #t1-stat-fn .source, [data-format="square"] #t1-stat-fn .source { right: auto; left: var(--safe-l); bottom: var(--safe-b); }
     </style>
+
   </head>
   <body>
     <div id="t1-stat-fn" data-composition-id="t1-stat-fn" data-start="0" data-width="1920" data-height="1080">

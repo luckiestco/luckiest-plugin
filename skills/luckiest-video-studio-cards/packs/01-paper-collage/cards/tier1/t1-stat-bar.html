@@ -14,7 +14,7 @@
     <style>
       html, body { margin: 0; }
       #t1-stat-bar {
-        position: absolute; inset: 0; width: 1920px; height: 1080px;
+        position: absolute; inset: 0; width: var(--w); height: var(--h);
         background: var(--paper); color: var(--ink);
         font-family: var(--font-display); overflow: hidden;
       }
@@ -33,13 +33,13 @@
         background: radial-gradient(120% 120% at 50% 50%, transparent 56%, rgba(23,19,14,0.16) 100%);
       }
       #t1-stat-bar .kicker {
-        position: absolute; left: 130px; top: 280px;
+        position: absolute; left: calc(var(--safe-l) + 34px); top: calc(var(--safe-t) + 226px);
         font-family: var(--font-label); font-weight: var(--wt-bold);
         font-size: var(--size-label); letter-spacing: var(--track-wide);
         text-transform: uppercase; color: var(--red);
       }
       #t1-stat-bar .track {
-        position: absolute; left: 130px; right: 130px; top: 470px; height: 150px;
+        position: absolute; left: calc(var(--safe-l) + 34px); right: calc(var(--safe-r) + 34px); top: calc(var(--safe-t) + 416px); height: 150px;
         background: var(--paper-2); box-shadow: inset 0 0 0 4px var(--ink);
       }
       #t1-stat-bar .fill {
@@ -49,27 +49,36 @@
       }
       #t1-stat-bar .stat {
         position: absolute; top: 50%; transform: translateY(-50%);
-        right: 30px; z-index: 3; font-weight: var(--wt-black); font-size: 120px;
+        right: 30px; z-index: 3; font-weight: var(--wt-black); font-size: calc(120px * var(--type));
         line-height: 1; color: var(--ink); font-variant-numeric: tabular-nums;
       }
       /* faint axis ticks on the track */
       #t1-stat-bar .ticks {
-        position: absolute; left: 130px; right: 130px; top: 632px; height: 26px;
+        position: absolute; left: calc(var(--safe-l) + 34px); right: calc(var(--safe-r) + 34px); top: calc(var(--safe-t) + 578px); height: 26px;
         background-image: repeating-linear-gradient(90deg, var(--ink) 0 3px, transparent 3px 25%);
         opacity: 0.35;
       }
       #t1-stat-bar .label {
-        position: absolute; left: 130px; right: 130px; top: 720px;
-        font-weight: var(--wt-thin); font-size: 60px; line-height: 1.05;
+        position: absolute; left: calc(var(--safe-l) + 34px); right: calc(var(--safe-r) + 34px); top: calc(var(--safe-t) + 666px);
+        font-weight: var(--wt-thin); font-size: calc(60px * var(--type)); line-height: 1.05;
         letter-spacing: var(--track-tight); color: var(--ink);
       }
       #t1-stat-bar .label em { font-style: italic; font-weight: var(--wt-black); }
       #t1-stat-bar .source {
-        position: absolute; left: 130px; bottom: 96px;
+        position: absolute; left: calc(var(--safe-l) + 34px); bottom: calc(var(--safe-b) + 42px);
         font-family: var(--font-label); font-weight: var(--wt-bold);
         font-size: var(--size-tiny); letter-spacing: var(--track-wide);
         text-transform: uppercase; color: var(--muted);
       }
+
+      /* Vertical and square: the same stack (kicker, bar, ticks, label) spans the safe width and
+         sits centered in the safe height; source stays at the safe bottom. */
+      [data-format="vertical"] #t1-stat-bar .kicker, [data-format="square"] #t1-stat-bar .kicker { left: var(--safe-l); top: calc(var(--safe-t) + 150px); }
+      [data-format="vertical"] #t1-stat-bar .track, [data-format="square"] #t1-stat-bar .track { left: var(--safe-l); right: var(--safe-r); top: calc(var(--safe-t) + 220px); height: 170px; }
+      [data-format="vertical"] #t1-stat-bar .ticks, [data-format="square"] #t1-stat-bar .ticks { left: var(--safe-l); right: var(--safe-r); top: calc(var(--safe-t) + 402px); }
+      [data-format="vertical"] #t1-stat-bar .label, [data-format="square"] #t1-stat-bar .label { left: var(--safe-l); right: var(--safe-r); top: calc(var(--safe-t) + 480px); }
+      [data-format="vertical"] #t1-stat-bar .stat { font-size: calc(110px * var(--type)); right: 22px; }
+      [data-format="vertical"] #t1-stat-bar .source, [data-format="square"] #t1-stat-bar .source { left: var(--safe-l); bottom: var(--safe-b); }
     </style>
   </head>
   <body>

@@ -16,7 +16,7 @@
       html, body { margin: 0; }
 
       #t1-ov-vstable {
-        position: absolute; inset: 0; width: 1920px; height: 1080px;
+        position: absolute; inset: 0; width: var(--w); height: var(--h);
         background: var(--canvas); color: var(--text);
         font-family: var(--font-display); overflow: hidden;
       }
@@ -37,7 +37,7 @@
 
       /* Title */
       #t1-ov-vstable .title-row {
-        position: absolute; left: 0; right: 0; top: 70px; text-align: center; z-index: 4;
+        position: absolute; left: var(--safe-l); right: var(--safe-r); top: calc(var(--safe-t) + 16px); text-align: center; z-index: 4;
       }
       #t1-ov-vstable .title {
         font-family: var(--font-display); font-weight: var(--wt-bold);
@@ -51,7 +51,7 @@
 
       /* Table wrapper */
       #t1-ov-vstable .table-wrap {
-        position: absolute; left: 160px; right: 160px; top: 220px; bottom: 80px;
+        position: absolute; left: 160px; right: 160px; top: 220px; bottom: calc(var(--safe-b) + 26px);
         z-index: 4; display: flex; flex-direction: column;
       }
 
@@ -138,7 +138,7 @@
         box-shadow: 0 0 22px rgba(var(--accent-rgb),0.40), 0 0 56px rgba(var(--accent-rgb),0.20);
         display: flex; align-items: center; justify-content: center;
         font-family: var(--font-display); font-weight: var(--wt-black);
-        font-size: 21px; letter-spacing: 0.04em;
+        font-size: calc(21px * var(--type)); letter-spacing: 0.04em;
         color: var(--accent); text-shadow: var(--textglow-accent);
         z-index: 5;
       }
@@ -152,7 +152,7 @@
         backdrop-filter: var(--glass-blur);
         -webkit-backdrop-filter: var(--glass-blur);
         font-family: var(--font-body); font-weight: var(--wt-med);
-        font-size: 30px; line-height: 1.4; color: var(--text);
+        font-size: calc(30px * var(--type)); line-height: 1.4; color: var(--text);
       }
       #t1-ov-vstable .cell.col-a { border-right: none; }
       #t1-ov-vstable .cell.col-b { border-left: none; }
@@ -169,6 +169,25 @@
         background-size: 200px 200px; mix-blend-mode: overlay; opacity: 0.10;
         pointer-events: none; z-index: 7;
       }
+
+      /* Vertical: the two option columns keep the full safe width; each row's label moves above its
+         pair of cells. Square: the landscape table with a narrower label column. */
+      [data-format="vertical"] #t1-ov-vstable .title-row, [data-format="square"] #t1-ov-vstable .title-row { top: var(--safe-t); }
+      [data-format="vertical"] #t1-ov-vstable .title { font-size: calc(64px * var(--type)); }
+      [data-format="square"] #t1-ov-vstable .title { font-size: 72px; }
+      [data-format="vertical"] #t1-ov-vstable .table-wrap, [data-format="square"] #t1-ov-vstable .table-wrap { left: var(--safe-l); right: var(--safe-r); bottom: var(--safe-b); }
+      [data-format="vertical"] #t1-ov-vstable .table-wrap { top: 420px; }
+      [data-format="square"] #t1-ov-vstable .table-wrap { top: 190px; }
+      [data-format="vertical"] #t1-ov-vstable .hdr-row, [data-format="vertical"] #t1-ov-vstable .data-row { grid-template-columns: 1fr 56px 1fr; }
+      [data-format="vertical"] #t1-ov-vstable .hdr-spacer { display: none; }
+      [data-format="vertical"] #t1-ov-vstable .hdr-cell { padding: 22px 24px; }
+      [data-format="vertical"] #t1-ov-vstable .data-row { grid-template-rows: auto 1fr; }
+      [data-format="vertical"] #t1-ov-vstable .row-label { grid-column: 1 / -1; justify-content: flex-start; padding: 18px 0 10px; }
+      [data-format="vertical"] #t1-ov-vstable .cell { padding: 20px 24px; font-size: calc(26px * var(--type)); }
+      [data-format="square"] #t1-ov-vstable .hdr-row, [data-format="square"] #t1-ov-vstable .data-row { grid-template-columns: 170px 1fr 64px 1fr; }
+      [data-format="square"] #t1-ov-vstable .hdr-cell { padding: 24px 28px; }
+      [data-format="square"] #t1-ov-vstable .row-label { padding-right: 22px; }
+      [data-format="square"] #t1-ov-vstable .cell { padding: 24px 28px; font-size: 28px; }
     </style>
   </head>
   <body>

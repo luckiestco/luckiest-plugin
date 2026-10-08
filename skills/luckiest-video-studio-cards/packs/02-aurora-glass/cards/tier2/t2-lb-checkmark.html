@@ -14,7 +14,7 @@
       html, body { margin: 0; background: transparent; }
 
       #t2-lb-chk {
-        position: absolute; inset: 0; width: 1920px; height: 1080px;
+        position: absolute; inset: 0; width: var(--w); height: var(--h);
         background: transparent; overflow: hidden;
         font-family: var(--font-display);
       }
@@ -36,7 +36,7 @@
       /* Outer wrapper - left side, mid-height */
       #t2-lb-chk .wrapper {
         position: absolute;
-        left: 80px; top: 380px;
+        left: var(--safe-l); top: calc(var(--safe-t) + 326px);
         display: flex;
         flex-direction: column;
         align-items: flex-start;
@@ -74,7 +74,7 @@
       #t2-lb-chk .term {
         font-family: var(--font-display);
         font-weight: var(--wt-bold);
-        font-size: 38px;
+        font-size: calc(38px * var(--type));
         letter-spacing: var(--track-snug);
         color: var(--white);
         text-shadow: var(--textglow);
@@ -99,10 +99,19 @@
       #t2-lb-chk .detail {
         font-family: var(--font-body);
         font-weight: var(--wt-reg);
-        font-size: 22px;
+        font-size: calc(22px * var(--type));
         line-height: 1.45;
         color: var(--text-dim);
       }
+      /* Vertical and square: card moves to the bottom-left of the safe area, glow follows, slots wrap. */
+      [data-format="vertical"] #t2-lb-chk .wrapper, [data-format="square"] #t2-lb-chk .wrapper {
+        top: auto; right: auto; left: var(--safe-l); bottom: var(--safe-b);
+        max-width: calc(var(--w) - var(--safe-l) - var(--safe-r));
+      }
+      [data-format="vertical"] #t2-lb-chk .local-glow, [data-format="square"] #t2-lb-chk .local-glow {
+        top: auto; right: auto; left: calc(var(--safe-l) - 40px); bottom: calc(var(--safe-b) - 40px);
+      }
+      [data-format="vertical"] #t2-lb-chk [data-slot], [data-format="square"] #t2-lb-chk [data-slot] { white-space: normal; }
     </style>
   </head>
   <body>

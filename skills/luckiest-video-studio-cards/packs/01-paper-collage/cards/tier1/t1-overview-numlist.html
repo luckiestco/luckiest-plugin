@@ -12,7 +12,7 @@
     <style>
       html, body { margin: 0; }
       #t1-ov-numlist {
-        position: absolute; inset: 0; width: 1920px; height: 1080px;
+        position: absolute; inset: 0; width: var(--w); height: var(--h);
         background: var(--paper); color: var(--ink);
         font-family: var(--font-display); overflow: hidden;
       }
@@ -34,7 +34,7 @@
 
       /* marker title */
       #t1-ov-numlist .title {
-        position: absolute; top: 80px; left: 130px;
+        position: absolute; top: calc(var(--safe-t) + 26px); left: calc(var(--safe-l) + 34px);
         background: var(--yellow); padding: 8px 28px;
         transform: skewX(var(--marker-skew)); transform-origin: left center;
         font-weight: var(--wt-black); font-size: var(--size-title);
@@ -42,14 +42,14 @@
         white-space: nowrap; z-index: 3;
       }
       #t1-ov-numlist .intro {
-        position: absolute; top: 220px; left: 130px; right: 130px;
+        position: absolute; top: calc(var(--safe-t) + 166px); left: calc(var(--safe-l) + 34px); right: calc(var(--safe-r) + 34px);
         font-family: var(--font-label); font-weight: var(--wt-reg);
         font-size: var(--size-body); color: var(--muted); z-index: 3;
       }
 
       /* row list */
       #t1-ov-numlist .rows {
-        position: absolute; top: 300px; left: 130px; right: 130px;
+        position: absolute; top: calc(var(--safe-t) + 246px); left: calc(var(--safe-l) + 34px); right: calc(var(--safe-r) + 34px);
         display: flex; flex-direction: column; gap: 0; z-index: 3;
       }
       #t1-ov-numlist .row {
@@ -61,7 +61,7 @@
 
       #t1-ov-numlist .ordinal {
         flex: 0 0 120px; text-align: right;
-        font-weight: var(--wt-black); font-size: 100px; line-height: 1;
+        font-weight: var(--wt-black); font-size: calc(100px * var(--type)); line-height: 1;
         letter-spacing: var(--track-tight); color: var(--yellow);
         /* yellow outline with ink stroke using text-shadow for contrast */
         -webkit-text-stroke: 3px var(--ink);
@@ -74,7 +74,7 @@
       }
       #t1-ov-numlist .copy { flex: 1 1 auto; }
       #t1-ov-numlist .topic {
-        font-weight: var(--wt-black); font-size: 54px;
+        font-weight: var(--wt-black); font-size: calc(54px * var(--type));
         letter-spacing: var(--track-tight); line-height: 1.05; color: var(--ink);
       }
       #t1-ov-numlist .sub {
@@ -84,11 +84,30 @@
       }
 
       #t1-ov-numlist .source {
-        position: absolute; right: 130px; bottom: 88px;
+        position: absolute; right: calc(var(--safe-r) + 34px); bottom: calc(var(--safe-b) + 34px);
         font-family: var(--font-label); font-weight: var(--wt-bold);
         font-size: var(--size-tiny); letter-spacing: var(--track-wide);
         text-transform: uppercase; color: var(--muted); z-index: 3;
       }
+
+      /* Vertical and square: same list pinned to the safe box, title sized to the narrower width,
+         tighter rows, source moved under the list at the bottom left. */
+      [data-format="vertical"] #t1-ov-numlist .title, [data-format="square"] #t1-ov-numlist .title {
+        top: var(--safe-t); left: var(--safe-l); white-space: normal;
+        max-width: calc(var(--w) - var(--safe-l) - var(--safe-r) - 56px);
+      }
+      [data-format="vertical"] #t1-ov-numlist .title { font-size: calc(54px * var(--type)); }
+      [data-format="square"] #t1-ov-numlist .title { font-size: 72px; }
+      [data-format="vertical"] #t1-ov-numlist .intro, [data-format="square"] #t1-ov-numlist .intro { left: var(--safe-l); right: var(--safe-r); }
+      [data-format="vertical"] #t1-ov-numlist .intro { top: calc(var(--safe-t) + 110px); }
+      [data-format="square"] #t1-ov-numlist .intro { top: calc(var(--safe-t) + 116px); }
+      [data-format="vertical"] #t1-ov-numlist .rows, [data-format="square"] #t1-ov-numlist .rows { left: var(--safe-l); right: var(--safe-r); }
+      [data-format="vertical"] #t1-ov-numlist .rows { top: calc(var(--safe-t) + 220px); }
+      [data-format="square"] #t1-ov-numlist .rows { top: calc(var(--safe-t) + 180px); }
+      [data-format="vertical"] #t1-ov-numlist .row, [data-format="square"] #t1-ov-numlist .row { padding: 20px 0; gap: 30px; }
+      [data-format="vertical"] #t1-ov-numlist .ordinal { flex-basis: 110px; font-size: calc(80px * var(--type)); }
+      [data-format="square"] #t1-ov-numlist .ordinal { flex-basis: 110px; font-size: 88px; }
+      [data-format="vertical"] #t1-ov-numlist .source, [data-format="square"] #t1-ov-numlist .source { right: auto; left: var(--safe-l); bottom: var(--safe-b); }
     </style>
   </head>
   <body>

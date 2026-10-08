@@ -1,3 +1,17 @@
+## 0.1.32 — 2026-10-08 (npm luckiest-co 1.0.33)
+Video studio watches its own renders, makes landscape, vertical, and square from one storyboard, and times sound to the cut.
+
+- New `luckiest-video-watcher` 1.0.0, built from the watch skill in claude-video (MIT). Frames plus transcript, or Gemini watching the whole video. Quick mode picks the cheapest settings on its own. Study mode asks once how deep to go. Private footage stays local.
+- `luckiest-video-studio` 1.12.0: a quick watch of the final render after the QA gates.
+- `luckiest-video-studio-reference` 1.1.0 and `luckiest-video-studio-recreate` 1.3.0: study mode adds sound and speech to the breakdown.
+- `luckiest-research` 1.1.0: shared videos and "summarize this video" go to the watcher.
+- `/luckiest plan`: a video in the request gets a quick watch before tasks are drafted.
+- `luckiest-video-studio` 1.13.0: formats come last. Approve the 16:9 first, then add vertical and square: landscape clips are reused, and `render-scenes.mjs --stills` with `qa.mjs safe --stills` checks every format's layout without a test render.
+- `luckiest-video-studio-cards` 1.3.0: all 406 cards render in landscape, vertical, and square from one file, with text inside each format's safe area.
+- `luckiest-video-studio` 1.11.0: optional storyboard `formats` renders one file per format; demo footage crops around a `focus` point; `qa.mjs safe` checks each format's safe area. `luckiest-video-studio-reel` 1.3.0 renders all three formats.
+- `luckiest-video-studio` 1.10.0: sound effects timed by anchor (pops on the frame, whooshes on the cut), music placement and loudness, and new `avsync`, facts, and loop gates. `luckiest-video-studio-motion` 1.1.0 adds springs; `luckiest-video-studio-art-director` 1.5.0 avoids repeating earlier runs.
+- The review player now tracks its Motion OS upstream for changes.
+
 ## 0.1.31 — 2026-10-07 (npm luckiest-co 1.0.32)
 Brandkit sizes logos like the real product, and video studio opens finished videos in a review player.
 

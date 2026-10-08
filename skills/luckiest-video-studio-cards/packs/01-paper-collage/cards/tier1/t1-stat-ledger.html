@@ -13,7 +13,7 @@
     <style>
       html, body { margin: 0; }
       #t1-stat-ledger {
-        position: absolute; inset: 0; width: 1920px; height: 1080px;
+        position: absolute; inset: 0; width: var(--w); height: var(--h);
         background: var(--paper-2); color: var(--ink);
         font-family: var(--font-display); overflow: hidden;
       }
@@ -26,7 +26,7 @@
         background: radial-gradient(120% 120% at 50% 50%, transparent 56%, rgba(23,19,14,0.2) 100%);
       }
       #t1-stat-ledger .book {
-        position: absolute; left: 160px; right: 160px; top: 170px; bottom: 170px;
+        position: absolute; left: calc(var(--safe-l) + 64px); right: calc(var(--safe-r) + 64px); top: calc(var(--safe-t) + 116px); bottom: calc(var(--safe-b) + 116px);
         background: var(--paper);
         box-shadow: 0 26px 50px rgba(23,19,14,0.28); padding: 0 70px;
         /* the red left margin rule of a ledger */
@@ -45,16 +45,16 @@
       }
       #t1-stat-ledger .row .l {
         font-family: var(--font-label); font-weight: var(--wt-bold);
-        font-size: 40px; letter-spacing: 0.02em; color: var(--muted);
+        font-size: calc(40px * var(--type)); letter-spacing: 0.02em; color: var(--muted);
       }
       #t1-stat-ledger .row .v {
-        font-weight: var(--wt-bold); font-size: 56px; color: var(--muted);
+        font-weight: var(--wt-bold); font-size: calc(56px * var(--type)); color: var(--muted);
         font-variant-numeric: tabular-nums;
       }
       #t1-stat-ledger .row.hero { border-bottom: 5px solid var(--ink); padding-top: 40px; }
-      #t1-stat-ledger .row.hero .l { color: var(--ink); font-size: 48px; }
+      #t1-stat-ledger .row.hero .l { color: var(--ink); font-size: calc(48px * var(--type)); }
       #t1-stat-ledger .row.hero .v {
-        position: relative; font-weight: var(--wt-black); font-size: 150px;
+        position: relative; font-weight: var(--wt-black); font-size: calc(150px * var(--type));
         color: var(--ink); line-height: 1; padding: 0 16px;
       }
       #t1-stat-ledger .row.hero .v .cell {
@@ -66,6 +66,18 @@
         font-size: var(--size-tiny); letter-spacing: var(--track-wide);
         text-transform: uppercase; color: var(--muted);
       }
+
+      /* Vertical and square: the ledger sheet fills the safe area. In vertical the hero row stacks,
+         its label above and the total under it on the right. */
+      [data-format="vertical"] #t1-stat-ledger .book, [data-format="square"] #t1-stat-ledger .book {
+        left: var(--safe-l); right: var(--safe-r); top: calc(var(--safe-t) + 60px); bottom: calc(var(--safe-b) + 60px);
+      }
+      [data-format="vertical"] #t1-stat-ledger .title, [data-format="square"] #t1-stat-ledger .title,
+      [data-format="vertical"] #t1-stat-ledger .source, [data-format="square"] #t1-stat-ledger .source { left: 48px; }
+      [data-format="vertical"] #t1-stat-ledger .rows, [data-format="square"] #t1-stat-ledger .rows { left: 48px; right: 48px; }
+      [data-format="vertical"] #t1-stat-ledger .row.hero { flex-direction: column; align-items: flex-start; gap: 18px; }
+      [data-format="vertical"] #t1-stat-ledger .row.hero .v { align-self: flex-end; }
+      [data-format="square"] #t1-stat-ledger .row.hero .v { font-size: 130px; }
     </style>
   </head>
   <body>

@@ -13,7 +13,7 @@
       html, body { margin: 0; background: transparent; }
 
       #t2-lb-hbox {
-        position: absolute; inset: 0; width: 1920px; height: 1080px;
+        position: absolute; inset: 0; width: var(--w); height: var(--h);
         background: transparent; overflow: hidden;
         font-family: var(--font-display);
       }
@@ -32,7 +32,7 @@
 
       /* Outer card - glass backing, right anchor */
       #t2-lb-hbox .card {
-        position: absolute; right: 80px; top: 300px;
+        position: absolute; right: var(--safe-r); top: calc(var(--safe-t) + 246px);
         width: 480px;
         background: var(--glass-bg-dark);
         backdrop-filter: var(--glass-blur);
@@ -83,7 +83,7 @@
       /* Term text */
       #t2-lb-hbox .term {
         font-family: var(--font-display); font-weight: var(--wt-black);
-        font-size: 42px; letter-spacing: var(--track-tight);
+        font-size: calc(42px * var(--type)); letter-spacing: var(--track-tight);
         line-height: 1.1;
         background: linear-gradient(110deg, #FFFFFF 0%, #FFFFFF 50%, var(--accent) 100%);
         -webkit-background-clip: text;
@@ -98,9 +98,18 @@
       /* Detail */
       #t2-lb-hbox .detail {
         font-family: var(--font-body); font-weight: var(--wt-reg);
-        font-size: 26px; line-height: 1.55;
+        font-size: calc(26px * var(--type)); line-height: 1.55;
         color: var(--text-dim);
       }
+      /* Vertical and square: card moves to the bottom-left of the safe area, glow follows, slots wrap. */
+      [data-format="vertical"] #t2-lb-hbox .card, [data-format="square"] #t2-lb-hbox .card {
+        top: auto; right: auto; left: var(--safe-l); bottom: var(--safe-b);
+        max-width: calc(var(--w) - var(--safe-l) - var(--safe-r));
+      }
+      [data-format="vertical"] #t2-lb-hbox .local-glow, [data-format="square"] #t2-lb-hbox .local-glow {
+        top: auto; right: auto; left: calc(var(--safe-l) - 40px); bottom: calc(var(--safe-b) - 40px);
+      }
+      [data-format="vertical"] #t2-lb-hbox [data-slot], [data-format="square"] #t2-lb-hbox [data-slot] { white-space: normal; }
     </style>
   </head>
   <body>

@@ -14,7 +14,7 @@
       html, body { margin: 0; background: transparent; }
 
       #t2-lb-lead {
-        position: absolute; inset: 0; width: 1920px; height: 1080px;
+        position: absolute; inset: 0; width: var(--w); height: var(--h);
         background: transparent; overflow: hidden;
         font-family: var(--font-display);
       }
@@ -33,7 +33,7 @@
 
       /* SVG leader canvas - absolutely positioned, right side */
       #t2-lb-lead .leader-svg {
-        position: absolute; right: 80px; top: 300px;
+        position: absolute; right: var(--safe-r); top: 300px;
         width: 540px; height: 220px;
         overflow: visible;
       }
@@ -64,7 +64,7 @@
 
       /* Label block anchored right */
       #t2-lb-lead .label-wrap {
-        position: absolute; right: 80px; top: 430px;
+        position: absolute; right: var(--safe-r); top: calc(var(--safe-t) + 376px);
         display: flex; flex-direction: column; align-items: flex-start; gap: 10px;
       }
 
@@ -91,7 +91,7 @@
 
       #t2-lb-lead .term-text {
         font-family: var(--font-display); font-weight: var(--wt-bold);
-        font-size: 28px; letter-spacing: var(--track-snug);
+        font-size: calc(28px * var(--type)); letter-spacing: var(--track-snug);
         color: var(--white); text-shadow: var(--textglow);
         white-space: nowrap;
       }
@@ -110,9 +110,20 @@
 
       #t2-lb-lead .detail-text {
         font-family: var(--font-body); font-weight: var(--wt-reg);
-        font-size: 22px; line-height: 1.45;
+        font-size: calc(22px * var(--type)); line-height: 1.45;
         color: var(--text-dim);
       }
+      /* Vertical and square: label hangs from the left of the safe area, low in the safe box, with the
+         leader curve coming down into the pill from the upper right. */
+      [data-format="vertical"] #t2-lb-lead .leader-svg, [data-format="square"] #t2-lb-lead .leader-svg { right: auto; left: calc(var(--safe-l) - 40px); top: calc(var(--h) - var(--safe-b) - 340px); }
+      [data-format="vertical"] #t2-lb-lead .label-wrap, [data-format="square"] #t2-lb-lead .label-wrap {
+        right: auto; left: var(--safe-l); top: calc(var(--h) - var(--safe-b) - 340px + 130px);
+        max-width: calc(var(--w) - var(--safe-l) - var(--safe-r));
+      }
+      [data-format="vertical"] #t2-lb-lead .local-glow, [data-format="square"] #t2-lb-lead .local-glow {
+        top: auto; right: auto; left: calc(var(--safe-l) - 40px); bottom: calc(var(--safe-b) + 20px);
+      }
+      [data-format="vertical"] #t2-lb-lead [data-slot], [data-format="square"] #t2-lb-lead [data-slot] { white-space: normal; }
     </style>
   </head>
   <body>

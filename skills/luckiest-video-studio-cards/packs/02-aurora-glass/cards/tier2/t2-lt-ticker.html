@@ -14,15 +14,17 @@
       html, body { margin: 0; background: transparent; }
 
       #t2-lt-tick {
-        position: absolute; inset: 0; width: 1920px; height: 1080px;
+        position: absolute; inset: 0; width: var(--w); height: var(--h);
         background: transparent; overflow: hidden;
         font-family: var(--font-display);
+        /* bottom of the ticker bar; vertical and square move it to the safe bottom */
+        --lt-y: calc(var(--safe-b) + 26px);
       }
 
       /* Localized bloom behind the bar */
       #t2-lt-tick .local-bloom {
         position: absolute;
-        left: 0; bottom: 60px;
+        left: 0; bottom: calc(var(--lt-y) - 20px);
         width: 1000px; height: 100px;
         border-radius: 50%;
         background: radial-gradient(ellipse at 20% 100%,
@@ -37,8 +39,8 @@
       /* Full-width ticker bar */
       #t2-lt-tick .bar {
         position: absolute;
-        left: 0; bottom: 80px;
-        width: 1920px; height: 72px;
+        left: 0; bottom: var(--lt-y);
+        width: var(--w); height: 72px;
         background: var(--glass-bg-dark);
         backdrop-filter: var(--glass-blur);
         -webkit-backdrop-filter: var(--glass-blur);
@@ -67,7 +69,8 @@
       #t2-lt-tick .flag {
         flex-shrink: 0;
         height: 72px;
-        padding: 0 28px;
+        /* the flag grows out of the left wall; its text starts at the safe inset */
+        padding: 0 28px 0 var(--safe-l);
         background: var(--accent);
         display: flex;
         align-items: center;
@@ -91,7 +94,7 @@
       #t2-lt-tick .flag-text {
         font-family: var(--font-body);
         font-weight: var(--wt-bold);
-        font-size: 21px;
+        font-size: calc(21px * var(--type));
         letter-spacing: var(--track-wide);
         color: var(--canvas);
         text-transform: uppercase;
@@ -111,6 +114,7 @@
         flex: 1;
         overflow: hidden;
         height: 72px;
+        margin-right: var(--safe-r);
         display: flex;
         align-items: center;
         position: relative;
@@ -135,7 +139,7 @@
       #t2-lt-tick .headline {
         font-family: var(--font-display);
         font-weight: var(--wt-semi);
-        font-size: 30px;
+        font-size: calc(30px * var(--type));
         letter-spacing: 0.01em;
         color: var(--white);
         text-shadow: var(--textglow);
@@ -148,6 +152,24 @@
         color: var(--accent);
         text-shadow: var(--textglow-accent);
       }
+      /* Vertical and square: flag over a wrapping headline in a taller bar on the safe bottom. */
+      [data-format="vertical"] #t2-lt-tick, [data-format="square"] #t2-lt-tick { --lt-y: var(--safe-b); }
+      [data-format="vertical"] #t2-lt-tick .bar, [data-format="square"] #t2-lt-tick .bar {
+        height: auto; flex-direction: column; align-items: flex-start;
+      }
+      [data-format="vertical"] #t2-lt-tick .flag, [data-format="square"] #t2-lt-tick .flag { height: 60px; }
+      [data-format="vertical"] #t2-lt-tick .flag::after, [data-format="square"] #t2-lt-tick .flag::after {
+        right: -15px; border-top-width: 30px; border-bottom-width: 30px; border-left-width: 15px;
+      }
+      [data-format="vertical"] #t2-lt-tick .divider, [data-format="square"] #t2-lt-tick .divider { display: none; }
+      [data-format="vertical"] #t2-lt-tick .scroll-track, [data-format="square"] #t2-lt-tick .scroll-track {
+        flex: none; align-self: stretch; height: auto;
+        margin: 0 var(--safe-r) 0 calc(var(--safe-l) - 20px); padding: 18px 20px 22px 0;
+      }
+      [data-format="vertical"] #t2-lt-tick .scroll-track::before, [data-format="square"] #t2-lt-tick .scroll-track::before,
+      [data-format="vertical"] #t2-lt-tick .scroll-track::after, [data-format="square"] #t2-lt-tick .scroll-track::after { display: none; }
+      [data-format="vertical"] #t2-lt-tick .headline, [data-format="square"] #t2-lt-tick .headline { line-height: 1.25; }
+      [data-format="vertical"] #t2-lt-tick [data-slot], [data-format="square"] #t2-lt-tick [data-slot] { white-space: normal; }
     </style>
   </head>
   <body>

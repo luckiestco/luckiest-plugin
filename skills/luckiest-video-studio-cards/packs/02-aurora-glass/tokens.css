@@ -60,14 +60,21 @@
   --wt-bold:   700;
   --wt-black:  800;
 
-  /* video sizes for 1920x1080 (big - readable in 2s) */
-  --size-mega:     300px;   /* hero stat number */
-  --size-display:  140px;   /* takeover headline */
-  --size-title:    84px;    /* section title */
-  --size-headline: 54px;    /* card headline */
-  --size-body:     32px;    /* supporting copy */
-  --size-label:    24px;    /* kicker / metadata */
-  --size-tiny:     19px;    /* credits, fine print, timestamps */
+  /* --- format (master landscape defaults) --------------------------------- */
+  /* render-scenes.mjs stamps the real --w, --h, --u and safe insets per format and
+     sets data-format on the root, which raises --type in vertical. */
+  --w: 1920px; --h: 1080px; --u: 10.8px;
+  --safe-t: 54px; --safe-b: 54px; --safe-l: 96px; --safe-r: 96px;
+  --type: 1;
+
+  /* video sizes, scaled up 20% in vertical (big - readable in 2s) */
+  --size-mega:     calc(300px * var(--type));   /* hero stat number */
+  --size-display:  calc(140px * var(--type));   /* takeover headline */
+  --size-title:    calc(84px * var(--type));    /* section title */
+  --size-headline: calc(54px * var(--type));    /* card headline */
+  --size-body:     calc(32px * var(--type));    /* supporting copy */
+  --size-label:    calc(24px * var(--type));    /* kicker / metadata */
+  --size-tiny:     calc(19px * var(--type));    /* credits, fine print, timestamps */
 
   --track-tight: -0.02em;   /* display tracking */
   --track-snug:  -0.01em;
@@ -132,3 +139,6 @@
   /* Fine film grain over everything - keeps the dark from banding. */
   --tex-grain: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='2' seed='11' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
 }
+
+/* The phone shows the whole vertical frame smaller, so type runs 20% larger there. */
+:root[data-format="vertical"] { --type: 1.2; }

@@ -15,7 +15,7 @@
       html, body { margin: 0; }
 
       #t1-ov-bento {
-        position: absolute; inset: 0; width: 1920px; height: 1080px;
+        position: absolute; inset: 0; width: var(--w); height: var(--h);
         background: var(--canvas); color: var(--text);
         font-family: var(--font-display); overflow: hidden;
       }
@@ -34,7 +34,7 @@
 
       /* Title */
       #t1-ov-bento .title-row {
-        position: absolute; left: 0; right: 0; top: 80px; text-align: center; z-index: 4;
+        position: absolute; left: var(--safe-l); right: var(--safe-r); top: calc(var(--safe-t) + 26px); text-align: center; z-index: 4;
       }
       #t1-ov-bento .title {
         font-family: var(--font-display); font-weight: var(--wt-bold);
@@ -48,7 +48,7 @@
 
       /* Bento grid container */
       #t1-ov-bento .bento {
-        position: absolute; left: 96px; right: 96px; top: 230px; bottom: 72px;
+        position: absolute; left: var(--safe-l); right: var(--safe-r); top: calc(var(--safe-t) + 176px); bottom: calc(var(--safe-b) + 18px);
         display: grid;
         grid-template-columns: 1.45fr 1fr;
         grid-template-rows: 1fr 1fr 1fr;
@@ -119,12 +119,12 @@
       /* Headings */
       #t1-ov-bento .card-heading {
         font-family: var(--font-display); font-weight: var(--wt-bold);
-        font-size: 44px; letter-spacing: var(--track-snug); line-height: 1.15;
+        font-size: calc(44px * var(--type)); letter-spacing: var(--track-snug); line-height: 1.15;
         color: var(--white); text-shadow: var(--textglow);
         margin-bottom: 16px;
       }
       #t1-ov-bento .tile-feat .card-heading {
-        font-size: 56px; color: var(--accent); text-shadow: var(--textglow-accent);
+        font-size: calc(56px * var(--type)); color: var(--accent); text-shadow: var(--textglow-accent);
         margin-bottom: 20px;
       }
 
@@ -133,12 +133,12 @@
         font-family: var(--font-body); font-weight: var(--wt-reg);
         font-size: var(--size-body); line-height: 1.55; color: var(--text-dim);
       }
-      #t1-ov-bento .tile-feat .card-body { font-size: 34px; line-height: 1.6; }
+      #t1-ov-bento .tile-feat .card-body { font-size: calc(34px * var(--type)); line-height: 1.6; }
 
       /* Small tile text block */
       #t1-ov-bento .tile-sm .text-wrap { display: flex; flex-direction: column; }
-      #t1-ov-bento .tile-sm .card-heading { font-size: 34px; margin-bottom: 8px; }
-      #t1-ov-bento .tile-sm .card-body   { font-size: 26px; line-height: 1.45; }
+      #t1-ov-bento .tile-sm .card-heading { font-size: calc(34px * var(--type)); margin-bottom: 8px; }
+      #t1-ov-bento .tile-sm .card-body   { font-size: calc(26px * var(--type)); line-height: 1.45; }
 
       #t1-ov-bento .vignette {
         position: absolute; inset: 0; pointer-events: none; z-index: 6;
@@ -149,6 +149,32 @@
         background-size: 200px 200px; mix-blend-mode: overlay; opacity: 0.10;
         pointer-events: none; z-index: 7;
       }
+
+      /* Vertical: one column, feature tile on top, small tiles under it. Square: keeps two columns, tighter. */
+      [data-format="vertical"] #t1-ov-bento .title-row, [data-format="square"] #t1-ov-bento .title-row { top: var(--safe-t); }
+      [data-format="vertical"] #t1-ov-bento .title { font-size: calc(64px * var(--type)); }
+      [data-format="square"] #t1-ov-bento .title { font-size: 64px; }
+      [data-format="vertical"] #t1-ov-bento .bento {
+        top: calc(var(--safe-t) + 190px); bottom: var(--safe-b); gap: 18px;
+        grid-template-columns: 1fr; grid-template-rows: auto auto auto auto; align-content: center;
+      }
+      [data-format="vertical"] #t1-ov-bento .tile-feat { grid-row: auto; padding: 30px 36px; }
+      [data-format="vertical"] #t1-ov-bento .tile-feat .icon-box { width: 56px; height: 56px; margin-bottom: 14px; }
+      [data-format="vertical"] #t1-ov-bento .tile-feat .icon-box svg { width: 30px; height: 30px; }
+      [data-format="vertical"] #t1-ov-bento .tile-feat .card-heading { font-size: calc(40px * var(--type)); margin-bottom: 10px; }
+      [data-format="vertical"] #t1-ov-bento .tile-feat .card-body { font-size: calc(22px * var(--type)); line-height: 1.45; }
+      [data-format="vertical"] #t1-ov-bento .tile-sm { padding: 20px 28px; gap: 20px; }
+      [data-format="vertical"] #t1-ov-bento .tile-sm .icon-box { width: 56px; height: 56px; }
+      [data-format="vertical"] #t1-ov-bento .tile-sm .card-heading { font-size: calc(28px * var(--type)); margin-bottom: 4px; }
+      [data-format="vertical"] #t1-ov-bento .tile-sm .card-body { font-size: calc(21px * var(--type)); line-height: 1.35; }
+      [data-format="square"] #t1-ov-bento .bento { top: calc(var(--safe-t) + 110px); bottom: var(--safe-b); gap: 20px; grid-template-columns: 1.15fr 1fr; }
+      [data-format="square"] #t1-ov-bento .tile-feat { padding: 36px 36px; }
+      [data-format="square"] #t1-ov-bento .tile-feat .card-heading { font-size: 42px; }
+      [data-format="square"] #t1-ov-bento .tile-feat .card-body { font-size: 26px; line-height: 1.5; }
+      [data-format="square"] #t1-ov-bento .tile-sm { padding: 24px 26px; gap: 18px; }
+      [data-format="square"] #t1-ov-bento .tile-sm .icon-box { width: 56px; height: 56px; }
+      [data-format="square"] #t1-ov-bento .tile-sm .card-heading { font-size: 28px; }
+      [data-format="square"] #t1-ov-bento .tile-sm .card-body { font-size: 22px; }
     </style>
   </head>
   <body>

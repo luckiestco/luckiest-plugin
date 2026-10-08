@@ -15,10 +15,12 @@
       html, body { margin: 0; }
 
       #t1-sec-kin {
-        position: absolute; inset: 0; width: 1920px; height: 1080px;
+        position: absolute; inset: 0; width: var(--w); height: var(--h);
         background: var(--canvas); color: var(--text);
         font-family: var(--font-display); overflow: hidden;
         display: flex; align-items: center; justify-content: center;
+        /* center the words on the safe box, not the frame */
+        box-sizing: border-box; padding: var(--safe-t) var(--safe-r) var(--safe-b) var(--safe-l);
       }
 
       /* Subtle bloom - title is the hero, background recedes */
@@ -41,7 +43,7 @@
       #t1-sec-kin .kin-stage {
         position: relative; z-index: 4;
         text-align: center;
-        width: 1680px;
+        width: min(1680px, 100%);
         /* words stack in a flexible wrap */
         display: flex; flex-wrap: wrap;
         align-items: baseline; justify-content: center;
@@ -50,7 +52,7 @@
 
       #t1-sec-kin .word {
         font-family: var(--font-display); font-weight: var(--wt-black);
-        font-size: 150px; line-height: 1.0;
+        font-size: calc(150px * var(--type)); line-height: 1.0;
         letter-spacing: var(--track-tight);
         color: var(--white); text-shadow: var(--textglow);
         display: block;
@@ -88,6 +90,11 @@
         background-size: 200px 200px; mix-blend-mode: overlay; opacity: 0.10;
         pointer-events: none; z-index: 7;
       }
+
+      /* Vertical and square: words center on the safe box (root padding) and wrap inside it; the
+         words step down in vertical so the longest fits, and the rule rides just under the block. */
+      [data-format="vertical"] #t1-sec-kin .word { font-size: calc(110px * var(--type)); }
+      [data-format="vertical"] #t1-sec-kin .rule { bottom: calc(var(--safe-b) + 210px); }
     </style>
   </head>
   <body>

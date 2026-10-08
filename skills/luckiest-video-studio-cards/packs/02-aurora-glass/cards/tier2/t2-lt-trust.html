@@ -15,7 +15,9 @@
       html, body { margin: 0; background: transparent; }
 
       #t2-lt-trust {
-        position: absolute; inset: 0; width: 1920px; height: 1080px;
+        position: absolute; inset: 0; width: var(--w); height: var(--h);
+        /* the lower-third group's anchor: left / bottom of the main card */
+        --lt-x: var(--safe-l); --lt-y: calc(var(--safe-b) + 66px);
         background: transparent; overflow: hidden;
         font-family: var(--font-display);
       }
@@ -23,7 +25,7 @@
       /* Localized bloom behind the card group */
       #t2-lt-trust .local-bloom {
         position: absolute;
-        left: 48px; bottom: 90px;
+        left: calc(var(--lt-x) - 32px); bottom: calc(var(--lt-y) - 30px);
         width: 580px; height: 340px;
         border-radius: 50%;
         background: radial-gradient(ellipse at 35% 75%,
@@ -38,13 +40,13 @@
       /* Tag chip - floats above the card */
       #t2-lt-trust .tag-chip {
         position: absolute;
-        left: 164px; bottom: 338px;
+        left: calc(var(--lt-x) + 84px); bottom: calc(var(--lt-y) + 218px);
         padding: 7px 18px;
         background: rgba(var(--accent-rgb), 0.15);
         border: 1px solid rgba(var(--accent-rgb), 0.50);
         border-radius: 999px;
         font-family: var(--font-mono);
-        font-size: 17px;
+        font-size: calc(17px * var(--type));
         font-weight: var(--wt-reg);
         letter-spacing: var(--track-wide);
         text-transform: uppercase;
@@ -58,7 +60,7 @@
       /* Main card */
       #t2-lt-trust .card {
         position: absolute;
-        left: 80px; bottom: 120px;
+        left: var(--lt-x); bottom: var(--lt-y);
         width: 460px;
         padding: 22px 28px 24px;
         display: flex;
@@ -118,7 +120,7 @@
       #t2-lt-trust .name {
         font-family: var(--font-display);
         font-weight: var(--wt-bold);
-        font-size: 34px;
+        font-size: calc(34px * var(--type));
         letter-spacing: var(--track-snug);
         color: var(--white);
         text-shadow: var(--textglow);
@@ -128,7 +130,7 @@
       #t2-lt-trust .role {
         font-family: var(--font-body);
         font-weight: var(--wt-med);
-        font-size: 21px;
+        font-size: calc(21px * var(--type));
         color: var(--text-dim);
         letter-spacing: 0.01em;
         line-height: 1.35;
@@ -137,7 +139,7 @@
       /* Dashed connector line trailing from the right edge of the card */
       #t2-lt-trust .connector {
         position: absolute;
-        left: 540px; bottom: 178px;   /* right edge of card + margin */
+        left: calc(var(--lt-x) + 460px); bottom: calc(var(--lt-y) + 58px);   /* right edge of card + margin */
         width: 160px; height: 2px;
         overflow: visible;
         z-index: 2;
@@ -159,6 +161,12 @@
         background: var(--accent);
         box-shadow: 0 0 10px rgba(var(--accent-rgb), 0.80);
       }
+      /* Vertical and square: the group sits at the bottom-left of the safe area and slots wrap. */
+      [data-format="vertical"] #t2-lt-trust, [data-format="square"] #t2-lt-trust { --lt-y: var(--safe-b); }
+      [data-format="vertical"] #t2-lt-trust .card, [data-format="square"] #t2-lt-trust .card {
+        top: auto; width: auto; max-width: calc(var(--w) - var(--safe-l) - var(--safe-r));
+      }
+      [data-format="vertical"] #t2-lt-trust [data-slot], [data-format="square"] #t2-lt-trust [data-slot] { white-space: normal; }
     </style>
   </head>
   <body>

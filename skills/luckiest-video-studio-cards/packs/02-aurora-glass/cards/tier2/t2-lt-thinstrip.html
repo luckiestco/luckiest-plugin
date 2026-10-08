@@ -15,7 +15,7 @@
       html, body { margin: 0; background: transparent; }
 
       #t2-lt-thin {
-        position: absolute; inset: 0; width: 1920px; height: 1080px;
+        position: absolute; inset: 0; width: var(--w); height: var(--h);
         background: transparent; overflow: hidden;
         font-family: var(--font-display);
       }
@@ -23,7 +23,7 @@
       /* Diffuse glow bloom along bottom */
       #t2-lt-thin .local-bloom {
         position: absolute;
-        left: 0; bottom: 0;
+        left: 0; bottom: calc(var(--safe-b) - 44px);
         width: 100%; height: 160px;
         background: linear-gradient(0deg,
           rgba(var(--accent-rgb), 0.16) 0%,
@@ -36,8 +36,9 @@
       /* The strip itself */
       #t2-lt-thin .strip {
         position: absolute;
-        left: 0; bottom: 0;
-        width: 1920px;
+        /* full-width strip on the safe bottom, text inside the safe insets */
+        left: 0; bottom: var(--safe-b);
+        width: var(--w); box-sizing: border-box;
         height: 72px;
         background: var(--glass-bg-dark);
         backdrop-filter: var(--glass-blur);
@@ -49,7 +50,7 @@
         display: flex;
         align-items: center;
         justify-content: space-between;
-        padding: 0 72px;
+        padding: 0 var(--safe-r) 0 var(--safe-l);
         z-index: 2;
         overflow: hidden;
       }
@@ -74,7 +75,7 @@
       #t2-lt-thin .name {
         font-family: var(--font-display);
         font-weight: var(--wt-bold);
-        font-size: 32px;
+        font-size: calc(32px * var(--type));
         letter-spacing: var(--track-snug);
         color: var(--white);
         text-shadow: var(--textglow);
@@ -96,7 +97,7 @@
       #t2-lt-thin .role {
         font-family: var(--font-body);
         font-weight: var(--wt-med);
-        font-size: 24px;
+        font-size: calc(24px * var(--type));
         letter-spacing: 0.01em;
         color: var(--text-dim);
         line-height: 1.1;
@@ -116,6 +117,15 @@
           rgba(var(--accent-rgb), 0.70) 100%);
         box-shadow: 0 0 14px rgba(var(--accent-rgb), 0.70);
         z-index: 5;
+      }
+      /* Vertical and square: name over role in a taller strip, the separator dot drops out. */
+      [data-format="vertical"] #t2-lt-thin .strip, [data-format="square"] #t2-lt-thin .strip {
+        height: auto; flex-direction: column; align-items: flex-start; justify-content: center;
+        gap: 10px; padding-top: 20px; padding-bottom: 20px;
+      }
+      [data-format="vertical"] #t2-lt-thin .sep-dot, [data-format="square"] #t2-lt-thin .sep-dot { display: none; }
+      [data-format="vertical"] #t2-lt-thin [data-slot], [data-format="square"] #t2-lt-thin [data-slot] {
+        white-space: normal; text-align: left;
       }
     </style>
   </head>
@@ -155,7 +165,7 @@
 
       /* rule draws left-to-right across the full width */
       tl.to(`${C} .top-rule`,
-        { width: 1920, duration: 0.75, ease: "power3.out" }, 0.44);
+        { width: "100%", duration: 0.75, ease: "power3.out" }, 0.44);
 
       /* name fades/slides in from left */
       tl.from(`${C} .name`,

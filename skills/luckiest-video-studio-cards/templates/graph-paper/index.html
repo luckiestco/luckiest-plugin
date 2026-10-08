@@ -2,10 +2,15 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=1920, height=1080" />
     <title>Dark Graph Paper Template</title>
     <script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
     <style>
+      /* Master size defaults. render-scenes.mjs appends the real --w, --h, --u and safe tokens for each format. */
+      :root {
+        --w: 1920px; --h: 1080px; --u: 10.8px;
+        --safe-t: 54px; --safe-b: 54px; --safe-l: 96px; --safe-r: 96px;
+      }
+
       * {
         margin: 0;
         padding: 0;
@@ -14,8 +19,8 @@
       html,
       body {
         margin: 0;
-        width: 1920px;
-        height: 1080px;
+        width: var(--w);
+        height: var(--h);
         overflow: hidden;
         background: #030507;
         color: #dff8ff;
@@ -23,8 +28,8 @@
 
       #root {
         position: relative;
-        width: 1920px;
-        height: 1080px;
+        width: var(--w);
+        height: var(--h);
         overflow: hidden;
         background: #030507;
         isolation: isolate;
@@ -33,8 +38,8 @@
       #root .clip {
         position: absolute;
         inset: 0;
-        width: 1920px;
-        height: 1080px;
+        width: var(--w);
+        height: var(--h);
         pointer-events: none;
       }
 
@@ -81,8 +86,8 @@
       }
 
       #perspective-grid {
-        top: 210px;
-        height: 1100px;
+        top: calc(var(--h) * 0.1944);
+        height: calc(var(--h) * 1.0185);
         opacity: 0.26;
         transform-origin: 50% 72%;
         transform: perspective(920px) rotateX(58deg) translateY(86px) scale(1.18);
@@ -95,7 +100,7 @@
 
       #scan-band {
         inset: -22% 0 auto 0;
-        height: 420px;
+        height: calc(var(--h) * 0.3889);
         opacity: 0.24;
         background: linear-gradient(
           180deg,

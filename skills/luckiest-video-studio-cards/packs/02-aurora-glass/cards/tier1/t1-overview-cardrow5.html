@@ -14,7 +14,7 @@
       html, body { margin: 0; }
 
       #t1-ov-row5 {
-        position: absolute; inset: 0; width: 1920px; height: 1080px;
+        position: absolute; inset: 0; width: var(--w); height: var(--h);
         background: var(--canvas); color: var(--text);
         font-family: var(--font-display); overflow: hidden;
       }
@@ -33,7 +33,7 @@
 
       /* Title */
       #t1-ov-row5 .title-row {
-        position: absolute; left: 0; right: 0; top: 200px; text-align: center; z-index: 4;
+        position: absolute; left: var(--safe-l); right: var(--safe-r); top: calc(var(--safe-t) + 146px); text-align: center; z-index: 4;
       }
       #t1-ov-row5 .title {
         font-family: var(--font-display); font-weight: var(--wt-bold);
@@ -47,7 +47,7 @@
 
       /* Single row of 5 cards */
       #t1-ov-row5 .card-row {
-        position: absolute; left: 72px; right: 72px; top: 420px;
+        position: absolute; left: var(--safe-l); right: var(--safe-r); top: calc(var(--safe-t) + 366px);
         display: flex; gap: 28px; align-items: stretch; z-index: 4;
         height: 380px;
       }
@@ -96,7 +96,7 @@
       /* Card label */
       #t1-ov-row5 .card-label {
         font-family: var(--font-display); font-weight: var(--wt-semi);
-        font-size: 34px; letter-spacing: var(--track-snug); line-height: 1.25;
+        font-size: calc(34px * var(--type)); letter-spacing: var(--track-snug); line-height: 1.25;
         color: var(--white); text-shadow: var(--textglow);
       }
       #t1-ov-row5 .card.hero .card-label {
@@ -112,6 +112,19 @@
         background-size: 200px 200px; mix-blend-mode: overlay; opacity: 0.10;
         pointer-events: none; z-index: 7;
       }
+
+      /* Vertical and square: the row of five becomes a column of five under the title. */
+      [data-format="vertical"] #t1-ov-row5 .title-row { top: calc(var(--safe-t) + 30px); }
+      [data-format="square"] #t1-ov-row5 .title-row { top: var(--safe-t); }
+      [data-format="vertical"] #t1-ov-row5 .title { font-size: calc(64px * var(--type)); }
+      [data-format="square"] #t1-ov-row5 .title { font-size: 58px; }
+      [data-format="vertical"] #t1-ov-row5 .card-row, [data-format="square"] #t1-ov-row5 .card-row {
+        height: auto; flex-direction: column; gap: 18px;
+      }
+      [data-format="vertical"] #t1-ov-row5 .card-row { top: calc(var(--safe-t) + 260px); }
+      [data-format="square"] #t1-ov-row5 .card-row { top: calc(var(--safe-t) + 160px); gap: 16px; }
+      [data-format="vertical"] #t1-ov-row5 .card { flex: none; min-height: 112px; box-sizing: border-box; padding: 26px 36px; }
+      [data-format="square"] #t1-ov-row5 .card { flex: none; min-height: 124px; box-sizing: border-box; padding: 26px 36px; }
     </style>
   </head>
   <body>

@@ -13,7 +13,7 @@
     <style>
       html, body { margin: 0; }
       #t1-stat-annot {
-        position: absolute; inset: 0; width: 1920px; height: 1080px;
+        position: absolute; inset: 0; width: var(--w); height: var(--h);
         background: var(--paper); color: var(--ink);
         font-family: var(--font-display); overflow: hidden;
       }
@@ -34,7 +34,7 @@
 
       /* kicker */
       #t1-stat-annot .kicker {
-        position: absolute; left: 130px; top: 220px;
+        position: absolute; left: calc(var(--safe-l) + 34px); top: calc(var(--safe-t) + 166px);
         font-family: var(--font-label); font-weight: var(--wt-bold);
         font-size: var(--size-label); letter-spacing: var(--track-wide);
         text-transform: uppercase; color: var(--red);
@@ -42,8 +42,8 @@
 
       /* big stat - dead center */
       #t1-stat-annot .stat {
-        position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%);
-        font-weight: var(--wt-black); font-size: 480px; line-height: 1;
+        position: absolute; left: calc(var(--safe-l) + (var(--w) - var(--safe-l) - var(--safe-r)) / 2); top: calc(var(--safe-t) + (var(--h) - var(--safe-t) - var(--safe-b)) / 2); transform: translate(-50%, -50%);
+        font-weight: var(--wt-black); font-size: calc(480px * var(--type)); line-height: 1;
         letter-spacing: -0.06em; color: var(--ink);
         font-variant-numeric: tabular-nums;
         z-index: 2;
@@ -55,7 +55,7 @@
       .annot {
         position: absolute; z-index: 3;
         font-family: var(--font-label); font-weight: var(--wt-bold);
-        font-size: 28px; letter-spacing: var(--track-wide); text-transform: uppercase;
+        font-size: calc(28px * var(--type)); letter-spacing: var(--track-wide); text-transform: uppercase;
         color: var(--ink); display: flex; align-items: center; gap: 0;
       }
       /* line element inside each annot */
@@ -75,7 +75,7 @@
 
       /* note 1 - upper left: horizontal line extends right toward stat */
       #t1-stat-annot .annot-1 {
-        left: 130px; top: 264px;
+        left: calc(var(--safe-l) + 34px); top: calc(var(--safe-t) + 210px);
         flex-direction: row;
       }
       #t1-stat-annot .annot-1 .line { width: 320px; }
@@ -83,14 +83,14 @@
 
       /* note 2 - lower left: goes up+right via two segments (pure CSS, two divs) */
       #t1-stat-annot .annot-2 {
-        left: 130px; bottom: 270px;
+        left: calc(var(--safe-l) + 34px); bottom: calc(var(--safe-b) + 216px);
         flex-direction: row;
       }
       #t1-stat-annot .annot-2 .line { width: 280px; }
 
       /* note 3 - right side: horizontal line extends left toward stat */
       #t1-stat-annot .annot-3 {
-        right: 130px; top: 50%; transform: translateY(-50%);
+        right: calc(var(--safe-r) + 34px); top: calc(var(--safe-t) + (var(--h) - var(--safe-t) - var(--safe-b)) / 2); transform: translateY(-50%);
         flex-direction: row-reverse; /* line goes left */
       }
       #t1-stat-annot .annot-3 .line {
@@ -99,13 +99,33 @@
 
       /* source */
       #t1-stat-annot .source {
-        position: absolute; left: 130px; bottom: 96px;
+        position: absolute; left: calc(var(--safe-l) + 34px); bottom: calc(var(--safe-b) + 42px);
         font-family: var(--font-label); font-weight: var(--wt-bold);
         font-size: var(--size-tiny); letter-spacing: var(--track-wide);
         text-transform: uppercase; color: var(--muted);
         z-index: 4;
       }
+
+      /* Vertical and square: number centered in the safe box with note 1 above it and notes 2
+         and 3 on their own rows below it (note 3 right-aligned, its line still reaching left). */
+      [data-format="vertical"] #t1-stat-annot .kicker, [data-format="square"] #t1-stat-annot .kicker { left: var(--safe-l); top: var(--safe-t); }
+      [data-format="vertical"] #t1-stat-annot .stat { font-size: calc(300px * var(--type)); }
+      [data-format="square"] #t1-stat-annot .stat { font-size: 400px; }
+      [data-format="vertical"] #t1-stat-annot .annot-1, [data-format="square"] #t1-stat-annot .annot-1 { left: var(--safe-l); }
+      [data-format="vertical"] #t1-stat-annot .annot-1 { top: calc(var(--safe-t) + 112px); }
+      [data-format="square"] #t1-stat-annot .annot-1 { top: calc(var(--safe-t) + 90px); }
+      [data-format="vertical"] #t1-stat-annot .annot-1 .line, [data-format="square"] #t1-stat-annot .annot-1 .line { width: 200px; }
+      [data-format="vertical"] #t1-stat-annot .annot-2, [data-format="square"] #t1-stat-annot .annot-2 { left: var(--safe-l); bottom: auto; }
+      [data-format="vertical"] #t1-stat-annot .annot-2 { top: calc(var(--safe-t) + 700px); }
+      [data-format="square"] #t1-stat-annot .annot-2 { top: calc(var(--safe-t) + 690px); }
+      [data-format="vertical"] #t1-stat-annot .annot-2 .line, [data-format="square"] #t1-stat-annot .annot-2 .line { width: 200px; }
+      [data-format="vertical"] #t1-stat-annot .annot-3, [data-format="square"] #t1-stat-annot .annot-3 { right: var(--safe-r); transform: none; }
+      [data-format="vertical"] #t1-stat-annot .annot-3 { top: calc(var(--safe-t) + 780px); }
+      [data-format="square"] #t1-stat-annot .annot-3 { top: calc(var(--safe-t) + 760px); }
+      [data-format="vertical"] #t1-stat-annot .annot-3 .line, [data-format="square"] #t1-stat-annot .annot-3 .line { width: 200px; }
+      [data-format="vertical"] #t1-stat-annot .source, [data-format="square"] #t1-stat-annot .source { left: var(--safe-l); bottom: var(--safe-b); }
     </style>
+
   </head>
   <body>
     <div id="t1-stat-annot" data-composition-id="t1-stat-annot" data-start="0" data-width="1920" data-height="1080">

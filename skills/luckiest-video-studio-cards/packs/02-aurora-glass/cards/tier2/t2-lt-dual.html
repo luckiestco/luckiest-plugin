@@ -15,7 +15,7 @@
       html, body { margin: 0; background: transparent; }
 
       #t2-lt-dual {
-        position: absolute; inset: 0; width: 1920px; height: 1080px;
+        position: absolute; inset: 0; width: var(--w); height: var(--h);
         background: transparent; overflow: hidden;
         font-family: var(--font-display);
       }
@@ -23,7 +23,7 @@
       /* Localized bloom behind both cards */
       #t2-lt-dual .local-bloom {
         position: absolute;
-        left: 50px; bottom: 90px;
+        left: calc(var(--safe-l) - 30px); bottom: calc(var(--safe-b) + 36px);
         width: 560px; height: 320px;
         border-radius: 50%;
         background: radial-gradient(ellipse at 50% 85%,
@@ -38,7 +38,7 @@
       /* Stack container */
       #t2-lt-dual .stack {
         position: absolute;
-        left: 80px; bottom: 110px;
+        left: var(--safe-l); bottom: calc(var(--safe-b) + 56px);
         display: flex;
         flex-direction: column;
         gap: 14px;
@@ -97,7 +97,7 @@
         box-shadow: 0 0 10px rgba(var(--accent-rgb), 0.50);
         display: flex; align-items: center; justify-content: center;
         font-family: var(--font-mono);
-        font-size: 13px;
+        font-size: calc(13px * var(--type));
         color: var(--accent);
         line-height: 1;
       }
@@ -109,7 +109,7 @@
       #t2-lt-dual .name {
         font-family: var(--font-display);
         font-weight: var(--wt-bold);
-        font-size: 28px;
+        font-size: calc(28px * var(--type));
         letter-spacing: var(--track-snug);
         color: var(--white);
         text-shadow: var(--textglow);
@@ -119,7 +119,7 @@
       #t2-lt-dual .role {
         font-family: var(--font-body);
         font-weight: var(--wt-med);
-        font-size: 18px;
+        font-size: calc(18px * var(--type));
         letter-spacing: 0.01em;
         color: var(--text-dim);
         line-height: 1.3;
@@ -136,6 +136,12 @@
         vertical-align: middle;
         position: relative; top: -1px;
       }
+      /* Vertical and square: card sits at the bottom of the safe area, bloom follows, slots wrap. */
+      [data-format="vertical"] #t2-lt-dual .stack, [data-format="square"] #t2-lt-dual .stack {
+        bottom: var(--safe-b); max-width: calc(var(--w) - var(--safe-l) - var(--safe-r));
+      }
+      [data-format="vertical"] #t2-lt-dual .local-bloom, [data-format="square"] #t2-lt-dual .local-bloom { bottom: calc(var(--safe-b) - 20px); }
+      [data-format="vertical"] #t2-lt-dual [data-slot], [data-format="square"] #t2-lt-dual [data-slot] { white-space: normal; }
     </style>
   </head>
   <body>

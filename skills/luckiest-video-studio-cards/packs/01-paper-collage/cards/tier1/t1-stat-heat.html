@@ -15,7 +15,7 @@
     <style>
       html, body { margin: 0; }
       #t1-stat-heat {
-        position: absolute; inset: 0; width: 1920px; height: 1080px;
+        position: absolute; inset: 0; width: var(--w); height: var(--h);
         background: var(--paper); color: var(--ink);
         font-family: var(--font-display); overflow: hidden;
       }
@@ -34,14 +34,14 @@
         background: radial-gradient(120% 120% at 50% 50%, transparent 56%, rgba(23,19,14,0.16) 100%);
       }
       #t1-stat-heat .kicker {
-        position: absolute; left: 130px; top: 180px;
+        position: absolute; left: calc(var(--safe-l) + 34px); top: calc(var(--safe-t) + 126px);
         font-family: var(--font-label); font-weight: var(--wt-bold);
         font-size: var(--size-label); letter-spacing: var(--track-wide);
         text-transform: uppercase; color: var(--red);
       }
       /* ---- scale end labels ---- */
       #t1-stat-heat .scale-labels {
-        position: absolute; left: 130px; right: 130px; top: 680px;
+        position: absolute; left: calc(var(--safe-l) + 34px); right: calc(var(--safe-r) + 34px); top: calc(var(--safe-t) + 626px);
         display: flex; justify-content: space-between;
         font-family: var(--font-label); font-weight: var(--wt-bold);
         font-size: var(--size-label); letter-spacing: var(--track-wide);
@@ -49,7 +49,7 @@
       }
       /* ---- heat strip ---- */
       #t1-stat-heat .heat-row {
-        position: absolute; left: 130px; right: 130px; top: 430px;
+        position: absolute; left: calc(var(--safe-l) + 34px); right: calc(var(--safe-r) + 34px); top: calc(var(--safe-t) + 376px);
         display: flex; gap: 20px; height: 220px;
       }
       #t1-stat-heat .cell {
@@ -70,7 +70,7 @@
       #t1-stat-heat .hero-callout .stat {
         background: var(--ink); color: var(--yellow);
         padding: 10px 28px 8px;
-        font-weight: var(--wt-black); font-size: 120px;
+        font-weight: var(--wt-black); font-size: calc(120px * var(--type));
         font-variant-numeric: tabular-nums; line-height: 1; white-space: nowrap;
         margin-bottom: 0;
       }
@@ -86,18 +86,32 @@
       #t1-stat-heat .cell.hero .cell-num { color: var(--ink); font-weight: var(--wt-black); }
       /* ---- label + source ---- */
       #t1-stat-heat .label {
-        position: absolute; left: 130px; right: 130px; top: 740px;
-        font-weight: var(--wt-thin); font-size: 58px; line-height: 1.05;
+        position: absolute; left: calc(var(--safe-l) + 34px); right: calc(var(--safe-r) + 34px); top: calc(var(--safe-t) + 686px);
+        font-weight: var(--wt-thin); font-size: calc(58px * var(--type)); line-height: 1.05;
         letter-spacing: var(--track-tight); color: var(--ink);
       }
       #t1-stat-heat .label em { font-style: italic; font-weight: var(--wt-black); }
       #t1-stat-heat .source {
-        position: absolute; left: 130px; bottom: 96px;
+        position: absolute; left: calc(var(--safe-l) + 34px); bottom: calc(var(--safe-b) + 42px);
         font-family: var(--font-label); font-weight: var(--wt-bold);
         font-size: var(--size-tiny); letter-spacing: var(--track-wide);
         text-transform: uppercase; color: var(--muted);
       }
+
+      /* Vertical and square: the strip spans the safe width with taller cells, and kicker,
+         callout, strip, scale, label and source stack down the safe area. */
+      [data-format="vertical"] #t1-stat-heat .kicker, [data-format="square"] #t1-stat-heat .kicker { left: var(--safe-l); top: var(--safe-t); }
+      [data-format="vertical"] #t1-stat-heat .heat-row, [data-format="vertical"] #t1-stat-heat .scale-labels, [data-format="vertical"] #t1-stat-heat .label,
+      [data-format="square"] #t1-stat-heat .heat-row, [data-format="square"] #t1-stat-heat .scale-labels, [data-format="square"] #t1-stat-heat .label { left: var(--safe-l); right: var(--safe-r); }
+      [data-format="vertical"] #t1-stat-heat .heat-row { top: calc(var(--safe-t) + 260px); height: 300px; gap: 12px; }
+      [data-format="vertical"] #t1-stat-heat .scale-labels { top: calc(var(--safe-t) + 580px); }
+      [data-format="vertical"] #t1-stat-heat .label { top: calc(var(--safe-t) + 650px); }
+      [data-format="square"] #t1-stat-heat .heat-row { top: calc(var(--safe-t) + 250px); height: 240px; gap: 16px; }
+      [data-format="square"] #t1-stat-heat .scale-labels { top: calc(var(--safe-t) + 510px); }
+      [data-format="square"] #t1-stat-heat .label { top: calc(var(--safe-t) + 570px); font-size: 56px; }
+      [data-format="vertical"] #t1-stat-heat .source, [data-format="square"] #t1-stat-heat .source { left: var(--safe-l); bottom: var(--safe-b); }
     </style>
+
   </head>
   <body>
     <div id="t1-stat-heat" data-composition-id="t1-stat-heat" data-start="0" data-width="1920" data-height="1080">

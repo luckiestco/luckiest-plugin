@@ -15,7 +15,9 @@
       html, body { margin: 0; background: transparent; }
 
       #t2-lt-wband {
-        position: absolute; inset: 0; width: 1920px; height: 1080px;
+        position: absolute; inset: 0; width: var(--w); height: var(--h);
+        /* the lower-third group's anchor: left / bottom of the main card */
+        --lt-x: var(--safe-l); --lt-y: calc(var(--safe-b) + 76px);
         background: transparent; overflow: hidden;
         font-family: var(--font-display);
       }
@@ -23,7 +25,7 @@
       /* Soft bloom under the unit */
       #t2-lt-wband .local-bloom {
         position: absolute;
-        left: 52px; bottom: 100px;
+        left: calc(var(--lt-x) - 28px); bottom: calc(var(--lt-y) - 30px);
         width: 560px; height: 150px;
         border-radius: 50%;
         background: radial-gradient(ellipse at 25% 90%,
@@ -38,7 +40,7 @@
       /* Outer unit container */
       #t2-lt-wband .unit {
         position: absolute;
-        left: 80px; bottom: 130px;
+        left: var(--lt-x); bottom: var(--lt-y);
         display: flex;
         align-items: center;
         gap: 28px;
@@ -97,7 +99,7 @@
       #t2-lt-wband .name {
         font-family: var(--font-display);
         font-weight: var(--wt-bold);
-        font-size: 34px;
+        font-size: calc(34px * var(--type));
         letter-spacing: var(--track-snug);
         color: var(--white);
         text-shadow: var(--textglow);
@@ -107,7 +109,7 @@
       #t2-lt-wband .role {
         font-family: var(--font-body);
         font-weight: var(--wt-med);
-        font-size: 21px;
+        font-size: calc(21px * var(--type));
         color: var(--text-dim);
         letter-spacing: 0.01em;
         line-height: 1.3;
@@ -116,7 +118,7 @@
       /* Bottom accent line that spans the full unit */
       #t2-lt-wband .accent-line {
         position: absolute;
-        left: 80px; bottom: 124px;
+        left: var(--lt-x); bottom: calc(var(--lt-y) - 6px);
         width: 0;
         height: 2px;
         background: linear-gradient(90deg,
@@ -127,6 +129,12 @@
         border-radius: 1px;
         z-index: 3;
       }
+      /* Vertical and square: the group sits at the bottom-left of the safe area and slots wrap. */
+      [data-format="vertical"] #t2-lt-wband, [data-format="square"] #t2-lt-wband { --lt-y: var(--safe-b); }
+      [data-format="vertical"] #t2-lt-wband .unit, [data-format="square"] #t2-lt-wband .unit {
+        top: auto; width: auto; max-width: calc(var(--w) - var(--safe-l) - var(--safe-r));
+      }
+      [data-format="vertical"] #t2-lt-wband [data-slot], [data-format="square"] #t2-lt-wband [data-slot] { white-space: normal; }
     </style>
   </head>
   <body>

@@ -15,7 +15,7 @@
       html, body { margin: 0; background: transparent; }
 
       #t2-lt-ichips {
-        position: absolute; inset: 0; width: 1920px; height: 1080px;
+        position: absolute; inset: 0; width: var(--w); height: var(--h);
         background: transparent; overflow: hidden;
         font-family: var(--font-display);
       }
@@ -23,7 +23,7 @@
       /* Localized bloom */
       #t2-lt-ichips .local-bloom {
         position: absolute;
-        left: 60px; bottom: 80px;
+        left: calc(var(--safe-l) - 20px); bottom: calc(var(--safe-b) + 26px);
         width: 540px; height: 260px;
         border-radius: 50%;
         background: radial-gradient(ellipse at 40% 80%,
@@ -38,7 +38,7 @@
       /* Stack of chips */
       #t2-lt-ichips .chip-stack {
         position: absolute;
-        left: 80px; bottom: 120px;
+        left: var(--safe-l); bottom: calc(var(--safe-b) + 66px);
         display: flex;
         flex-direction: column;
         align-items: flex-start;
@@ -99,7 +99,7 @@
       #t2-lt-ichips .chip-name .chip-label {
         font-family: var(--font-display);
         font-weight: var(--wt-bold);
-        font-size: 34px;
+        font-size: calc(34px * var(--type));
         letter-spacing: var(--track-snug);
         color: var(--white);
         text-shadow: var(--textglow);
@@ -110,11 +110,17 @@
       #t2-lt-ichips .chip-role .chip-label {
         font-family: var(--font-body);
         font-weight: var(--wt-med);
-        font-size: 22px;
+        font-size: calc(22px * var(--type));
         letter-spacing: 0.01em;
         color: var(--text-dim);
         white-space: nowrap;
       }
+      /* Vertical and square: card sits at the bottom of the safe area, bloom follows, slots wrap. */
+      [data-format="vertical"] #t2-lt-ichips .chip-stack, [data-format="square"] #t2-lt-ichips .chip-stack {
+        bottom: var(--safe-b); max-width: calc(var(--w) - var(--safe-l) - var(--safe-r));
+      }
+      [data-format="vertical"] #t2-lt-ichips .local-bloom, [data-format="square"] #t2-lt-ichips .local-bloom { bottom: calc(var(--safe-b) - 40px); }
+      [data-format="vertical"] #t2-lt-ichips [data-slot], [data-format="square"] #t2-lt-ichips [data-slot] { white-space: normal; }
     </style>
   </head>
   <body>

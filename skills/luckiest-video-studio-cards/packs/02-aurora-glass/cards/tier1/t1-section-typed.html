@@ -15,7 +15,7 @@
       html, body { margin: 0; }
 
       #t1-sec-type {
-        position: absolute; inset: 0; width: 1920px; height: 1080px;
+        position: absolute; inset: 0; width: var(--w); height: var(--h);
         background: var(--canvas); color: var(--text);
         font-family: var(--font-display); overflow: hidden;
       }
@@ -46,7 +46,7 @@
       /* Prompt kicker: "> LABEL" in Space Mono */
       #t1-sec-type .kicker {
         font-family: var(--font-mono); font-weight: var(--wt-reg);
-        font-size: 34px; letter-spacing: 0.08em;
+        font-size: calc(34px * var(--type)); letter-spacing: 0.08em;
         color: var(--accent); text-shadow: var(--textglow-accent);
         margin-bottom: 40px;
       }
@@ -102,6 +102,13 @@
         background-size: 200px 200px; mix-blend-mode: overlay; opacity: 0.10;
         pointer-events: none; z-index: 7;
       }
+
+      /* Vertical and square: the prompt block sits left-aligned in the safe area; the scanline follows. */
+      [data-format="vertical"] #t1-sec-type .content, [data-format="square"] #t1-sec-type .content {
+        left: var(--safe-l); right: var(--safe-r); top: var(--safe-t); bottom: var(--safe-b); padding-left: 0;
+      }
+      [data-format="vertical"] #t1-sec-type .headline, [data-format="square"] #t1-sec-type .headline { max-width: none; }
+      [data-format="vertical"] #t1-sec-type .scanline, [data-format="square"] #t1-sec-type .scanline { left: calc(var(--safe-l) - 40px); top: calc(calc((var(--safe-t) + var(--h) - var(--safe-b)) / 2) - 90px); }
     </style>
   </head>
   <body>

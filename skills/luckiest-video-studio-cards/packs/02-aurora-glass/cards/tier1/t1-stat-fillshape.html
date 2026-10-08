@@ -15,7 +15,7 @@
       html, body { margin: 0; }
 
       #t1-stat-fill {
-        position: absolute; inset: 0; width: 1920px; height: 1080px;
+        position: absolute; inset: 0; width: var(--w); height: var(--h);
         background: var(--canvas); color: var(--text);
         font-family: var(--font-display); overflow: hidden;
       }
@@ -99,7 +99,7 @@
         position: absolute; left: 0; right: 0; bottom: 30px;
         text-align: center;
         font-family: var(--font-display); font-weight: var(--wt-black);
-        font-size: 120px; line-height: 1; letter-spacing: var(--track-tight);
+        font-size: calc(120px * var(--type)); line-height: 1; letter-spacing: var(--track-tight);
         color: var(--white); text-shadow: var(--textglow);
         z-index: 3;
       }
@@ -112,7 +112,7 @@
       }
 
       #t1-stat-fill .source {
-        position: absolute; left: var(--pad); bottom: 44px;
+        position: absolute; left: var(--safe-l); bottom: var(--safe-b);
         font-family: var(--font-mono); font-size: var(--size-tiny);
         font-weight: var(--wt-reg); letter-spacing: 0.12em;
         text-transform: uppercase; color: var(--text-faint); z-index: 5;
@@ -127,6 +127,14 @@
         background-size: 200px 200px; mix-blend-mode: overlay; opacity: 0.10;
         pointer-events: none; z-index: 7;
       }
+
+      /* Vertical: kicker and label over the vessel, stacked in the safe area. Square: the row stays, narrower. */
+      [data-format="vertical"] #t1-stat-fill .content, [data-format="square"] #t1-stat-fill .content { inset: var(--safe-t) var(--safe-r) calc(var(--safe-b) + 40px) var(--safe-l); }
+      [data-format="vertical"] #t1-stat-fill .content { flex-direction: column; gap: 64px; }
+      [data-format="vertical"] #t1-stat-fill .text-col { max-width: none; align-items: center; text-align: center; gap: 28px; }
+      [data-format="square"] #t1-stat-fill .content { gap: 48px; }
+      [data-format="square"] #t1-stat-fill .text-col { max-width: 530px; }
+      [data-format="square"] #t1-stat-fill .shape-wrap { width: 320px; height: 440px; }
     </style>
   </head>
   <body>

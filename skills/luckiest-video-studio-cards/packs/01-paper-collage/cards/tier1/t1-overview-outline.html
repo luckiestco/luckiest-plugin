@@ -14,7 +14,7 @@
     <style>
       html, body { margin: 0; }
       #t1-ov-outline {
-        position: absolute; inset: 0; width: 1920px; height: 1080px;
+        position: absolute; inset: 0; width: var(--w); height: var(--h);
         background: var(--paper); color: var(--ink);
         font-family: var(--font-display); overflow: hidden;
       }
@@ -52,7 +52,7 @@
 
       /* marker title */
       #t1-ov-outline .marker-title {
-        position: absolute; top: 72px; left: 280px;
+        position: absolute; top: calc(var(--safe-t) + 18px); left: calc(var(--safe-l) + 184px);
         transform: skewX(var(--marker-skew));
         background: var(--yellow); padding: 10px 36px; z-index: 5;
         font-weight: var(--wt-black); font-size: var(--size-title);
@@ -62,7 +62,7 @@
 
       /* content area - right of the margin rule */
       #t1-ov-outline .notes {
-        position: absolute; left: 280px; right: 140px; top: 220px;
+        position: absolute; left: calc(var(--safe-l) + 184px); right: calc(var(--safe-r) + 44px); top: calc(var(--safe-t) + 166px);
         z-index: 3;
       }
 
@@ -78,7 +78,7 @@
       }
       #t1-ov-outline .b-text {
         font-family: var(--font-label); font-weight: var(--wt-bold);
-        font-size: 52px; line-height: 1.2; color: var(--ink);
+        font-size: calc(52px * var(--type)); line-height: 1.2; color: var(--ink);
       }
 
       /* sub-point - indented */
@@ -92,16 +92,36 @@
       }
       #t1-ov-outline .sub-text {
         font-family: var(--font-label); font-weight: var(--wt-reg);
-        font-size: 36px; line-height: 1.3; color: var(--muted);
+        font-size: calc(36px * var(--type)); line-height: 1.3; color: var(--muted);
         font-style: italic;
       }
       /* source */
       #t1-ov-outline .source {
-        position: absolute; left: 280px; bottom: 46px; z-index: 6;
+        position: absolute; left: calc(var(--safe-l) + 184px); bottom: var(--safe-b); z-index: 6;
         font-family: var(--font-label); font-weight: var(--wt-bold);
         font-size: var(--size-tiny); letter-spacing: var(--track-wide);
         text-transform: uppercase; color: var(--muted);
       }
+
+      /* Vertical and square: title, notes and source start just right of the punch holes and span
+         the safe width; bullets and sub-points get smaller so three groups fit the safe height. */
+      [data-format="vertical"] #t1-ov-outline .marker-title, [data-format="square"] #t1-ov-outline .marker-title,
+      [data-format="vertical"] #t1-ov-outline .notes, [data-format="square"] #t1-ov-outline .notes,
+      [data-format="vertical"] #t1-ov-outline .source, [data-format="square"] #t1-ov-outline .source { left: calc(var(--safe-l) + 40px); }
+      [data-format="vertical"] #t1-ov-outline .marker-title, [data-format="square"] #t1-ov-outline .marker-title {
+        top: var(--safe-t); white-space: normal; max-width: calc(var(--w) - var(--safe-l) - var(--safe-r) - 112px);
+      }
+      [data-format="vertical"] #t1-ov-outline .marker-title { font-size: calc(58px * var(--type)); }
+      [data-format="square"] #t1-ov-outline .marker-title { font-size: 76px; }
+      [data-format="vertical"] #t1-ov-outline .notes, [data-format="square"] #t1-ov-outline .notes { right: var(--safe-r); }
+      [data-format="vertical"] #t1-ov-outline .notes { top: calc(var(--safe-t) + 140px); }
+      [data-format="square"] #t1-ov-outline .notes { top: calc(var(--safe-t) + 150px); }
+      [data-format="vertical"] #t1-ov-outline .b-text { font-size: calc(50px * var(--type)); }
+      [data-format="vertical"] #t1-ov-outline .sub-text { font-size: calc(34px * var(--type)); }
+      [data-format="square"] #t1-ov-outline .b-text { font-size: 52px; }
+      [data-format="square"] #t1-ov-outline .sub-text { font-size: 36px; }
+      [data-format="vertical"] #t1-ov-outline .sub-row, [data-format="square"] #t1-ov-outline .sub-row { margin-left: 50px; margin-bottom: 46px; }
+      [data-format="vertical"] #t1-ov-outline .sub-dash, [data-format="square"] #t1-ov-outline .sub-dash { margin-top: 20px; }
     </style>
   </head>
   <body>

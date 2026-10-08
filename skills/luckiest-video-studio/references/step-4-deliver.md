@@ -43,6 +43,28 @@ For final delivery:
 npx hyperframes render --quality high --output ../final.mp4
 ```
 
+## Other formats (last)
+
+Formats come after the master 16:9 is approved, never during iteration: every format
+multiplies render time. When the plan lists other formats:
+
+1. Render the approved master at delivery quality with `scripts/render-scenes.mjs`
+   (no `formats` yet), so `final.mp4` and `clips/` are done.
+2. Add `formats` to `storyboard.json` (for example `["landscape", "vertical", "square"]`).
+3. Check layouts from stills, not video:
+   `node <skill-dir>/scripts/render-scenes.mjs <run-dir> --stills` writes one hold
+   frame per scene per format to `stills/<format>/` and a `sheet.png` for each.
+   Read the sheets, then run `node <skill-dir>/scripts/qa.mjs safe <run-dir> --stills`.
+   Fix and repeat; each pass costs about 8s per scene per format, not a render.
+4. Render with the same `--quality` as step 1. The landscape clips are reused from
+   the 16:9 render (`reuse` in the log), so only the new formats render.
+5. The `luckiest-video-watcher` pass already ran on the master. Do not watch the new
+   formats end to end: the stills sheets cover their layout, so watch them only at
+   times a gate flagged (`--timestamps`).
+
+A scene's hold frame is `scenes[].hold` seconds into the scene, else 0.5s before
+its cut. Set `hold` on a scene that exits early.
+
 ## Pick the poster frame
 
 The poster is the still shown before the video plays — the first thing anyone sees when it's idle or unplayed. Don't leave it to the raw first frame or an arbitrary timestamp; those land on fades, mid-transitions, blank intro backgrounds, or half-rendered text.
@@ -150,6 +172,7 @@ After this step, `<output-dir>/` should contain:
 ```
 <output-dir>/
   final.mp4                — the rendered video
+  final-<format>.mp4       — one per format instead, when the storyboard lists `formats`
   poster.jpg                — the poster (best frame, for <video poster>)
   plan.md            — the plan and storyboard
   composition-brief.md    — the Hyperframes handoff brief
@@ -162,7 +185,7 @@ After this step, `<output-dir>/` should contain:
 ## Telling the user
 
 After everything is done, tell the user:
-- Where the video is (`<output-dir>/final.mp4`)
+- Where the video is (`<output-dir>/final.mp4`, or each `final-<format>.mp4` and where it is meant to post)
 - Where the share copy is
 - One sentence on what the video does creatively
 - Optionally: offer to re-roll a scene, change tone, or try a different angle

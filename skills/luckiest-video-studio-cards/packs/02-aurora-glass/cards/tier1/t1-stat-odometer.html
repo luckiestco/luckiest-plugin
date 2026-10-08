@@ -16,7 +16,7 @@
       html, body { margin: 0; }
 
       #t1-st-odo {
-        position: absolute; inset: 0; width: 1920px; height: 1080px;
+        position: absolute; inset: 0; width: var(--w); height: var(--h);
         background: var(--canvas); color: var(--text);
         font-family: var(--font-display); overflow: hidden;
       }
@@ -93,7 +93,7 @@
       #t1-st-odo .sep-char {
         font-family: var(--font-display);
         font-weight: var(--wt-black);
-        font-size: 120px;
+        font-size: calc(120px * var(--type));
         line-height: 1;
         color: rgba(255,255,255,0.55);
         padding-bottom: 6px;
@@ -112,7 +112,7 @@
         line-height: 180px;
         font-family: var(--font-display);
         font-weight: var(--wt-black);
-        font-size: 120px;
+        font-size: calc(120px * var(--type));
         letter-spacing: var(--track-tight);
         color: var(--white);
         text-align: center;
@@ -151,7 +151,7 @@
       }
 
       #t1-st-odo .source {
-        position: absolute; left: var(--pad); bottom: 44px;
+        position: absolute; left: var(--safe-l); bottom: var(--safe-b);
         font-family: var(--font-mono); font-size: var(--size-tiny);
         font-weight: var(--wt-reg); letter-spacing: 0.12em;
         text-transform: uppercase; color: var(--text-faint); z-index: 5;
@@ -166,6 +166,11 @@
         background-size: 200px 200px; mix-blend-mode: overlay; opacity: 0.10;
         pointer-events: none; z-index: 7;
       }
+
+      /* Vertical and square: the stack centers in the safe box and the label wraps to its width. */
+      [data-format="vertical"] #t1-st-odo .content, [data-format="square"] #t1-st-odo .content { inset: var(--safe-t) var(--safe-r) var(--safe-b) var(--safe-l); padding-bottom: 0; }
+      [data-format="vertical"] #t1-st-odo .kicker, [data-format="square"] #t1-st-odo .kicker { text-align: center; }
+      [data-format="vertical"] #t1-st-odo .label, [data-format="square"] #t1-st-odo .label { max-width: 100%; }
     </style>
   </head>
   <body>

@@ -12,6 +12,10 @@
 //   node qa.mjs beatsync    <talk-dir>                                 plan anchors against the transcript words
 //   node qa.mjs beatgrid    <video> --bpm 128 [--phase 0] [--tol 0.035] cuts on the beat or half beat
 //   node qa.mjs face        <run-dir> [--max 18]                       cards covering the speaker's face (scene faceRect)
+//   node qa.mjs avsync      <video> [--expect 1.5,4.2] [--duration 20] audio present, length right, hits within one frame
+//   node qa.mjs loop        <video> [--max 6]                          last frame must match the first, so the piece loops
+//   node qa.mjs facts       <run-dir>                                  on-screen numbers not in storyboard facts, em dashes on screen
+//   node qa.mjs safe        <run-dir> [--max 0.004] [--stills]         text or logo edges in the margins each format's platforms cover
 //   node qa.mjs judge       <new.mp4> <old.mp4> [--out dir] [--cmd "claude -p --model sonnet"] [--verdicts A,B]
 //                           new vs old, asked twice with the order swapped; the new one is kept only if it wins both
 //
@@ -22,6 +26,7 @@ import { readFileSync, readdirSync, existsSync, statSync, mkdirSync, writeFileSy
 import { join, resolve, extname } from "node:path";
 import { spawnSync } from "node:child_process";
 import { fileURLToPath } from "node:url";
+import { FORMATS, SAFE } from "./stamp-format.mjs";
 
 // ---------- shared ----------
 
@@ -68,12 +73,15 @@ export function scanTokens(html, tokens = DEFAULT_TOKENS) {
 
 // ---------- cross-fade ----------
 
-// Selectors whose CSS makes them cover the whole frame.
+// Selectors whose CSS makes them cover the whole frame: 100%, the size tokens, or the root's own data-width/data-height in px.
 export function fullFrameSelectors(html) {
+  const root = html.match(/<div\b[^>]*\bdata-composition-id\b[^>]*>/i)?.[0] ?? "";
+  const [w, h] = ["width", "height"].map((d, i) => root.match(new RegExp(`data-${d}\\s*=\\s*["']?(\\d+)`))?.[1] ?? [1920, 1080][i]);
+  const fullW = new RegExp(`width:(100%|var\\(--w\\)|${w}px)`), fullH = new RegExp(`height:(100%|var\\(--h\\)|${h}px)`);
   const sels = new Set();
   for (const m of html.matchAll(/([^{}]+)\{([^{}]*)\}/g)) {
     const body = m[2].replace(/\s/g, "");
-    const full = /inset:0(;|$)/.test(body) || (/width:(100%|1920px)/.test(body) && /height:(100%|1080px)/.test(body));
+    const full = /inset:0(;|$)/.test(body) || (fullW.test(body) && fullH.test(body));
     if (full) for (const s of m[1].split(",")) { const t = s.trim().split(/[\s>]+/).pop(); if (/^[.#][\w-]+$/.test(t)) sels.add(t); }
   }
   return sels;
@@ -237,6 +245,79 @@ export function beatGrid(cuts, { bpm, phase = 0, tol = 0.035 }) {
   return { ok: rows.every((r) => r.ok), off: rows.filter((r) => !r.ok), cuts: rows.length };
 }
 
+// ---------- avsync ----------
+
+// Times where the audio's short-window energy jumps (a hit, a click, a whoosh's attack).
+export function audioOnsets(video, { rate = 8000, win = 0.005, rise = 4, floor = 0.02 } = {}) {
+  const r = ff(["-v", "error", "-i", video, "-vn", "-ac", "1", "-ar", String(rate), "-f", "s16le", "-"]);
+  if (r.status !== 0) throw new Error(`ffmpeg failed on ${video}: ${r.stderr}`);
+  const pcm = new Int16Array(r.stdout.buffer, r.stdout.byteOffset, r.stdout.length >> 1);
+  const n = Math.round(rate * win), e = [];
+  for (let o = 0; o + n <= pcm.length; o += n) { let s = 0; for (let i = o; i < o + n; i++) s += (pcm[i] / 32768) ** 2; e.push(Math.sqrt(s / n)); }
+  const back = Math.round(0.05 / win), onsets = [];
+  for (let i = 1; i < e.length; i++) {
+    let prev = 0; for (let j = Math.max(0, i - back); j < i; j++) prev += e[j];
+    prev /= Math.max(1, Math.min(back, i));
+    // ponytail: energy-rise onsets, good for hits on a quiet-ish bed; under a dense mix pass the SFX stem instead.
+    if (e[i] > floor && e[i] > rise * prev && !(onsets.length && i * win - onsets.at(-1) < 0.1)) onsets.push(Number((i * win).toFixed(3)));
+  }
+  return onsets;
+}
+
+// The final MP4 has an audio stream, the expected length, and each expected hit lands within one frame.
+export function avSync(video, { expect = [], duration } = {}) {
+  const { fps, duration: vdur } = probe(video), tol = 1 / fps;
+  const r = spawnSync("ffprobe", ["-v", "error", "-select_streams", "a:0", "-show_entries", "stream=duration", "-of", "json", video], { encoding: "utf8" });
+  const a = JSON.parse(r.stdout || "{}").streams?.[0];
+  if (!a) return { ok: false, audio: false, hits: [] };
+  const problems = [], adur = Number(a.duration);
+  // ponytail: two frames of slack for the encoder's audio padding.
+  if (Number.isFinite(adur) && Math.abs(adur - vdur) > 2 * tol) problems.push(`audio ${adur.toFixed(3)}s vs video ${vdur.toFixed(3)}s`);
+  if (duration != null && Math.abs(vdur - duration) > tol) problems.push(`video ${vdur.toFixed(3)}s, expected ${duration}s`);
+  const on = expect.length ? audioOnsets(video) : [];
+  const hits = expect.map((t) => {
+    const near = on.reduce((b, o) => (b == null || Math.abs(o - t) < Math.abs(b - t) ? o : b), null);
+    const offset = near == null ? null : Number((near - t).toFixed(3));
+    return { t, onset: near, offset, ok: offset != null && Math.abs(offset) <= tol };
+  });
+  return { ok: problems.length === 0 && hits.every((h) => h.ok), audio: true, problems, hits, tolerance: Number(tol.toFixed(3)) };
+}
+
+// ---------- loop ----------
+
+// A looping piece (a state-list morph) must end on its first frame, or the repeat shows a jump.
+export function loopCheck(video, { max = 6 } = {}) {
+  const frames = grayFrames(video);
+  const diff = meanDiff(frames[0], frames.at(-1));
+  return { ok: diff <= max, diff: Number(diff.toFixed(2)), frames: frames.length };
+}
+
+// ---------- facts ----------
+
+const ENTITIES = { amp: "&", nbsp: " ", mdash: "\u2014", ndash: "\u2013", lt: "<", gt: ">", quot: '"', "#39": "'", "#8212": "\u2014" };
+
+// What a viewer can read: markup, scripts, styles, and comments removed. Template contents stay (sub-compositions).
+export const visibleText = (html) => html
+  .replace(/<!--[\s\S]*?-->/g, " ").replace(/<(script|style)\b[\s\S]*?<\/\1>/gi, " ")
+  .replace(/<[^>]+>/g, " ").replace(/&(#?\w+);/g, (m, e) => ENTITIES[e] ?? m);
+
+// ponytail: single digits pass unchecked (step numbers, "1 click"); currency, percents, ids, and 2+ digit numbers are checked.
+const NUMBERS = /[A-Z]{2,}-\d+|[$€£]\s?\d[\d,]*(?:\.\d+)?|\d[\d,]*(?:\.\d+)?\s?%|\d{1,3}(?:,\d{3})+(?:\.\d+)?|\d{2,}(?:\.\d+)?|\d\.\d+/g;
+
+// texts: [{ where, text }]. A number passes when it appears inside one of the story facts.
+export function scanFacts(texts, facts = []) {
+  const norm = (x) => x.replace(/\s/g, "");
+  const known = facts.map(norm);
+  const found = [];
+  for (const { where, text } of texts) {
+    for (const token of text.match(NUMBERS) ?? []) {
+      if (!known.some((f) => f.includes(norm(token)))) found.push({ where, rule: "not-a-fact", token: token.trim() });
+    }
+    if (text.includes("\u2014")) found.push({ where, rule: "em-dash", token: "\u2014" });
+  }
+  return found;
+}
+
 // ---------- face ----------
 
 // Crop a 0-1 rect [x, y, w, h] out of a w x h gray frame.
@@ -250,7 +331,8 @@ export const crop = (f, w, h, [x, y, cw, ch]) => {
 // A card over the face changes those pixels; the clip alone does not.
 export function faceCover(runDir, { max = 18, w = 160, h = 90 } = {}) {
   const sb = JSON.parse(readFileSync(join(runDir, "storyboard.json"), "utf8"));
-  const final = join(runDir, "final.mp4"), covered = [];
+  // With formats, faceRect matches the landscape cut (16:9 footage is not cropped there).
+  const final = join(runDir, existsSync(join(runDir, "final.mp4")) ? "final.mp4" : "final-landscape.mp4"), covered = [];
   let t0 = 0, checked = 0;
   for (const s of sb.scenes) {
     if (s.faceRect && s.source && existsSync(join(runDir, s.source))) {
@@ -266,6 +348,71 @@ export function faceCover(runDir, { max = 18, w = 160, h = 90 } = {}) {
     t0 += s.duration;
   }
   return { ok: covered.length === 0, covered, checked };
+}
+
+// ---------- safe ----------
+
+// Share of sharp-edge pixels in each margin the format's platforms cover (SAFE in stamp-format.mjs).
+// Text and logos are sharp edges; a solid or gradient background has none.
+// ponytail: pixels, not DOM boxes; a full-bleed photo or texture in a motion scene also trips it, so check a hit by eye.
+export function marginInk(frame, w, h, [t, b, l, r], { edge = 48 } = {}) {
+  // Each band stops one row short of the safe edge, so a line drawn exactly on the edge (a HUD corner) is not counted.
+  const bands = { top: [0, 0, w, Math.round(t * h) - 1], bottom: [0, h - Math.round(b * h) + 1, w, h], left: [0, 0, Math.round(l * w) - 1, h], right: [w - Math.round(r * w) + 1, 0, w, h] };
+  const out = {};
+  for (const [side, [x0, y0, x1, y1]] of Object.entries(bands)) {
+    let hits = 0, n = 0;
+    for (let y = y0; y < Math.min(y1, h - 1); y++) for (let x = x0; x < Math.min(x1, w - 1); x++) {
+      const i = y * w + x;
+      if (Math.abs(frame[i] - frame[i + 1]) + Math.abs(frame[i] - frame[i + w]) > edge) hits++;
+      n++;
+    }
+    out[side] = n ? hits / n : 0;
+  }
+  return out;
+}
+
+// Samples every motion and logo scene of each format's final, twice a second. Demo footage is skipped:
+// a screen recording fills the frame by design. With stills, reads the hold-frame PNGs that
+// `render-scenes.mjs --stills` wrote instead, so the check needs no render.
+export function safeAreas(runDir, { max = 0.004, every = 0.5, stills = false } = {}) {
+  const sb = JSON.parse(readFileSync(join(runDir, "storyboard.json"), "utf8"));
+  const named = Object.keys(FORMATS).find((k) => FORMATS[k][0] === sb.format.width && FORMATS[k][1] === sb.format.height);
+  const runs = Array.isArray(sb.formats) ? sb.formats.map((f) => [f, `final-${f}.mp4`]) : named ? [[named, "final.mp4"]] : [];
+  const hits = [];
+  let checked = 0;
+  if (stills) {
+    for (const [fmt] of runs) {
+      const [W, H] = FORMATS[fmt], w = W / 4, h = H / 4;
+      sb.scenes.forEach((s, i) => {
+        if (s.kind === "demo") return;
+        const png = join(runDir, "stills", Array.isArray(sb.formats) ? fmt : "", `${String(i + 1).padStart(2, "0")}-${s.id}.png`);
+        if (!existsSync(png)) { hits.push({ format: fmt, scene: s.id, missing: png }); return; }
+        const [f] = grayFrames(png, w, h);
+        checked++;
+        for (const [side, ink] of Object.entries(marginInk(f, w, h, SAFE[fmt]))) {
+          if (ink > max) hits.push({ format: fmt, scene: s.id, side, ink: Number(ink.toFixed(4)) });
+        }
+      });
+    }
+    return { ok: hits.length === 0, hits, checked };
+  }
+  for (const [fmt, file] of runs) {
+    const video = join(runDir, file), [W, H] = FORMATS[fmt], w = W / 4, h = H / 4;
+    if (!existsSync(video)) { hits.push({ format: fmt, missing: file }); continue; }
+    let t0 = 0;
+    for (const s of sb.scenes) {
+      for (let t = 0.25; s.kind !== "demo" && t < s.duration; t += every) {
+        const [f] = grayFrames(video, w, h, { start: t0 + t, duration: 0.05 });
+        if (!f) continue;
+        checked++;
+        for (const [side, ink] of Object.entries(marginInk(f, w, h, SAFE[fmt]))) {
+          if (ink > max) hits.push({ format: fmt, scene: s.id, t: Number((t0 + t).toFixed(2)), side, ink: Number(ink.toFixed(4)) });
+        }
+      }
+      t0 += s.duration;
+    }
+  }
+  return { ok: hits.length === 0, hits, checked };
 }
 
 // ---------- judge ----------
@@ -300,7 +447,7 @@ if (process.argv[1] && resolve(process.argv[1]) === fileURLToPath(import.meta.ur
   if (gate === "judge" && rest[0] && !rest[0].startsWith("--")) rest.unshift("--old", rest.shift());
   const opt = (n, d) => { const i = rest.indexOf(n); return i >= 0 ? rest[i + 1] : d; };
   const num = (n, d) => Number(opt(n, d));
-  if (!gate || !target) { console.error("Usage: qa.mjs <tokens|crossfade|motion|legibility|pops|deadframes|presence|beatsync|beatgrid|face|judge> <path> [options]"); process.exit(1); }
+  if (!gate || !target) { console.error("Usage: qa.mjs <tokens|crossfade|motion|legibility|pops|deadframes|presence|beatsync|beatgrid|face|avsync|loop|facts|safe|judge> <path> [options]"); process.exit(1); }
   let result;
   if (gate === "tokens") {
     const tokens = opt("--tokens") ? JSON.parse(readFileSync(opt("--tokens"), "utf8")) : DEFAULT_TOKENS;
@@ -331,7 +478,22 @@ if (process.argv[1] && resolve(process.argv[1]) === fileURLToPath(import.meta.ur
     const { fps } = probe(target);
     result = beatGrid(cutTimes(grayFrames(target), fps), { bpm: num("--bpm"), phase: num("--phase", 0), tol: num("--tol", 0.035) });
   } else if (gate === "face") result = faceCover(target, { max: num("--max", 18) });
-  else if (gate === "judge") {
+  else if (gate === "avsync") {
+    const expect = (opt("--expect", "") || "").split(",").filter(Boolean).map(Number);
+    result = avSync(target, { expect, duration: opt("--duration") != null ? num("--duration") : undefined });
+  } else if (gate === "loop") result = loopCheck(target, { max: num("--max", 6) });
+  else if (gate === "safe") result = safeAreas(target, { max: num("--max", 0.004), stills: rest.includes("--stills") });
+  else if (gate === "facts") {
+    const sb = JSON.parse(readFileSync(join(target, "storyboard.json"), "utf8"));
+    const comp = join(target, "composition");
+    const texts = existsSync(comp) ? htmlFiles(comp).map((f) => ({ where: f, text: visibleText(readFileSync(f, "utf8")) })) : [];
+    for (const sc of sb.scenes ?? []) {
+      const vals = [sc.line, ...Object.values(sc.variables ?? {})].filter((v) => typeof v === "string");
+      texts.push({ where: `storyboard.json#${sc.id}`, text: vals.join("\n") });
+    }
+    const found = scanFacts(texts, sb.facts ?? []);
+    result = { ok: found.length === 0, found, facts: (sb.facts ?? []).length };
+  } else if (gate === "judge") {
     const old = opt("--old"), out = opt("--out", "qa-judge");
     if (!old) { console.error("judge needs <new.mp4> <old.mp4>"); process.exit(1); }
     mkdirSync(out, { recursive: true });

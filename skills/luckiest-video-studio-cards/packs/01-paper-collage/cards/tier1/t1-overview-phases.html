@@ -14,7 +14,7 @@
     <style>
       html, body { margin: 0; }
       #t1-ov-phase {
-        position: absolute; inset: 0; width: 1920px; height: 1080px;
+        position: absolute; inset: 0; width: var(--w); height: var(--h);
         background: var(--paper); color: var(--ink);
         font-family: var(--font-display); overflow: hidden;
       }
@@ -36,7 +36,7 @@
 
       /* marker title */
       #t1-ov-phase .title {
-        position: absolute; top: 68px; left: 50%; transform: translateX(-50%) skewX(var(--marker-skew));
+        position: absolute; top: calc(var(--safe-t) + 14px); left: 50%; transform: translateX(-50%) skewX(var(--marker-skew));
         background: var(--yellow); padding: 8px 32px; z-index: 7;
         font-weight: var(--wt-black); font-size: var(--size-title);
         letter-spacing: var(--track-tight); text-transform: uppercase; white-space: nowrap;
@@ -50,7 +50,7 @@
       #t1-ov-phase .band {
         position: absolute; left: 0; right: 0; height: 230px;
         display: flex; align-items: center; overflow: hidden;
-        border-bottom: 4px solid var(--ink);
+        border-bottom: 4px solid var(--ink); padding-right: var(--safe-r);
       }
       #t1-ov-phase .band:first-child { border-top: 4px solid var(--ink); }
 
@@ -62,7 +62,7 @@
       #t1-ov-phase .band-num {
         flex-shrink: 0;
         width: 320px; text-align: right; padding-right: 56px;
-        font-weight: var(--wt-black); font-size: 160px; line-height: 1;
+        font-weight: var(--wt-black); font-size: calc(160px * var(--type)); line-height: 1;
         letter-spacing: -0.05em; font-variant-numeric: tabular-nums; color: var(--ink);
         opacity: 0.12;
         /* on yellow band override */
@@ -87,7 +87,7 @@
       }
 
       #t1-ov-phase .band-title {
-        font-weight: var(--wt-black); font-size: 80px; line-height: 1;
+        font-weight: var(--wt-black); font-size: calc(80px * var(--type)); line-height: 1;
         letter-spacing: var(--track-tight); color: var(--ink);
       }
 
@@ -103,7 +103,7 @@
         width: 108px; height: 108px; border-radius: 50%;
         background: var(--ink); color: var(--paper);
         display: flex; align-items: center; justify-content: center;
-        font-weight: var(--wt-black); font-size: 56px;
+        font-weight: var(--wt-black); font-size: calc(56px * var(--type));
         font-variant-numeric: tabular-nums;
         flex-shrink: 0;
       }
@@ -111,11 +111,38 @@
 
       /* source */
       #t1-ov-phase .source {
-        position: absolute; left: 56px; bottom: 54px; z-index: 8;
+        position: absolute; left: var(--safe-l); bottom: var(--safe-b); z-index: 8;
         font-family: var(--font-label); font-weight: var(--wt-bold);
         font-size: var(--size-tiny); letter-spacing: var(--track-wide);
         text-transform: uppercase; color: var(--muted);
       }
+
+      /* Vertical and square: full-bleed bands stay, stacked under the title inside the safe area;
+         the faint numeral and rule drop out, the badge sits at the safe left edge and the text
+         column fills the rest of the safe width. */
+      [data-format="vertical"] #t1-ov-phase .title, [data-format="square"] #t1-ov-phase .title {
+        top: var(--safe-t); left: calc(var(--safe-l) + (var(--w) - var(--safe-l) - var(--safe-r)) / 2);
+        width: max-content; max-width: calc(var(--w) - var(--safe-l) - var(--safe-r) - 64px);
+        white-space: normal; text-align: center;
+      }
+      [data-format="vertical"] #t1-ov-phase .title { font-size: calc(64px * var(--type)); }
+      [data-format="square"] #t1-ov-phase .title { font-size: 80px; }
+      [data-format="vertical"] #t1-ov-phase .bands { top: calc(var(--safe-t) + 130px); }
+      [data-format="square"] #t1-ov-phase .bands { top: calc(var(--safe-t) + 136px); }
+      [data-format="vertical"] #t1-ov-phase .band, [data-format="square"] #t1-ov-phase .band { height: 250px; }
+      [data-format="vertical"] #t1-ov-phase .band-2, [data-format="square"] #t1-ov-phase .band-2 { top: 254px; }
+      [data-format="vertical"] #t1-ov-phase .band-3, [data-format="square"] #t1-ov-phase .band-3 { top: 508px; }
+      [data-format="vertical"] #t1-ov-phase .band-num, [data-format="square"] #t1-ov-phase .band-num,
+      [data-format="vertical"] #t1-ov-phase .band-rule, [data-format="square"] #t1-ov-phase .band-rule { display: none; }
+      [data-format="vertical"] #t1-ov-phase .badge, [data-format="square"] #t1-ov-phase .badge { left: var(--safe-l); width: 96px; height: 96px; }
+      [data-format="vertical"] #t1-ov-phase .band-text, [data-format="square"] #t1-ov-phase .band-text { padding-left: calc(var(--safe-l) + 130px); }
+      [data-format="vertical"] #t1-ov-phase .band-title { font-size: calc(62px * var(--type)); }
+      [data-format="vertical"] #t1-ov-phase .band-sub { font-size: calc(28px * var(--type)); }
+      [data-format="square"] #t1-ov-phase .band-title { font-size: 68px; }
+      [data-format="square"] #t1-ov-phase .badge { font-size: 50px; }
+      [data-format="square"] #t1-ov-phase .band { height: 240px; }
+      [data-format="square"] #t1-ov-phase .band-2 { top: 244px; }
+      [data-format="square"] #t1-ov-phase .band-3 { top: 488px; }
     </style>
   </head>
   <body>

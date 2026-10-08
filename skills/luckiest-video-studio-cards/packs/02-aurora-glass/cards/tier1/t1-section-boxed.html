@@ -14,9 +14,13 @@
       html, body { margin: 0; }
 
       #t1-sec-boxed {
-        position: absolute; inset: 0; width: 1920px; height: 1080px;
+        position: absolute; inset: 0; width: var(--w); height: var(--h);
         background: var(--canvas); color: var(--text);
         font-family: var(--font-display); overflow: hidden;
+        /* box size and the safe-box center everything is placed from */
+        --bw: 1340px; --bh: 380px;
+        --cx: calc(var(--safe-l) + (var(--w) - var(--safe-l) - var(--safe-r)) / 2);
+        --cy: calc(var(--safe-t) + (var(--h) - var(--safe-t) - var(--safe-b)) / 2);
       }
 
       /* Aurora bloom */
@@ -34,9 +38,10 @@
 
       /* The glass box frame - drawn by SVG rect stroke-dashoffset trick */
       #t1-sec-boxed .frame-svg {
-        position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%);
-        width: 1340px; height: 380px; z-index: 3; overflow: visible;
+        position: absolute; left: var(--cx); top: var(--cy); transform: translate(-50%, -50%);
+        width: var(--bw); height: var(--bh); z-index: 3; overflow: visible;
       }
+      #t1-sec-boxed .frame-svg rect { width: calc(var(--bw) - 2px); height: calc(var(--bh) - 2px); }
       #t1-sec-boxed .frame-svg rect {
         fill: none;
         stroke: rgba(var(--accent-rgb), 0.72);
@@ -48,8 +53,8 @@
 
       /* Frosted glass fill inside the box */
       #t1-sec-boxed .frame-fill {
-        position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%);
-        width: 1340px; height: 380px;
+        position: absolute; left: var(--cx); top: var(--cy); transform: translate(-50%, -50%);
+        width: var(--bw); height: var(--bh);
         background: var(--glass-bg);
         backdrop-filter: var(--glass-blur);
         border: 1.5px solid var(--glass-border);
@@ -65,15 +70,15 @@
         box-shadow: var(--glow-accent);
         z-index: 4;
       }
-      #t1-sec-boxed .corner.tl { left: calc(50% - 670px); top: calc(50% - 190px); }
-      #t1-sec-boxed .corner.tr { left: calc(50% + 660px); top: calc(50% - 190px); }
-      #t1-sec-boxed .corner.bl { left: calc(50% - 670px); top: calc(50% + 180px); }
-      #t1-sec-boxed .corner.br { left: calc(50% + 660px); top: calc(50% + 180px); }
+      #t1-sec-boxed .corner.tl { left: calc(var(--cx) - var(--bw) / 2); top: calc(var(--cy) - var(--bh) / 2); }
+      #t1-sec-boxed .corner.tr { left: calc(var(--cx) + var(--bw) / 2 - 10px); top: calc(var(--cy) - var(--bh) / 2); }
+      #t1-sec-boxed .corner.bl { left: calc(var(--cx) - var(--bw) / 2); top: calc(var(--cy) + var(--bh) / 2 - 10px); }
+      #t1-sec-boxed .corner.br { left: calc(var(--cx) + var(--bw) / 2 - 10px); top: calc(var(--cy) + var(--bh) / 2 - 10px); }
 
       /* Content inside the box */
       #t1-sec-boxed .content {
-        position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%);
-        width: 1200px; text-align: center; z-index: 5;
+        position: absolute; left: var(--cx); top: var(--cy); transform: translate(-50%, -50%);
+        width: calc(var(--bw) - 140px); text-align: center; z-index: 5;
       }
       #t1-sec-boxed .kicker {
         font-family: var(--font-mono);
@@ -99,6 +104,14 @@
         background-size: 200px 200px; mix-blend-mode: overlay; opacity: 0.10;
         pointer-events: none; z-index: 7;
       }
+
+      /* Vertical and square: the box narrows to the safe width and grows taller so the
+         headline wraps inside it; the rect is sized by CSS (no viewBox) so corners stay round. */
+      [data-format="vertical"] #t1-sec-boxed { --bw: calc(var(--w) - var(--safe-l) - var(--safe-r)); --bh: 600px; }
+      [data-format="square"] #t1-sec-boxed { --bw: calc(var(--w) - var(--safe-l) - var(--safe-r)); --bh: 460px; }
+      [data-format="vertical"] #t1-sec-boxed .content { width: calc(var(--bw) - 80px); }
+      [data-format="vertical"] #t1-sec-boxed .headline { font-size: calc(76px * var(--type)); }
+      [data-format="vertical"] #t1-sec-boxed .headline, [data-format="square"] #t1-sec-boxed .headline { text-wrap: balance; }
     </style>
   </head>
   <body>
@@ -108,8 +121,8 @@
 
       <!-- Glass fill first (lower z), then SVG stroke on top -->
       <div class="frame-fill"></div>
-      <svg class="frame-svg" viewBox="0 0 1340 380" xmlns="http://www.w3.org/2000/svg">
-        <rect id="t1-sec-boxed-rect" x="1" y="1" width="1338" height="378" rx="27" ry="27"/>
+      <svg class="frame-svg" xmlns="http://www.w3.org/2000/svg">
+        <rect id="t1-sec-boxed-rect" x="1" y="1" width="1338" height="378" rx="27" ry="27" pathLength="3432"/>
       </svg>
 
       <!-- Corner accent nodes -->

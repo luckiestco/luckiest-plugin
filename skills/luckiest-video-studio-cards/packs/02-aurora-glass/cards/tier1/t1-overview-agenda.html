@@ -16,7 +16,7 @@
       html, body { margin: 0; }
 
       #t1-ov-agenda {
-        position: absolute; inset: 0; width: 1920px; height: 1080px;
+        position: absolute; inset: 0; width: var(--w); height: var(--h);
         background: var(--canvas); color: var(--text);
         font-family: var(--font-body); overflow: hidden;
       }
@@ -38,7 +38,7 @@
       #t1-ov-agenda .layout {
         position: absolute; inset: 0; z-index: 3;
         display: flex; flex-direction: column;
-        padding: 80px var(--pad) 72px;
+        padding: calc(var(--safe-t) + 26px) var(--safe-r) calc(var(--safe-b) + 18px) var(--safe-l);
       }
 
       /* Title */
@@ -122,7 +122,7 @@
         padding: 0 20px;
       }
       #t1-ov-agenda .time-label {
-        font-family: var(--font-mono); font-size: 24px; font-weight: 700;
+        font-family: var(--font-mono); font-size: calc(24px * var(--type)); font-weight: 700;
         color: var(--accent); text-shadow: var(--textglow-accent);
         letter-spacing: 0.06em; text-align: center;
         line-height: 1.2;
@@ -136,13 +136,13 @@
       }
       #t1-ov-agenda .row-heading {
         font-family: var(--font-display); font-weight: var(--wt-semi);
-        font-size: 34px; color: var(--white);
+        font-size: calc(34px * var(--type)); color: var(--white);
         letter-spacing: var(--track-snug); line-height: 1.15;
         margin-bottom: 6px;
       }
       #t1-ov-agenda .row-body {
         font-family: var(--font-body); font-weight: var(--wt-reg);
-        font-size: 26px; color: var(--text-dim); line-height: 1.4;
+        font-size: calc(26px * var(--type)); color: var(--text-dim); line-height: 1.4;
       }
 
       /* Vignette + grain */
@@ -155,6 +155,24 @@
         background-size: 200px 200px; mix-blend-mode: overlay; opacity: 0.10;
         pointer-events: none; z-index: 7;
       }
+      /* Vertical and square: narrower spine and time column so the row text gets the width;
+         spine nodes follow the equal-height rows. */
+      [data-format="vertical"] #t1-ov-agenda .spine-col, [data-format="square"] #t1-ov-agenda .spine-col { width: 36px; }
+      [data-format="vertical"] #t1-ov-agenda .spine-line, [data-format="square"] #t1-ov-agenda .spine-line { right: 10px; }
+      [data-format="vertical"] #t1-ov-agenda .node, [data-format="square"] #t1-ov-agenda .node { right: 3px; }
+      [data-format="vertical"] #t1-ov-agenda .node-1, [data-format="square"] #t1-ov-agenda .node-1 { top: calc((100% + 14px) / 5 * 0.5 - 15px); }
+      [data-format="vertical"] #t1-ov-agenda .node-2, [data-format="square"] #t1-ov-agenda .node-2 { top: calc((100% + 14px) / 5 * 1.5 - 15px); }
+      [data-format="vertical"] #t1-ov-agenda .node-3, [data-format="square"] #t1-ov-agenda .node-3 { top: calc((100% + 14px) / 5 * 2.5 - 15px); }
+      [data-format="vertical"] #t1-ov-agenda .node-4, [data-format="square"] #t1-ov-agenda .node-4 { top: calc((100% + 14px) / 5 * 3.5 - 15px); }
+      [data-format="vertical"] #t1-ov-agenda .node-5, [data-format="square"] #t1-ov-agenda .node-5 { top: calc((100% + 14px) / 5 * 4.5 - 15px); }
+      [data-format="vertical"] #t1-ov-agenda .rows-col, [data-format="square"] #t1-ov-agenda .rows-col { padding-left: 20px; }
+      [data-format="vertical"] #t1-ov-agenda .time-block, [data-format="square"] #t1-ov-agenda .time-block { width: 104px; padding: 0 10px; }
+      [data-format="vertical"] #t1-ov-agenda .card-title { padding-left: 6px; }
+      [data-format="vertical"] #t1-ov-agenda .time-label { font-size: calc(20px * var(--type)); }
+      [data-format="vertical"] #t1-ov-agenda .row-text, [data-format="square"] #t1-ov-agenda .row-text { padding: 14px 24px; }
+      [data-format="vertical"] #t1-ov-agenda .row-heading { font-size: calc(30px * var(--type)); }
+      [data-format="vertical"] #t1-ov-agenda .row-body { font-size: calc(21px * var(--type)); line-height: 1.3; }
+      [data-format="square"] #t1-ov-agenda .row-body { font-size: 24px; line-height: 1.3; }
     </style>
   </head>
   <body>

@@ -15,7 +15,7 @@
       html, body { margin: 0; }
 
       #t1-stat-funnel {
-        position: absolute; inset: 0; width: 1920px; height: 1080px;
+        position: absolute; inset: 0; width: var(--w); height: var(--h);
         background: var(--canvas); color: var(--text);
         font-family: var(--font-display); overflow: hidden;
       }
@@ -34,7 +34,7 @@
       #t1-stat-funnel .content {
         position: absolute; inset: 0; z-index: 4;
         display: flex; align-items: center;
-        padding: 0 var(--pad);
+        padding: 0 var(--safe-r) 0 var(--safe-l);
         gap: 80px;
       }
 
@@ -57,7 +57,7 @@
       #t1-stat-funnel .stat {
         font-family: var(--font-display);
         font-weight: var(--wt-black);
-        font-size: 160px;
+        font-size: calc(160px * var(--type));
         line-height: 1;
         letter-spacing: var(--track-tight);
         background: linear-gradient(155deg, #ffffff 0%, rgba(var(--accent-rgb), 0.85) 90%);
@@ -68,7 +68,7 @@
 
       #t1-stat-funnel .label {
         font-family: var(--font-body);
-        font-size: 28px;
+        font-size: calc(28px * var(--type));
         font-weight: var(--wt-med);
         color: var(--text-dim);
         line-height: 1.5;
@@ -121,7 +121,7 @@
 
       #t1-stat-funnel .band-stage {
         font-family: var(--font-body);
-        font-size: 22px;
+        font-size: calc(22px * var(--type));
         font-weight: var(--wt-semi);
         color: var(--text-dim);
         letter-spacing: 0.04em;
@@ -135,7 +135,7 @@
       #t1-stat-funnel .band-val {
         font-family: var(--font-display);
         font-weight: var(--wt-black);
-        font-size: 44px;
+        font-size: calc(44px * var(--type));
         color: var(--text);
         text-shadow: var(--textglow);
       }
@@ -143,7 +143,7 @@
         color: var(--accent);
         text-shadow: var(--textglow-accent),
                      0 0 40px rgba(var(--accent-rgb), 0.55);
-        font-size: 54px;
+        font-size: calc(54px * var(--type));
       }
 
       /* arrow connector between bands */
@@ -159,7 +159,7 @@
       }
 
       #t1-stat-funnel .source {
-        position: absolute; left: var(--pad); bottom: 44px;
+        position: absolute; left: var(--safe-l); bottom: var(--safe-b);
         font-family: var(--font-mono); font-size: var(--size-tiny);
         font-weight: var(--wt-reg); letter-spacing: 0.12em;
         text-transform: uppercase; color: var(--text-faint); z-index: 5;
@@ -174,6 +174,22 @@
         background-size: 200px 200px; mix-blend-mode: overlay; opacity: 0.10;
         pointer-events: none; z-index: 7;
       }
+
+      /* Vertical and square: kicker, stat and label centered over the funnel, stacked in the safe area;
+         band widths become shares of the safe width. */
+      [data-format="vertical"] #t1-stat-funnel .content, [data-format="square"] #t1-stat-funnel .content {
+        inset: var(--safe-t) var(--safe-r) calc(var(--safe-b) + 40px) var(--safe-l); padding: 0;
+        flex-direction: column; align-items: stretch; justify-content: center; gap: 56px;
+      }
+      [data-format="vertical"] #t1-stat-funnel .left, [data-format="square"] #t1-stat-funnel .left { flex: 0 0 auto; align-items: center; text-align: center; gap: 24px; }
+      [data-format="vertical"] #t1-stat-funnel .label, [data-format="square"] #t1-stat-funnel .label { max-width: none; }
+      [data-format="vertical"] #t1-stat-funnel .right, [data-format="square"] #t1-stat-funnel .right { flex: 0 0 auto; }
+      [data-format="vertical"] #t1-stat-funnel .band, [data-format="square"] #t1-stat-funnel .band { box-sizing: border-box; }
+      [data-format="vertical"] #t1-stat-funnel .band-1, [data-format="square"] #t1-stat-funnel .band-1 { width: 100%; }
+      [data-format="vertical"] #t1-stat-funnel .band-2, [data-format="square"] #t1-stat-funnel .band-2 { width: 88%; }
+      [data-format="vertical"] #t1-stat-funnel .band-3, [data-format="square"] #t1-stat-funnel .band-3 { width: 76%; }
+      [data-format="vertical"] #t1-stat-funnel .band-4, [data-format="square"] #t1-stat-funnel .band-4 { width: 64%; }
+      [data-format="square"] #t1-stat-funnel .content { gap: 40px; }
     </style>
   </head>
   <body>

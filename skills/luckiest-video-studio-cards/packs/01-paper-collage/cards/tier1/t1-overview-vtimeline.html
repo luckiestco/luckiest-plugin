@@ -13,7 +13,7 @@
     <style>
       html, body { margin: 0; }
       #t1-ov-vtime {
-        position: absolute; inset: 0; width: 1920px; height: 1080px;
+        position: absolute; inset: 0; width: var(--w); height: var(--h);
         background: var(--paper); color: var(--ink);
         font-family: var(--font-display); overflow: hidden;
       }
@@ -34,7 +34,7 @@
 
       /* marker title */
       #t1-ov-vtime .title {
-        position: absolute; top: 88px; left: 50%; transform: translateX(-50%) skewX(var(--marker-skew));
+        position: absolute; top: calc(var(--safe-t) + 34px); left: 50%; transform: translateX(-50%) skewX(var(--marker-skew));
         background: var(--yellow); padding: 8px 28px; z-index: 3;
         font-weight: var(--wt-black); font-size: var(--size-title); letter-spacing: var(--track-tight);
         text-transform: uppercase; white-space: nowrap;
@@ -42,16 +42,16 @@
 
       /* vertical spine */
       #t1-ov-vtime .spine {
-        position: absolute; left: 680px; top: 240px; width: 8px; height: 700px;
+        position: absolute; left: 680px; top: 280px; width: 8px; height: 680px;
         background: var(--ink); transform-origin: top center; z-index: 2;
       }
 
       /* node rows */
       #t1-ov-vtime .nodes {
-        position: absolute; left: 0; top: 240px; width: 1920px; z-index: 3;
+        position: absolute; left: 0; top: calc(280px - 55px); width: var(--w); z-index: 3;
       }
       #t1-ov-vtime .node {
-        position: absolute; left: 0; width: 1920px; display: flex; align-items: center;
+        position: absolute; left: 0; width: var(--w); display: flex; align-items: center;
       }
       /* diamond node at spine center (left:680px, 8px wide → center=684px) */
       #t1-ov-vtime .node-diamond {
@@ -61,7 +61,7 @@
       }
       #t1-ov-vtime .node-year {
         position: absolute; left: 280px; top: 50%; transform: translateY(-50%);
-        font-weight: var(--wt-black); font-size: 90px; line-height: 1;
+        font-weight: var(--wt-black); font-size: calc(90px * var(--type)); line-height: 1;
         letter-spacing: -0.03em; font-variant-numeric: tabular-nums; color: var(--ink);
       }
       #t1-ov-vtime .node-label {
@@ -74,11 +74,37 @@
 
       /* source */
       #t1-ov-vtime .source {
-        position: absolute; right: 130px; bottom: 60px; z-index: 4;
+        position: absolute; right: calc(var(--safe-r) + 34px); bottom: calc(var(--safe-b) + 6px); z-index: 4;
         font-family: var(--font-label); font-weight: var(--wt-bold);
         font-size: var(--size-tiny); letter-spacing: var(--track-wide);
         text-transform: uppercase; color: var(--muted);
       }
+
+      /* Node rows are centred on the spine (row height 110, so .nodes sits 55px above the spine top).
+         Vertical: spine down the left of the safe box, year stacked above its event to the right.
+         Square: same left-year / right-event layout as landscape, compressed to the safe width. */
+      [data-format="vertical"] #t1-ov-vtime .title, [data-format="square"] #t1-ov-vtime .title {
+        top: var(--safe-t); left: calc(var(--safe-l) + (var(--w) - var(--safe-l) - var(--safe-r)) / 2);
+      }
+      [data-format="vertical"] #t1-ov-vtime .title { font-size: calc(70px * var(--type)); }
+      [data-format="vertical"] #t1-ov-vtime .spine { left: calc(var(--safe-l) + 28px); top: calc(var(--safe-t) + 215px); height: 625px; }
+      [data-format="vertical"] #t1-ov-vtime .nodes { top: calc(var(--safe-t) + 215px - 55px); }
+      [data-format="vertical"] #t1-ov-vtime .node-diamond { left: var(--safe-l); }
+      [data-format="vertical"] #t1-ov-vtime .node-year { left: calc(var(--safe-l) + 100px); top: calc(50% - 56px); font-size: calc(64px * var(--type)); }
+      [data-format="vertical"] #t1-ov-vtime .node-label {
+        /* a fixed two-line box, so its first line always starts just under the year */
+        left: calc(var(--safe-l) + 100px); top: calc(50% - 10px + 1.2em); height: 2.4em; font-size: calc(36px * var(--type));
+        max-width: calc(var(--w) - var(--safe-l) - var(--safe-r) - 100px);
+      }
+      [data-format="square"] #t1-ov-vtime .spine { left: calc(var(--safe-l) + 260px); top: calc(var(--safe-t) + 190px); height: 620px; }
+      [data-format="square"] #t1-ov-vtime .nodes { top: calc(var(--safe-t) + 190px - 55px); }
+      [data-format="square"] #t1-ov-vtime .node-diamond { left: calc(var(--safe-l) + 232px); }
+      [data-format="square"] #t1-ov-vtime .node-year { left: var(--safe-l); font-size: 76px; }
+      [data-format="square"] #t1-ov-vtime .node-label {
+        left: calc(var(--safe-l) + 340px); font-size: 44px;
+        max-width: calc(var(--w) - var(--safe-l) - var(--safe-r) - 340px);
+      }
+      [data-format="vertical"] #t1-ov-vtime .source, [data-format="square"] #t1-ov-vtime .source { right: var(--safe-r); bottom: var(--safe-b); }
     </style>
   </head>
   <body>
@@ -105,8 +131,8 @@
       ];
 
       const SPINE_TOP  = 240;   // px from top of comp (matches CSS)
-      const SPINE_H    = 700;
-      const STEP       = SPINE_H / (nodes.length - 1);   // 233px between nodes
+      const SPINE_H    = document.querySelector("#t1-ov-vtime .spine").offsetHeight;   // 680 in landscape, set per format in CSS
+      const STEP       = SPINE_H / (nodes.length - 1);   // 227px between nodes in landscape
 
       const container = document.getElementById("vtime-nodes");
       nodes.forEach((n, i) => {

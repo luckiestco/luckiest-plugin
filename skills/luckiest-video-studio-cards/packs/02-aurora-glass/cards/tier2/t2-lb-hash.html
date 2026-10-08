@@ -14,7 +14,7 @@
       html, body { margin: 0; background: transparent; }
 
       #t2-lb-hash {
-        position: absolute; inset: 0; width: 1920px; height: 1080px;
+        position: absolute; inset: 0; width: var(--w); height: var(--h);
         background: transparent; overflow: hidden;
         font-family: var(--font-display);
       }
@@ -34,7 +34,7 @@
 
       /* Right-anchored wrapper */
       #t2-lb-hash .wrapper {
-        position: absolute; right: 140px; top: 400px;
+        position: absolute; right: calc(var(--safe-r) + 44px); top: calc(var(--safe-t) + 346px);
         display: flex; flex-direction: column; align-items: flex-end; gap: 11px;
         z-index: 2;
       }
@@ -67,7 +67,7 @@
       #t2-lb-hash .hash-glyph {
         font-family: var(--font-mono);
         font-weight: var(--wt-bold);
-        font-size: 36px;
+        font-size: calc(36px * var(--type));
         color: var(--accent);
         text-shadow: var(--textglow-accent);
         letter-spacing: -0.04em;
@@ -78,7 +78,7 @@
       #t2-lb-hash .tag-name {
         font-family: var(--font-display);
         font-weight: var(--wt-black);
-        font-size: 36px;
+        font-size: calc(36px * var(--type));
         letter-spacing: var(--track-snug);
         color: var(--white);
         text-shadow: var(--textglow);
@@ -106,11 +106,23 @@
       #t2-lb-hash .detail {
         font-family: var(--font-body);
         font-weight: var(--wt-reg);
-        font-size: 20px;
+        font-size: calc(20px * var(--type));
         line-height: 1.45;
         color: var(--text-dim);
         text-align: right;
       }
+      /* Vertical and square: tag and detail move to the bottom-left of the safe area and align left, glow follows, slots wrap. */
+      [data-format="vertical"] #t2-lb-hash .wrapper, [data-format="square"] #t2-lb-hash .wrapper {
+        top: auto; right: auto; left: var(--safe-l); bottom: var(--safe-b);
+        max-width: calc(var(--w) - var(--safe-l) - var(--safe-r));
+      }
+      [data-format="vertical"] #t2-lb-hash .local-glow, [data-format="square"] #t2-lb-hash .local-glow {
+        top: auto; right: auto; left: calc(var(--safe-l) - 40px); bottom: calc(var(--safe-b) - 40px);
+      }
+      [data-format="vertical"] #t2-lb-hash .wrapper, [data-format="square"] #t2-lb-hash .wrapper { align-items: flex-start; }
+      [data-format="vertical"] #t2-lb-hash .chip, [data-format="square"] #t2-lb-hash .chip { white-space: normal; }
+      [data-format="vertical"] #t2-lb-hash .detail, [data-format="square"] #t2-lb-hash .detail { text-align: left; }
+      [data-format="vertical"] #t2-lb-hash [data-slot], [data-format="square"] #t2-lb-hash [data-slot] { white-space: normal; }
     </style>
   </head>
   <body>

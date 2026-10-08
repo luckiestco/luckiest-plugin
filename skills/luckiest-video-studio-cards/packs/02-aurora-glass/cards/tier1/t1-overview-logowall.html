@@ -14,7 +14,7 @@
       html, body { margin: 0; }
 
       #t1-ov-logos {
-        position: absolute; inset: 0; width: 1920px; height: 1080px;
+        position: absolute; inset: 0; width: var(--w); height: var(--h);
         background: var(--canvas); color: var(--text);
         font-family: var(--font-display); overflow: hidden;
       }
@@ -38,7 +38,7 @@
 
       /* Title */
       #t1-ov-logos .title-row {
-        position: absolute; left: 0; right: 0; top: 84px; text-align: center; z-index: 4;
+        position: absolute; left: var(--safe-l); right: var(--safe-r); top: calc(var(--safe-t) + 30px); text-align: center; z-index: 4;
       }
       #t1-ov-logos .title {
         font-family: var(--font-display); font-weight: var(--wt-bold);
@@ -52,10 +52,10 @@
 
       /* Logo wall grid - 6 tiles in a 3x2 layout */
       #t1-ov-logos .logo-wall {
-        position: absolute; left: 0; right: 0; top: 248px;
+        position: absolute; left: var(--safe-l); right: var(--safe-r); top: calc(var(--safe-t) + 194px);
         display: flex; justify-content: center; align-items: flex-start;
         gap: 48px; flex-wrap: wrap;
-        padding: 0 160px; z-index: 4;
+        padding: 0 64px; z-index: 4;
       }
 
       /* Individual logo cell */
@@ -97,7 +97,7 @@
       /* Monogram text fallback */
       #t1-ov-logos .logo-monogram {
         font-family: var(--font-display); font-weight: var(--wt-black);
-        font-size: 64px; letter-spacing: -0.02em;
+        font-size: calc(64px * var(--type)); letter-spacing: -0.02em;
         color: rgba(var(--accent-rgb), 0.80);
         text-shadow: 0 0 18px rgba(var(--accent-rgb), 0.50);
         line-height: 1;
@@ -106,7 +106,7 @@
       /* Name label under the tile */
       #t1-ov-logos .logo-name {
         font-family: var(--font-display); font-weight: var(--wt-semi);
-        font-size: 28px; letter-spacing: var(--track-snug); line-height: 1.2;
+        font-size: calc(28px * var(--type)); letter-spacing: var(--track-snug); line-height: 1.2;
         color: var(--white); text-shadow: var(--textglow); text-align: center;
       }
 
@@ -126,6 +126,18 @@
         background-size: 200px 200px; mix-blend-mode: overlay; opacity: 0.10;
         pointer-events: none; z-index: 7;
       }
+
+      /* Vertical and square: the wall becomes 3 columns x 2 rows inside the safe box. */
+      [data-format="vertical"] #t1-ov-logos .title-row, [data-format="square"] #t1-ov-logos .title-row { top: var(--safe-t); }
+      [data-format="vertical"] #t1-ov-logos .title { font-size: calc(64px * var(--type)); }
+      [data-format="square"] #t1-ov-logos .title { font-size: 64px; }
+      [data-format="vertical"] #t1-ov-logos .logo-wall, [data-format="square"] #t1-ov-logos .logo-wall { padding: 0; }
+      [data-format="vertical"] #t1-ov-logos .logo-wall { top: calc(var(--safe-t) + 300px); gap: 56px 24px; }
+      [data-format="square"] #t1-ov-logos .logo-wall { top: calc(var(--safe-t) + 150px); gap: 40px 44px; }
+      [data-format="vertical"] #t1-ov-logos .logo-cell { width: 230px; gap: 16px; }
+      [data-format="square"] #t1-ov-logos .logo-cell { width: 270px; gap: 16px; }
+      [data-format="vertical"] #t1-ov-logos .logo-tile, [data-format="square"] #t1-ov-logos .logo-tile { width: 180px; height: 180px; }
+      [data-format="vertical"] #t1-ov-logos .logo-sublabel { font-size: calc(20px * var(--type)); }
     </style>
   </head>
   <body>

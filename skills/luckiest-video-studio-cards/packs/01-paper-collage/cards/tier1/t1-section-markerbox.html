@@ -11,7 +11,7 @@
     <style>
       html, body { margin: 0; }
       #t1-sec-marker {
-        position: absolute; inset: 0; width: 1920px; height: 1080px;
+        position: absolute; inset: 0; width: var(--w); height: var(--h);
         background: var(--paper); color: var(--ink);
         font-family: var(--font-display); overflow: hidden;
       }
@@ -29,14 +29,14 @@
         position: absolute; inset: 0; pointer-events: none;
         background: radial-gradient(130% 120% at 40% 50%, transparent 58%, rgba(23,19,14,0.15) 100%);
       }
-      #t1-sec-marker .stage { position: absolute; left: 150px; top: 300px; transform-origin: left top; }
+      #t1-sec-marker .stage { position: absolute; left: calc(var(--safe-l) + 54px); top: calc(var(--safe-t) + 246px); transform-origin: left top; }
       #t1-sec-marker .kicker {
         font-family: var(--font-label); font-weight: var(--wt-bold);
         font-size: var(--size-label); letter-spacing: var(--track-wide);
         text-transform: uppercase; color: var(--ink); margin-bottom: 26px;
       }
       #t1-sec-marker .line {
-        display: inline-block; font-weight: var(--wt-black); font-size: 132px;
+        display: inline-block; font-weight: var(--wt-black); font-size: calc(132px * var(--type));
         line-height: 1.0; letter-spacing: var(--track-tight); color: var(--ink);
         background: var(--yellow); padding: 2px 26px; margin: 0 0 18px; clear: both; float: left;
         box-shadow: 7px 7px 0 rgba(23,19,14,0.14);
@@ -44,12 +44,19 @@
       #t1-sec-marker .l1 { transform: skewX(-1.6deg) rotate(-0.6deg); }
       #t1-sec-marker .l2 { transform: skewX(1.2deg) rotate(0.5deg); background: var(--ink); color: var(--paper); }
       #t1-sec-marker .l3 { transform: skewX(-0.8deg) rotate(-0.3deg); }      #t1-sec-marker .badge {
-        position: absolute; right: 150px; bottom: 130px; width: 150px; height: 150px;
+        position: absolute; right: calc(var(--safe-r) + 54px); bottom: calc(var(--safe-b) + 76px); width: 150px; height: 150px;
         background: var(--red); color: var(--paper); border-radius: 50%;
         display: flex; align-items: center; justify-content: center; text-align: center;
-        font-family: var(--font-label); font-weight: var(--wt-black); font-size: 26px;
+        font-family: var(--font-label); font-weight: var(--wt-black); font-size: calc(26px * var(--type));
         letter-spacing: 0.04em; transform: rotate(-8deg); line-height: 1.0;
       }
+
+      /* Vertical and square: the marker stack starts higher in the safe area at a smaller size,
+         badge at the safe bottom right. */
+      [data-format="vertical"] #t1-sec-marker .stage, [data-format="square"] #t1-sec-marker .stage { left: var(--safe-l); top: calc(var(--safe-t) + 100px); }
+      [data-format="vertical"] #t1-sec-marker .line { font-size: calc(118px * var(--type)); }
+      [data-format="square"] #t1-sec-marker .line { font-size: 120px; }
+      [data-format="vertical"] #t1-sec-marker .badge, [data-format="square"] #t1-sec-marker .badge { right: var(--safe-r); bottom: var(--safe-b); }
     </style>
   </head>
   <body>

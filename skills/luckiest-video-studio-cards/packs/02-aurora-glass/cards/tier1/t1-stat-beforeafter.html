@@ -16,7 +16,7 @@
       html, body { margin: 0; }
 
       #t1-stat-baft {
-        position: absolute; inset: 0; width: 1920px; height: 1080px;
+        position: absolute; inset: 0; width: var(--w); height: var(--h);
         background: var(--canvas); color: var(--text);
         font-family: var(--font-display); overflow: hidden;
       }
@@ -63,7 +63,7 @@
       }
       #t1-stat-baft .side-tag {
         font-family: var(--font-mono);
-        font-size: 21px;
+        font-size: calc(21px * var(--type));
         letter-spacing: 0.22em;
         text-transform: uppercase;
         padding: 6px 20px;
@@ -84,7 +84,7 @@
       #t1-stat-baft .before-num {
         font-family: var(--font-display);
         font-weight: var(--wt-black);
-        font-size: 160px;
+        font-size: calc(160px * var(--type));
         line-height: 1;
         letter-spacing: var(--track-tight);
         color: var(--text-faint);
@@ -95,7 +95,7 @@
       #t1-stat-baft .after-num {
         font-family: var(--font-display);
         font-weight: var(--wt-black);
-        font-size: 220px;
+        font-size: calc(220px * var(--type));
         line-height: 1;
         letter-spacing: -0.04em;
         text-align: center;
@@ -116,7 +116,7 @@
       }
       #t1-stat-baft .delta-chip {
         font-family: var(--font-mono);
-        font-size: 28px;
+        font-size: calc(28px * var(--type));
         font-weight: var(--wt-bold);
         color: #37E68C;
         text-shadow: 0 0 14px rgba(55,230,140,0.70), 0 0 36px rgba(55,230,140,0.35);
@@ -146,7 +146,7 @@
       }
 
       #t1-stat-baft .source {
-        position: absolute; left: var(--pad); bottom: 44px;
+        position: absolute; left: var(--safe-l); bottom: var(--safe-b);
         font-family: var(--font-mono); font-size: var(--size-tiny);
         font-weight: var(--wt-reg); letter-spacing: 0.12em;
         text-transform: uppercase; color: var(--text-faint); z-index: 5;
@@ -161,6 +161,23 @@
         background-size: 200px 200px; mix-blend-mode: overlay; opacity: 0.10;
         pointer-events: none; z-index: 7;
       }
+
+      /* Vertical and square: the stage centers inside the safe area above the source line. Vertical stacks
+         before, arrow (turned down), after; square keeps the row with smaller numbers. */
+      [data-format="vertical"] #t1-stat-baft .stage, [data-format="square"] #t1-stat-baft .stage {
+        inset: var(--safe-t) var(--safe-r) calc(var(--safe-b) + 44px) var(--safe-l); gap: 32px;
+      }
+      [data-format="vertical"] #t1-stat-baft .kicker, [data-format="square"] #t1-stat-baft .kicker { text-align: center; }
+      [data-format="vertical"] #t1-stat-baft .side, [data-format="square"] #t1-stat-baft .side { width: auto; gap: 8px; }
+      [data-format="vertical"] #t1-stat-baft .compare-row { flex-direction: column; gap: 4px; }
+      [data-format="vertical"] #t1-stat-baft .arrow-col { gap: 0; }
+      [data-format="vertical"] #t1-stat-baft .arrow-svg { transform: rotate(90deg); width: 70px; height: 42px; }
+      [data-format="vertical"] #t1-stat-baft .before-num { font-size: calc(100px * var(--type)); }
+      [data-format="vertical"] #t1-stat-baft .after-num { font-size: calc(170px * var(--type)); }
+      [data-format="vertical"] #t1-stat-baft .after-glow { left: calc(50% - 180px); top: 52%; }
+      [data-format="square"] #t1-stat-baft .compare-row { gap: 40px; }
+      [data-format="square"] #t1-stat-baft .before-num { font-size: 130px; }
+      [data-format="square"] #t1-stat-baft .after-num { font-size: 190px; }
     </style>
   </head>
   <body>

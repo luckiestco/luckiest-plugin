@@ -15,7 +15,7 @@
     <style>
       html, body { margin: 0; }
       #t1-ov-board {
-        position: absolute; inset: 0; width: 1920px; height: 1080px;
+        position: absolute; inset: 0; width: var(--w); height: var(--h);
         background: var(--paper); color: var(--ink);
         font-family: var(--font-display); overflow: hidden;
       }
@@ -37,7 +37,7 @@
 
       /* board outer frame */
       #t1-ov-board .board {
-        position: absolute; left: 180px; right: 180px; top: 96px;
+        position: absolute; left: calc(var(--safe-l) + 84px); right: calc(var(--safe-r) + 84px); top: calc(var(--safe-t) + 42px);
         background: var(--ink);
         border: 6px solid var(--ink);
         border-radius: 4px;
@@ -54,7 +54,7 @@
         border-bottom: 4px solid rgba(239,233,220,0.18);
       }
       #t1-ov-board .header-title {
-        font-weight: var(--wt-black); font-size: 52px;
+        font-weight: var(--wt-black); font-size: calc(52px * var(--type));
         letter-spacing: var(--track-wide); text-transform: uppercase;
         color: var(--yellow);
       }
@@ -109,7 +109,7 @@
         flex: 1; padding: 0 48px;
         display: flex; align-items: center;
         font-family: var(--font-label); font-weight: var(--wt-bold);
-        font-size: 44px; letter-spacing: 0.02em;
+        font-size: calc(44px * var(--type)); letter-spacing: 0.02em;
         color: var(--paper); z-index: 3;
         /* clip for stepped reveal */
         clip-path: inset(0 100% 0 0);
@@ -120,7 +120,7 @@
         flex-shrink: 0; width: 280px;
         display: flex; align-items: center; justify-content: center;
         font-family: var(--font-label); font-weight: var(--wt-black);
-        font-size: 44px; letter-spacing: 0.1em;
+        font-size: calc(44px * var(--type)); letter-spacing: 0.1em;
         color: var(--yellow);
         border-left: 3px solid rgba(239,233,220,0.1);
         z-index: 3;
@@ -129,11 +129,25 @@
 
       /* source */
       #t1-ov-board .source {
-        position: absolute; left: 180px; bottom: 54px; z-index: 8;
+        position: absolute; left: calc(var(--safe-l) + 84px); bottom: var(--safe-b); z-index: 8;
         font-family: var(--font-label); font-weight: var(--wt-bold);
         font-size: var(--size-tiny); letter-spacing: var(--track-wide);
         text-transform: uppercase; color: var(--muted);
       }
+
+      /* Vertical and square: the board fills the safe width; the TOPIC/TIME column labels drop out,
+         the time column narrows and topics may wrap to two lines. */
+      [data-format="vertical"] #t1-ov-board .board, [data-format="square"] #t1-ov-board .board { left: var(--safe-l); right: var(--safe-r); top: var(--safe-t); }
+      [data-format="vertical"] #t1-ov-board .header-cols, [data-format="square"] #t1-ov-board .header-cols { display: none; }
+      [data-format="vertical"] #t1-ov-board .board-header, [data-format="square"] #t1-ov-board .board-header { padding: 26px 32px 20px; }
+      [data-format="vertical"] #t1-ov-board .header-title { font-size: calc(40px * var(--type)); }
+      [data-format="vertical"] #t1-ov-board .row { height: 150px; }
+      [data-format="vertical"] #t1-ov-board .row-num { width: 64px; }
+      [data-format="vertical"] #t1-ov-board .row-topic { padding: 0 24px; font-size: calc(34px * var(--type)); line-height: 1.15; }
+      [data-format="vertical"] #t1-ov-board .row-time { width: 150px; font-size: calc(32px * var(--type)); letter-spacing: 0.04em; }
+      [data-format="square"] #t1-ov-board .row-topic { padding: 0 32px; font-size: 40px; line-height: 1.15; }
+      [data-format="square"] #t1-ov-board .row-time { width: 200px; font-size: 40px; }
+      [data-format="vertical"] #t1-ov-board .source, [data-format="square"] #t1-ov-board .source { left: var(--safe-l); bottom: var(--safe-b); }
     </style>
   </head>
   <body>

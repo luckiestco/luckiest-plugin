@@ -16,7 +16,7 @@ user-invocable: true
 license: MIT. See ATTRIBUTION.md
 allowed-tools: Bash, Read, Write, Glob, AskUserQuestion
 metadata:
-  version: "1.1.0"
+  version: "1.3.0"
   listing_id: luckiest-video-studio-recreate
   author: luckiest
 ---
@@ -30,11 +30,11 @@ camera language, and look.
 ## Staying current
 
 On activation, call the Luckiest MCP `check_updates` tool with
-`{ listingId: "luckiest-video-studio-recreate", installedSemver: "1.1.0" }`. If
+`{ listingId: "luckiest-video-studio-recreate", installedSemver: "1.3.0" }`. If
 `upToDate: false`, surface the `notice` once and continue. Never block on it.
 
 When done, call `report_usage` once with
-`{ listing_id: "luckiest-video-studio-recreate", skill_version: "1.1.0", matched: true, success: <true|false> }`.
+`{ listing_id: "luckiest-video-studio-recreate", skill_version: "1.3.0", matched: true, success: <true|false> }`.
 Metadata only, never prompt text. Skip silently if unavailable.
 
 ## Standing rules
@@ -70,6 +70,11 @@ connected, upload the mp4 (`creations_request_upload` with `video/mp4`, PUT the
 bytes, `creations_finalize_upload`) and call `video_analyze` with
 `mode: "shot_breakdown"`. It handles about 5 minutes per call; use
 `timeRangeSeconds` for longer sources.
+
+For sound and speech, run `luckiest-video-watcher` in study mode on the same
+source with `--out-dir <run-dir>/recreate/watch`. Its transcript and sound notes
+feed each shot's audio and on-screen text. If the watcher is not installed, say
+so in one line and continue.
 
 ## Step 2: Analyze each shot
 
@@ -116,6 +121,31 @@ Show the shot table and wait for approval. With `--prompts-only`, stop here.
 
 ## Step 4: Generate
 
+### 4a. Lock people and places first
+
+When the same person or the same set appears in more than one shot, video models
+forget them between shots. Lock them as stills before any video, each with
+`simulate_cost` and a yes first (rule 3):
+
+1. **Character sheet** per person: one image, plain white background, a full-body
+   panel and a chest-up panel side by side, the outfit spelled out, real unretouched
+   skin. This is the only reference for their face, hair, and clothes from here on.
+2. **Set plate** per location: the empty set, framed for the main shot, with the
+   light source, palette, and props named. Empty, so people can be placed in it.
+3. **First look**: the person in the set for the main shot, made from the sheet
+   and the plate together. Get the user's yes on this one frame. Every other
+   angle copies its light and look.
+4. **Start frames**: one per remaining shot, made from the sheet, the plate, and the
+   first look, with lens and camera height per shot. Show them on one contact
+   sheet and wait for a yes.
+
+Then animate each shot from its start frame with the character sheet as a second
+reference (image to video), so every clip has the same person, set, and light and
+they cut together like one shoot. Write the sheet, plate, and frames to
+`<run-dir>/recreate/locks/`.
+
+### 4b. Generate the shots
+
 1. `video_models_list`, then pick a model. Default to one with `multishot.allowed`
    so up to 6 shots share one call and stay consistent. Honor `--model`.
 2. Group shots into calls of at most 6. Pass them as `multi_prompt`, with the
@@ -123,12 +153,20 @@ Show the shot table and wait for approval. With `--prompts-only`, stop here.
    fixed where the model honors it.
 3. Run `simulate_cost` with the same arguments for every call, show the total,
    and wait for a yes (rule 3).
-4. Generate, wait with `creations_wait`, and call `creations_show` with the
-   results.
-5. With more than one clip, `video_concatenate` them in shot order.
+4. Generate as drafts (4c), wait with `creations_wait`, and call
+   `creations_show` with the results.
+5. After 4c, with more than one clip, `video_concatenate` the finalized clips in
+   shot order.
 
 If the creative MCP is not connected, say so in one line, hand over
 `prompts.md` and `prompts.json`, and stop.
+
+### 4c. Draft, then finalize
+
+Render every clip at the model's cheapest draft setting first, show the drafts,
+and finalize (`video_finalize_draft`, or a re-render at full resolution with the
+same seed) only the takes the user approves and that stay on screen. A voice or
+audio-only take stays a draft.
 
 ## Step 5: Check against the source
 
@@ -143,4 +181,5 @@ Write the per-shot verdicts to `<run-dir>/recreate/review.md`.
 
 `prompts.md` and `prompts.json` exist with one prompt per source shot. Unless
 `--prompts-only`, the stitched video exists, `review.md` lists a verdict per shot,
-and no source footage, likeness, or logo is in the output.
+every repeated person or set was locked and approved in 4a, only approved takes
+were finalized, and no source footage, likeness, or logo is in the output.

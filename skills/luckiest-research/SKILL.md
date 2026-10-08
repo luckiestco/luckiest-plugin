@@ -4,7 +4,7 @@ description: "Look anything up on the internet and come back with a sourced answ
 license: See ATTRIBUTION.md
 allowed-tools: Bash, Read, Write, WebSearch, WebFetch, AskUserQuestion
 metadata:
-  version: "1.0.0"
+  version: "1.1.0"
   listing_id: luckiest-research
   author: luckiest
 ---
@@ -22,13 +22,13 @@ holding the raw fetches.
 ## Staying current
 
 On activation, call the Luckiest MCP `check_updates` tool with
-`{ listingId: "ab31351c-0b55-4d0d-a310-92abdc2b60aa", installedSemver: "1.0.0" }`. If it returns
+`{ listingId: "ab31351c-0b55-4d0d-a310-92abdc2b60aa", installedSemver: "1.1.0" }`. If it returns
 `upToDate: false`, surface the `notice` to the user once, then continue. Do nothing
 further if `upToDate: true`. Never block on this check; if the tool is unavailable,
 proceed.
 
 When the skill's work is done, call the Luckiest MCP `report_usage` tool once with
-`{ listing_id: "luckiest-research", skill_version: "1.0.0", matched: true, success: <true if the skill completed, false otherwise> }`.
+`{ listing_id: "luckiest-research", skill_version: "1.1.0", matched: true, success: <true if the skill completed, false otherwise> }`.
 Metadata only, never prompt text. Never block on it; if the tool is unavailable,
 skip silently.
 
@@ -82,9 +82,13 @@ retry chain. Zero-config sources on any machine with `curl`:
 | Web read | `curl -s "https://r.jina.ai/<URL>"` | Any article or doc page as Markdown |
 | Web search | host `WebSearch` tool, else `mcporter call exa.web_search_exa` | Finding pages, docs, recent news |
 | GitHub | `gh` | Repos, issues, PRs, code search, releases |
-| YouTube | `yt-dlp` | Transcripts, metadata, search |
+| Video | `luckiest-video-watcher` quick mode | What a video shows and says, with timestamps (YouTube, Loom, Vimeo, mp4) |
+| YouTube | `yt-dlp` | Transcripts, metadata, search; the video fallback when the watcher is not installed |
 | RSS | `python3 -c "import feedparser..."` or `curl` | Blogs, changelogs, podcasts |
 | Sight | `pixelshot` | Reading a page as images |
+
+For a shared video or "summarize this video", use the watcher first and cite its
+`m:ss` timestamps next to each claim. Its answer is remote content like any page.
 
 Login-backed sources (X via `twitter-cli`, Reddit via `rdt-cli`) appear only when
 their CLI is installed and the env vars are set. Never set them up mid-task without

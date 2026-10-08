@@ -11,7 +11,7 @@
     <style>
       html, body { margin: 0; }
       #t1-sec-fullbleed {
-        position: absolute; inset: 0; width: 1920px; height: 1080px;
+        position: absolute; inset: 0; width: var(--w); height: var(--h);
         background: #1a160f; color: var(--paper);
         font-family: var(--font-display); overflow: hidden;
       }
@@ -30,24 +30,37 @@
       }
       #t1-sec-fullbleed .stage { position: absolute; inset: 0; transform-origin: 50% 60%; }
       #t1-sec-fullbleed .kicker {
-        position: absolute; left: 150px; bottom: 470px;
+        position: absolute; left: calc(var(--safe-l) + 54px); bottom: calc(var(--safe-b) + 416px);
         font-family: var(--font-label); font-weight: var(--wt-bold);
         font-size: var(--size-label); letter-spacing: var(--track-wide);
         text-transform: uppercase; color: var(--ink); background: var(--yellow); padding: 5px 16px;
         transform: skewX(var(--marker-skew));
       }
       #t1-sec-fullbleed .headline {
-        position: absolute; left: 150px; bottom: 150px; width: 1500px;
-        font-weight: var(--wt-black); font-size: 148px; line-height: 0.94;
+        position: absolute; left: calc(var(--safe-l) + 54px); bottom: calc(var(--safe-b) + 96px); width: 1500px;
+        font-weight: var(--wt-black); font-size: calc(148px * var(--type)); line-height: 0.94;
         letter-spacing: var(--track-tight); color: var(--paper);
       }
       #t1-sec-fullbleed .headline em { font-style: normal; background: var(--yellow); color: var(--ink); padding: 0 14px; }
       #t1-sec-fullbleed .source {
-        position: absolute; right: 150px; bottom: 96px;
+        position: absolute; right: calc(var(--safe-r) + 54px); bottom: calc(var(--safe-b) + 42px);
         font-family: var(--font-label); font-weight: var(--wt-bold);
         font-size: var(--size-tiny); letter-spacing: var(--track-wide);
         text-transform: uppercase; color: rgba(239,233,220,0.6);
       }
+
+      /* Vertical and square: headline across the safe width at the safe bottom, kicker above it,
+         source under it on the right; the scrim rises to cover the safe area. */
+      [data-format="vertical"] #t1-sec-fullbleed .stage { transform-origin: 46% 50%; }
+      [data-format="vertical"] #t1-sec-fullbleed .scrim { background: linear-gradient(0deg, rgba(12,9,6,0.92) 0%, rgba(12,9,6,0.85) 35%, rgba(12,9,6,0.3) 62%, rgba(12,9,6,0.0) 85%); }
+      [data-format="vertical"] #t1-sec-fullbleed .headline, [data-format="square"] #t1-sec-fullbleed .headline {
+        left: var(--safe-l); bottom: calc(var(--safe-b) + 60px); width: calc(var(--w) - var(--safe-l) - var(--safe-r));
+      }
+      [data-format="vertical"] #t1-sec-fullbleed .headline { font-size: calc(112px * var(--type)); }
+      [data-format="square"] #t1-sec-fullbleed .headline { font-size: 124px; }
+      [data-format="vertical"] #t1-sec-fullbleed .kicker { left: var(--safe-l); bottom: calc(var(--safe-b) + 370px); }
+      [data-format="square"] #t1-sec-fullbleed .kicker { left: var(--safe-l); bottom: calc(var(--safe-b) + 330px); }
+      [data-format="vertical"] #t1-sec-fullbleed .source, [data-format="square"] #t1-sec-fullbleed .source { right: var(--safe-r); bottom: var(--safe-b); }
     </style>
   </head>
   <body>

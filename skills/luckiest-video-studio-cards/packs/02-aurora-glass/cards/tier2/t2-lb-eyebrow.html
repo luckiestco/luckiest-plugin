@@ -13,7 +13,7 @@
       html, body { margin: 0; background: transparent; }
 
       #t2-lb-eye {
-        position: absolute; inset: 0; width: 1920px; height: 1080px;
+        position: absolute; inset: 0; width: var(--w); height: var(--h);
         background: transparent; overflow: hidden;
       }
 
@@ -31,14 +31,14 @@
 
       /* Wrapper anchored left */
       #t2-lb-eye .wrapper {
-        position: absolute; left: 120px; top: 400px;
+        position: absolute; left: calc(var(--safe-l) + 24px); top: calc(var(--safe-t) + 346px);
         display: flex; flex-direction: column; align-items: flex-start; gap: 0;
       }
 
       /* Eyebrow kicker */
       #t2-lb-eye .eyebrow {
         font-family: var(--font-mono); font-weight: var(--wt-bold);
-        font-size: 20px; letter-spacing: var(--track-wide);
+        font-size: calc(20px * var(--type)); letter-spacing: var(--track-wide);
         text-transform: uppercase;
         color: var(--accent); text-shadow: var(--textglow-accent);
         margin-bottom: 8px;
@@ -52,7 +52,7 @@
 
       #t2-lb-eye .term {
         font-family: var(--font-display); font-weight: var(--wt-black);
-        font-size: 54px; line-height: 1.08; letter-spacing: var(--track-snug);
+        font-size: calc(54px * var(--type)); line-height: 1.08; letter-spacing: var(--track-snug);
         color: var(--white); text-shadow: var(--textglow);
         display: block;
       }
@@ -93,8 +93,17 @@
 
       #t2-lb-eye .detail {
         font-family: var(--font-body); font-weight: var(--wt-reg);
-        font-size: 20px; line-height: 1.45; color: var(--text-dim);
+        font-size: calc(20px * var(--type)); line-height: 1.45; color: var(--text-dim);
       }
+      /* Vertical and square: card moves to the bottom-left of the safe area, glow follows, slots wrap. */
+      [data-format="vertical"] #t2-lb-eye .wrapper, [data-format="square"] #t2-lb-eye .wrapper {
+        top: auto; right: auto; left: var(--safe-l); bottom: var(--safe-b);
+        max-width: calc(var(--w) - var(--safe-l) - var(--safe-r));
+      }
+      [data-format="vertical"] #t2-lb-eye .local-glow, [data-format="square"] #t2-lb-eye .local-glow {
+        top: auto; right: auto; left: calc(var(--safe-l) - 40px); bottom: calc(var(--safe-b) - 40px);
+      }
+      [data-format="vertical"] #t2-lb-eye [data-slot], [data-format="square"] #t2-lb-eye [data-slot] { white-space: normal; }
     </style>
   </head>
   <body>

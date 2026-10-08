@@ -16,7 +16,7 @@
       html, body { margin: 0; }
 
       #t1-sec-stk {
-        position: absolute; inset: 0; width: 1920px; height: 1080px;
+        position: absolute; inset: 0; width: var(--w); height: var(--h);
         background: var(--canvas); color: var(--text);
         font-family: var(--font-display); overflow: hidden;
       }
@@ -63,9 +63,9 @@
         white-space: nowrap;
       }
       /* Three type sizes: first line biggest, subsequent slightly smaller */
-      #t1-sec-stk .line-1 .line-inner { font-size: 160px; }
-      #t1-sec-stk .line-2 .line-inner { font-size: 160px; }
-      #t1-sec-stk .line-3 .line-inner { font-size: 100px; }
+      #t1-sec-stk .line-1 .line-inner { font-size: calc(160px * var(--type)); }
+      #t1-sec-stk .line-2 .line-inner { font-size: calc(160px * var(--type)); }
+      #t1-sec-stk .line-3 .line-inner { font-size: calc(100px * var(--type)); }
 
       /* Accent word */
       #t1-sec-stk .line-inner em {
@@ -93,6 +93,19 @@
         background-size: 200px 200px; mix-blend-mode: overlay; opacity: 0.10;
         pointer-events: none; z-index: 7;
       }
+
+      /* Vertical and square: the stack centres in the safe area with smaller lines that may wrap. */
+      [data-format="vertical"] #t1-sec-stk .content, [data-format="square"] #t1-sec-stk .content {
+        left: var(--safe-l); right: var(--safe-r); top: var(--safe-t); bottom: var(--safe-b);
+      }
+      [data-format="vertical"] #t1-sec-stk .line-inner, [data-format="square"] #t1-sec-stk .line-inner { white-space: normal; }
+      [data-format="vertical"] #t1-sec-stk .line-1 .line-inner, [data-format="vertical"] #t1-sec-stk .line-2 .line-inner { font-size: calc(92px * var(--type)); }
+      [data-format="vertical"] #t1-sec-stk .line-3 .line-inner { font-size: calc(62px * var(--type)); }
+      [data-format="square"] #t1-sec-stk .line-1 .line-inner, [data-format="square"] #t1-sec-stk .line-2 .line-inner { font-size: 112px; }
+      [data-format="square"] #t1-sec-stk .line-3 .line-inner { font-size: 74px; }
+      [data-format="vertical"] #t1-sec-stk .edge-rule, [data-format="square"] #t1-sec-stk .edge-rule { left: calc(var(--safe-l) - 34px); }
+      [data-format="vertical"] #t1-sec-stk .edge-rule { top: calc(var(--safe-t) + 160px); }
+      [data-format="square"] #t1-sec-stk .edge-rule { top: calc(var(--safe-t) + 150px); }
     </style>
   </head>
   <body>

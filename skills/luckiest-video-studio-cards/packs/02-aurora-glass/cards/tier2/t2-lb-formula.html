@@ -14,7 +14,7 @@
       html, body { margin: 0; background: transparent; }
 
       #t2-lb-form {
-        position: absolute; inset: 0; width: 1920px; height: 1080px;
+        position: absolute; inset: 0; width: var(--w); height: var(--h);
         background: transparent; overflow: hidden;
         font-family: var(--font-display);
       }
@@ -34,7 +34,7 @@
 
       /* Card wrapper anchored right */
       #t2-lb-form .wrapper {
-        position: absolute; right: 140px; top: 420px;
+        position: absolute; right: calc(var(--safe-r) + 44px); top: calc(var(--safe-t) + 366px);
         z-index: 2;
       }
 
@@ -66,7 +66,7 @@
       /* Small uppercase label above equation */
       #t2-lb-form .kicker-label {
         font-family: var(--font-mono);
-        font-size: 16px;
+        font-size: calc(16px * var(--type));
         font-weight: var(--wt-bold);
         letter-spacing: var(--track-wide);
         text-transform: uppercase;
@@ -84,7 +84,7 @@
       #t2-lb-form .eq-lhs {
         font-family: var(--font-display);
         font-weight: var(--wt-black);
-        font-size: 44px;
+        font-size: calc(44px * var(--type));
         letter-spacing: var(--track-tight);
         color: var(--white);
         text-shadow: var(--textglow);
@@ -94,7 +94,7 @@
       #t2-lb-form .eq-sign {
         font-family: var(--font-display);
         font-weight: var(--wt-black);
-        font-size: 44px;
+        font-size: calc(44px * var(--type));
         color: var(--accent);
         text-shadow: var(--textglow-accent),
           0 0 42px rgba(var(--accent-rgb), 0.60);
@@ -104,7 +104,7 @@
       #t2-lb-form .eq-rhs {
         font-family: var(--font-display);
         font-weight: var(--wt-bold);
-        font-size: 44px;
+        font-size: calc(44px * var(--type));
         letter-spacing: var(--track-tight);
         color: var(--text-dim);
         text-shadow: var(--textglow);
@@ -120,11 +120,21 @@
       #t2-lb-form .detail {
         font-family: var(--font-body);
         font-weight: var(--wt-reg);
-        font-size: 19px;
+        font-size: calc(19px * var(--type));
         line-height: 1.48;
         color: var(--text-dim);
         max-width: 460px;
       }
+      /* Vertical and square: card moves to the bottom-left of the safe area, glow follows, the equation wraps. */
+      [data-format="vertical"] #t2-lb-form .wrapper, [data-format="square"] #t2-lb-form .wrapper {
+        top: auto; right: auto; left: var(--safe-l); bottom: var(--safe-b);
+        max-width: calc(var(--w) - var(--safe-l) - var(--safe-r));
+      }
+      [data-format="vertical"] #t2-lb-form .local-glow, [data-format="square"] #t2-lb-form .local-glow {
+        top: auto; right: auto; left: calc(var(--safe-l) - 40px); bottom: calc(var(--safe-b) - 40px);
+      }
+      [data-format="vertical"] #t2-lb-form .equation, [data-format="square"] #t2-lb-form .equation { flex-wrap: wrap; row-gap: 4px; white-space: normal; }
+      [data-format="vertical"] #t2-lb-form [data-slot], [data-format="square"] #t2-lb-form [data-slot] { white-space: normal; }
     </style>
   </head>
   <body>

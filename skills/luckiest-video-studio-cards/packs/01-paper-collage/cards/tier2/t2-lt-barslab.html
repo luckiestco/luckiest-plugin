@@ -13,7 +13,7 @@
     <style>
       html, body { margin: 0; background: transparent; }
       #t2-lt-bar {
-        position: absolute; inset: 0; width: 1920px; height: 1080px;
+        position: absolute; inset: 0; width: var(--w); height: var(--h);
         background: transparent;
         overflow: hidden;
       }
@@ -29,7 +29,7 @@
       /* Tag kicker - sits just above the bar */
       #t2-lt-bar .tag {
         position: absolute;
-        left: 80px; bottom: 170px;
+        left: max(var(--safe-l), 80px); bottom: 170px;
         font-family: var(--font-label);
         font-weight: var(--wt-bold);
         font-size: var(--size-label);
@@ -43,7 +43,7 @@
       #t2-lt-bar .bar {
         position: absolute;
         left: 0; bottom: 60px;
-        width: 1920px; height: 100px;
+        width: var(--w); height: 100px;
         background: var(--ink);
         display: flex;
         align-items: center;
@@ -54,11 +54,11 @@
       #t2-lt-bar .name {
         font-family: var(--font-display);
         font-weight: var(--wt-black);
-        font-size: 68px;
+        font-size: calc(68px * var(--type));
         line-height: 1;
         letter-spacing: var(--track-tight);
         color: var(--paper);
-        margin-left: 88px;
+        margin-left: max(var(--safe-l), 88px);
         white-space: nowrap;
       }
 
@@ -74,7 +74,7 @@
         font-size: var(--size-body);
         letter-spacing: 0.04em;
         color: var(--paper-2);
-        margin-right: 64px;
+        margin-right: max(var(--safe-r), 64px);
         white-space: nowrap;
         transform-origin: right center;
       }
@@ -87,11 +87,29 @@
         margin: 0 40px;
         flex-shrink: 0;
       }
+
+      /* Vertical and square: name over role in a taller bar on the safe bottom, the tag
+         anchored just above it so it follows the bar's height. */
+      [data-format="vertical"] #t2-lt-bar .bar, [data-format="square"] #t2-lt-bar .bar {
+        anchor-name: --bar; bottom: calc(var(--safe-b) + 24px); height: auto; min-height: 100px;
+        flex-direction: column; align-items: flex-start; gap: 10px; padding: 20px 0;
+      }
+      [data-format="vertical"] #t2-lt-bar .accent-sq, [data-format="square"] #t2-lt-bar .accent-sq {
+        bottom: calc(var(--safe-b) + 24px);
+      }
+      [data-format="vertical"] #t2-lt-bar .tag, [data-format="square"] #t2-lt-bar .tag {
+        position-anchor: --bar; bottom: calc(anchor(top) + 10px);
+      }
+      [data-format="vertical"] #t2-lt-bar .role, [data-format="square"] #t2-lt-bar .role {
+        margin: 0 var(--safe-r) 0 var(--safe-l);
+      }
+      [data-format="vertical"] #t2-lt-bar .tick, [data-format="square"] #t2-lt-bar .tick { display: none; }
+      [data-format="vertical"] #t2-lt-bar .name, [data-format="square"] #t2-lt-bar .name { margin-right: var(--safe-r); }
+      [data-format="vertical"] #t2-lt-bar [data-slot], [data-format="square"] #t2-lt-bar [data-slot] { white-space: normal; }
     </style>
   </head>
   <body>
     <div id="t2-lt-bar" data-composition-id="t2-lt-bar" data-start="0" data-width="1920" data-height="1080">
-      <div class="tag" data-slot="tag">CORRESPONDENT</div>
       <div class="accent-sq"></div>
       <div class="bar">
         <div class="name" data-slot="name">Marcus Okafor</div>
@@ -99,6 +117,7 @@
         <div class="tick"></div>
         <div class="role" data-slot="role">Senior Policy Correspondent · Acme</div>
       </div>
+      <div class="tag" data-slot="tag">CORRESPONDENT</div>
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>

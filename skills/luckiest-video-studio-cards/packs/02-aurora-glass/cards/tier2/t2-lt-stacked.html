@@ -13,7 +13,9 @@
       html, body { margin: 0; background: transparent; }
 
       #t2-lt-stk {
-        position: absolute; inset: 0; width: 1920px; height: 1080px;
+        position: absolute; inset: 0; width: var(--w); height: var(--h);
+        /* the lower-third group's anchor: left / bottom of the main card */
+        --lt-x: var(--safe-l); --lt-y: calc(var(--safe-b) + 64px);
         background: transparent; overflow: hidden;
         font-family: var(--font-display);
       }
@@ -21,7 +23,7 @@
       /* Localized bloom */
       #t2-lt-stk .local-bloom {
         position: absolute;
-        left: 50px; bottom: 88px;
+        left: calc(var(--lt-x) - 30px); bottom: calc(var(--lt-y) - 30px);
         width: 560px; height: 220px;
         border-radius: 50%;
         background: radial-gradient(ellipse at 40% 82%,
@@ -36,7 +38,7 @@
       /* Glass card */
       #t2-lt-stk .card {
         position: absolute;
-        left: 80px; bottom: 118px;
+        left: var(--lt-x); bottom: var(--lt-y);
         padding: 26px 36px 24px;
         min-width: 380px;
         background: var(--glass-bg-dark);
@@ -64,7 +66,7 @@
       #t2-lt-stk .name {
         font-family: var(--font-display);
         font-weight: var(--wt-bold);
-        font-size: 40px;
+        font-size: calc(40px * var(--type));
         letter-spacing: var(--track-snug);
         color: var(--white);
         text-shadow: var(--textglow);
@@ -92,11 +94,17 @@
       #t2-lt-stk .role {
         font-family: var(--font-body);
         font-weight: var(--wt-med);
-        font-size: 23px;
+        font-size: calc(23px * var(--type));
         letter-spacing: 0.01em;
         color: var(--text-dim);
         line-height: 1.3;
       }
+      /* Vertical and square: the group sits at the bottom-left of the safe area and slots wrap. */
+      [data-format="vertical"] #t2-lt-stk, [data-format="square"] #t2-lt-stk { --lt-y: var(--safe-b); }
+      [data-format="vertical"] #t2-lt-stk .card, [data-format="square"] #t2-lt-stk .card {
+        top: auto; width: auto; max-width: calc(var(--w) - var(--safe-l) - var(--safe-r));
+      }
+      [data-format="vertical"] #t2-lt-stk [data-slot], [data-format="square"] #t2-lt-stk [data-slot] { white-space: normal; }
     </style>
   </head>
   <body>

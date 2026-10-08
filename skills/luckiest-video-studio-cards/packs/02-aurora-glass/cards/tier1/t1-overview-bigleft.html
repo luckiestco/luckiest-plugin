@@ -14,7 +14,7 @@
       html, body { margin: 0; }
 
       #t1-ov-bigleft {
-        position: absolute; inset: 0; width: 1920px; height: 1080px;
+        position: absolute; inset: 0; width: var(--w); height: var(--h);
         background: var(--canvas); color: var(--text);
         font-family: var(--font-body); overflow: hidden;
       }
@@ -39,7 +39,7 @@
       #t1-ov-bigleft .layout {
         position: absolute; inset: 0; z-index: 3;
         display: flex; align-items: center;
-        padding: 80px var(--pad);
+        padding: calc(var(--safe-t) + 26px) var(--safe-r) calc(var(--safe-b) + 26px) calc(var(--safe-l) + 10px);
         gap: 80px;
       }
 
@@ -60,7 +60,7 @@
       /* Big glowing headline */
       #t1-ov-bigleft .big-title {
         font-family: var(--font-display); font-weight: var(--wt-black);
-        font-size: 108px; line-height: 1.0; letter-spacing: var(--track-tight);
+        font-size: calc(108px * var(--type)); line-height: 1.0; letter-spacing: var(--track-tight);
         color: var(--white); text-shadow: var(--textglow);
       }
       #t1-ov-bigleft .big-title em {
@@ -103,7 +103,7 @@
       /* Number badge */
       #t1-ov-bigleft .badge {
         font-family: var(--font-display); font-weight: var(--wt-black);
-        font-size: 58px; line-height: 1;
+        font-size: calc(58px * var(--type)); line-height: 1;
         color: var(--accent); text-shadow: var(--textglow-accent);
         min-width: 48px; text-align: center; flex-shrink: 0;
         margin-top: 2px;
@@ -112,11 +112,11 @@
       #t1-ov-bigleft .item-text { flex: 1; min-width: 0; }
       #t1-ov-bigleft .item-heading {
         font-family: var(--font-display); font-weight: var(--wt-semi);
-        font-size: 34px; color: var(--white);
+        font-size: calc(34px * var(--type)); color: var(--white);
         letter-spacing: var(--track-snug); margin-bottom: 8px; line-height: 1.2;
       }
       #t1-ov-bigleft .item-body {
-        font-family: var(--font-body); font-size: 28px;
+        font-family: var(--font-body); font-size: calc(28px * var(--type));
         color: var(--text-dim); line-height: 1.45;
       }
 
@@ -129,6 +129,28 @@
         background-size: 200px 200px; mix-blend-mode: overlay; opacity: 0.10;
         pointer-events: none; z-index: 7;
       }
+
+      /* Vertical and square: big title on top, separator turns into a horizontal rule, items stacked under it. */
+      [data-format="vertical"] #t1-ov-bigleft .layout, [data-format="square"] #t1-ov-bigleft .layout {
+        flex-direction: column; align-items: stretch; justify-content: center; gap: 30px;
+      }
+      [data-format="vertical"] #t1-ov-bigleft .left-col, [data-format="square"] #t1-ov-bigleft .left-col { flex: none; }
+      [data-format="vertical"] #t1-ov-bigleft .right-col, [data-format="square"] #t1-ov-bigleft .right-col { flex: none; gap: 16px; }
+      [data-format="vertical"] #t1-ov-bigleft .col-sep, [data-format="square"] #t1-ov-bigleft .col-sep {
+        width: auto; height: 1px; align-self: stretch;
+        background: linear-gradient(to right, transparent 0%, rgba(var(--accent-rgb), 0.30) 20%, rgba(var(--accent-rgb), 0.30) 80%, transparent 100%);
+      }
+      [data-format="vertical"] #t1-ov-bigleft .eyebrow, [data-format="square"] #t1-ov-bigleft .eyebrow { margin-bottom: 16px; }
+      [data-format="vertical"] #t1-ov-bigleft .title-rule, [data-format="square"] #t1-ov-bigleft .title-rule { margin-top: 24px; }
+      [data-format="vertical"] #t1-ov-bigleft .big-title { font-size: calc(72px * var(--type)); }
+      [data-format="square"] #t1-ov-bigleft .big-title { font-size: 76px; }
+      [data-format="vertical"] #t1-ov-bigleft .item, [data-format="square"] #t1-ov-bigleft .item { padding: 20px 28px 20px 22px; gap: 22px; }
+      [data-format="vertical"] #t1-ov-bigleft .badge { font-size: calc(44px * var(--type)); min-width: 36px; }
+      [data-format="square"] #t1-ov-bigleft .badge { font-size: 46px; min-width: 36px; }
+      [data-format="vertical"] #t1-ov-bigleft .item-heading { font-size: calc(28px * var(--type)); margin-bottom: 4px; }
+      [data-format="square"] #t1-ov-bigleft .item-heading { font-size: 30px; margin-bottom: 4px; }
+      [data-format="vertical"] #t1-ov-bigleft .item-body { font-size: calc(21px * var(--type)); line-height: 1.38; }
+      [data-format="square"] #t1-ov-bigleft .item-body { font-size: 23px; line-height: 1.38; }
     </style>
   </head>
   <body>

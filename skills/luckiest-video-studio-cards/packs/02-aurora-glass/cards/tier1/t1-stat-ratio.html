@@ -14,7 +14,7 @@
       html, body { margin: 0; }
 
       #t1-stat-ratio {
-        position: absolute; inset: 0; width: 1920px; height: 1080px;
+        position: absolute; inset: 0; width: var(--w); height: var(--h);
         background: var(--canvas); color: var(--text);
         font-family: var(--font-display); overflow: hidden;
       }
@@ -71,7 +71,7 @@
       }
       /* left side: pure white, extra large */
       #t1-stat-ratio .ratio-left .ratio-num {
-        font-size: 260px;
+        font-size: calc(260px * var(--type));
         background: linear-gradient(155deg, #ffffff 0%, rgba(255,255,255,0.75) 100%);
         -webkit-background-clip: text; background-clip: text;
         -webkit-text-fill-color: transparent;
@@ -79,7 +79,7 @@
       }
       /* right side: accent-tinted, slightly smaller */
       #t1-stat-ratio .ratio-right .ratio-num {
-        font-size: 180px;
+        font-size: calc(180px * var(--type));
         background: linear-gradient(155deg, rgba(var(--accent-rgb),0.95) 0%, rgba(255,255,255,0.55) 100%);
         -webkit-background-clip: text; background-clip: text;
         -webkit-text-fill-color: transparent;
@@ -98,7 +98,7 @@
       #t1-stat-ratio .ratio-colon {
         font-family: var(--font-display);
         font-weight: var(--wt-black);
-        font-size: 200px;
+        font-size: calc(200px * var(--type));
         line-height: 1;
         color: var(--accent);
         text-shadow: var(--textglow-accent),
@@ -130,7 +130,7 @@
       }
 
       #t1-stat-ratio .source {
-        position: absolute; left: var(--pad); bottom: 44px;
+        position: absolute; left: var(--safe-l); bottom: var(--safe-b);
         font-family: var(--font-mono); font-size: var(--size-tiny);
         font-weight: var(--wt-reg); letter-spacing: 0.12em;
         text-transform: uppercase; color: var(--text-faint); z-index: 5;
@@ -145,6 +145,11 @@
         background-size: 200px 200px; mix-blend-mode: overlay; opacity: 0.10;
         pointer-events: none; z-index: 7;
       }
+
+      /* Vertical and square: the stack centers in the safe box, the ratio row scales down to fit. */
+      [data-format="vertical"] #t1-stat-ratio .content, [data-format="square"] #t1-stat-ratio .content { inset: var(--safe-t) var(--safe-r) calc(var(--safe-b) + 48px) var(--safe-l); }
+      [data-format="vertical"] #t1-stat-ratio .kicker, [data-format="square"] #t1-stat-ratio .kicker { text-align: center; }
+      [data-format="vertical"] #t1-stat-ratio .label, [data-format="square"] #t1-stat-ratio .label { max-width: 100%; }
     </style>
   </head>
   <body>

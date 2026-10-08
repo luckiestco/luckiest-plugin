@@ -14,14 +14,14 @@
       html, body { margin: 0; background: transparent; }
 
       #t2-lb-bar {
-        position: absolute; inset: 0; width: 1920px; height: 1080px;
+        position: absolute; inset: 0; width: var(--w); height: var(--h);
         background: transparent; overflow: hidden;
         font-family: var(--font-display);
       }
 
       /* Localized glow - right side */
       #t2-lb-bar .local-glow {
-        position: absolute; right: 55px; top: 310px;
+        position: absolute; right: calc(var(--safe-r) - 25px); top: calc(var(--safe-t) + 256px);
         width: 540px; height: 360px; border-radius: 50%;
         background: radial-gradient(ellipse at 50% 50%,
           rgba(var(--accent-rgb), 0.20) 0%,
@@ -33,7 +33,7 @@
 
       /* Card - right anchor */
       #t2-lb-bar .card {
-        position: absolute; right: 80px; top: 340px;
+        position: absolute; right: var(--safe-r); top: calc(var(--safe-t) + 286px);
         width: 460px;
         background: var(--glass-bg-dark);
         backdrop-filter: var(--glass-blur);
@@ -66,7 +66,7 @@
 
       #t2-lb-bar .term {
         font-family: var(--font-display); font-weight: var(--wt-bold);
-        font-size: 30px; letter-spacing: var(--track-tight);
+        font-size: calc(30px * var(--type)); letter-spacing: var(--track-tight);
         color: var(--white); text-shadow: var(--textglow);
         line-height: 1.2;
       }
@@ -74,7 +74,7 @@
       /* % counter - Space Mono, accent gradient */
       #t2-lb-bar .pct {
         font-family: var(--font-mono); font-weight: 700;
-        font-size: 28px; letter-spacing: -0.02em;
+        font-size: calc(28px * var(--type)); letter-spacing: -0.02em;
         background: linear-gradient(110deg, #FFFFFF 0%, var(--accent) 100%);
         -webkit-background-clip: text;
         background-clip: text;
@@ -106,9 +106,18 @@
       /* Detail */
       #t2-lb-bar .detail {
         font-family: var(--font-body); font-weight: var(--wt-reg);
-        font-size: 20px; color: var(--text-dim); line-height: 1.4;
+        font-size: calc(20px * var(--type)); color: var(--text-dim); line-height: 1.4;
         letter-spacing: 0.01em;
       }
+      /* Vertical and square: the card drops to the bottom of the safe area, left aligned, its glow following. */
+      [data-format="vertical"] #t2-lb-bar .card, [data-format="square"] #t2-lb-bar .card {
+        top: auto; right: auto; left: var(--safe-l); bottom: var(--safe-b);
+        max-width: calc(var(--w) - var(--safe-l) - var(--safe-r));
+      }
+      [data-format="vertical"] #t2-lb-bar .local-glow, [data-format="square"] #t2-lb-bar .local-glow {
+        top: auto; right: auto; left: calc(var(--safe-l) - 40px); bottom: calc(var(--safe-b) - 70px);
+      }
+      [data-format="vertical"] #t2-lb-bar [data-slot], [data-format="square"] #t2-lb-bar [data-slot] { white-space: normal; }
     </style>
   </head>
   <body>

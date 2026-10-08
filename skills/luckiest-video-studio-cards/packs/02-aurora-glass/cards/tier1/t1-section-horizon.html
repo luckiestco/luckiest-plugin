@@ -14,7 +14,7 @@
       html, body { margin: 0; }
 
       #t1-sec-horizon {
-        position: absolute; inset: 0; width: 1920px; height: 1080px;
+        position: absolute; inset: 0; width: var(--w); height: var(--h);
         background: var(--canvas); color: var(--text);
         font-family: var(--font-display); overflow: hidden;
       }
@@ -93,17 +93,17 @@
 
       /* Content - rises over the horizon */
       #t1-sec-horizon .content {
-        position: absolute; left: 0; right: 0; bottom: 380px;
+        position: absolute; left: var(--safe-l); right: var(--safe-r); bottom: calc(var(--safe-b) + 326px);
         text-align: center; z-index: 5;
       }
       #t1-sec-horizon .kicker {
         font-family: var(--font-display); font-style: italic; font-weight: var(--wt-semi);
-        font-size: 40px; letter-spacing: 0.12em; color: var(--white);
+        font-size: calc(40px * var(--type)); letter-spacing: 0.12em; color: var(--white);
         text-shadow: var(--textglow); margin-bottom: 28px;
       }
       #t1-sec-horizon .plate {
         position: absolute; left: 50%; top: 72px; transform: translateX(-50%);
-        width: 1220px; height: 160px; border-radius: 50%;
+        width: min(1220px, 100%); height: 160px; border-radius: 50%;
         background: radial-gradient(60% 100% at 50% 50%, rgba(255,255,255,0.12), transparent 70%);
         filter: blur(16px); z-index: -1;
       }
@@ -126,6 +126,18 @@
         background-size: 200px 200px; mix-blend-mode: overlay; opacity: 0.10;
         pointer-events: none; z-index: 7;
       }
+
+      /* Vertical: the horizon, ground and perspective floor rise to just under the safe box and
+         the title sits right above it, so the scene stays one composition. Square keeps the
+         landscape horizon. Both drop the headline's side padding and balance its lines. */
+      [data-format="vertical"] #t1-sec-horizon .horizon-line { bottom: 612px; }
+      [data-format="vertical"] #t1-sec-horizon .horizon-line-2 { bottom: 618px; }
+      [data-format="vertical"] #t1-sec-horizon .persp-grid { height: 614px; }
+      [data-format="vertical"] #t1-sec-horizon .ground { height: 680px; }
+      [data-format="vertical"] #t1-sec-horizon .sky-bloom { bottom: 574px; }
+      [data-format="vertical"] #t1-sec-horizon .content { bottom: calc(var(--safe-b) + 70px); }
+      [data-format="vertical"] #t1-sec-horizon .plate { height: 380px; }
+      [data-format="vertical"] #t1-sec-horizon .headline, [data-format="square"] #t1-sec-horizon .headline { padding: 0; text-wrap: balance; }
     </style>
   </head>
   <body>

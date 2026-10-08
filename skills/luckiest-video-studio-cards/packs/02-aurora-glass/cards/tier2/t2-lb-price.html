@@ -14,13 +14,13 @@
       html, body { margin: 0; background: transparent; }
 
       #t2-lb-price {
-        position: absolute; inset: 0; width: 1920px; height: 1080px;
+        position: absolute; inset: 0; width: var(--w); height: var(--h);
         background: transparent; overflow: hidden;
       }
 
       /* Localized glow - right side */
       #t2-lb-price .local-glow {
-        position: absolute; right: 80px; top: 380px;
+        position: absolute; right: calc(var(--safe-r) - 16px); top: calc(var(--safe-t) + 326px);
         width: 500px; height: 320px; border-radius: 50%;
         background: radial-gradient(ellipse at 60% 50%,
           rgba(var(--accent-rgb), 0.20) 0%,
@@ -32,7 +32,7 @@
 
       /* Wrapper anchored right */
       #t2-lb-price .wrapper {
-        position: absolute; right: 140px; top: 410px;
+        position: absolute; right: calc(var(--safe-r) + 44px); top: calc(var(--safe-t) + 356px);
         display: flex; flex-direction: column; align-items: flex-end; gap: 14px;
       }
 
@@ -67,7 +67,7 @@
       /* Currency symbol */
       #t2-lb-price .currency {
         font-family: var(--font-display); font-weight: var(--wt-semi);
-        font-size: 36px; line-height: 1;
+        font-size: calc(36px * var(--type)); line-height: 1;
         color: var(--accent); text-shadow: var(--textglow-accent);
         align-self: flex-start; padding-top: 8px;
       }
@@ -75,7 +75,7 @@
       /* Price value */
       #t2-lb-price .price-val {
         font-family: var(--font-display); font-weight: var(--wt-black);
-        font-size: 88px; line-height: 1; letter-spacing: var(--track-tight);
+        font-size: calc(88px * var(--type)); line-height: 1; letter-spacing: var(--track-tight);
         background: linear-gradient(150deg, #ffffff 10%, rgba(var(--accent-rgb), 0.85) 85%);
         -webkit-background-clip: text; background-clip: text;
         -webkit-text-fill-color: transparent;
@@ -85,7 +85,7 @@
       /* Small "per" qualifier */
       #t2-lb-price .per {
         font-family: var(--font-body); font-weight: var(--wt-med);
-        font-size: 20px; color: var(--text-dim);
+        font-size: calc(20px * var(--type)); color: var(--text-dim);
         align-self: flex-end; padding-bottom: 10px;
         white-space: nowrap;
       }
@@ -120,15 +120,27 @@
 
       #t2-lb-price .term {
         font-family: var(--font-display); font-weight: var(--wt-bold);
-        font-size: 26px; letter-spacing: var(--track-snug);
+        font-size: calc(26px * var(--type)); letter-spacing: var(--track-snug);
         color: var(--white); text-shadow: var(--textglow);
         margin-bottom: 4px;
       }
 
       #t2-lb-price .detail {
         font-family: var(--font-body); font-weight: var(--wt-reg);
-        font-size: 20px; line-height: 1.45; color: var(--text-dim);
+        font-size: calc(20px * var(--type)); line-height: 1.45; color: var(--text-dim);
       }
+      /* Vertical and square: the card drops to the bottom of the safe area, left aligned, its glow following. */
+      [data-format="vertical"] #t2-lb-price .wrapper, [data-format="square"] #t2-lb-price .wrapper {
+        top: auto; right: auto; left: var(--safe-l); bottom: var(--safe-b); width: auto;
+        max-width: calc(var(--w) - var(--safe-l) - var(--safe-r));
+      }
+      [data-format="vertical"] #t2-lb-price .local-glow, [data-format="square"] #t2-lb-price .local-glow {
+        top: auto; right: auto; left: calc(var(--safe-l) - 30px); bottom: calc(var(--safe-b) - 30px);
+      }
+      [data-format="vertical"] #t2-lb-price [data-slot], [data-format="square"] #t2-lb-price [data-slot] { white-space: normal; }
+      [data-format="vertical"] #t2-lb-price .wrapper, [data-format="square"] #t2-lb-price .wrapper,
+      [data-format="vertical"] #t2-lb-price .tag-wrap, [data-format="square"] #t2-lb-price .tag-wrap { align-items: flex-start; }
+      [data-format="vertical"] #t2-lb-price .text-block, [data-format="square"] #t2-lb-price .text-block { text-align: left; }
     </style>
   </head>
   <body>

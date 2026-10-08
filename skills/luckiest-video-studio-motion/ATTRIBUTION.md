@@ -16,3 +16,7 @@
 - Review output reshaped to one verdict per storyboard scene.
 - Not used: `write-swift`, `ask-sonner`, `mobile-native`, `pick-ui-library`,
   `prototype`, `animate-expo`, and `improve-animations`' multi-agent audit.
+
+`templates/spring.js` (1.1.0) follows the closed-form, retarget-by-summing spring
+practice described in the 0xMovez course "How to build motion design studio with
+Opus 5.5" (x.com/0xMovez/status/2104216919033192746). The code is new.

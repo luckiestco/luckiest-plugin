@@ -11,12 +11,13 @@
     <style>
       html, body { margin: 0; background: transparent; }
       #t2-list {
-        position: absolute; inset: 0; width: 1920px; height: 1080px;
+        position: absolute; inset: 0; width: var(--w); height: var(--h);
         background: transparent;              /* overlay: do NOT fill the frame */
         color: var(--fg); font-family: var(--font-body);
       }
       #t2-list .card {
-        position: absolute; left: 72px; bottom: 96px; width: 720px;
+        position: absolute; left: var(--safe-l); bottom: calc(var(--safe-b) + 42px); width: 720px;
+        max-width: calc(var(--w) - var(--safe-l) - var(--safe-r)); box-sizing: border-box;
         background: rgba(0, 0, 0, 0.55); border: 1px solid var(--accent);
         border-radius: var(--radius); padding: var(--pad);
         backdrop-filter: blur(8px);
@@ -29,6 +30,8 @@
       #t2-list .headline { font-size: var(--size-headline); font-weight: 700; margin-bottom: 18px; }
       #t2-list ul { margin: 0; padding: 0; list-style: none; }
       #t2-list li { font-size: var(--size-body); margin: 10px 0; opacity: 0.95; }
+      /* Vertical and square: bottom of the safe area, clear of the speaker's face. */
+      [data-format="vertical"] #t2-list .card, [data-format="square"] #t2-list .card { bottom: calc(var(--safe-b) + 24px); }
     </style>
   </head>
   <body>

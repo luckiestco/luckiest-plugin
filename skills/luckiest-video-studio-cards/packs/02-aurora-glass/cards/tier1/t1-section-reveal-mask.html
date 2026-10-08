@@ -15,7 +15,7 @@
       html, body { margin: 0; }
 
       #t1-sec-rmask {
-        position: absolute; inset: 0; width: 1920px; height: 1080px;
+        position: absolute; inset: 0; width: var(--w); height: var(--h);
         background: var(--canvas); color: var(--text);
         font-family: var(--font-display); overflow: hidden;
       }
@@ -97,6 +97,11 @@
         position: absolute; inset: -40px; background: var(--tex-grain);
         background-size: 200px 200px; mix-blend-mode: overlay; opacity: 0.10;
         pointer-events: none; z-index: 7;
+      }
+
+      /* Vertical and square: block centres in the safe area across the safe width. */
+      [data-format="vertical"] #t1-sec-rmask .content, [data-format="square"] #t1-sec-rmask .content {
+        left: var(--safe-l); right: var(--safe-r); padding: 0; top: calc((var(--safe-t) + var(--h) - var(--safe-b)) / 2);
       }
     </style>
   </head>

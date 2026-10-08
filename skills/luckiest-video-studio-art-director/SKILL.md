@@ -20,7 +20,7 @@ user-invocable: true
 license: MIT. See ATTRIBUTION.md
 allowed-tools: Bash, Read, Write, Edit, Glob, Grep, AskUserQuestion
 metadata:
-  version: "1.4.0"
+  version: "1.5.0"
   listing_id: luckiest-video-studio-art-director
   author: luckiest
 ---
@@ -35,11 +35,11 @@ confidence. Variety reads as noise.
 ## Staying current
 
 On activation, call the Luckiest MCP `check_updates` tool with
-`{ listingId: "luckiest-video-studio-art-director", installedSemver: "1.4.0" }`. If
+`{ listingId: "luckiest-video-studio-art-director", installedSemver: "1.5.0" }`. If
 `upToDate: false`, surface the `notice` once and continue. Never block on it.
 
 When done, call `report_usage` once with
-`{ listing_id: "luckiest-video-studio-art-director", skill_version: "1.4.0", matched: true, success: <true|false> }`.
+`{ listing_id: "luckiest-video-studio-art-director", skill_version: "1.5.0", matched: true, success: <true|false> }`.
 Metadata only, never prompt text. Skip silently if unavailable.
 
 ## Standing rules
@@ -155,7 +155,17 @@ Fill every row with one choice:
 | Type scale | From the composition skill's 8px scale |
 | Texture | One: none, grain, paper, or glass. Stays subliminal |
 | Imagery | Real product UI and real logos. Name the crop and device frame style |
-| Banned | Centered title on gradient, everything fading in, corner labels, frame borders, glow on UI chrome, generic particle bursts |
+| Banned | Centered title on gradient, everything fading in, corner labels, frame borders, glow on UI chrome, generic particle bursts, and the looks of earlier runs (below) |
+
+### Do not repeat earlier runs
+
+Before filling the rows, read every earlier `video-studio-output*/art-direction.json`
+in the workspace. From each, add to `banned`: its signature transition, its wow
+device (the technique, not the scene id), its texture, and its concept. Also add its
+palette and font pair, unless the design system fixed them (section 0) or the user
+asked for a matching series. A brand keeps its colors and faces from video to video;
+it does not keep the same trick. Record what came from where under
+`bannedFromEarlierRuns`, and say in one line what you banned.
 
 ### Video-safe color
 
@@ -243,7 +253,10 @@ element whose motion carries no meaning.
   "intensity": { "travelPx": 24, "scale": [0.96, 1], "overshoot": 0.02 },
   "holdMin": 0.3,
   "wow": "s03",
-  "static": ["headline while read", "logo lockup"]
+  "wowDevice": "logo assembles from the product's own UI cards",
+  "static": ["headline while read", "logo lockup"],
+  "banned": ["centered title on gradient", "everything fading in", "liquid iris transition", "chrome text sweep"],
+  "bannedFromEarlierRuns": [{ "run": "video-studio-output-2026-09-30-101500", "items": ["liquid iris transition", "chrome text sweep"] }]
 }
 ```
 

@@ -15,7 +15,7 @@
     <style>
       html, body { margin: 0; }
       #t1-ov-dossier {
-        position: absolute; inset: 0; width: 1920px; height: 1080px;
+        position: absolute; inset: 0; width: var(--w); height: var(--h);
         background: var(--paper-2); color: var(--ink);
         font-family: var(--font-display); overflow: hidden;
       }
@@ -38,7 +38,7 @@
 
       /* dossier label - marker title */
       #t1-ov-dossier .dossier-label {
-        position: absolute; top: 72px; left: 50%;
+        position: absolute; top: calc(var(--safe-t) + 18px); left: 50%;
         transform: translateX(-50%) skewX(var(--marker-skew));
         background: var(--red); color: var(--paper); padding: 10px 36px; z-index: 5;
         font-weight: var(--wt-black); font-size: var(--size-title);
@@ -48,8 +48,8 @@
 
       /* file stack - centered vertically */
       #t1-ov-dossier .file-stack {
-        position: absolute; left: 160px; right: 160px;
-        top: 230px; bottom: 110px;
+        position: absolute; left: calc(var(--safe-l) + 64px); right: calc(var(--safe-r) + 64px);
+        top: calc(var(--safe-t) + 176px); bottom: calc(var(--safe-b) + 56px);
         display: flex; flex-direction: column; justify-content: space-between;
         z-index: 3;
       }
@@ -83,7 +83,7 @@
       }
       #t1-ov-dossier .tab-code {
         font-family: var(--font-label); font-weight: var(--wt-black);
-        font-size: 22px; letter-spacing: var(--track-wide);
+        font-size: calc(22px * var(--type)); letter-spacing: var(--track-wide);
         text-transform: uppercase; color: var(--ink); text-align: center;
         line-height: 1.1; word-break: break-all;
       }
@@ -107,7 +107,7 @@
 
       #t1-ov-dossier .file-title {
         font-family: var(--font-label); font-weight: var(--wt-bold);
-        font-size: 44px; line-height: 1.15; color: var(--ink);
+        font-size: calc(44px * var(--type)); line-height: 1.15; color: var(--ink);
         position: relative; z-index: 1;
       }
 
@@ -115,7 +115,7 @@
       #t1-ov-dossier .stamp {
         position: absolute; right: 70px; top: 50%; transform: translateY(-50%) rotate(-8deg);
         font-family: var(--font-label); font-weight: var(--wt-black);
-        font-size: 26px; letter-spacing: 0.25em; text-transform: uppercase;
+        font-size: calc(26px * var(--type)); letter-spacing: 0.25em; text-transform: uppercase;
         color: var(--red); opacity: 0.18;
         border: 4px solid var(--red); padding: 6px 16px;
         pointer-events: none;
@@ -123,7 +123,7 @@
 
       /* cabinet drawer pull - decorative bar above stack */
       #t1-ov-dossier .drawer-pull {
-        position: absolute; left: 160px; right: 160px; top: 195px;
+        position: absolute; left: calc(var(--safe-l) + 64px); right: calc(var(--safe-r) + 64px); top: calc(var(--safe-t) + 141px);
         height: 28px; background: var(--ink); z-index: 3;
       }
       #t1-ov-dossier .drawer-pull::after {
@@ -136,11 +136,30 @@
 
       /* source */
       #t1-ov-dossier .source {
-        position: absolute; left: 160px; bottom: 46px; z-index: 6;
+        position: absolute; left: calc(var(--safe-l) + 64px); bottom: var(--safe-b); z-index: 6;
         font-family: var(--font-label); font-weight: var(--wt-bold);
         font-size: var(--size-tiny); letter-spacing: var(--track-wide);
         text-transform: uppercase; color: var(--muted);
       }
+
+      /* Vertical and square: label, drawer pull and file stack span the safe box; file titles get
+         smaller and may wrap; source at the bottom left of the safe area. */
+      [data-format="vertical"] #t1-ov-dossier .dossier-label, [data-format="square"] #t1-ov-dossier .dossier-label {
+        top: var(--safe-t); left: calc(var(--safe-l) + (var(--w) - var(--safe-l) - var(--safe-r)) / 2);
+        width: max-content; max-width: calc(var(--w) - var(--safe-l) - var(--safe-r) - 72px);
+        white-space: normal; text-align: center;
+      }
+      [data-format="vertical"] #t1-ov-dossier .dossier-label { font-size: calc(72px * var(--type)); }
+      [data-format="vertical"] #t1-ov-dossier .drawer-pull, [data-format="square"] #t1-ov-dossier .drawer-pull { left: var(--safe-l); right: var(--safe-r); top: calc(var(--safe-t) + 124px); }
+      [data-format="vertical"] #t1-ov-dossier .file-stack, [data-format="square"] #t1-ov-dossier .file-stack {
+        left: var(--safe-l); right: var(--safe-r); top: calc(var(--safe-t) + 160px); bottom: calc(var(--safe-b) + 44px);
+      }
+      [data-format="vertical"] #t1-ov-dossier .file-body, [data-format="square"] #t1-ov-dossier .file-body { padding: 20px 30px; }
+      /* the narrower rows leave no clear space for the CONFIDENTIAL stamp, so it would sit on the titles */
+      [data-format="vertical"] #t1-ov-dossier .stamp, [data-format="square"] #t1-ov-dossier .stamp { display: none; }
+      [data-format="vertical"] #t1-ov-dossier .file-title { font-size: calc(36px * var(--type)); }
+      [data-format="square"] #t1-ov-dossier .file-title { font-size: 40px; }
+      [data-format="vertical"] #t1-ov-dossier .source, [data-format="square"] #t1-ov-dossier .source { left: var(--safe-l); bottom: var(--safe-b); }
     </style>
   </head>
   <body>

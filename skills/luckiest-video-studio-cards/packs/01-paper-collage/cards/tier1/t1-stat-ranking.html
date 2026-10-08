@@ -13,7 +13,7 @@
     <style>
       html, body { margin: 0; }
       #t1-stat-rank {
-        position: absolute; inset: 0; width: 1920px; height: 1080px;
+        position: absolute; inset: 0; width: var(--w); height: var(--h);
         background: var(--paper); color: var(--ink);
         font-family: var(--font-display); overflow: hidden;
       }
@@ -32,14 +32,14 @@
         background: radial-gradient(120% 120% at 50% 50%, transparent 54%, rgba(23,19,14,0.18) 100%);
       }
       #t1-stat-rank .kicker {
-        position: absolute; left: 130px; top: 88px;
+        position: absolute; left: calc(var(--safe-l) + 34px); top: calc(var(--safe-t) + 34px);
         font-family: var(--font-label); font-weight: var(--wt-bold);
         font-size: var(--size-label); letter-spacing: var(--track-wide);
         text-transform: uppercase; color: var(--red);
       }
       /* chart area */
       #t1-stat-rank .chart {
-        position: absolute; left: 130px; right: 130px; top: 160px;
+        position: absolute; left: calc(var(--safe-l) + 34px); right: calc(var(--safe-r) + 34px); top: calc(var(--safe-t) + 106px);
       }
       #t1-stat-rank .row {
         display: flex; align-items: center; margin-bottom: 32px;
@@ -47,12 +47,12 @@
       #t1-stat-rank .row-label {
         flex: 0 0 340px;
         font-family: var(--font-label); font-weight: var(--wt-bold);
-        font-size: 30px; letter-spacing: var(--track-wide);
+        font-size: calc(30px * var(--type)); letter-spacing: var(--track-wide);
         text-transform: uppercase; color: var(--muted); text-align: right;
         padding-right: 32px;
       }
       #t1-stat-rank .row.hero .row-label {
-        font-weight: var(--wt-black); color: var(--ink); font-size: 34px;
+        font-weight: var(--wt-black); color: var(--ink); font-size: calc(34px * var(--type));
       }
       #t1-stat-rank .track {
         flex: 1; height: 90px; position: relative;
@@ -69,20 +69,35 @@
         right: 18px; z-index: 3; font-weight: var(--wt-black); font-family: var(--font-display);
         font-variant-numeric: tabular-nums; color: var(--ink);
       }
-      #t1-stat-rank .row.hero .row-val { font-size: 78px; line-height: 1; }
-      #t1-stat-rank .row:not(.hero) .row-val { font-size: 54px; line-height: 1; color: rgba(23,19,14,0.7); }
+      #t1-stat-rank .row.hero .row-val { font-size: calc(78px * var(--type)); line-height: 1; }
+      #t1-stat-rank .row:not(.hero) .row-val { font-size: calc(54px * var(--type)); line-height: 1; color: rgba(23,19,14,0.7); }
       #t1-stat-rank .label {
-        position: absolute; left: 130px; right: 130px; bottom: 148px;
-        font-weight: var(--wt-thin); font-size: 52px; line-height: 1.06;
+        position: absolute; left: calc(var(--safe-l) + 34px); right: calc(var(--safe-r) + 34px); bottom: calc(var(--safe-b) + 94px);
+        font-weight: var(--wt-thin); font-size: calc(52px * var(--type)); line-height: 1.06;
         letter-spacing: var(--track-tight); color: var(--ink);
       }
       #t1-stat-rank .label em { font-style: italic; font-weight: var(--wt-black); }
       #t1-stat-rank .source {
-        position: absolute; left: 130px; bottom: 88px;
+        position: absolute; left: calc(var(--safe-l) + 34px); bottom: calc(var(--safe-b) + 34px);
         font-family: var(--font-label); font-weight: var(--wt-bold);
         font-size: var(--size-tiny); letter-spacing: var(--track-wide);
         text-transform: uppercase; color: var(--muted);
       }
+
+      /* Vertical: each row label sits above its bar, bars span the safe width. Square: rows keep the
+         label column, narrower. Both: label and source at the safe bottom. */
+      [data-format="vertical"] #t1-stat-rank .kicker, [data-format="square"] #t1-stat-rank .kicker { left: var(--safe-l); top: var(--safe-t); }
+      [data-format="vertical"] #t1-stat-rank .chart, [data-format="square"] #t1-stat-rank .chart { left: var(--safe-l); right: var(--safe-r); top: calc(var(--safe-t) + 70px); }
+      [data-format="vertical"] #t1-stat-rank .row { flex-direction: column; align-items: stretch; margin-bottom: 28px; }
+      [data-format="vertical"] #t1-stat-rank .row-label { flex: none; text-align: left; padding: 0 0 8px 0; }
+      [data-format="vertical"] #t1-stat-rank .track { flex: none; height: 84px; }
+      [data-format="vertical"] #t1-stat-rank .row.hero .track { height: 108px; }
+      [data-format="square"] #t1-stat-rank .row-label { flex: 0 0 270px; padding-right: 24px; }
+      [data-format="square"] #t1-stat-rank .row { margin-bottom: 40px; }
+      [data-format="square"] #t1-stat-rank .track { height: 104px; }
+      [data-format="square"] #t1-stat-rank .row.hero .track { height: 130px; }
+      [data-format="vertical"] #t1-stat-rank .label, [data-format="square"] #t1-stat-rank .label { left: var(--safe-l); right: var(--safe-r); bottom: calc(var(--safe-b) + 60px); }
+      [data-format="vertical"] #t1-stat-rank .source, [data-format="square"] #t1-stat-rank .source { left: var(--safe-l); bottom: var(--safe-b); }
     </style>
   </head>
   <body>

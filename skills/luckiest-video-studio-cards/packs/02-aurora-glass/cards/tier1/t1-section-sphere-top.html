@@ -15,7 +15,7 @@
       html, body { margin: 0; }
 
       #t1-sec-sphere {
-        position: absolute; inset: 0; width: 1920px; height: 1080px;
+        position: absolute; inset: 0; width: var(--w); height: var(--h);
         background: var(--canvas); color: var(--text);
         font-family: var(--font-display); overflow: hidden;
       }
@@ -87,14 +87,14 @@
 
       /* Content sits in lower third */
       #t1-sec-sphere .content {
-        position: absolute; left: 0; right: 0; bottom: 160px;
+        position: absolute; left: 0; right: 0; bottom: calc(var(--safe-b) + 106px);
         text-align: center; z-index: 4;
       }
 
       /* Kicker */
       #t1-sec-sphere .kicker {
         font-family: var(--font-display); font-style: italic; font-weight: var(--wt-semi);
-        font-size: 40px; letter-spacing: 0.12em; color: var(--white);
+        font-size: calc(40px * var(--type)); letter-spacing: 0.12em; color: var(--white);
         text-shadow: var(--textglow); margin-bottom: 26px;
       }
 
@@ -128,6 +128,15 @@
         background-size: 200px 200px; mix-blend-mode: overlay; opacity: 0.10;
         pointer-events: none; z-index: 7;
       }
+
+      /* Vertical and square: title anchors to the bottom of the safe area under the sphere. */
+      [data-format="vertical"] #t1-sec-sphere .content, [data-format="square"] #t1-sec-sphere .content {
+        left: var(--safe-l); right: var(--safe-r); bottom: calc(var(--safe-b) + 40px);
+      }
+      [data-format="vertical"] #t1-sec-sphere .headline, [data-format="square"] #t1-sec-sphere .headline { max-width: none; padding: 0; }
+      [data-format="vertical"] #t1-sec-sphere .plate, [data-format="square"] #t1-sec-sphere .plate { width: 100%; }
+      [data-format="vertical"] #t1-sec-sphere .orb-wrap { top: -560px; }
+      [data-format="vertical"] #t1-sec-sphere .cast-light { top: 520px; }
     </style>
   </head>
   <body>

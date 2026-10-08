@@ -4,7 +4,7 @@ description: "Make product launch videos, product demos with motion design betwe
 license: See ATTRIBUTION.md
 allowed-tools: Bash, Read, Write, Edit, Glob, Grep, AskUserQuestion
 metadata:
-  version: "1.9.0"
+  version: "1.13.0"
   listing_id: luckiest-video-studio
   author: luckiest
 ---
@@ -19,13 +19,13 @@ an MP4.
 ## Staying current
 
 On activation, call the Luckiest MCP `check_updates` tool with
-`{ listingId: "aff888e4-9ee9-4f73-af08-74d5d09d3c10", installedSemver: "1.9.0" }`. If it returns
+`{ listingId: "aff888e4-9ee9-4f73-af08-74d5d09d3c10", installedSemver: "1.13.0" }`. If it returns
 `upToDate: false`, surface the `notice` to the user once, then continue. Do nothing
 further if `upToDate: true`. Never block on this check; if the tool is unavailable,
 proceed.
 
 When the skill's work is done, call the Luckiest MCP `report_usage` tool once with
-`{ listing_id: "luckiest-video-studio", skill_version: "1.9.0", matched: true, success: <true if the skill completed, false otherwise> }`.
+`{ listing_id: "luckiest-video-studio", skill_version: "1.13.0", matched: true, success: <true if the skill completed, false otherwise> }`.
 Metadata only, never prompt text. Never block on it; if the tool is unavailable,
 skip silently.
 
@@ -37,7 +37,8 @@ skip silently.
    [SECURITY.md](SECURITY.md).
 2. **Show the real thing.** Use the project's actual UI, copy, and logos. Never
    invent numbers, testimonials, or results. Charts use relative sizes until the
-   user gives real figures.
+   user gives real figures. Every number the video shows is listed once in
+   `storyboard.json` `facts` and reads the same in every scene.
 3. **Nothing secret on screen.** Everything read can end up in a public video.
    Never show keys, tokens, `.env` values, customer data, or private URLs.
 4. **Local assets only.** Compositions load files copied into the output folder,
@@ -68,7 +69,8 @@ in `<skill-dir>/assets/sfx/`. Resolve it; never assume an install path.
 |---|---|---|
 | `--mode` | `launch`, `demo`, `logos` | inferred |
 | `--tone` | preset or freeform ([references/tones.md](references/tones.md)) | inferred |
-| `--format` | `landscape`, `vertical`, `square` | `landscape` |
+| `--format` | `landscape`, `vertical`, `square`: the master size scenes are designed at | `landscape` |
+| `--formats` | comma list of `landscape`, `vertical`, `square`: render the same video once per format, one file each | master only |
 | `--duration` | seconds | per mode |
 | `--no-music`, `--no-sfx` | flags | on |
 | `--voice` | flag, Kokoro via HyperFrames | off |
@@ -202,6 +204,7 @@ scene before both.
 **Read:** the HyperFrames skills `hyperframes-core`, `hyperframes-animation`,
 `hyperframes-keyframes`, `hyperframes-creative`, `hyperframes-cli`, then
 [references/step-3-compose.md](references/step-3-compose.md),
+[references/lessons.md](references/lessons.md) (traps that cost a debug round),
 [references/audio.md](references/audio.md), and the `luckiest-video-studio-motion`
 sub-skill for easing, duration, origin, and transitions. Read the `luckiest-video-studio-composition` sub-skill for
 focal placement, grids, and white space at each scene's hold frame. Do not enter the `hyperframes` intent
@@ -219,7 +222,13 @@ footage the user supplies; copy it into `demo/`.
 
 Render every scene to `clips/` with `scripts/render-scenes.mjs` (it skips scenes
 whose inputs did not change), join them into `final.mp4`, bake the best frame as
-`poster.jpg` and frame 0, and write `TIMING.md` and `share-copy.txt`.
+`poster.jpg` and frame 0, and write `TIMING.md` and `share-copy.txt`. With
+`--formats`, finish and approve the master first, then add `formats` to the
+storyboard: `render-scenes.mjs --stills` gives one hold-frame sheet per format to
+check (and `qa.mjs safe --stills`) without rendering, and the render reuses the
+master's landscape clips so only the new formats render into `clips/<format>/` and
+`final-<format>.mp4`. Scenes re-lay out by the rules in "Build once, render every
+format" (`step-3-compose.md`), and demo footage is cropped around each scene's `focus`.
 
 Then run the QA gates in `scripts/qa.mjs` on the result (each exits 1 on a fail;
 `node --test scripts/qa.test.mjs` shows each one failing its control):
@@ -230,7 +239,15 @@ node <skill-dir>/scripts/qa.mjs deadframes <output-dir>/final.mp4     # black fr
 node <skill-dir>/scripts/qa.mjs legibility <output-dir>/final.mp4     # nothing readable on screen
 node <skill-dir>/scripts/qa.mjs crossfade  <output-dir>/composition   # full-frame opacity fades
 node <skill-dir>/scripts/qa.mjs motion     <output-dir>/composition   # ease-in entrances, scale 0 cards, short linear moves
+node <skill-dir>/scripts/qa.mjs avsync     <output-dir>/final.mp4 --expect <hero hit times> --duration <s>   # audio present, length right, hits within one frame
+node <skill-dir>/scripts/qa.mjs facts      <output-dir>               # on-screen numbers not in storyboard facts, em dashes on screen
+node <skill-dir>/scripts/qa.mjs loop       <output-dir>/final.mp4     # only for looping pieces: last frame matches the first
+node <skill-dir>/scripts/qa.mjs safe       <output-dir>               # text or logo edges in each format's platform-covered margins
 ```
+
+Skip `avsync` only with `--no-music --no-sfx`. Pass the hero hit times from
+`TIMING.md` to `--expect`. A hit more than one frame off means its audio element's
+`data-start` or the cue time is wrong.
 
 Then run `luckiest-video-studio-composition --review` on the run. It writes
 `qa/composition-review.md` with a verdict per scene. Fix every scene it blocks.
@@ -244,6 +261,17 @@ lowest scores and repeat until every score is 8 or higher before the judge.
 Then run `luckiest-video-studio-motion --review` on the run. It writes
 `qa/motion-review.md` with a verdict per scene. Fix and re-render every scene it
 blocks before the judge.
+
+Then watch the result with `luckiest-video-watcher` in quick mode, local engine
+only, with `--out-dir <output-dir>/qa/watch`. When earlier gates flagged times,
+pass only those with `--timestamps`. It reads frames and the transcript together,
+so it catches what the frame-only reviews miss: captions that differ from the
+voiceover, audio that cuts out, and text clipped at a scene seam. The voiceover
+check needs a transcription backend and is skipped for runs without voiceover.
+With `--formats`, watch the landscape final and the other formats only at
+flagged times. Fix every
+`m:ss` issue it reports. If the watcher is not installed, say so in one line and
+skip this step.
 
 The talk and reel sub-skills add `beatsync`, `tokens`, `presence`, `face`, and `beatgrid`.
 
@@ -267,7 +295,7 @@ differences the judge named. Stop at v3, when a version loses, or when only
 changes too small to see are left.
 
 **Gate:** `final.mp4` plays end to end, every scene in `storyboard.json` has a
-clip, the five gates pass or each failure is explained in `TIMING.md`, no scene is
+clip, the seven gates pass or each failure is explained in `TIMING.md`, no scene is
 left blocked in `qa/motion-review.md`, and
 every judge verdict from v2 on is recorded there.
 

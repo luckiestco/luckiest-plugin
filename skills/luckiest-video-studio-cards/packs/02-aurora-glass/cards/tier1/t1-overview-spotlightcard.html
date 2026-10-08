@@ -16,7 +16,7 @@
       html, body { margin: 0; }
 
       #t1-ov-spot {
-        position: absolute; inset: 0; width: 1920px; height: 1080px;
+        position: absolute; inset: 0; width: var(--w); height: var(--h);
         background: var(--canvas); color: var(--text);
         font-family: var(--font-display); overflow: hidden;
       }
@@ -39,13 +39,13 @@
 
       /* Title */
       #t1-ov-spot .title-row {
-        position: absolute; left: 0; right: 0; top: 88px; text-align: center; z-index: 4;
+        position: absolute; left: var(--safe-l); right: var(--safe-r); top: calc(var(--safe-t) + 34px); text-align: center; z-index: 4;
       }
       #t1-ov-spot .title {
         font-family: var(--font-display); font-weight: var(--wt-bold);
         font-size: var(--size-title); letter-spacing: var(--track-snug); line-height: 1.06;
         color: var(--white); text-shadow: var(--textglow);
-        max-width: 1400px; margin: 0 auto;
+        max-width: none; margin: 0 auto;
       }
       #t1-ov-spot .title em {
         font-style: normal; color: var(--accent); text-shadow: var(--textglow-accent);
@@ -53,7 +53,7 @@
 
       /* Three-column layout: flanker | spotlight | flanker */
       #t1-ov-spot .layout {
-        position: absolute; left: 80px; right: 80px; top: 248px; bottom: 72px;
+        position: absolute; left: var(--safe-l); right: var(--safe-r); top: 248px; bottom: calc(var(--safe-b) + 18px);
         display: flex; gap: 36px; align-items: stretch; z-index: 4;
       }
 
@@ -131,7 +131,7 @@
       /* Spotlight heading - big */
       #t1-ov-spot .spot-heading {
         font-family: var(--font-display); font-weight: var(--wt-black);
-        font-size: 68px; letter-spacing: var(--track-snug); line-height: 1.10;
+        font-size: calc(68px * var(--type)); letter-spacing: var(--track-snug); line-height: 1.10;
         color: var(--white); text-shadow: var(--textglow);
         margin-bottom: 32px;
       }
@@ -142,7 +142,7 @@
       /* Spotlight body */
       #t1-ov-spot .spot-body {
         font-family: var(--font-body); font-weight: var(--wt-med);
-        font-size: 31px; line-height: 1.60;
+        font-size: calc(31px * var(--type)); line-height: 1.60;
         color: var(--text-dim);
         max-width: 860px;
       }
@@ -150,7 +150,7 @@
       /* Flanker heading */
       #t1-ov-spot .fl-heading {
         font-family: var(--font-display); font-weight: var(--wt-bold);
-        font-size: 40px; letter-spacing: var(--track-snug); line-height: 1.18;
+        font-size: calc(40px * var(--type)); letter-spacing: var(--track-snug); line-height: 1.18;
         color: var(--white); text-shadow: var(--textglow);
         margin-bottom: 20px;
       }
@@ -158,7 +158,7 @@
       /* Flanker body */
       #t1-ov-spot .fl-body {
         font-family: var(--font-body); font-weight: var(--wt-reg);
-        font-size: 26px; line-height: 1.55;
+        font-size: calc(26px * var(--type)); line-height: 1.55;
         color: var(--text-dim);
       }
 
@@ -171,6 +171,32 @@
         background-size: 200px 200px; mix-blend-mode: overlay; opacity: 0.10;
         pointer-events: none; z-index: 7;
       }
+
+      /* Vertical and square: the spotlight card spans the top, the two flankers sit side by side under it. */
+      [data-format="vertical"] #t1-ov-spot .title-row, [data-format="square"] #t1-ov-spot .title-row { top: var(--safe-t); }
+      [data-format="vertical"] #t1-ov-spot .title { font-size: calc(64px * var(--type)); }
+      [data-format="square"] #t1-ov-spot .title { font-size: 60px; }
+      [data-format="vertical"] #t1-ov-spot .layout, [data-format="square"] #t1-ov-spot .layout {
+        bottom: var(--safe-b); display: grid; grid-template-columns: 1fr 1fr;
+        grid-template-areas: "main main" "left right"; grid-template-rows: auto 1fr; gap: 20px;
+      }
+      [data-format="vertical"] #t1-ov-spot .layout { top: 480px; }
+      [data-format="square"] #t1-ov-spot .layout { top: 230px; }
+      [data-format="vertical"] #t1-ov-spot #spot-main, [data-format="square"] #t1-ov-spot #spot-main { grid-area: main; }
+      [data-format="vertical"] #t1-ov-spot #spot-left, [data-format="square"] #t1-ov-spot #spot-left { grid-area: left; }
+      [data-format="vertical"] #t1-ov-spot #spot-right, [data-format="square"] #t1-ov-spot #spot-right { grid-area: right; }
+      [data-format="vertical"] #t1-ov-spot .spotlight { padding: 36px 36px 36px; }
+      [data-format="square"] #t1-ov-spot .spotlight { padding: 40px 44px; }
+      [data-format="vertical"] #t1-ov-spot .flanker, [data-format="square"] #t1-ov-spot .flanker { padding: 28px 28px 28px 32px; justify-content: flex-start; }
+      [data-format="vertical"] #t1-ov-spot .spot-badge, [data-format="square"] #t1-ov-spot .spot-badge { margin-bottom: 22px; }
+      [data-format="vertical"] #t1-ov-spot .spot-heading { font-size: calc(50px * var(--type)); margin-bottom: 20px; }
+      [data-format="vertical"] #t1-ov-spot .spot-body { font-size: calc(24px * var(--type)); line-height: 1.45; }
+      [data-format="vertical"] #t1-ov-spot .fl-heading { font-size: calc(30px * var(--type)); margin-bottom: 12px; }
+      [data-format="vertical"] #t1-ov-spot .fl-body { font-size: calc(20px * var(--type)); line-height: 1.45; }
+      [data-format="square"] #t1-ov-spot .spot-heading { font-size: 56px; margin-bottom: 20px; }
+      [data-format="square"] #t1-ov-spot .spot-body { font-size: 28px; line-height: 1.45; }
+      [data-format="square"] #t1-ov-spot .fl-heading { font-size: 34px; margin-bottom: 14px; }
+      [data-format="square"] #t1-ov-spot .fl-body { font-size: 24px; line-height: 1.45; }
     </style>
   </head>
   <body>

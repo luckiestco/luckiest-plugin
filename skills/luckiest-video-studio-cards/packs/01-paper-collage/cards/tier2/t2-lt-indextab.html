@@ -15,7 +15,7 @@
     <style>
       html, body { margin: 0; background: transparent; }
       #t2-lt-tab {
-        position: absolute; inset: 0; width: 1920px; height: 1080px;
+        position: absolute; inset: 0; width: var(--w); height: var(--h);
         background: transparent;
         overflow: hidden;
       }
@@ -23,7 +23,7 @@
       /* Outer wrapper, positioned lower-left */
       #t2-lt-tab .assembly {
         position: absolute;
-        left: 0;
+        left: var(--safe-l);
         bottom: 120px;
         display: flex;
         align-items: stretch;
@@ -69,7 +69,7 @@
       #t2-lt-tab .name {
         font-family: var(--font-display);
         font-weight: var(--wt-black);
-        font-size: 80px;
+        font-size: calc(80px * var(--type));
         line-height: 0.95;
         letter-spacing: var(--track-tight);
         color: var(--ink);
@@ -95,6 +95,13 @@
         opacity: 0.75;
         white-space: nowrap;
       }
+
+      /* Vertical and square: sit at the bottom of the safe area, clear of the speaker's face. */
+      [data-format="vertical"] #t2-lt-tab .assembly, [data-format="square"] #t2-lt-tab .assembly {
+        top: auto; left: var(--safe-l); bottom: calc(var(--safe-b) + 24px);
+        width: auto; max-width: calc(var(--w) - var(--safe-l) - var(--safe-r));
+      }
+      [data-format="vertical"] #t2-lt-tab [data-slot], [data-format="square"] #t2-lt-tab [data-slot] { white-space: normal; }
     </style>
   </head>
   <body>

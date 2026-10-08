@@ -15,7 +15,7 @@
       html, body { margin: 0; }
 
       #t1-ov-tier {
-        position: absolute; inset: 0; width: 1920px; height: 1080px;
+        position: absolute; inset: 0; width: var(--w); height: var(--h);
         background: var(--canvas); color: var(--text);
         font-family: var(--font-display); overflow: hidden;
       }
@@ -36,7 +36,7 @@
 
       /* Title */
       #t1-ov-tier .title-row {
-        position: absolute; left: 0; right: 0; top: 66px; text-align: center; z-index: 4;
+        position: absolute; left: var(--safe-l); right: var(--safe-r); top: calc(var(--safe-t) + 12px); text-align: center; z-index: 4;
       }
       #t1-ov-tier .title {
         font-family: var(--font-display); font-weight: var(--wt-bold);
@@ -50,7 +50,7 @@
 
       /* Three-column grid */
       #t1-ov-tier .tiers {
-        position: absolute; left: 120px; right: 120px; top: 210px; bottom: 80px;
+        position: absolute; left: 120px; right: 120px; top: 210px; bottom: calc(var(--safe-b) + 26px);
         display: flex; gap: 40px; z-index: 4;
       }
 
@@ -125,7 +125,7 @@
       /* Tier heading */
       #t1-ov-tier .tier-heading {
         font-family: var(--font-display); font-weight: var(--wt-black);
-        font-size: 52px; letter-spacing: var(--track-snug); line-height: 1.12;
+        font-size: calc(52px * var(--type)); letter-spacing: var(--track-snug); line-height: 1.12;
         color: var(--white); text-shadow: var(--textglow);
         margin-bottom: 36px;
       }
@@ -153,7 +153,7 @@
         padding: 20px 0;
         border-bottom: 1px solid rgba(255,255,255,0.06);
         font-family: var(--font-body); font-weight: var(--wt-med);
-        font-size: 28px; color: var(--text-dim); line-height: 1.4;
+        font-size: calc(28px * var(--type)); color: var(--text-dim); line-height: 1.4;
       }
       #t1-ov-tier .feat-line:last-child { border-bottom: none; }
       #t1-ov-tier .feat-dot {
@@ -172,7 +172,7 @@
         position: absolute; top: -1px; right: 36px;
         background: var(--accent-2);
         color: var(--ink);
-        font-family: var(--font-mono); font-size: 18px; font-weight: var(--wt-bold);
+        font-family: var(--font-mono); font-size: calc(18px * var(--type)); font-weight: var(--wt-bold);
         letter-spacing: var(--track-wide); text-transform: uppercase;
         padding: 8px 20px; border-radius: 0 0 var(--radius-sm) var(--radius-sm);
         box-shadow: 0 4px 18px rgba(var(--accent2-rgb),0.45);
@@ -187,6 +187,29 @@
         background-size: 200px 200px; mix-blend-mode: overlay; opacity: 0.10;
         pointer-events: none; z-index: 7;
       }
+
+      /* Vertical and square: the three tiers stack as rows - chip, name and rule on the left, features
+         on the right behind a hairline. */
+      [data-format="vertical"] #t1-ov-tier .title-row, [data-format="square"] #t1-ov-tier .title-row { top: var(--safe-t); }
+      [data-format="vertical"] #t1-ov-tier .tiers, [data-format="square"] #t1-ov-tier .tiers { left: var(--safe-l); right: var(--safe-r); bottom: var(--safe-b); flex-direction: column; gap: 18px; }
+      [data-format="vertical"] #t1-ov-tier .tiers { top: 430px; }
+      [data-format="square"] #t1-ov-tier .tiers { top: 190px; }
+      [data-format="vertical"] #t1-ov-tier .tier-col, [data-format="square"] #t1-ov-tier .tier-col {
+        display: grid; grid-template-rows: auto auto auto; align-content: center; column-gap: 28px;
+        padding: 28px 32px 28px 36px;
+      }
+      [data-format="vertical"] #t1-ov-tier .tier-col { grid-template-columns: 290px 1fr; }
+      [data-format="square"] #t1-ov-tier .tier-col { grid-template-columns: 340px 1fr; }
+      [data-format="vertical"] #t1-ov-tier .tier-chip, [data-format="vertical"] #t1-ov-tier .tier-heading, [data-format="vertical"] #t1-ov-tier .tier-rule, [data-format="square"] #t1-ov-tier .tier-chip, [data-format="square"] #t1-ov-tier .tier-heading, [data-format="square"] #t1-ov-tier .tier-rule { grid-column: 1; }
+      [data-format="vertical"] #t1-ov-tier .tier-chip, [data-format="square"] #t1-ov-tier .tier-chip { justify-self: start; }
+      [data-format="vertical"] #t1-ov-tier .tier-heading, [data-format="square"] #t1-ov-tier .tier-heading { margin-bottom: 14px; }
+      [data-format="vertical"] #t1-ov-tier .tier-rule, [data-format="square"] #t1-ov-tier .tier-rule { margin-bottom: 0; }
+      [data-format="vertical"] #t1-ov-tier .feat-list, [data-format="square"] #t1-ov-tier .feat-list { grid-column: 2; grid-row: 1 / span 3; align-self: center; border-left: 1px solid rgba(255,255,255,0.08); padding-left: 28px; }
+      [data-format="vertical"] #t1-ov-tier .feat-line, [data-format="square"] #t1-ov-tier .feat-line { padding: 10px 0; }
+      [data-format="vertical"] #t1-ov-tier .tier-heading { font-size: calc(40px * var(--type)); }
+      [data-format="vertical"] #t1-ov-tier .feat-line { font-size: calc(22px * var(--type)); gap: 14px; }
+      [data-format="square"] #t1-ov-tier .tier-heading { font-size: 46px; }
+      [data-format="square"] #t1-ov-tier .feat-line { font-size: 26px; }
     </style>
   </head>
   <body>

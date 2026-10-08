@@ -14,7 +14,7 @@
       html, body { margin: 0; background: transparent; }
 
       #t2-lb-delta {
-        position: absolute; inset: 0; width: 1920px; height: 1080px;
+        position: absolute; inset: 0; width: var(--w); height: var(--h);
         background: transparent; overflow: hidden;
       }
 
@@ -32,7 +32,7 @@
 
       /* Wrapper anchored left */
       #t2-lb-delta .wrapper {
-        position: absolute; left: 120px; top: 430px;
+        position: absolute; left: calc(var(--safe-l) + 24px); top: calc(var(--safe-t) + 376px);
         display: flex; flex-direction: column; align-items: flex-start; gap: 14px;
       }
 
@@ -65,7 +65,7 @@
       /* Delta value text */
       #t2-lb-delta .delta-val {
         font-family: var(--font-mono); font-weight: var(--wt-bold);
-        font-size: 36px; letter-spacing: 0.02em;
+        font-size: calc(36px * var(--type)); letter-spacing: 0.02em;
         color: var(--accent); text-shadow: var(--textglow-accent);
         white-space: nowrap;
       }
@@ -73,7 +73,7 @@
       /* VS / context label beside chip */
       #t2-lb-delta .vs-label {
         font-family: var(--font-body); font-weight: var(--wt-med);
-        font-size: 20px; color: var(--text-dim);
+        font-size: calc(20px * var(--type)); color: var(--text-dim);
         letter-spacing: 0.04em; white-space: nowrap;
       }
 
@@ -98,15 +98,24 @@
 
       #t2-lb-delta .term {
         font-family: var(--font-display); font-weight: var(--wt-bold);
-        font-size: 26px; letter-spacing: var(--track-snug);
+        font-size: calc(26px * var(--type)); letter-spacing: var(--track-snug);
         color: var(--white); text-shadow: var(--textglow);
         margin-bottom: 4px;
       }
 
       #t2-lb-delta .detail {
         font-family: var(--font-body); font-weight: var(--wt-reg);
-        font-size: 20px; line-height: 1.45; color: var(--text-dim);
+        font-size: calc(20px * var(--type)); line-height: 1.45; color: var(--text-dim);
       }
+      /* Vertical and square: card moves to the bottom-left of the safe area, glow follows, slots wrap. */
+      [data-format="vertical"] #t2-lb-delta .wrapper, [data-format="square"] #t2-lb-delta .wrapper {
+        top: auto; right: auto; left: var(--safe-l); bottom: var(--safe-b);
+        max-width: calc(var(--w) - var(--safe-l) - var(--safe-r));
+      }
+      [data-format="vertical"] #t2-lb-delta .local-glow, [data-format="square"] #t2-lb-delta .local-glow {
+        top: auto; right: auto; left: calc(var(--safe-l) - 40px); bottom: calc(var(--safe-b) - 40px);
+      }
+      [data-format="vertical"] #t2-lb-delta [data-slot], [data-format="square"] #t2-lb-delta [data-slot] { white-space: normal; }
     </style>
   </head>
   <body>

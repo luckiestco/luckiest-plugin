@@ -16,7 +16,7 @@
       html, body { margin: 0; }
 
       #t1-sec-cone {
-        position: absolute; inset: 0; width: 1920px; height: 1080px;
+        position: absolute; inset: 0; width: var(--w); height: var(--h);
         background: var(--canvas-deep); color: var(--text);
         font-family: var(--font-display); overflow: hidden;
       }
@@ -40,7 +40,7 @@
       #t1-sec-cone .cone-outer {
         position: absolute;
         left: 50%; top: 0;
-        width: 1400px; height: 1080px;
+        width: 1400px; height: var(--h);
         margin-left: -700px;
         z-index: 3;
         clip-path: polygon(50% 0%, 0% 100%, 100% 100%);
@@ -126,7 +126,7 @@
       }
       #t1-sec-cone .kicker {
         font-family: var(--font-display); font-style: italic;
-        font-weight: var(--wt-semi); font-size: 36px;
+        font-weight: var(--wt-semi); font-size: calc(36px * var(--type));
         letter-spacing: 0.18em; text-transform: uppercase;
         color: var(--text-dim); text-shadow: var(--textglow);
         margin-bottom: 30px;
@@ -152,6 +152,19 @@
         position: absolute; inset: -40px; background: var(--tex-grain);
         background-size: 200px 200px; mix-blend-mode: overlay; opacity: 0.10;
         pointer-events: none; z-index: 7;
+      }
+
+      /* Vertical and square: title centres in the safe area; in vertical the cone stops short of
+         the lower frame and the pool and dust follow the title down. */
+      [data-format="vertical"] #t1-sec-cone .content, [data-format="square"] #t1-sec-cone .content {
+        left: var(--safe-l); right: var(--safe-r); top: var(--safe-t); bottom: var(--safe-b);
+      }
+      [data-format="vertical"] #t1-sec-cone .headline, [data-format="square"] #t1-sec-cone .headline { max-width: none; padding: 0 20px; }
+      [data-format="vertical"] #t1-sec-cone .cone-outer { height: calc(var(--h) - var(--safe-b) + 260px); }
+      [data-format="vertical"] #t1-sec-cone .cone-inner { height: calc(var(--h) - var(--safe-b) + 60px); }
+      [data-format="vertical"] #t1-sec-cone .pool { bottom: calc(var(--safe-b) - 300px); }
+      [data-format="vertical"] #t1-sec-cone .motes, [data-format="square"] #t1-sec-cone .motes {
+        left: calc(var(--w) / 2 - 960px); top: calc(calc((var(--safe-t) + var(--h) - var(--safe-b)) / 2) - 540px);
       }
     </style>
   </head>

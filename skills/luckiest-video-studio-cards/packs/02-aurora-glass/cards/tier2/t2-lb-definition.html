@@ -14,7 +14,7 @@
       html, body { margin: 0; background: transparent; }
 
       #t2-lb-def {
-        position: absolute; inset: 0; width: 1920px; height: 1080px;
+        position: absolute; inset: 0; width: var(--w); height: var(--h);
         background: transparent; overflow: hidden;
         font-family: var(--font-display);
       }
@@ -33,7 +33,7 @@
 
       /* Card anchored right */
       #t2-lb-def .card {
-        position: absolute; right: 80px; top: 330px;
+        position: absolute; right: var(--safe-r); top: calc(var(--safe-t) + 276px);
         width: 480px;
         background: var(--glass-bg-dark);
         backdrop-filter: var(--glass-blur);
@@ -65,7 +65,7 @@
       /* "def" kicker */
       #t2-lb-def .kicker {
         font-family: var(--font-body); font-weight: var(--wt-semi);
-        font-size: 14px; letter-spacing: var(--track-wide);
+        font-size: calc(14px * var(--type)); letter-spacing: var(--track-wide);
         text-transform: uppercase;
         color: var(--accent); text-shadow: var(--textglow-accent);
         margin-bottom: 8px;
@@ -74,7 +74,7 @@
       /* Term - bold header */
       #t2-lb-def .term {
         font-family: var(--font-display); font-weight: var(--wt-black);
-        font-size: 40px; letter-spacing: var(--track-tight);
+        font-size: calc(40px * var(--type)); letter-spacing: var(--track-tight);
         color: var(--white); text-shadow: var(--textglow);
         line-height: 1.1;
         margin-bottom: 16px;
@@ -91,9 +91,18 @@
       /* Definition body */
       #t2-lb-def .detail {
         font-family: var(--font-body); font-weight: var(--wt-reg);
-        font-size: 24px; line-height: 1.55;
+        font-size: calc(24px * var(--type)); line-height: 1.55;
         color: var(--text-dim);
       }
+      /* Vertical and square: card moves to the bottom-left of the safe area, glow follows, slots wrap. */
+      [data-format="vertical"] #t2-lb-def .card, [data-format="square"] #t2-lb-def .card {
+        top: auto; right: auto; left: var(--safe-l); bottom: var(--safe-b);
+        max-width: calc(var(--w) - var(--safe-l) - var(--safe-r));
+      }
+      [data-format="vertical"] #t2-lb-def .local-glow, [data-format="square"] #t2-lb-def .local-glow {
+        top: auto; right: auto; left: calc(var(--safe-l) - 40px); bottom: calc(var(--safe-b) - 40px);
+      }
+      [data-format="vertical"] #t2-lb-def [data-slot], [data-format="square"] #t2-lb-def [data-slot] { white-space: normal; }
     </style>
   </head>
   <body>

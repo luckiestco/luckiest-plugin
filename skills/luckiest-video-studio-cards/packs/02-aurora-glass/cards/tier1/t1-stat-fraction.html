@@ -14,7 +14,7 @@
       html, body { margin: 0; }
 
       #t1-stat-frac {
-        position: absolute; inset: 0; width: 1920px; height: 1080px;
+        position: absolute; inset: 0; width: var(--w); height: var(--h);
         background: var(--canvas); color: var(--text);
         font-family: var(--font-display); overflow: hidden;
       }
@@ -55,7 +55,7 @@
       #t1-stat-frac .frac-num {
         font-family: var(--font-display);
         font-weight: var(--wt-black);
-        font-size: 240px;
+        font-size: calc(240px * var(--type));
         letter-spacing: var(--track-tight);
         background: linear-gradient(160deg, #ffffff 12%, rgba(var(--accent-rgb),0.85) 82%);
         -webkit-background-clip: text; background-clip: text;
@@ -66,7 +66,7 @@
       #t1-stat-frac .frac-of {
         font-family: var(--font-body);
         font-weight: var(--wt-semi);
-        font-size: 52px;
+        font-size: calc(52px * var(--type));
         color: var(--text-dim);
         letter-spacing: 0.10em;
         text-transform: uppercase;
@@ -75,7 +75,7 @@
       #t1-stat-frac .frac-denom {
         font-family: var(--font-display);
         font-weight: var(--wt-black);
-        font-size: 140px;
+        font-size: calc(140px * var(--type));
         letter-spacing: var(--track-tight);
         color: var(--text-faint);
         filter: drop-shadow(0 0 12px rgba(255,255,255,0.18));
@@ -120,7 +120,7 @@
       }
 
       #t1-stat-frac .source {
-        position: absolute; left: var(--pad); bottom: 44px;
+        position: absolute; left: var(--safe-l); bottom: var(--safe-b);
         font-family: var(--font-mono); font-size: var(--size-tiny);
         font-weight: var(--wt-reg); letter-spacing: 0.12em;
         text-transform: uppercase; color: var(--text-faint); z-index: 5;
@@ -135,6 +135,12 @@
         background-size: 200px 200px; mix-blend-mode: overlay; opacity: 0.10;
         pointer-events: none; z-index: 7;
       }
+
+      /* Vertical and square: the stack centers inside the safe area. */
+      [data-format="vertical"] #t1-stat-frac .content, [data-format="square"] #t1-stat-frac .content { inset: var(--safe-t) var(--safe-r) calc(var(--safe-b) + 40px) var(--safe-l); padding-bottom: 0; }
+      [data-format="vertical"] #t1-stat-frac .kicker, [data-format="square"] #t1-stat-frac .kicker { text-align: center; }
+      [data-format="vertical"] #t1-stat-frac .dots-row { gap: 14px; }
+      [data-format="vertical"] #t1-stat-frac .dot { width: 48px; height: 48px; }
     </style>
   </head>
   <body>

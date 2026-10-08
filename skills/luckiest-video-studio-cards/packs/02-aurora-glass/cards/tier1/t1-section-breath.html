@@ -14,11 +14,13 @@
       html, body { margin: 0; }
 
       #t1-sec-breath {
-        position: absolute; inset: 0; width: 1920px; height: 1080px;
+        position: absolute; inset: 0; width: var(--w); height: var(--h);
         background: var(--canvas); color: var(--text);
         font-family: var(--font-display); overflow: hidden;
         display: flex; flex-direction: column;
         align-items: center; justify-content: center;
+        /* center the column on the safe box, not the frame */
+        box-sizing: border-box; padding: var(--safe-t) var(--safe-r) var(--safe-b) var(--safe-l);
       }
 
       /* Deep bloom - subtler than normal, positioned centre */
@@ -33,7 +35,9 @@
 
       /* Halo disc - large diffuse ring that breathes behind the title */
       #t1-sec-breath .halo-disc {
-        position: absolute; left: 50%; top: 50%;
+        position: absolute;
+        left: calc(var(--safe-l) + (var(--w) - var(--safe-l) - var(--safe-r)) / 2);
+        top: calc(var(--safe-t) + (var(--h) - var(--safe-t) - var(--safe-b)) / 2);
         transform: translate(-50%, -50%);
         width: 900px; height: 340px; border-radius: 50%;
         background: radial-gradient(ellipse at 50% 50%,
@@ -69,7 +73,7 @@
 
       #t1-sec-breath .headline {
         font-family: var(--font-display); font-weight: var(--wt-black);
-        font-size: 112px; line-height: 1.04; letter-spacing: var(--track-tight);
+        font-size: calc(112px * var(--type)); line-height: 1.04; letter-spacing: var(--track-tight);
         color: var(--white); text-shadow: var(--textglow);
         max-width: 1380px; margin: 0 auto;
       }
@@ -89,6 +93,13 @@
         background-size: 200px 200px; mix-blend-mode: overlay; opacity: 0.10;
         pointer-events: none; z-index: 7;
       }
+
+      /* Vertical and square: the column centers on the safe box (root padding above); the
+         headline shrinks so its longest word fits the narrower width, and the halo grows taller. */
+      [data-format="vertical"] #t1-sec-breath .headline { font-size: calc(84px * var(--type)); }
+      [data-format="square"] #t1-sec-breath .headline { font-size: 100px; }
+      [data-format="vertical"] #t1-sec-breath .halo-disc { width: 760px; height: 520px; }
+      [data-format="vertical"] #t1-sec-breath .headline, [data-format="square"] #t1-sec-breath .headline { text-wrap: balance; }
     </style>
   </head>
   <body>

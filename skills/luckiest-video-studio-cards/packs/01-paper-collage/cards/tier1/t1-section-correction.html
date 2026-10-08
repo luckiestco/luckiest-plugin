@@ -12,7 +12,7 @@
     <style>
       html, body { margin: 0; }
       #t1-sec-correction {
-        position: absolute; inset: 0; width: 1920px; height: 1080px;
+        position: absolute; inset: 0; width: var(--w); height: var(--h);
         background: var(--paper); color: var(--ink);
         font-family: var(--font-display); overflow: hidden;
       }
@@ -31,8 +31,8 @@
         background: radial-gradient(120% 120% at 45% 50%, transparent 58%, rgba(23,19,14,0.15) 100%);
       }
       #t1-sec-correction .headline {
-        position: absolute; left: 150px; top: 430px; width: 1050px; z-index: 3;
-        font-weight: var(--wt-thin); font-size: 132px; line-height: 1.05;
+        position: absolute; left: calc(var(--safe-l) + 54px); top: calc(var(--safe-t) + 376px); width: 1050px; z-index: 3;
+        font-weight: var(--wt-thin); font-size: calc(132px * var(--type)); line-height: 1.05;
         letter-spacing: var(--track-tight); color: var(--ink);
       }
       #t1-sec-correction .struck { position: relative; font-weight: var(--wt-black); }
@@ -42,22 +42,34 @@
       }
       #t1-sec-correction .correction {
         position: absolute; left: 0; top: -64px;
-        font-family: var(--font-hand); font-size: 64px; font-weight: 700; color: var(--red);
+        font-family: var(--font-hand); font-size: calc(64px * var(--type)); font-weight: 700; color: var(--red);
         transform: rotate(-3deg); white-space: nowrap;
       }
       /* yellow wordmark circle on the right */
       #t1-sec-correction .circle {
-        position: absolute; right: 200px; top: 430px; width: 300px; height: 300px;
+        position: absolute; right: calc(var(--safe-r) + 104px); top: calc(var(--safe-t) + 376px); width: 300px; height: 300px;
         background: var(--yellow); border-radius: 50%; z-index: 2;
         display: flex; align-items: center; justify-content: center;
-        font-weight: var(--wt-black); font-style: italic; font-size: 110px; color: var(--ink);
+        font-weight: var(--wt-black); font-style: italic; font-size: calc(110px * var(--type)); color: var(--ink);
       }
       #t1-sec-correction .kicker {
-        position: absolute; left: 150px; top: 320px; z-index: 3;
+        position: absolute; left: calc(var(--safe-l) + 54px); top: calc(var(--safe-t) + 266px); z-index: 3;
         font-family: var(--font-label); font-weight: var(--wt-bold);
         font-size: var(--size-label); letter-spacing: var(--track-wide);
         text-transform: uppercase; color: var(--muted);
       }
+
+      /* Vertical and square: kicker and headline across the safe width, the wordmark circle
+         drops below them to the safe bottom right. */
+      [data-format="vertical"] #t1-sec-correction .kicker, [data-format="square"] #t1-sec-correction .kicker { left: var(--safe-l); top: calc(var(--safe-t) + 60px); }
+      [data-format="vertical"] #t1-sec-correction .headline, [data-format="square"] #t1-sec-correction .headline { left: var(--safe-l); top: calc(var(--safe-t) + 200px); width: calc(var(--w) - var(--safe-l) - var(--safe-r)); }
+      [data-format="vertical"] #t1-sec-correction .headline { font-size: calc(94px * var(--type)); }
+      [data-format="square"] #t1-sec-correction .headline { font-size: 116px; }
+      [data-format="vertical"] #t1-sec-correction .circle, [data-format="square"] #t1-sec-correction .circle { right: var(--safe-r); top: auto; bottom: var(--safe-b); }
+      [data-format="square"] #t1-sec-correction .circle { width: 270px; height: 270px; font-size: 100px; }
+      [data-format="vertical"] #t1-sec-correction .kicker { top: calc(var(--safe-t) + 160px); }
+      [data-format="vertical"] #t1-sec-correction .headline { top: calc(var(--safe-t) + 300px); }
+      [data-format="vertical"] #t1-sec-correction .circle { width: 340px; height: 340px; font-size: calc(90px * var(--type)); }
     </style>
   </head>
   <body>

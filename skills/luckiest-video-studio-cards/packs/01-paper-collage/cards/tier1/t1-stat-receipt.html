@@ -13,7 +13,7 @@
     <style>
       html, body { margin: 0; }
       #t1-stat-receipt {
-        position: absolute; inset: 0; width: 1920px; height: 1080px;
+        position: absolute; inset: 0; width: var(--w); height: var(--h);
         background: var(--paper); color: var(--ink);
         font-family: var(--font-display); overflow: hidden;
       }
@@ -33,7 +33,7 @@
         background: radial-gradient(120% 120% at 50% 50%, transparent 56%, rgba(23,19,14,0.18) 100%);
       }
       #t1-stat-receipt .kicker {
-        position: absolute; left: 130px; top: 260px;
+        position: absolute; left: calc(var(--safe-l) + 34px); top: calc(var(--safe-t) + 206px);
         font-family: var(--font-label); font-weight: var(--wt-bold);
         font-size: var(--size-label); letter-spacing: var(--track-wide);
         text-transform: uppercase; color: var(--red);
@@ -62,25 +62,25 @@
           4% 98%, 0% 100%
         );
         padding: 40px 48px 48px;
-        font-family: var(--font-label); font-size: 28px; color: var(--ink);
+        font-family: var(--font-label); font-size: calc(28px * var(--type)); color: var(--ink);
         letter-spacing: 0.04em;
       }
       #t1-stat-receipt .receipt-store {
         text-align: center; font-weight: var(--wt-black);
-        font-size: 34px; letter-spacing: 0.12em;
+        font-size: calc(34px * var(--type)); letter-spacing: 0.12em;
         text-transform: uppercase;
         border-bottom: 2px dashed rgba(23,19,14,0.3);
         padding-bottom: 18px; margin-bottom: 18px;
       }
       #t1-stat-receipt .receipt-meta {
-        font-size: 20px; color: var(--muted); margin-bottom: 22px;
+        font-size: calc(20px * var(--type)); color: var(--muted); margin-bottom: 22px;
         display: flex; justify-content: space-between;
       }
       #t1-stat-receipt .line-items { margin-bottom: 22px; }
       #t1-stat-receipt .item {
         display: flex; justify-content: space-between; align-items: baseline;
         padding: 10px 0; border-bottom: 1px dashed rgba(23,19,14,0.2);
-        font-size: 26px;
+        font-size: calc(26px * var(--type));
       }
       #t1-stat-receipt .item .il { color: var(--muted); font-weight: var(--wt-reg); }
       #t1-stat-receipt .item .iv { font-weight: var(--wt-bold); }
@@ -95,29 +95,41 @@
       }
       #t1-stat-receipt .total-label {
         font-family: var(--font-label); font-weight: var(--wt-black);
-        font-size: 32px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--ink);
+        font-size: calc(32px * var(--type)); letter-spacing: 0.14em; text-transform: uppercase; color: var(--ink);
       }
       #t1-stat-receipt .total-val {
         font-family: var(--font-display); font-weight: var(--wt-black);
-        font-size: 110px; line-height: 1; color: var(--ink);
+        font-size: calc(110px * var(--type)); line-height: 1; color: var(--ink);
         font-variant-numeric: tabular-nums;
       }
       #t1-stat-receipt .receipt-thank {
-        text-align: center; font-size: 20px; color: var(--muted);
+        text-align: center; font-size: calc(20px * var(--type)); color: var(--muted);
         margin-top: 18px; letter-spacing: 0.1em; text-transform: uppercase;
       }
       #t1-stat-receipt .label {
-        position: absolute; left: 130px; right: 130px; bottom: 220px;
-        font-weight: var(--wt-thin); font-size: 56px; line-height: 1.1;
+        position: absolute; left: calc(var(--safe-l) + 34px); right: calc(var(--safe-r) + 34px); bottom: calc(var(--safe-b) + 166px);
+        font-weight: var(--wt-thin); font-size: calc(56px * var(--type)); line-height: 1.1;
         letter-spacing: var(--track-tight); color: var(--ink);
       }
       #t1-stat-receipt .label em { font-style: italic; font-weight: var(--wt-black); }
       #t1-stat-receipt .source {
-        position: absolute; left: 130px; bottom: 96px;
+        position: absolute; left: calc(var(--safe-l) + 34px); bottom: calc(var(--safe-b) + 42px);
         font-family: var(--font-label); font-weight: var(--wt-bold);
         font-size: var(--size-tiny); letter-spacing: var(--track-wide);
         text-transform: uppercase; color: var(--muted);
       }
+
+      /* Vertical and square: kicker, the receipt centered on the safe area (--cx) near the top, label
+         under it, source at the safe bottom. Only left/top/width move; the clip reveal is unchanged. */
+      [data-format="vertical"] #t1-stat-receipt, [data-format="square"] #t1-stat-receipt {
+        --cx: calc(var(--safe-l) + (var(--w) - var(--safe-l) - var(--safe-r)) / 2);
+      }
+      [data-format="vertical"] #t1-stat-receipt .kicker, [data-format="square"] #t1-stat-receipt .kicker { left: var(--safe-l); top: var(--safe-t); }
+      [data-format="vertical"] #t1-stat-receipt .receipt-clip { left: var(--cx); top: calc(var(--safe-t) + 330px); width: 680px; }
+      [data-format="square"] #t1-stat-receipt .receipt-clip { left: var(--cx); top: calc(var(--safe-t) + 300px); width: 640px; }
+      [data-format="vertical"] #t1-stat-receipt .label, [data-format="square"] #t1-stat-receipt .label { left: var(--safe-l); right: var(--safe-r); bottom: auto; top: calc(var(--safe-t) + 660px); }
+      [data-format="square"] #t1-stat-receipt .label { top: calc(var(--safe-t) + 600px); }
+      [data-format="vertical"] #t1-stat-receipt .source, [data-format="square"] #t1-stat-receipt .source { left: var(--safe-l); bottom: var(--safe-b); }
     </style>
   </head>
   <body>

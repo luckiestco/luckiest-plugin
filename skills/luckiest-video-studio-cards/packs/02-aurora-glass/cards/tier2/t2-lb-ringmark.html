@@ -14,14 +14,14 @@
       html, body { margin: 0; background: transparent; }
 
       #t2-lb-ring {
-        position: absolute; inset: 0; width: 1920px; height: 1080px;
+        position: absolute; inset: 0; width: var(--w); height: var(--h);
         background: transparent; overflow: hidden;
         font-family: var(--font-display);
       }
 
       /* Local glow centered on the ring */
       #t2-lb-ring .local-glow {
-        position: absolute; left: 160px; top: 380px;
+        position: absolute; left: calc(var(--safe-l) + 64px); top: calc(var(--safe-t) + 326px);
         width: 380px; height: 380px; border-radius: 50%;
         background: radial-gradient(ellipse at 50% 50%,
           rgba(var(--accent-rgb), 0.28) 0%,
@@ -33,7 +33,7 @@
 
       /* SVG ring - anchored left side */
       #t2-lb-ring .ring-svg {
-        position: absolute; left: 170px; top: 390px;
+        position: absolute; left: calc(var(--safe-l) + 74px); top: calc(var(--safe-t) + 336px);
         width: 200px; height: 200px;
         overflow: visible;
       }
@@ -72,13 +72,13 @@
 
       /* Label panel to the right of the ring */
       #t2-lb-ring .label-wrap {
-        position: absolute; left: 400px; top: 440px;
+        position: absolute; left: calc(var(--safe-l) + 304px); top: calc(var(--safe-t) + 386px);
         display: flex; flex-direction: column; gap: 10px;
       }
 
       /* Connector line from ring edge to label */
       #t2-lb-ring .connector-svg {
-        position: absolute; left: 370px; top: 488px;
+        position: absolute; left: calc(var(--safe-l) + 274px); top: calc(var(--safe-t) + 434px);
         width: 40px; height: 2px; overflow: visible;
       }
 
@@ -102,7 +102,7 @@
 
       #t2-lb-ring .term-text {
         font-family: var(--font-display); font-weight: var(--wt-bold);
-        font-size: 30px; letter-spacing: var(--track-snug);
+        font-size: calc(30px * var(--type)); letter-spacing: var(--track-snug);
         color: var(--white); text-shadow: var(--textglow);
         white-space: nowrap;
       }
@@ -122,15 +122,35 @@
 
       #t2-lb-ring .detail-text {
         font-family: var(--font-body); font-weight: var(--wt-reg);
-        font-size: 22px; line-height: 1.45;
+        font-size: calc(22px * var(--type)); line-height: 1.45;
         color: var(--text-dim);
       }
+      /* Vertical and square: the label drops to the bottom of the safe area, the ring and connector ride beside its top. */
+      [data-format="vertical"] #t2-lb-ring .label-wrap, [data-format="square"] #t2-lb-ring .label-wrap {
+        anchor-name: --t2-lb-ring-label;
+        top: auto; left: calc(var(--safe-l) + 230px); bottom: var(--safe-b);
+        max-width: calc(var(--w) - var(--safe-l) - var(--safe-r) - 230px);
+      }
+      [data-format="vertical"] #t2-lb-ring .ring-svg, [data-format="square"] #t2-lb-ring .ring-svg { position-anchor: --t2-lb-ring-label; left: var(--safe-l); top: calc(anchor(top) - 50px); }
+      [data-format="vertical"] #t2-lb-ring .connector-svg, [data-format="square"] #t2-lb-ring .connector-svg { position-anchor: --t2-lb-ring-label; left: calc(var(--safe-l) + 200px); top: calc(anchor(top) + 48px); }
+      [data-format="vertical"] #t2-lb-ring .local-glow, [data-format="square"] #t2-lb-ring .local-glow { top: auto; left: calc(var(--safe-l) - 90px); bottom: calc(var(--safe-b) - 70px); }
+      [data-format="vertical"] #t2-lb-ring [data-slot], [data-format="square"] #t2-lb-ring [data-slot] { white-space: normal; }
     </style>
   </head>
   <body>
     <div id="t2-lb-ring" data-composition-id="t2-lb-ring" data-start="0" data-width="1920" data-height="1080">
 
       <div class="local-glow"></div>
+
+      <div class="label-wrap">
+        <div class="term-head">
+          <div class="term-bar"></div>
+          <div class="term-text" data-slot="term">Transformer Block</div>
+        </div>
+        <div class="detail-wrap">
+          <div class="detail-text" data-slot="detail">Stacked self-attention + feed-forward layers that encode meaning at each depth.</div>
+        </div>
+      </div>
 
       <!-- Ring SVG: cx/cy = 100,100 in the 200×200 viewBox -->
       <svg class="ring-svg" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
@@ -151,16 +171,6 @@
       <svg class="connector-svg" viewBox="0 0 40 2" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
         <line id="t2-lb-ring-conn" class="conn-line" x1="0" y1="1" x2="40" y2="1" />
       </svg>
-
-      <div class="label-wrap">
-        <div class="term-head">
-          <div class="term-bar"></div>
-          <div class="term-text" data-slot="term">Transformer Block</div>
-        </div>
-        <div class="detail-wrap">
-          <div class="detail-text" data-slot="detail">Stacked self-attention + feed-forward layers that encode meaning at each depth.</div>
-        </div>
-      </div>
 
     </div>
 

@@ -15,7 +15,7 @@
       html, body { margin: 0; }
 
       #t1-stat-ring {
-        position: absolute; inset: 0; width: 1920px; height: 1080px;
+        position: absolute; inset: 0; width: var(--w); height: var(--h);
         background: var(--canvas); color: var(--text);
         font-family: var(--font-display); overflow: hidden;
       }
@@ -78,7 +78,7 @@
       #t1-stat-ring .stat {
         font-family: var(--font-display);
         font-weight: var(--wt-black);
-        font-size: 110px;
+        font-size: calc(110px * var(--type));
         line-height: 1;
         letter-spacing: var(--track-tight);
         background: linear-gradient(160deg, #ffffff 15%, rgba(var(--accent-rgb),0.85) 80%);
@@ -101,7 +101,7 @@
       }
 
       #t1-stat-ring .source {
-        position: absolute; left: var(--pad); bottom: 44px;
+        position: absolute; left: var(--safe-l); bottom: var(--safe-b);
         font-family: var(--font-mono); font-size: var(--size-tiny);
         font-weight: var(--wt-reg); letter-spacing: 0.12em;
         text-transform: uppercase; color: var(--text-faint); z-index: 5;
@@ -116,6 +116,13 @@
         background-size: 200px 200px; mix-blend-mode: overlay; opacity: 0.10;
         pointer-events: none; z-index: 7;
       }
+
+      /* Vertical and square: the stack centers in the safe box; square uses a smaller ring. */
+      [data-format="vertical"] #t1-stat-ring .content, [data-format="square"] #t1-stat-ring .content { inset: var(--safe-t) var(--safe-r) calc(var(--safe-b) + 48px) var(--safe-l); padding-bottom: 0; }
+      [data-format="vertical"] #t1-stat-ring .kicker, [data-format="square"] #t1-stat-ring .kicker { text-align: center; }
+      [data-format="vertical"] #t1-stat-ring .label, [data-format="square"] #t1-stat-ring .label { max-width: 100%; }
+      [data-format="square"] #t1-stat-ring .content { gap: 40px; }
+      [data-format="square"] #t1-stat-ring .ring-container, [data-format="square"] #t1-stat-ring .ring-svg { width: 420px; height: 420px; }
     </style>
   </head>
   <body>

@@ -15,7 +15,7 @@
       html, body { margin: 0; }
 
       #t1-stat-orbit {
-        position: absolute; inset: 0; width: 1920px; height: 1080px;
+        position: absolute; inset: 0; width: var(--w); height: var(--h);
         background: var(--canvas); color: var(--text);
         font-family: var(--font-display); overflow: hidden;
       }
@@ -81,7 +81,7 @@
       #t1-stat-orbit .stat {
         font-family: var(--font-display);
         font-weight: var(--wt-black);
-        font-size: 140px;
+        font-size: calc(140px * var(--type));
         line-height: 1;
         letter-spacing: var(--track-tight);
         background: linear-gradient(155deg, #ffffff 8%, rgba(var(--accent-rgb), 0.82) 88%);
@@ -113,7 +113,7 @@
       }
 
       #t1-stat-orbit .source {
-        position: absolute; left: var(--pad); bottom: 44px;
+        position: absolute; left: var(--safe-l); bottom: var(--safe-b);
         font-family: var(--font-mono); font-size: var(--size-tiny);
         font-weight: var(--wt-reg); letter-spacing: 0.12em;
         text-transform: uppercase; color: var(--text-faint); z-index: 5;
@@ -128,6 +128,12 @@
         background-size: 200px 200px; mix-blend-mode: overlay; opacity: 0.10;
         pointer-events: none; z-index: 7;
       }
+
+      /* Vertical and square: the stack centers in the safe box; square uses a smaller orbit. */
+      [data-format="vertical"] #t1-stat-orbit .content, [data-format="square"] #t1-stat-orbit .content { inset: var(--safe-t) var(--safe-r) var(--safe-b) var(--safe-l); padding-bottom: 0; gap: 36px; }
+      [data-format="vertical"] #t1-stat-orbit .kicker, [data-format="square"] #t1-stat-orbit .kicker { text-align: center; }
+      [data-format="vertical"] #t1-stat-orbit .label, [data-format="square"] #t1-stat-orbit .label { max-width: 100%; }
+      [data-format="square"] #t1-stat-orbit .orbit-wrap, [data-format="square"] #t1-stat-orbit .orbit-svg { width: 460px; height: 460px; }
     </style>
   </head>
   <body>

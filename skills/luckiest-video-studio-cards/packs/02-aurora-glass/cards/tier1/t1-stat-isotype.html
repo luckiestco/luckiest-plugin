@@ -14,7 +14,7 @@
       html, body { margin: 0; }
 
       #t1-stat-iso {
-        position: absolute; inset: 0; width: 1920px; height: 1080px;
+        position: absolute; inset: 0; width: var(--w); height: var(--h);
         background: var(--canvas); color: var(--text);
         font-family: var(--font-display); overflow: hidden;
       }
@@ -34,7 +34,7 @@
       #t1-stat-iso .content {
         position: absolute; inset: 0; z-index: 4;
         display: flex; align-items: center;
-        padding: 0 var(--pad);
+        padding: 0 var(--safe-r) 0 var(--safe-l);
         gap: 100px;
       }
 
@@ -73,7 +73,7 @@
       #t1-stat-iso .stat-denom {
         font-family: var(--font-display);
         font-weight: var(--wt-semi);
-        font-size: 80px;
+        font-size: calc(80px * var(--type));
         color: var(--text-faint);
         line-height: 1;
       }
@@ -120,7 +120,7 @@
       }
 
       #t1-stat-iso .source {
-        position: absolute; left: var(--pad); bottom: 44px;
+        position: absolute; left: var(--safe-l); bottom: var(--safe-b);
         font-family: var(--font-mono); font-size: var(--size-tiny);
         font-weight: var(--wt-reg); letter-spacing: 0.12em;
         text-transform: uppercase; color: var(--text-faint); z-index: 5;
@@ -135,6 +135,18 @@
         background-size: 200px 200px; mix-blend-mode: overlay; opacity: 0.10;
         pointer-events: none; z-index: 7;
       }
+
+      /* Vertical and square: kicker, fraction and label over the icon grid, stacked and centered in the safe area. */
+      [data-format="vertical"] #t1-stat-iso .content, [data-format="square"] #t1-stat-iso .content {
+        inset: var(--safe-t) var(--safe-r) calc(var(--safe-b) + 40px) var(--safe-l); padding: 0;
+        flex-direction: column; justify-content: center; gap: 56px;
+      }
+      [data-format="vertical"] #t1-stat-iso .left, [data-format="square"] #t1-stat-iso .left { flex: 0 0 auto; align-items: center; text-align: center; gap: 28px; }
+      [data-format="vertical"] #t1-stat-iso .label, [data-format="square"] #t1-stat-iso .label { max-width: none; }
+      [data-format="vertical"] #t1-stat-iso .right, [data-format="square"] #t1-stat-iso .right { flex: 0 0 auto; }
+      [data-format="vertical"] #t1-stat-iso .stat-num { font-size: calc(240px * var(--type)); }
+      [data-format="square"] #t1-stat-iso .stat-num { font-size: 240px; }
+      [data-format="square"] #t1-stat-iso .content { gap: 44px; }
     </style>
   </head>
   <body>

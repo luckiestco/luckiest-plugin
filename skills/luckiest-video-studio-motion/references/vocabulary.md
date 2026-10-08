@@ -69,6 +69,27 @@ scene. Adapted from Emil Kowalski's animation-vocabulary (MIT).
 | Follow-through | Parts keep moving briefly after the main move stops | trailing child tweens |
 | Squash and stretch | Deforms while moving to show weight and speed | `scaleX`/`scaleY` against each other |
 
+### Springs
+
+A spring has mass: it speeds up, settles, and overshoots only as much as its preset
+allows. `templates/spring.js` computes it straight from the time, so any frame
+renders alone. Copy it to `composition/assets/js/`, load it once in `index.html`,
+and read values in the scene's clock tween `onUpdate`.
+
+| Preset | Overshoot | Settles in | Use on |
+|---|---|---|---|
+| `snappy` | about 0.2% | 0.4s | Buttons, toggles, cursors, leading edges |
+| `default` | none | 0.7s | Cards, containers, the camera |
+| `heavy` | none | 1.05s | Big type, 3D objects, logo lockups |
+| `playful` | about 30% | 1.05s | Mascots and stickers only. Never type, prices, or security |
+
+- **Retarget, never restart.** When a value changes target mid-move (a cursor, a
+  container growing twice), use `Spring.track(t, keys, preset)` with one key per
+  target. Starting a new spring from the current value at rest makes the element
+  stop dead for a frame.
+- **Size the beat from the spring.** Use `Spring.settleTime(preset)` for the
+  move's duration in the storyboard, then hold.
+
 ## Ambient and loops
 
 | Term | What it looks like | GSAP |

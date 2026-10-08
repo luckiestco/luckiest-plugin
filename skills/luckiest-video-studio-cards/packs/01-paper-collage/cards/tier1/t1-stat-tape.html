@@ -14,7 +14,7 @@
     <style>
       html, body { margin: 0; }
       #t1-stat-tape {
-        position: absolute; inset: 0; width: 1920px; height: 1080px;
+        position: absolute; inset: 0; width: var(--w); height: var(--h);
         background: var(--paper); color: var(--ink);
         font-family: var(--font-display); overflow: hidden;
       }
@@ -31,7 +31,7 @@
       #t1-stat-tape .tape-band {
         position: absolute;
         left: -40px; right: -40px;
-        top: 50%; transform: translateY(-50%);
+        top: calc(var(--safe-t) + (var(--h) - var(--safe-t) - var(--safe-b)) / 2); transform: translateY(-50%);
         height: 196px;
         background: var(--ink);
         z-index: 3;
@@ -64,7 +64,8 @@
         position: absolute;
         left: 0; right: 0; top: 18px; bottom: 18px;
         display: flex; align-items: center;
-        padding: 0 80px;
+        padding: 0 80px 0 calc(var(--safe-l) - 4px);
+
         white-space: nowrap;
         overflow: hidden;
         z-index: 4;
@@ -72,7 +73,7 @@
       #t1-stat-tape .tape-items {
         display: flex; align-items: center; gap: 0;
         font-family: var(--font-label); font-weight: var(--wt-bold);
-        font-size: 36px; letter-spacing: 0.08em;
+        font-size: calc(36px * var(--type)); letter-spacing: 0.08em;
         text-transform: uppercase; color: var(--paper);
         white-space: nowrap;
       }
@@ -82,38 +83,38 @@
         background: var(--yellow); color: var(--ink);
         padding: 6px 28px;
         font-family: var(--font-display); font-weight: var(--wt-black);
-        font-size: 86px; line-height: 1;
+        font-size: calc(86px * var(--type)); line-height: 1;
         letter-spacing: -0.04em;
         margin: 0 32px;
         font-variant-numeric: tabular-nums;
         flex-shrink: 0;
       }
       .tape-sep {
-        color: var(--orange); opacity: 0.7; margin: 0 20px; font-size: 28px;
+        color: var(--orange); opacity: 0.7; margin: 0 20px; font-size: calc(28px * var(--type));
       }
 
       /* === UPPER CONTENT (kicker + context label) === */
       #t1-stat-tape .kicker {
-        position: absolute; left: 130px; top: 120px; z-index: 5;
+        position: absolute; left: calc(var(--safe-l) + 34px); top: calc(var(--safe-t) + 66px); z-index: 5;
         font-family: var(--font-label); font-weight: var(--wt-bold);
         font-size: var(--size-label); letter-spacing: var(--track-wide);
         text-transform: uppercase; color: var(--red);
       }
       #t1-stat-tape .headline {
-        position: absolute; left: 130px; top: 186px; z-index: 5;
-        font-weight: var(--wt-black); font-size: 110px; line-height: 0.9;
+        position: absolute; left: calc(var(--safe-l) + 34px); top: calc(var(--safe-t) + 132px); z-index: 5;
+        font-weight: var(--wt-black); font-size: calc(110px * var(--type)); line-height: 0.9;
         letter-spacing: -0.04em; color: var(--ink);
       }
 
       /* === LOWER CONTENT (label + source) === */
       #t1-stat-tape .label {
-        position: absolute; left: 130px; right: 300px; bottom: 178px; z-index: 5;
-        font-weight: var(--wt-thin); font-size: 54px; line-height: 1.08;
+        position: absolute; left: calc(var(--safe-l) + 34px); right: calc(var(--safe-r) + 204px); bottom: calc(var(--safe-b) + 124px); z-index: 5;
+        font-weight: var(--wt-thin); font-size: calc(54px * var(--type)); line-height: 1.08;
         letter-spacing: var(--track-tight); color: var(--ink);
       }
       #t1-stat-tape .label em { font-style: italic; font-weight: var(--wt-black); }
       #t1-stat-tape .source {
-        position: absolute; left: 130px; bottom: 100px; z-index: 5;
+        position: absolute; left: calc(var(--safe-l) + 34px); bottom: calc(var(--safe-b) + 46px); z-index: 5;
         font-family: var(--font-label); font-weight: var(--wt-bold);
         font-size: var(--size-tiny); letter-spacing: var(--track-wide);
         text-transform: uppercase; color: var(--muted);
@@ -129,7 +130,27 @@
         position: absolute; inset: 0; pointer-events: none; z-index: 8;
         background: radial-gradient(120% 120% at 50% 50%, transparent 55%, rgba(23,19,14,0.18) 100%);
       }
+
+      /* Vertical and square: the band stays full bleed but grows to fit; inside it the ticker
+         line wraps at safe width with the hero stat under it (separators and filler hidden). */
+      [data-format="vertical"] #t1-stat-tape .tape-band, [data-format="square"] #t1-stat-tape .tape-band { height: auto; top: calc(var(--safe-t) + 310px); }
+      [data-format="vertical"] #t1-stat-tape .tape-band { top: calc(var(--safe-t) + 380px); }
+
+
+      [data-format="vertical"] #t1-stat-tape .tape-content, [data-format="square"] #t1-stat-tape .tape-content {
+        position: relative; top: auto; bottom: auto; white-space: normal;
+        padding: 52px calc(var(--safe-r) + 40px) 52px calc(var(--safe-l) + 40px);
+      }
+      [data-format="vertical"] #t1-stat-tape .tape-items, [data-format="square"] #t1-stat-tape .tape-items {
+        flex-direction: column; align-items: flex-start; gap: 26px; white-space: normal; line-height: 1.25;
+      }
+      [data-format="vertical"] #t1-stat-tape .tape-items > span:not([data-slot]), [data-format="square"] #t1-stat-tape .tape-items > span:not([data-slot]) { display: none; }
+      [data-format="vertical"] #t1-stat-tape .tape-hero, [data-format="square"] #t1-stat-tape .tape-hero { margin: 0; }
+      [data-format="vertical"] #t1-stat-tape .kicker, [data-format="square"] #t1-stat-tape .kicker { left: var(--safe-l); top: var(--safe-t); }
+      [data-format="vertical"] #t1-stat-tape .label, [data-format="square"] #t1-stat-tape .label { left: var(--safe-l); right: var(--safe-r); bottom: calc(var(--safe-b) + 48px); }
+      [data-format="vertical"] #t1-stat-tape .source, [data-format="square"] #t1-stat-tape .source { left: var(--safe-l); bottom: var(--safe-b); }
     </style>
+
   </head>
   <body>
     <div id="t1-stat-tape" data-composition-id="t1-stat-tape" data-start="0" data-width="1920" data-height="1080">

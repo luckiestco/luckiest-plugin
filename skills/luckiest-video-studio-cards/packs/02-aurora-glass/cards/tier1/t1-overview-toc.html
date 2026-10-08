@@ -15,7 +15,7 @@
       html, body { margin: 0; }
 
       #t1-ov-toc {
-        position: absolute; inset: 0; width: 1920px; height: 1080px;
+        position: absolute; inset: 0; width: var(--w); height: var(--h);
         background: var(--canvas); color: var(--text);
         font-family: var(--font-body); overflow: hidden;
       }
@@ -38,7 +38,7 @@
         position: absolute; inset: 0; z-index: 3;
         display: flex; flex-direction: column;
         align-items: center;
-        padding: 86px var(--pad) 80px;
+        padding: calc(var(--safe-t) + 32px) var(--safe-r) calc(var(--safe-b) + 26px) var(--safe-l);
       }
 
       /* Title */
@@ -81,7 +81,7 @@
 
       /* Entry index marker */
       #t1-ov-toc .entry-index {
-        font-family: var(--font-mono); font-size: 20px; font-weight: 700;
+        font-family: var(--font-mono); font-size: calc(20px * var(--type)); font-weight: 700;
         color: var(--accent); opacity: 0.7;
         letter-spacing: 0.05em;
         width: 54px; flex-shrink: 0;
@@ -91,7 +91,7 @@
       /* Entry heading label */
       #t1-ov-toc .entry-label {
         font-family: var(--font-display); font-weight: var(--wt-semi);
-        font-size: 40px; color: var(--white);
+        font-size: calc(40px * var(--type)); color: var(--white);
         letter-spacing: var(--track-snug); line-height: 1.15;
         white-space: nowrap;
         flex-shrink: 0;
@@ -114,7 +114,7 @@
 
       /* Section number - right-aligned, monospaced */
       #t1-ov-toc .entry-num {
-        font-family: var(--font-mono); font-size: 30px; font-weight: 700;
+        font-family: var(--font-mono); font-size: calc(30px * var(--type)); font-weight: 700;
         color: var(--accent);
         text-shadow: var(--textglow-accent);
         letter-spacing: 0.04em;
@@ -132,6 +132,16 @@
         background-size: 200px 200px; mix-blend-mode: overlay; opacity: 0.10;
         pointer-events: none; z-index: 7;
       }
+
+      /* Vertical and square: same list in the safe box; entry labels may wrap and the leaders shorten. */
+      [data-format="vertical"] #t1-ov-toc .layout, [data-format="square"] #t1-ov-toc .layout { padding: var(--safe-t) var(--safe-r) var(--safe-b) var(--safe-l); }
+      [data-format="vertical"] #t1-ov-toc .card-title, [data-format="square"] #t1-ov-toc .card-title { margin-bottom: 36px; }
+      [data-format="vertical"] #t1-ov-toc .toc-entry, [data-format="square"] #t1-ov-toc .toc-entry { align-items: center; padding: 18px 0; }
+      [data-format="vertical"] #t1-ov-toc .entry-label, [data-format="square"] #t1-ov-toc .entry-label { white-space: normal; flex-shrink: 1; }
+      [data-format="vertical"] #t1-ov-toc .entry-label { font-size: calc(34px * var(--type)); }
+      [data-format="vertical"] #t1-ov-toc .entry-index { width: 46px; }
+      [data-format="vertical"] #t1-ov-toc .leader, [data-format="square"] #t1-ov-toc .leader { min-width: 40px; margin: 0 18px; }
+      [data-format="vertical"] #t1-ov-toc .entry-num { font-size: calc(24px * var(--type)); min-width: 0; }
     </style>
   </head>
   <body>

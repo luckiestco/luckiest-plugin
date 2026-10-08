@@ -14,7 +14,7 @@
       html, body { margin: 0; }
 
       #t1-sec-mono {
-        position: absolute; inset: 0; width: 1920px; height: 1080px;
+        position: absolute; inset: 0; width: var(--w); height: var(--h);
         background: var(--canvas); color: var(--text);
         font-family: var(--font-display); overflow: hidden;
       }
@@ -34,7 +34,8 @@
       /* The monolith slab */
       #t1-sec-mono .slab-wrap {
         position: absolute;
-        left: 50%; top: 50%;
+        left: calc(var(--safe-l) + (var(--w) - var(--safe-l) - var(--safe-r)) / 2);
+        top: calc(var(--safe-t) + (var(--h) - var(--safe-t) - var(--safe-b)) / 2);
         transform: translate(-50%, -50%);
         width: 680px; height: 860px;
         z-index: 3;
@@ -84,7 +85,7 @@
       }
       #t1-sec-mono .headline {
         font-family: var(--font-display); font-weight: var(--wt-black);
-        font-size: 72px; line-height: 1.08; letter-spacing: var(--track-tight);
+        font-size: calc(72px * var(--type)); line-height: 1.08; letter-spacing: var(--track-tight);
         color: var(--white); text-shadow: var(--textglow);
         margin-top: 54px;
       }
@@ -122,6 +123,11 @@
         background-size: 200px 200px; mix-blend-mode: overlay; opacity: 0.10;
         pointer-events: none; z-index: 7;
       }
+
+      /* Vertical and square: the slab already fits the safe box; it centers on it (left/top
+         above), and the floor glow follows it in vertical. Headline lines balance. */
+      [data-format="vertical"] #t1-sec-mono .floor-glow { bottom: calc(var(--safe-b) - 200px); }
+      [data-format="vertical"] #t1-sec-mono .headline, [data-format="square"] #t1-sec-mono .headline { text-wrap: balance; }
     </style>
   </head>
   <body>

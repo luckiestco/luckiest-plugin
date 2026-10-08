@@ -14,7 +14,7 @@
     <style>
       html, body { margin: 0; }
       #t1-stat-map {
-        position: absolute; inset: 0; width: 1920px; height: 1080px;
+        position: absolute; inset: 0; width: var(--w); height: var(--h);
         background: var(--paper); color: var(--ink);
         font-family: var(--font-display); overflow: hidden;
       }
@@ -138,7 +138,7 @@
       /* === DIAMOND LOCATION MARKER === */
       #t1-stat-map .marker-wrap {
         position: absolute;
-        left: 1040px; top: 340px;
+        left: calc(var(--safe-l) + 944px); top: calc(var(--safe-t) + 286px);
         z-index: 5;
         transform: translate(-50%, -50%);
       }
@@ -174,16 +174,16 @@
         transform: translateY(-50%);
         background: var(--ink); color: var(--paper);
         font-family: var(--font-label); font-weight: var(--wt-bold);
-        font-size: 22px; letter-spacing: var(--track-wide);
+        font-size: calc(22px * var(--type)); letter-spacing: var(--track-wide);
         text-transform: uppercase; padding: 8px 18px;
         white-space: nowrap;
       }
 
       /* === STAT number === */
       #t1-stat-map .stat {
-        position: absolute; left: 100px; top: 50%;
+        position: absolute; left: calc(var(--safe-l) + 4px); top: calc(var(--safe-t) + (var(--h) - var(--safe-t) - var(--safe-b)) / 2);
         transform: translateY(-56%); z-index: 4;
-        font-weight: var(--wt-black); font-size: 420px;
+        font-weight: var(--wt-black); font-size: calc(420px * var(--type));
         line-height: 0.82; letter-spacing: -0.05em;
         color: var(--ink); font-variant-numeric: tabular-nums;
         text-shadow: 0 8px 28px rgba(23,19,14,0.15);
@@ -191,7 +191,7 @@
 
       /* === KICKER === */
       #t1-stat-map .kicker {
-        position: absolute; left: 130px; top: 116px; z-index: 5;
+        position: absolute; left: calc(var(--safe-l) + 34px); top: calc(var(--safe-t) + 62px); z-index: 5;
         font-family: var(--font-label); font-weight: var(--wt-bold);
         font-size: var(--size-label); letter-spacing: var(--track-wide);
         text-transform: uppercase; color: var(--red);
@@ -199,15 +199,15 @@
 
       /* === LABEL === */
       #t1-stat-map .label {
-        position: absolute; left: 130px; right: 800px; bottom: 160px; z-index: 5;
-        font-weight: var(--wt-thin); font-size: 52px; line-height: 1.08;
+        position: absolute; left: calc(var(--safe-l) + 34px); right: calc(var(--safe-r) + 704px); bottom: calc(var(--safe-b) + 106px); z-index: 5;
+        font-weight: var(--wt-thin); font-size: calc(52px * var(--type)); line-height: 1.08;
         letter-spacing: var(--track-tight); color: var(--ink);
       }
       #t1-stat-map .label em { font-style: italic; font-weight: var(--wt-black); }
 
       /* === SOURCE === */
       #t1-stat-map .source {
-        position: absolute; left: 130px; bottom: 84px; z-index: 5;
+        position: absolute; left: calc(var(--safe-l) + 34px); bottom: calc(var(--safe-b) + 30px); z-index: 5;
         font-family: var(--font-label); font-weight: var(--wt-bold);
         font-size: var(--size-tiny); letter-spacing: var(--track-wide);
         text-transform: uppercase; color: var(--muted);
@@ -223,7 +223,19 @@
         position: absolute; inset: 0; pointer-events: none; z-index: 8;
         background: radial-gradient(120% 120% at 50% 50%, transparent 50%, rgba(23,19,14,0.22) 100%);
       }
+
+      /* Vertical and square: kicker, then the marker and its place tag (rings follow it), the
+         number centered in the safe box, label and source on the safe bottom. */
+      [data-format="vertical"] #t1-stat-map .kicker, [data-format="square"] #t1-stat-map .kicker { left: var(--safe-l); top: var(--safe-t); }
+      [data-format="vertical"] #t1-stat-map .marker-wrap, [data-format="square"] #t1-stat-map .marker-wrap,
+      [data-format="vertical"] #t1-stat-map .map-rings, [data-format="square"] #t1-stat-map .map-rings { left: calc(var(--safe-l) + 60px); top: calc(var(--safe-t) + 150px); }
+      [data-format="vertical"] #t1-stat-map .map-rings-2, [data-format="square"] #t1-stat-map .map-rings-2 { left: calc(var(--safe-l) + 100px); top: calc(var(--safe-t) + 190px); }
+      [data-format="vertical"] #t1-stat-map .stat, [data-format="square"] #t1-stat-map .stat { left: var(--safe-l); }
+      [data-format="vertical"] #t1-stat-map .stat { font-size: calc(320px * var(--type)); }
+      [data-format="vertical"] #t1-stat-map .label, [data-format="square"] #t1-stat-map .label { left: var(--safe-l); right: var(--safe-r); bottom: calc(var(--safe-b) + 50px); }
+      [data-format="vertical"] #t1-stat-map .source, [data-format="square"] #t1-stat-map .source { left: var(--safe-l); bottom: var(--safe-b); }
     </style>
+
   </head>
   <body>
     <div id="t1-stat-map" data-composition-id="t1-stat-map" data-start="0" data-width="1920" data-height="1080">

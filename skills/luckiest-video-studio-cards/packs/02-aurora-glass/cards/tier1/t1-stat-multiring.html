@@ -17,7 +17,7 @@
       html, body { margin: 0; }
 
       #t1-stat-mring {
-        position: absolute; inset: 0; width: 1920px; height: 1080px;
+        position: absolute; inset: 0; width: var(--w); height: var(--h);
         background: var(--canvas); color: var(--text);
         font-family: var(--font-display); overflow: hidden;
       }
@@ -82,7 +82,7 @@
       #t1-stat-mring .stat {
         font-family: var(--font-display);
         font-weight: var(--wt-black);
-        font-size: 100px;
+        font-size: calc(100px * var(--type));
         line-height: 1;
         letter-spacing: var(--track-tight);
         background: linear-gradient(150deg, #ffffff 15%, rgba(var(--accent-rgb), 0.85) 80%);
@@ -136,7 +136,7 @@
       }
 
       #t1-stat-mring .source {
-        position: absolute; left: var(--pad); bottom: 44px;
+        position: absolute; left: var(--safe-l); bottom: var(--safe-b);
         font-family: var(--font-mono); font-size: var(--size-tiny);
         font-weight: var(--wt-reg); letter-spacing: 0.12em;
         text-transform: uppercase; color: var(--text-faint); z-index: 5;
@@ -151,6 +151,13 @@
         background-size: 200px 200px; mix-blend-mode: overlay; opacity: 0.10;
         pointer-events: none; z-index: 7;
       }
+
+      /* Vertical and square: the stack centers inside the safe area; smaller rings, and the legend wraps in vertical. */
+      [data-format="vertical"] #t1-stat-mring .stage, [data-format="square"] #t1-stat-mring .stage { inset: var(--safe-t) var(--safe-r) calc(var(--safe-b) + 40px) var(--safe-l); gap: 36px; padding-bottom: 0; }
+      [data-format="vertical"] #t1-stat-mring .kicker, [data-format="square"] #t1-stat-mring .kicker { text-align: center; }
+      [data-format="vertical"] #t1-stat-mring .rings-container, [data-format="vertical"] #t1-stat-mring .rings-svg { width: 480px; height: 480px; }
+      [data-format="square"] #t1-stat-mring .rings-container, [data-format="square"] #t1-stat-mring .rings-svg { width: 500px; height: 500px; }
+      [data-format="vertical"] #t1-stat-mring .legend { flex-wrap: wrap; justify-content: center; gap: 16px 32px; }
     </style>
   </head>
   <body>

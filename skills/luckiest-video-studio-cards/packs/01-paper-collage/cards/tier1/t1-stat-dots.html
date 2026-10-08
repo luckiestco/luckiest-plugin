@@ -13,7 +13,7 @@
     <style>
       html, body { margin: 0; }
       #t1-stat-dots {
-        position: absolute; inset: 0; width: 1920px; height: 1080px;
+        position: absolute; inset: 0; width: var(--w); height: var(--h);
         background: var(--paper); color: var(--ink);
         font-family: var(--font-display); overflow: hidden;
       }
@@ -32,24 +32,24 @@
         background: radial-gradient(120% 120% at 60% 50%, transparent 54%, rgba(23,19,14,0.18) 100%);
       }
       #t1-stat-dots .kicker {
-        position: absolute; left: 130px; top: 180px;
+        position: absolute; left: calc(var(--safe-l) + 34px); top: calc(var(--safe-t) + 126px);
         font-family: var(--font-label); font-weight: var(--wt-bold);
         font-size: var(--size-label); letter-spacing: var(--track-wide);
         text-transform: uppercase; color: var(--red);
       }
       #t1-stat-dots .stat {
-        position: absolute; left: 130px; top: 50%; transform: translateY(-50%);
-        font-weight: var(--wt-black); font-size: 360px; line-height: 0.86;
+        position: absolute; left: calc(var(--safe-l) + 34px); top: 50%; transform: translateY(-50%);
+        font-weight: var(--wt-black); font-size: calc(360px * var(--type)); line-height: 0.86;
         letter-spacing: -0.05em; color: var(--ink); font-variant-numeric: tabular-nums;
       }
       #t1-stat-dots .label {
-        position: absolute; left: 130px; bottom: 150px; width: 720px;
-        font-weight: var(--wt-thin); font-size: 56px; line-height: 1.06;
+        position: absolute; left: calc(var(--safe-l) + 34px); bottom: calc(var(--safe-b) + 96px); width: 720px;
+        font-weight: var(--wt-thin); font-size: calc(56px * var(--type)); line-height: 1.06;
         letter-spacing: var(--track-tight); color: var(--ink);
       }
       #t1-stat-dots .label em { font-style: italic; font-weight: var(--wt-black); }
       #t1-stat-dots .dots {
-        position: absolute; right: 150px; top: 50%; transform: translateY(-50%);
+        position: absolute; right: calc(var(--safe-r) + 54px); top: 50%; transform: translateY(-50%);
         display: grid; grid-template-columns: repeat(10, 1fr); gap: 22px; width: 660px;
       }
       #t1-stat-dots .dot {
@@ -58,11 +58,30 @@
       }
       #t1-stat-dots .dot.on { background: var(--yellow); box-shadow: inset 0 0 0 4px var(--ink); }
       #t1-stat-dots .source {
-        position: absolute; left: 130px; bottom: 90px;
+        position: absolute; left: calc(var(--safe-l) + 34px); bottom: calc(var(--safe-b) + 36px);
         font-family: var(--font-label); font-weight: var(--wt-bold);
         font-size: var(--size-tiny); letter-spacing: var(--track-wide);
         text-transform: uppercase; color: var(--muted);
       }
+
+      /* Vertical and square: kicker, then the number with the label beside it, the dot grid
+         centered under them, source at the safe bottom. */
+      [data-format="vertical"] #t1-stat-dots, [data-format="square"] #t1-stat-dots {
+        --cx: calc(var(--safe-l) + (var(--w) - var(--safe-l) - var(--safe-r)) / 2);
+      }
+      [data-format="vertical"] #t1-stat-dots .kicker, [data-format="square"] #t1-stat-dots .kicker { left: var(--safe-l); top: var(--safe-t); }
+      [data-format="vertical"] #t1-stat-dots .stat { left: var(--safe-l); top: calc(var(--safe-t) + 190px); font-size: calc(250px * var(--type)); }
+      [data-format="square"] #t1-stat-dots .stat { left: var(--safe-l); top: calc(var(--safe-t) + 180px); font-size: 280px; }
+      [data-format="vertical"] #t1-stat-dots .label, [data-format="square"] #t1-stat-dots .label {
+        left: calc(var(--safe-l) + 340px); width: auto; right: var(--safe-r); bottom: auto; top: calc(var(--safe-t) + 70px);
+      }
+      [data-format="vertical"] #t1-stat-dots .label { font-size: calc(48px * var(--type)); }
+      [data-format="vertical"] #t1-stat-dots .dots, [data-format="square"] #t1-stat-dots .dots {
+        right: auto; left: calc(var(--cx) - 270px); top: calc(var(--safe-t) + 380px); transform: none; width: 540px; gap: 18px;
+      }
+      [data-format="square"] #t1-stat-dots .dots { top: calc(var(--safe-t) + 350px); }
+      [data-format="vertical"] #t1-stat-dots .dot, [data-format="square"] #t1-stat-dots .dot { width: 38px; height: 38px; }
+      [data-format="vertical"] #t1-stat-dots .source, [data-format="square"] #t1-stat-dots .source { left: var(--safe-l); bottom: var(--safe-b); }
     </style>
   </head>
   <body>

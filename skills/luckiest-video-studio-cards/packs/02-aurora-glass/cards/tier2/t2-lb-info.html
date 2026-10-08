@@ -13,7 +13,7 @@
       html, body { margin: 0; background: transparent; }
 
       #t2-lb-info {
-        position: absolute; inset: 0; width: 1920px; height: 1080px;
+        position: absolute; inset: 0; width: var(--w); height: var(--h);
         background: transparent; overflow: hidden;
         font-family: var(--font-display);
       }
@@ -35,7 +35,7 @@
       /* Wrapper anchored right */
       #t2-lb-info .wrapper {
         position: absolute;
-        right: 120px; top: 390px;
+        right: calc(var(--safe-r) + 24px); top: calc(var(--safe-t) + 336px);
         display: flex;
         flex-direction: column;
         align-items: flex-start;
@@ -72,7 +72,7 @@
         font-family: var(--font-display);
         font-style: italic;
         font-weight: var(--wt-black);
-        font-size: 28px;
+        font-size: calc(28px * var(--type));
         color: var(--accent);
         text-shadow: var(--textglow-accent);
         line-height: 1;
@@ -82,7 +82,7 @@
       #t2-lb-info .term {
         font-family: var(--font-display);
         font-weight: var(--wt-bold);
-        font-size: 34px;
+        font-size: calc(34px * var(--type));
         letter-spacing: var(--track-snug);
         color: var(--white);
         text-shadow: var(--textglow);
@@ -119,10 +119,19 @@
       #t2-lb-info .detail {
         font-family: var(--font-body);
         font-weight: var(--wt-reg);
-        font-size: 21px;
+        font-size: calc(21px * var(--type));
         line-height: 1.50;
         color: var(--text-dim);
       }
+      /* Vertical and square: card moves to the bottom-left of the safe area, glow follows, slots wrap. */
+      [data-format="vertical"] #t2-lb-info .wrapper, [data-format="square"] #t2-lb-info .wrapper {
+        top: auto; right: auto; left: var(--safe-l); bottom: var(--safe-b);
+        max-width: min(480px, calc(var(--w) - var(--safe-l) - var(--safe-r)));
+      }
+      [data-format="vertical"] #t2-lb-info .local-glow, [data-format="square"] #t2-lb-info .local-glow {
+        top: auto; right: auto; left: calc(var(--safe-l) - 40px); bottom: calc(var(--safe-b) - 40px);
+      }
+      [data-format="vertical"] #t2-lb-info [data-slot], [data-format="square"] #t2-lb-info [data-slot] { white-space: normal; }
     </style>
   </head>
   <body>

@@ -13,13 +13,13 @@
       html, body { margin: 0; background: transparent; }
 
       #t2-lb-status {
-        position: absolute; inset: 0; width: 1920px; height: 1080px;
+        position: absolute; inset: 0; width: var(--w); height: var(--h);
         background: transparent; overflow: hidden;
       }
 
       /* Localized glow - left */
       #t2-lb-status .local-glow {
-        position: absolute; left: 80px; top: 460px;
+        position: absolute; left: calc(var(--safe-l) - 16px); top: calc(var(--safe-t) + 406px);
         width: 500px; height: 280px; border-radius: 50%;
         background: radial-gradient(ellipse at 40% 50%,
           rgba(var(--accent-rgb), 0.18) 0%,
@@ -31,7 +31,7 @@
 
       /* Wrapper anchored left */
       #t2-lb-status .wrapper {
-        position: absolute; left: 120px; top: 490px;
+        position: absolute; left: calc(var(--safe-l) + 24px); top: calc(var(--safe-t) + 436px);
         display: flex; flex-direction: column; align-items: flex-start; gap: 14px;
       }
 
@@ -77,7 +77,7 @@
 
       #t2-lb-status .badge-text {
         font-family: var(--font-mono); font-weight: var(--wt-bold);
-        font-size: 22px; letter-spacing: var(--track-wide);
+        font-size: calc(22px * var(--type)); letter-spacing: var(--track-wide);
         text-transform: uppercase;
         color: var(--accent); text-shadow: var(--textglow-accent);
       }
@@ -103,15 +103,24 @@
 
       #t2-lb-status .term {
         font-family: var(--font-display); font-weight: var(--wt-bold);
-        font-size: 26px; letter-spacing: var(--track-snug);
+        font-size: calc(26px * var(--type)); letter-spacing: var(--track-snug);
         color: var(--white); text-shadow: var(--textglow);
         margin-bottom: 4px;
       }
 
       #t2-lb-status .detail {
         font-family: var(--font-body); font-weight: var(--wt-reg);
-        font-size: 20px; line-height: 1.45; color: var(--text-dim);
+        font-size: calc(20px * var(--type)); line-height: 1.45; color: var(--text-dim);
       }
+      /* Vertical and square: the card drops to the bottom of the safe area, left aligned, its glow following. */
+      [data-format="vertical"] #t2-lb-status .wrapper, [data-format="square"] #t2-lb-status .wrapper {
+        top: auto; right: auto; left: var(--safe-l); bottom: var(--safe-b); width: auto;
+        max-width: calc(var(--w) - var(--safe-l) - var(--safe-r));
+      }
+      [data-format="vertical"] #t2-lb-status .local-glow, [data-format="square"] #t2-lb-status .local-glow {
+        top: auto; right: auto; left: calc(var(--safe-l) - 20px); bottom: calc(var(--safe-b) - 50px);
+      }
+      [data-format="vertical"] #t2-lb-status [data-slot], [data-format="square"] #t2-lb-status [data-slot] { white-space: normal; }
     </style>
   </head>
   <body>

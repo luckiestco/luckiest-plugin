@@ -16,7 +16,7 @@
       html, body { margin: 0; }
 
       #t1-stat-delta {
-        position: absolute; inset: 0; width: 1920px; height: 1080px;
+        position: absolute; inset: 0; width: var(--w); height: var(--h);
         background: var(--canvas); color: var(--text);
         font-family: var(--font-display); overflow: hidden;
       }
@@ -88,7 +88,7 @@
       #t1-stat-delta .stat {
         font-family: var(--font-display);
         font-weight: var(--wt-black);
-        font-size: 220px;
+        font-size: calc(220px * var(--type));
         line-height: 1;
         letter-spacing: var(--track-tight);
       }
@@ -110,7 +110,7 @@
       /* Trend label row below delta block */
       #t1-stat-delta .trend {
         font-family: var(--font-mono);
-        font-size: 28px;
+        font-size: calc(28px * var(--type));
         font-weight: var(--wt-bold);
         letter-spacing: 0.12em;
         text-transform: uppercase;
@@ -137,7 +137,7 @@
       }
 
       #t1-stat-delta .source {
-        position: absolute; left: var(--pad); bottom: 44px;
+        position: absolute; left: var(--safe-l); bottom: var(--safe-b);
         font-family: var(--font-mono); font-size: var(--size-tiny);
         font-weight: var(--wt-reg); letter-spacing: 0.12em;
         text-transform: uppercase; color: var(--text-faint); z-index: 5;
@@ -152,6 +152,15 @@
         background-size: 200px 200px; mix-blend-mode: overlay; opacity: 0.10;
         pointer-events: none; z-index: 7;
       }
+
+      /* Vertical and square: the stack and its halo center inside the safe area; vertical numeral sized to the width. */
+      [data-format="vertical"] #t1-stat-delta .content, [data-format="square"] #t1-stat-delta .content { inset: var(--safe-t) var(--safe-r) calc(var(--safe-b) + 40px) var(--safe-l); padding-bottom: 0; }
+      [data-format="vertical"] #t1-stat-delta .kicker, [data-format="square"] #t1-stat-delta .kicker { text-align: center; }
+      [data-format="vertical"] #t1-stat-delta .halo, [data-format="square"] #t1-stat-delta .halo { top: calc(var(--safe-t) + (var(--h) - var(--safe-t) - var(--safe-b)) / 2); }
+      [data-format="vertical"] #t1-stat-delta .halo { width: 760px; height: 760px; }
+      [data-format="vertical"] #t1-stat-delta .delta-block { gap: 24px; }
+      [data-format="vertical"] #t1-stat-delta .caret-svg { width: 96px; height: 96px; }
+      [data-format="vertical"] #t1-stat-delta .stat { font-size: calc(170px * var(--type)); }
     </style>
   </head>
   <body>

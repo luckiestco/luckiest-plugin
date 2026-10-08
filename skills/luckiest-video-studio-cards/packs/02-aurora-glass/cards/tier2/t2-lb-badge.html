@@ -13,7 +13,7 @@
       html, body { margin: 0; background: transparent; }
 
       #t2-lb-badge {
-        position: absolute; inset: 0; width: 1920px; height: 1080px;
+        position: absolute; inset: 0; width: var(--w); height: var(--h);
         background: transparent; overflow: hidden;
       }
 
@@ -31,7 +31,7 @@
 
       /* Outer wrapper - left anchored */
       #t2-lb-badge .wrapper {
-        position: absolute; left: 80px; top: 380px;
+        position: absolute; left: var(--safe-l); top: calc(var(--safe-t) + 326px);
         display: flex; flex-direction: column; gap: 14px;
       }
 
@@ -84,7 +84,7 @@
       /* Term text in chip */
       #t2-lb-badge .term {
         font-family: var(--font-display); font-weight: var(--wt-black);
-        font-size: 32px; letter-spacing: var(--track-tight);
+        font-size: calc(32px * var(--type)); letter-spacing: var(--track-tight);
         color: var(--white);
         text-shadow: var(--textglow);
         white-space: nowrap;
@@ -104,9 +104,18 @@
 
       #t2-lb-badge .detail {
         font-family: var(--font-body); font-weight: var(--wt-reg);
-        font-size: 23px; line-height: 1.45;
+        font-size: calc(23px * var(--type)); line-height: 1.45;
         color: var(--text-dim);
       }
+      /* Vertical and square: card moves to the bottom-left of the safe area, glow follows, slots wrap. */
+      [data-format="vertical"] #t2-lb-badge .wrapper, [data-format="square"] #t2-lb-badge .wrapper {
+        top: auto; right: auto; left: var(--safe-l); bottom: var(--safe-b);
+        max-width: calc(var(--w) - var(--safe-l) - var(--safe-r));
+      }
+      [data-format="vertical"] #t2-lb-badge .local-glow, [data-format="square"] #t2-lb-badge .local-glow {
+        top: auto; right: auto; left: calc(var(--safe-l) - 40px); bottom: calc(var(--safe-b) - 40px);
+      }
+      [data-format="vertical"] #t2-lb-badge [data-slot], [data-format="square"] #t2-lb-badge [data-slot] { white-space: normal; }
     </style>
   </head>
   <body>

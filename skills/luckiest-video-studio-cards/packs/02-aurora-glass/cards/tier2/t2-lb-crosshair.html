@@ -14,7 +14,7 @@
       html, body { margin: 0; background: transparent; }
 
       #t2-lb-cross {
-        position: absolute; inset: 0; width: 1920px; height: 1080px;
+        position: absolute; inset: 0; width: var(--w); height: var(--h);
         background: transparent; overflow: hidden;
         font-family: var(--font-display);
       }
@@ -79,7 +79,7 @@
 
       /* Readout chip - floats top-left of the crosshair */
       #t2-lb-cross .readout-chip {
-        position: absolute; right: 430px; top: 348px;
+        position: absolute; right: calc(var(--safe-r) + 334px); top: calc(var(--safe-t) + 294px);
         padding: 6px 16px;
         background: var(--glass-bg-dark);
         backdrop-filter: var(--glass-blur);
@@ -95,20 +95,20 @@
 
       #t2-lb-cross .chip-label {
         font-family: var(--font-mono); font-weight: var(--wt-reg);
-        font-size: 13px; letter-spacing: var(--track-wide);
+        font-size: calc(13px * var(--type)); letter-spacing: var(--track-wide);
         color: var(--accent); text-transform: uppercase;
         text-shadow: var(--textglow-accent);
       }
 
       #t2-lb-cross .chip-value {
         font-family: var(--font-display); font-weight: var(--wt-bold);
-        font-size: 24px; letter-spacing: var(--track-snug);
+        font-size: calc(24px * var(--type)); letter-spacing: var(--track-snug);
         color: var(--white); text-shadow: var(--textglow);
       }
 
       /* Detail strip below crosshair */
       #t2-lb-cross .detail-wrap {
-        position: absolute; right: 130px; top: 592px;
+        position: absolute; right: calc(var(--safe-r) + 34px); top: calc(var(--safe-t) + 538px);
         padding: 8px 18px 8px 16px;
         background: var(--glass-bg-dark);
         backdrop-filter: var(--glass-blur);
@@ -121,9 +121,21 @@
 
       #t2-lb-cross .detail-text {
         font-family: var(--font-body); font-weight: var(--wt-reg);
-        font-size: 22px; line-height: 1.45;
+        font-size: calc(22px * var(--type)); line-height: 1.45;
         color: var(--text-dim);
       }
+      /* Vertical and square: reticle at the left of the safe area with the readout chip to its right,
+         detail pinned to the safe bottom beneath them. */
+      [data-format="vertical"] #t2-lb-cross .xhair-svg, [data-format="square"] #t2-lb-cross .xhair-svg { right: auto; left: var(--safe-l); top: calc(var(--h) - var(--safe-b) - 400px); }
+      [data-format="vertical"] #t2-lb-cross .readout-chip, [data-format="square"] #t2-lb-cross .readout-chip { right: auto; left: calc(var(--safe-l) + 256px); top: calc(var(--h) - var(--safe-b) - 302px); }
+      [data-format="vertical"] #t2-lb-cross .detail-wrap, [data-format="square"] #t2-lb-cross .detail-wrap {
+        top: auto; right: auto; left: var(--safe-l); bottom: var(--safe-b);
+        max-width: min(460px, calc(var(--w) - var(--safe-l) - var(--safe-r) - 34px));
+      }
+      [data-format="vertical"] #t2-lb-cross .local-glow, [data-format="square"] #t2-lb-cross .local-glow {
+        top: auto; right: auto; left: calc(var(--safe-l) - 40px); bottom: calc(var(--safe-b) + 140px);
+      }
+      [data-format="vertical"] #t2-lb-cross [data-slot], [data-format="square"] #t2-lb-cross [data-slot] { white-space: normal; }
     </style>
   </head>
   <body>

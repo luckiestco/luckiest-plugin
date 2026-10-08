@@ -13,6 +13,17 @@ projects. Upstream license texts are kept beside this file.
 | **HyperFrames student kit** by Nate Herk and contributors (`hyperframes-student-kit`) | MIT for the original kit; the Student Kit Use Permission for its pipeline skills, style library, templates, and editing tools | Rewritten rules and ported scripts in the `luckiest-video-studio-cuts`, `-talk`, and `-reel` sub-skills | `LICENSE-student-kit`, `LICENSE-student-kit-pipeline` |
 | **Motion OS** by Jason Lee (`jasonlee-breadcrumb/motion-os`) | MIT | The review player in the `luckiest-video-studio-review` sub-skill (`editor/index.html`, `editor/serve.mjs`) and the `reel.json` format; see that sub-skill's `ATTRIBUTION.md` | `luckiest-video-studio-review/LICENSE-motion-os` |
 
+Studied, not copied:
+
+- **Motion Studio** (a free Claude Code skill bundle shared as a zip). Its practices
+  shaped the anchor-based sound timing, the `avsync` gate, `scripts/sfx-cues.mjs`,
+  `references/lessons.md`, and the art director's ban on earlier runs' looks
+  (1.10.0). The bundle licenses only the third-party tools it downloads, not its own
+  scripts or docs, so nothing from it is bundled; all code and text here is new.
+- The 0xMovez course "How to build motion design studio with Opus 5.5" (x.com/0xMovez/status/2104216919033192746) and the PD House motion guide (pdhouse.notion.site/motion-guide). Their practices shaped music placement and loudness,
+  the `facts` and `loop` gates, state-list scenes, springs in the motion sub-skill,
+  and identity locks in the recreate sub-skill. Articles only; nothing copied.
+
 Used at runtime, not bundled:
 
 - **HyperFrames** by HeyGen (`heygen-com/hyperframes`), Apache-2.0. Renders motion

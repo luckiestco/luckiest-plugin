@@ -12,7 +12,7 @@
     <style>
       html, body { margin: 0; }
       #t1-sec-ticker {
-        position: absolute; inset: 0; width: 1920px; height: 1080px;
+        position: absolute; inset: 0; width: var(--w); height: var(--h);
         background: var(--paper); color: var(--ink);
         font-family: var(--font-display); overflow: hidden;
       }
@@ -27,34 +27,51 @@
         background-size: 180px 180px; mix-blend-mode: multiply; opacity: 0.4; pointer-events: none; z-index: 5;
       }
       #t1-sec-ticker .kicker {
-        position: absolute; left: 150px; top: 250px;
+        position: absolute; left: calc(var(--safe-l) + 54px); top: calc(var(--safe-t) + 196px);
         font-family: var(--font-label); font-weight: var(--wt-bold);
         font-size: var(--size-label); letter-spacing: var(--track-wide);
         text-transform: uppercase; color: var(--muted);
       }
       #t1-sec-ticker .headline {
-        position: absolute; left: 150px; top: 320px; width: 1500px;
-        font-weight: var(--wt-black); font-size: 142px; line-height: 0.95;
+        position: absolute; left: calc(var(--safe-l) + 54px); top: calc(var(--safe-t) + 266px); width: 1500px;
+        font-weight: var(--wt-black); font-size: calc(142px * var(--type)); line-height: 0.95;
         letter-spacing: var(--track-tight); color: var(--ink);
       }
       #t1-sec-ticker .headline em { font-style: normal; background: var(--yellow); padding: 0 14px; }
       /* lower band */
       #t1-sec-ticker .band {
-        position: absolute; left: 0; right: 0; bottom: 90px; height: 110px;
+        position: absolute; left: 0; right: 0; bottom: calc(var(--safe-b) + 36px); height: 110px;
         background: var(--yellow); display: flex; align-items: center; overflow: hidden; z-index: 3;
+        padding: 0 var(--safe-r) 0 var(--safe-l); box-sizing: border-box;
       }
       #t1-sec-ticker .band .redrule { position: absolute; left: 0; right: 0; top: -10px; height: 10px; background: var(--red); }
       #t1-sec-ticker .tag {
         flex: none; height: 110px; display: flex; align-items: center; padding: 0 34px;
         background: var(--red); color: var(--paper);
-        font-family: var(--font-label); font-weight: var(--wt-black); font-size: 40px;
+        font-family: var(--font-label); font-weight: var(--wt-black); font-size: calc(40px * var(--type));
         letter-spacing: 0.08em; text-transform: uppercase; z-index: 2;
       }
+      /* the crawl runs in a window inside the safe insets: one wrapped line wider than the window
+         (by the crawl distance) so the text never runs past the frame edge */
+      #t1-sec-ticker .tickwin { flex: 1; min-width: 0; height: 100%; display: flex; align-items: center; overflow: hidden; }
       #t1-sec-ticker .ticker {
-        white-space: nowrap; padding-left: 40px;
-        font-family: var(--font-label); font-weight: var(--wt-bold); font-size: 44px;
+        flex: none; width: calc(100% + 380px); height: 1.25em; line-height: 1.25em; overflow: hidden; padding-left: 40px;
+        font-family: var(--font-label); font-weight: var(--wt-bold); font-size: calc(44px * var(--type));
         letter-spacing: 0.02em; text-transform: uppercase; color: var(--ink);
       }
+
+      /* Vertical and square: kicker and headline from the top of the safe area, the band at the
+         safe bottom. */
+      [data-format="vertical"] #t1-sec-ticker .kicker, [data-format="square"] #t1-sec-ticker .kicker { left: var(--safe-l); top: calc(var(--safe-t) + 40px); }
+      [data-format="vertical"] #t1-sec-ticker .headline, [data-format="square"] #t1-sec-ticker .headline {
+        left: var(--safe-l); top: calc(var(--safe-t) + 110px); width: calc(var(--w) - var(--safe-l) - var(--safe-r));
+      }
+      [data-format="vertical"] #t1-sec-ticker .kicker { top: calc(var(--safe-t) + 200px); }
+      [data-format="vertical"] #t1-sec-ticker .headline { top: calc(var(--safe-t) + 270px); font-size: calc(112px * var(--type)); }
+      [data-format="square"] #t1-sec-ticker .headline { font-size: 120px; }
+      [data-format="vertical"] #t1-sec-ticker .band, [data-format="square"] #t1-sec-ticker .band { bottom: var(--safe-b); }
+      [data-format="vertical"] #t1-sec-ticker .band, [data-format="vertical"] #t1-sec-ticker .tag { height: 124px; }
+      [data-format="square"] #t1-sec-ticker .ticker { padding-left: 60px; }
     </style>
   </head>
   <body>
@@ -65,7 +82,7 @@
       <div class="band">
         <div class="redrule"></div>
         <div class="tag" data-slot="tag">BREAKING</div>
-        <div class="ticker" data-slot="ticker">What the data really shows  ·  Who knew, and when  ·  The fallout begins  ·  Full story inside</div>
+        <div class="tickwin"><div class="ticker" data-slot="ticker">What the data really shows  ·  Who knew, and when  ·  The fallout begins  ·  Full story inside</div></div>
       </div>
       <div class="grain"></div>
     </div>

@@ -737,7 +737,7 @@
           "name": "stat",
           "type": "text",
           "maxChars": 4,
-          "note": "the big numeral, bleeds off-edge"
+          "note": "the big numeral, on the safe corner"
         },
         {
           "name": "unit",

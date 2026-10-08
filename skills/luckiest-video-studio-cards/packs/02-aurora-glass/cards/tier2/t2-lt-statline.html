@@ -15,7 +15,9 @@
       html, body { margin: 0; background: transparent; }
 
       #t2-lt-sline {
-        position: absolute; inset: 0; width: 1920px; height: 1080px;
+        position: absolute; inset: 0; width: var(--w); height: var(--h);
+        /* the lower-third group's anchor: left / bottom of the main card */
+        --lt-x: var(--safe-l); --lt-y: calc(var(--safe-b) + 76px);
         background: transparent; overflow: hidden;
         font-family: var(--font-display);
       }
@@ -23,7 +25,7 @@
       /* Localized bloom */
       #t2-lt-sline .local-bloom {
         position: absolute;
-        left: 45px; bottom: 92px;
+        left: calc(var(--lt-x) - 35px); bottom: calc(var(--lt-y) - 38px);
         width: 640px; height: 200px;
         border-radius: 50%;
         background: radial-gradient(ellipse at 45% 78%,
@@ -38,7 +40,7 @@
       /* Main row */
       #t2-lt-sline .row {
         position: absolute;
-        left: 80px; bottom: 130px;
+        left: var(--lt-x); bottom: var(--lt-y);
         display: flex;
         align-items: center;
         gap: 0;
@@ -71,7 +73,7 @@
       #t2-lt-sline .name {
         font-family: var(--font-display);
         font-weight: var(--wt-bold);
-        font-size: 36px;
+        font-size: calc(36px * var(--type));
         letter-spacing: var(--track-snug);
         color: var(--white);
         text-shadow: var(--textglow);
@@ -123,7 +125,7 @@
       #t2-lt-sline .stat-val {
         font-family: var(--font-mono);
         font-weight: var(--wt-bold);
-        font-size: 38px;
+        font-size: calc(38px * var(--type));
         color: var(--accent);
         text-shadow: var(--textglow-accent);
         letter-spacing: -0.02em;
@@ -139,6 +141,12 @@
         flex-shrink: 0;
         align-self: center;
       }
+      /* Vertical and square: the group sits at the bottom-left of the safe area and slots wrap. */
+      [data-format="vertical"] #t2-lt-sline, [data-format="square"] #t2-lt-sline { --lt-y: var(--safe-b); }
+      [data-format="vertical"] #t2-lt-sline .row, [data-format="square"] #t2-lt-sline .row {
+        top: auto; width: auto; max-width: calc(var(--w) - var(--safe-l) - var(--safe-r));
+      }
+      [data-format="vertical"] #t2-lt-sline [data-slot], [data-format="square"] #t2-lt-sline [data-slot] { white-space: normal; }
     </style>
   </head>
   <body>

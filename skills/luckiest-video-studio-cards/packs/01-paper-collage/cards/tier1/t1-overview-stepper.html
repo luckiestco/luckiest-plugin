@@ -14,7 +14,7 @@
     <style>
       html, body { margin: 0; }
       #t1-ov-step {
-        position: absolute; inset: 0; width: 1920px; height: 1080px;
+        position: absolute; inset: 0; width: var(--w); height: var(--h);
         background: var(--paper); color: var(--ink);
         font-family: var(--font-display); overflow: hidden;
       }
@@ -35,7 +35,7 @@
 
       /* marker title */
       #t1-ov-step .title {
-        position: absolute; top: 88px; left: 50%; transform: translateX(-50%) skewX(var(--marker-skew));
+        position: absolute; top: calc(var(--safe-t) + 34px); left: 50%; transform: translateX(-50%) skewX(var(--marker-skew));
         background: var(--yellow); padding: 8px 28px; z-index: 3;
         font-weight: var(--wt-black); font-size: var(--size-title); letter-spacing: var(--track-tight);
         text-transform: uppercase; white-space: nowrap;
@@ -43,7 +43,7 @@
 
       /* intro */
       #t1-ov-step .intro {
-        position: absolute; top: 230px; left: 50%; transform: translateX(-50%);
+        position: absolute; top: calc(var(--safe-t) + 176px); left: 50%; transform: translateX(-50%);
         width: 1100px; text-align: center; z-index: 3;
         font-family: var(--font-label); font-weight: var(--wt-reg);
         font-size: var(--size-body); line-height: 1.4; color: var(--muted);
@@ -51,7 +51,7 @@
 
       /* stepper track */
       #t1-ov-step .track-wrap {
-        position: absolute; left: 160px; right: 160px; top: 430px; height: 16px; z-index: 2;
+        position: absolute; left: calc(var(--safe-l) + 64px); right: calc(var(--safe-r) + 64px); top: 430px; height: 16px; z-index: 2;
       }
       #t1-ov-step .track-bg {
         position: absolute; inset: 0;
@@ -66,7 +66,7 @@
 
       /* step nodes */
       #t1-ov-step .nodes {
-        position: absolute; left: 160px; right: 160px; top: 340px; z-index: 3;
+        position: absolute; left: calc(var(--safe-l) + 64px); right: calc(var(--safe-r) + 64px); top: 340px; z-index: 3;
         display: flex; justify-content: space-between; align-items: center;
       }
       #t1-ov-step .step {
@@ -76,7 +76,7 @@
         width: 120px; height: 120px; border-radius: 50%;
         background: var(--ink); color: var(--paper);
         display: flex; align-items: center; justify-content: center;
-        font-weight: var(--wt-black); font-size: 64px; font-variant-numeric: tabular-nums;
+        font-weight: var(--wt-black); font-size: calc(64px * var(--type)); font-variant-numeric: tabular-nums;
         border: 6px solid var(--ink); box-shadow: 6px 8px 0 rgba(23,19,14,0.18);
       }
       #t1-ov-step .step-label {
@@ -95,11 +95,46 @@
 
       /* source */
       #t1-ov-step .source {
-        position: absolute; left: 160px; bottom: 60px; z-index: 4;
+        position: absolute; left: calc(var(--safe-l) + 64px); bottom: calc(var(--safe-b) + 6px); z-index: 4;
         font-family: var(--font-label); font-weight: var(--wt-bold);
         font-size: var(--size-tiny); letter-spacing: var(--track-wide);
         text-transform: uppercase; color: var(--muted);
       }
+
+      /* Vertical: the four steps stack as rows (circle left, label right) with the track running
+         down through the circles; the horizontal fill segments are hidden. */
+      [data-format="vertical"] #t1-ov-step .title, [data-format="square"] #t1-ov-step .title,
+      [data-format="vertical"] #t1-ov-step .intro, [data-format="square"] #t1-ov-step .intro {
+        left: calc(var(--safe-l) + (var(--w) - var(--safe-l) - var(--safe-r)) / 2);
+      }
+      [data-format="vertical"] #t1-ov-step .title, [data-format="square"] #t1-ov-step .title {
+        top: var(--safe-t); width: max-content; max-width: calc(var(--w) - var(--safe-l) - var(--safe-r) - 56px);
+        white-space: normal; text-align: center;
+      }
+      [data-format="vertical"] #t1-ov-step .title { font-size: calc(64px * var(--type)); }
+      [data-format="vertical"] #t1-ov-step .intro, [data-format="square"] #t1-ov-step .intro { top: calc(var(--safe-t) + 116px); width: calc(var(--w) - var(--safe-l) - var(--safe-r)); }
+      [data-format="square"] #t1-ov-step .intro { top: calc(var(--safe-t) + 150px); }
+      [data-format="vertical"] #t1-ov-step .nodes {
+        left: var(--safe-l); right: var(--safe-r); top: calc(var(--safe-t) + 270px);
+        flex-direction: column; align-items: stretch; gap: 36px;
+      }
+      [data-format="vertical"] #t1-ov-step .step { flex-direction: row; width: auto; }
+      [data-format="vertical"] #t1-ov-step .step-circle { flex: 0 0 auto; }
+      [data-format="vertical"] #t1-ov-step .step-dot { display: none; }
+      [data-format="vertical"] #t1-ov-step .step-label {
+        margin: 0 0 0 40px; text-align: left; max-width: none; font-size: calc(30px * var(--type));
+      }
+      [data-format="vertical"] #t1-ov-step .track-wrap {
+        left: calc(var(--safe-l) + 60px - 8px); right: auto; width: 16px;
+        top: calc(var(--safe-t) + 270px + 66px - 8px); height: 504px;
+      }
+      [data-format="vertical"] #t1-ov-step .seg { display: none; }
+      [data-format="vertical"] #t1-ov-step .source, [data-format="square"] #t1-ov-step .source { left: var(--safe-l); bottom: var(--safe-b); }
+      /* Square: same horizontal stepper with narrower steps, fitted to the safe width. */
+      [data-format="square"] #t1-ov-step .nodes { left: var(--safe-l); right: var(--safe-r); top: calc(var(--safe-t) + 290px); align-items: flex-start; }
+      [data-format="square"] #t1-ov-step .track-wrap { left: calc(var(--safe-l) + 110px); right: calc(var(--safe-r) + 110px); top: calc(var(--safe-t) + 290px + 66px - 8px); }
+      [data-format="square"] #t1-ov-step .step { width: 220px; }
+      [data-format="square"] #t1-ov-step .step-label { max-width: 210px; }
     </style>
   </head>
   <body>

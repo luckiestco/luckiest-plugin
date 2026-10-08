@@ -11,7 +11,7 @@
     <style>
       html, body { margin: 0; }
       #t1-sec-stamp {
-        position: absolute; inset: 0; width: 1920px; height: 1080px;
+        position: absolute; inset: 0; width: var(--w); height: var(--h);
         background: var(--paper); color: var(--ink);
         font-family: var(--font-display); overflow: hidden;
         display: flex; align-items: center; justify-content: center;
@@ -41,19 +41,28 @@
       #t1-sec-stamp .stamp::before { top: 14px; }
       #t1-sec-stamp .stamp::after { bottom: 14px; }
       #t1-sec-stamp .kick {
-        font-family: var(--font-label); font-weight: var(--wt-black); font-size: 30px;
+        font-family: var(--font-label); font-weight: var(--wt-black); font-size: calc(30px * var(--type));
         letter-spacing: 0.3em; text-transform: uppercase; margin-bottom: 10px;
       }
       #t1-sec-stamp .title {
-        font-family: var(--font-label); font-weight: var(--wt-black); font-size: 150px;
+        font-family: var(--font-label); font-weight: var(--wt-black); font-size: calc(150px * var(--type));
         letter-spacing: 0.02em; text-transform: uppercase; line-height: 0.92;
       }
       #t1-sec-stamp .date {
-        position: absolute; z-index: 3; right: 320px; bottom: 250px;
+        position: absolute; z-index: 3; right: calc(var(--safe-r) + 224px); bottom: calc(var(--safe-b) + 196px);
         border: 5px solid var(--ink); color: var(--ink); padding: 8px 18px; opacity: 0.78;
-        font-family: var(--font-label); font-weight: var(--wt-black); font-size: 34px;
+        font-family: var(--font-label); font-weight: var(--wt-black); font-size: calc(34px * var(--type));
         letter-spacing: 0.12em; text-transform: uppercase; transform: rotate(5deg);
       }
+
+      /* Vertical and square: the stamp is centered on the safe box (not the frame) at a size that
+         fits its width; the date stamp sits under it on the right. */
+      [data-format="vertical"] #t1-sec-stamp .stamp { top: calc((var(--safe-t) - var(--safe-b)) / 2); left: calc((var(--safe-l) - var(--safe-r)) / 2); padding: 26px 44px; }
+      [data-format="vertical"] #t1-sec-stamp .title { font-size: calc(80px * var(--type)); }
+      [data-format="square"] #t1-sec-stamp .stamp { padding: 26px 48px; }
+      [data-format="square"] #t1-sec-stamp .title { font-size: 112px; }
+      [data-format="vertical"] #t1-sec-stamp .date { right: calc(var(--safe-r) + 20px); bottom: calc(var(--safe-b) + 150px); }
+      [data-format="square"] #t1-sec-stamp .date { right: calc(var(--safe-r) + 40px); bottom: calc(var(--safe-b) + 120px); }
     </style>
   </head>
   <body>

@@ -12,7 +12,7 @@
     <style>
       html, body { margin: 0; }
       #t1-sec-crt {
-        position: absolute; inset: 0; width: 1920px; height: 1080px;
+        position: absolute; inset: 0; width: var(--w); height: var(--h);
         background: #120f0a; color: #efe7d4;   /* dark screen register (not pure black) */
         font-family: var(--font-display); overflow: hidden;
       }
@@ -42,16 +42,16 @@
       }
       #t1-sec-crt .wordmark {
         font-family: var(--font-display); font-style: italic; font-weight: var(--wt-black);
-        font-size: 44px; color: var(--yellow); margin-bottom: 16px;
+        font-size: calc(44px * var(--type)); color: var(--yellow); margin-bottom: 16px;
       }
       #t1-sec-crt .title {
-        font-weight: var(--wt-black); font-size: 140px; line-height: 0.95;
+        font-weight: var(--wt-black); font-size: calc(140px * var(--type)); line-height: 0.95;
         letter-spacing: var(--track-tight); color: #f3ecda; max-width: 980px;
         text-shadow: -3px 0 rgba(226,59,46,0.75), 3px 0 rgba(80,170,224,0.75);
       }
       #t1-sec-crt .label {
         display: inline-block; margin-top: 30px; background: var(--yellow); color: #120f0a; padding: 8px 22px;
-        font-family: var(--font-label); font-weight: var(--wt-black); font-size: 30px;
+        font-family: var(--font-label); font-weight: var(--wt-black); font-size: calc(30px * var(--type));
         letter-spacing: 0.1em; text-transform: uppercase; box-shadow: 0 0 28px rgba(79, 140, 255,0.55);
       }
       /* scanlines + flicker + power-on */
@@ -68,6 +68,17 @@
         background: #fff; z-index: 8; box-shadow: 0 0 40px #fff;
       }
       #t1-sec-crt .content { position: relative; z-index: 4; width: 100%; }
+
+      /* Vertical and square: the TV set fills the safe area (sits high in vertical), title smaller
+         so the longest word fits the screen. */
+      [data-format="vertical"] #t1-sec-crt .tv, [data-format="square"] #t1-sec-crt .tv {
+        left: var(--safe-l); top: var(--safe-t); margin: 0;
+        width: calc(var(--w) - var(--safe-l) - var(--safe-r)); height: calc(var(--h) - var(--safe-t) - var(--safe-b));
+      }
+      [data-format="vertical"] #t1-sec-crt .tv { padding: 44px; border-radius: 56px; }
+      [data-format="square"] #t1-sec-crt .tv { padding: 56px; border-radius: 60px; }
+      [data-format="vertical"] #t1-sec-crt .title { font-size: calc(86px * var(--type)); max-width: 640px; margin: 0 auto; }
+      [data-format="square"] #t1-sec-crt .title { font-size: 112px; max-width: 760px; margin: 0 auto; }
     </style>
   </head>
   <body>

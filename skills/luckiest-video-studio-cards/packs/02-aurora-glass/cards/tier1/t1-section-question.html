@@ -14,7 +14,7 @@
       html, body { margin: 0; }
 
       #t1-sec-q {
-        position: absolute; inset: 0; width: 1920px; height: 1080px;
+        position: absolute; inset: 0; width: var(--w); height: var(--h);
         background: var(--canvas); color: var(--text);
         font-family: var(--font-display); overflow: hidden;
       }
@@ -56,7 +56,7 @@
       #t1-sec-q .q-mark {
         display: block;
         font-family: var(--font-display); font-weight: var(--wt-black);
-        font-size: 180px; line-height: 1;
+        font-size: calc(180px * var(--type)); line-height: 1;
         /* gradient fill recedes */
         background: linear-gradient(
           160deg,
@@ -102,6 +102,18 @@
         background-size: 200px 200px; mix-blend-mode: overlay; opacity: 0.10;
         pointer-events: none; z-index: 7;
       }
+
+      /* Vertical and square: block centres in the safe area with a smaller headline so the
+         wrapped question fits the narrower width. */
+      [data-format="vertical"] #t1-sec-q .content, [data-format="square"] #t1-sec-q .content {
+        left: var(--safe-l); right: var(--safe-r); padding: 0; top: calc((var(--safe-t) + var(--h) - var(--safe-b)) / 2);
+      }
+      [data-format="vertical"] #t1-sec-q .bloom-center, [data-format="square"] #t1-sec-q .bloom-center {
+        top: calc((var(--safe-t) + var(--h) - var(--safe-b)) / 2); width: 1000px; height: 900px;
+      }
+      [data-format="vertical"] #t1-sec-q .headline { font-size: calc(92px * var(--type)); }
+      [data-format="square"] #t1-sec-q .headline { font-size: 104px; }
+      [data-format="vertical"] #t1-sec-q .q-mark { font-size: calc(150px * var(--type)); }
     </style>
   </head>
   <body>

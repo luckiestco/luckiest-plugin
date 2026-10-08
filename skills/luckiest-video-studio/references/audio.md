@@ -187,21 +187,66 @@ When in doubt, pick fewer cues with better timing. Prefer a coherent sonic palet
 
 ## Timing rules
 
-These rules apply when Hyperframes is implementing the composition and the motion timings are known:
+These rules apply when Hyperframes is implementing the composition and the motion timings are known.
 
-- Align SFX to the **start** of the animation, not the end
-- Entry pop: 0.0–0.1s before the element's first visible frame
-- Transition: at the transition start time
-- Success ding: at the moment the metric/stat is fully visible
-- For staggered elements: usually accent the first, final, or strongest beat; only score every item when that rhythm is intentional and still feels clean
+Each sound has an anchor: the part of it that must land on the frame. Place the
+anchor, not the file start.
+
+| Sound | Anchor | Place it so |
+|---|---|---|
+| Pop, click, key, drop | start | it starts 0.0-0.1s before the element's first visible frame |
+| Whoosh, swoosh | loudest point | its peak sits on the cut, so it starts before the cut |
+| Riser, reverse swell | end | it ends on the hit it leads into |
+| Impact, bell, boom | start | it starts on the hit frame |
+| Success ding | start | the metric or stat is fully visible |
+
+The bundled library has no whooshes or risers. Source them with HyperFrames
+`media-use` (license noted) or use ones the user supplies.
+
+- **Times come from the cue file, never by ear.** Use the scene timings in
+  `storyboard.json` and the beat or drop times from the cue JSON (see Beat and
+  cue sources below).
+- **Layer the big moments.** The hero hit is a swell or riser ending on the frame,
+  an impact starting on it, and a low sub under it. Smaller beats get one sound.
+- **Gain ladder.** UI detail (keys, clicks) 0.25-0.4, transitions (whooshes)
+  0.45-0.6, hits 0.7-0.9. One hero hit per scene owns its moment: drop smaller
+  cues that land within a few frames of it.
+- **Duck the music under the hero hits.** Lower the music bed by about a third
+  for half a second around each hero hit (a short volume tween on the music
+  element), so the hit reads without raising it.
+- **Staggered elements:** usually accent the first, final, or strongest beat;
+  only score every item when that rhythm is intentional and still feels clean.
 
 Composition notation:
 ```
 Scene 2 — Reveal — 3s
-  "Horse Tinder" scales in at 0.3s  →  SFX: impact/impactSoft_medium_001 at 0.2s
-  Tagline fades up at 0.8s          →  (no SFX, let the reveal carry)
-  Transition at 3.0s                →  SFX: interface/drop_001 at 2.9s
+  Riser into the reveal (1.2s long)  →  SFX: ends at 0.3s, so starts at -0.9s (previous scene)
+  "Horse Tinder" scales in at 0.3s   →  SFX: impact/impactSoft_medium_001 at 0.3s, music ducked 0.2-0.7s
+  Tagline fades up at 0.8s           →  (no SFX, let the reveal carry)
+  Cut to scene 3 at 3.0s             →  SFX: whoosh peaking at 3.0s
 ```
+
+### Many cues: one SFX track
+
+Past about 10 cues (typing, card stacks, a dense demo), stop writing one
+`<audio>` element per sound. List the cues in `<output-dir>/audio/sfx_cues.json`
+and mix them into one track:
+
+```bash
+node <skill-dir>/scripts/sfx-cues.mjs <output-dir>/audio/sfx_cues.json --events <output-dir>/composition
+```
+
+Each cue is `{ t, file or kind, align, volume, label }`; `file` is relative to
+`<skill-dir>/assets/sfx/` or absolute for a sourced sound, and `align` is the
+anchor from the table above (`start`, `peak`, or `end`). Scene builders can also
+write `composition/<scene-id>.motion.json` with local event times (`key`, `click`,
+`pop`, `card`, `impact`, `success`, and more), and `slots` in the cue file maps each
+scene to its start (the In column of `TIMING.md`), so every keystroke lands on its
+frame. It writes `audio/sfx.wav` and `audio/sfx-cuesheet.md` (hand the cue sheet
+over in Step 4). Set `"sfx": { "file": "audio/sfx.wav" }` in `storyboard.json`:
+`render-scenes.mjs` mixes it under the joined video, like the music bed. Leave
+those cues out of the scenes' own `<audio>` elements, and check the render with
+`qa.mjs avsync`.
 
 ---
 
@@ -211,6 +256,12 @@ Scene 2 — Reveal — 3s
 
 Ask the user for a music file, or use HyperFrames `media-use` to source one and keep its license note. Match energy to tone: upbeat for `default` and `app-store`, steady and clean for `polished` and `cinematic`, very low volume (0.12-0.18) for `deadpan`. Skip music only when the plan chooses silence or `--no-music` is set.
 
+Land the track, do not just start it. Find the first strong kick or the moment the
+groove enters (the cue JSON's `strongCues`), pick the video moment it should hit
+(the reveal, the title, the cut into the product), and set `music.offset` and
+`music.at` in `storyboard.json` so they meet. `render-scenes.mjs` places it there
+and normalizes the final mix to -14 LUFS.
+
 ### In a composition
 
 After copying files (see Asset paths above), reference them with relative paths from `composition/`:
@@ -219,7 +270,7 @@ After copying files (see Asset paths above), reference them with relative paths 
 <audio id="bg-music" data-start="0" data-duration="[total]" data-track-index="10" data-volume="0.35" src="assets/music/<user-track>.mp3"></audio>
 ```
 
-Volume: 0.3-0.4 for normal music beds. Use 0.12-0.22 for deadpan or very restrained parody. Never above 0.5. SFX at 0.55-0.85, with softer values for polished/deadpan.
+Volume: 0.3-0.4 for normal music beds. Use 0.12-0.22 for deadpan or very restrained parody. Never above 0.5. SFX follow the gain ladder in Timing rules, with softer values for polished/deadpan.
 
 If the music file doesn't exist, skip it and notify the user after rendering.
 

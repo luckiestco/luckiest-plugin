@@ -1,5 +1,61 @@
 # Changelog — luckiest-video-studio
 
+## 1.13.0 — 2026-10-08
+- Formats come last: iterate and approve the master 16:9, then add `formats`
+  ("Other formats (last)" in `step-4-deliver.md`).
+- A landscape format reuses the clips of a finished single-format 16:9 render at
+  the same quality, so adding formats renders only vertical and square.
+- `render-scenes.mjs --stills [--jobs 2]` writes one hold-frame PNG per scene per
+  format to `stills/<format>/` plus a `sheet.png` each, without rendering video.
+  Optional `scenes[].hold` sets the frame (default 0.5s before the cut).
+- `qa.mjs safe <run-dir> --stills` runs the safe-area gate on those stills.
+
+## 1.12.0 — 2026-10-08
+- Step 4 adds a quick watch of `final.mp4` with the new `luckiest-video-watcher`
+  sub-skill (local engine only, `qa/watch`). It reads frames and transcript
+  together to catch captions that differ from the voiceover, audio dropouts, and
+  text clipped at a seam. Earlier gates' flagged times go in as `--timestamps`.
+- The video-studio zip bundles `luckiest-video-watcher`.
+
+## 1.11.0 — 2026-10-08
+- One storyboard, every format: optional `formats` (`landscape`, `vertical`,
+  `square`) renders the same scenes once per format into `clips/<format>/` and
+  `final-<format>.mp4`, each with its own cache. `--formats` in the options table.
+- `scripts/stamp-format.mjs` writes a per-format copy of each scene with the root
+  size, `data-format`, and `--w`, `--h`, `--u`, and safe-area tokens, so HyperFrames
+  renders it at that size.
+- Demo footage is cropped to fill around a new `scenes[].focus` instead of
+  letterboxed when rendering formats or when focus is set.
+- "Build once, render every format" in `step-3-compose.md`: size tokens, safe-area
+  insets on clips, `[data-format]` restacks, larger type in vertical.
+  `templates/logo-line-draw.html` is the worked example.
+- `qa.mjs safe` fails sharp edges (text, logos) in the margins each format's
+  platforms cover. `crossfade` now finds full-frame layers at any canvas size.
+- Step 2 asks which formats to make; step 4 delivers one file per format.
+
+## 1.10.0 — 2026-10-08
+- Sound timing by anchor (`references/audio.md`): pops and impacts start on the
+  frame, whooshes peak on the cut, risers and swells end on the hit. Adds layered
+  hero hits, a gain ladder, and music ducking under hero hits.
+- New `scripts/sfx-cues.mjs`: mixes a cue file plus per-scene `*.motion.json`
+  events into one `audio/sfx.wav` and a cue sheet, each sound placed by its anchor.
+  `storyboard.json` takes an optional `sfx` track that `render-scenes.mjs` mixes
+  under the joined video, like the music bed.
+- New `qa.mjs avsync` gate: the final MP4 has audio, the right length, and every
+  expected hit within one frame. Tested against built controls.
+- New `references/lessons.md`: HyperFrames traps (slot id collisions, callback
+  state under seeking, unseeded randomness, three.js loaded twice, disk and
+  worker limits), linked from Step 3.
+- Music lands, not just starts: `music.offset` skips into the track and
+  `music.at` starts it in the video. The join normalizes the final mix to -14 LUFS
+  (two-pass, -1.2 dBTP; `loudness` overrides or `false` skips). Tested in
+  `scripts/render-scenes.test.mjs`.
+- New `qa.mjs facts` gate and `storyboard.json` `facts`: every on-screen number,
+  price, and id must match a listed story fact, and no em dash appears on screen.
+- State-list scenes (`scenes[].states`, "One shape, never cut" in
+  `step-2-plan.md`) and a `qa.mjs loop` gate for pieces that must loop.
+- Practices studied from the Motion Studio skill bundle. Ideas only, no code or text copied: the bundle carries no license for its own scripts or docs.
+
 ## 1.9.0 — 2026-10-07
 - The review player is the default editor (`--editor review`). Step 5 hands the
   run to the new `luckiest-video-studio-review` sub-skill, built from Motion OS

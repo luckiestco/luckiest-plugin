@@ -14,7 +14,7 @@
       html, body { margin: 0; background: transparent; }
 
       #t2-lb-dash {
-        position: absolute; inset: 0; width: 1920px; height: 1080px;
+        position: absolute; inset: 0; width: var(--w); height: var(--h);
         background: transparent; overflow: hidden;
         font-family: var(--font-display);
       }
@@ -33,7 +33,7 @@
 
       /* Connector row - holds the dot + dashed line to the left of the card */
       #t2-lb-dash .connector-row {
-        position: absolute; right: 460px; top: 510px;
+        position: absolute; right: calc(var(--safe-r) + 380px); top: 510px;
         display: flex; align-items: center;
         /* line draws left from card edge toward center */
         width: 560px;
@@ -60,7 +60,7 @@
 
       /* Card anchored right */
       #t2-lb-dash .card {
-        position: absolute; right: 80px; top: 400px;
+        position: absolute; right: var(--safe-r); top: calc(var(--safe-t) + 346px);
         width: 460px;
         background: var(--glass-bg-dark);
         backdrop-filter: var(--glass-blur);
@@ -74,16 +74,30 @@
 
       #t2-lb-dash .term {
         font-family: var(--font-display); font-weight: var(--wt-bold);
-        font-size: 32px; letter-spacing: var(--track-tight);
+        font-size: calc(32px * var(--type)); letter-spacing: var(--track-tight);
         color: var(--accent); text-shadow: var(--textglow-accent);
         margin-bottom: 12px;
       }
 
       #t2-lb-dash .detail {
         font-family: var(--font-body); font-weight: var(--wt-reg);
-        font-size: 24px; line-height: 1.5;
+        font-size: calc(24px * var(--type)); line-height: 1.5;
         color: var(--text-dim);
       }
+      /* Vertical and square: card at the bottom-left of the safe area; the dashed leader now runs
+         out of the card's right side (row reversed so the target dot is the far end). */
+      [data-format="vertical"] #t2-lb-dash .card, [data-format="square"] #t2-lb-dash .card {
+        top: auto; right: auto; left: var(--safe-l); bottom: var(--safe-b);
+        max-width: calc(var(--w) - var(--safe-l) - var(--safe-r));
+      }
+      [data-format="vertical"] #t2-lb-dash .connector-row, [data-format="square"] #t2-lb-dash .connector-row {
+        top: auto; right: auto; left: calc(var(--safe-l) + 524px); bottom: calc(var(--safe-b) + 120px);
+        width: 200px; flex-direction: row-reverse;
+      }
+      [data-format="vertical"] #t2-lb-dash .local-glow, [data-format="square"] #t2-lb-dash .local-glow {
+        top: auto; right: auto; left: calc(var(--safe-l) - 40px); bottom: calc(var(--safe-b) - 40px);
+      }
+      [data-format="vertical"] #t2-lb-dash [data-slot], [data-format="square"] #t2-lb-dash [data-slot] { white-space: normal; }
     </style>
   </head>
   <body>

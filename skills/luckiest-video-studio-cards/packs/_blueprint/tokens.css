@@ -14,10 +14,15 @@
   --font-body: "FontName", system-ui, sans-serif;
   --font-mono: "FontName", ui-monospace, monospace;
 
-  --size-display: 96px;
-  --size-headline: 48px;
-  --size-body: 28px;
-  --size-label: 20px;
+  /* format: landscape defaults; render-scenes.mjs stamps the real values per format */
+  --w: 1920px; --h: 1080px; --u: 10.8px;
+  --safe-t: 54px; --safe-b: 54px; --safe-l: 96px; --safe-r: 96px;
+  --type: 1;  /* 1.2 in vertical, below */
+
+  --size-display: calc(96px * var(--type));
+  --size-headline: calc(48px * var(--type));
+  --size-body: calc(28px * var(--type));
+  --size-label: calc(20px * var(--type));
 
   /* motion - easings as the style's signature (used in GSAP and CSS) */
   --ease-in: cubic-bezier(0.4, 0, 1, 1);
@@ -30,3 +35,6 @@
   --radius: 16px;
   --pad: 48px;
 }
+
+/* The phone shows the whole vertical frame smaller, so type runs 20% larger there. */
+:root[data-format="vertical"] { --type: 1.2; }

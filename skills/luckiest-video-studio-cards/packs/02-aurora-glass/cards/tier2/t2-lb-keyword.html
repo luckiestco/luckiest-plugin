@@ -14,7 +14,7 @@
       html, body { margin: 0; background: transparent; }
 
       #t2-lb-key {
-        position: absolute; inset: 0; width: 1920px; height: 1080px;
+        position: absolute; inset: 0; width: var(--w); height: var(--h);
         background: transparent; overflow: hidden;
         font-family: var(--font-display);
       }
@@ -33,7 +33,7 @@
 
       /* Wrapper anchored left */
       #t2-lb-key .wrap {
-        position: absolute; left: 80px; top: 380px;
+        position: absolute; left: var(--safe-l); top: calc(var(--safe-t) + 326px);
         width: 700px;
       }
 
@@ -83,10 +83,19 @@
       /* Small note below */
       #t2-lb-key .note {
         font-family: var(--font-body); font-weight: var(--wt-reg);
-        font-size: 21px; letter-spacing: 0.04em;
+        font-size: calc(21px * var(--type)); letter-spacing: 0.04em;
         color: var(--text-dim);
         padding-left: 0;
       }
+      /* Vertical and square: card moves to the bottom-left of the safe area, glow follows, slots wrap. */
+      [data-format="vertical"] #t2-lb-key .wrap, [data-format="square"] #t2-lb-key .wrap {
+        top: auto; right: auto; left: var(--safe-l); bottom: var(--safe-b);
+        max-width: calc(var(--w) - var(--safe-l) - var(--safe-r));
+      }
+      [data-format="vertical"] #t2-lb-key .local-glow, [data-format="square"] #t2-lb-key .local-glow {
+        top: auto; right: auto; left: calc(var(--safe-l) - 40px); bottom: calc(var(--safe-b) - 40px);
+      }
+      [data-format="vertical"] #t2-lb-key [data-slot], [data-format="square"] #t2-lb-key [data-slot] { white-space: normal; }
     </style>
   </head>
   <body>

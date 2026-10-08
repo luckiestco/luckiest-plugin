@@ -14,7 +14,7 @@
       html, body { margin: 0; }
 
       #t1-stat-waffle {
-        position: absolute; inset: 0; width: 1920px; height: 1080px;
+        position: absolute; inset: 0; width: var(--w); height: var(--h);
         background: var(--canvas); color: var(--text);
         font-family: var(--font-display); overflow: hidden;
       }
@@ -90,7 +90,7 @@
       #t1-stat-waffle .stat {
         font-family: var(--font-display);
         font-weight: var(--wt-black);
-        font-size: 190px;
+        font-size: calc(190px * var(--type));
         line-height: 0.88;
         letter-spacing: var(--track-tight);
         background: linear-gradient(155deg, #ffffff 15%, rgba(var(--accent-rgb), 0.80) 85%);
@@ -100,7 +100,7 @@
       }
       #t1-stat-waffle .stat-unit {
         font-family: var(--font-mono);
-        font-size: 36px;
+        font-size: calc(36px * var(--type));
         letter-spacing: 0.12em;
         color: var(--accent);
         text-shadow: var(--textglow-accent);
@@ -121,7 +121,7 @@
       }
 
       #t1-stat-waffle .source {
-        position: absolute; left: var(--pad); bottom: 44px;
+        position: absolute; left: var(--safe-l); bottom: var(--safe-b);
         font-family: var(--font-mono); font-size: var(--size-tiny);
         font-weight: var(--wt-reg); letter-spacing: 0.12em;
         text-transform: uppercase; color: var(--text-faint); z-index: 5;
@@ -136,6 +136,20 @@
         background-size: 200px 200px; mix-blend-mode: overlay; opacity: 0.10;
         pointer-events: none; z-index: 7;
       }
+
+      /* Vertical: smaller grid with the stat under it (number and unit on one line). Square: side by side, smaller. */
+      [data-format="vertical"] #t1-stat-waffle .content, [data-format="square"] #t1-stat-waffle .content { inset: var(--safe-t) var(--safe-r) calc(var(--safe-b) + 48px) var(--safe-l); padding-bottom: 0; gap: 28px; }
+      [data-format="vertical"] #t1-stat-waffle .kicker, [data-format="square"] #t1-stat-waffle .kicker { text-align: center; }
+      [data-format="vertical"] #t1-stat-waffle .waffle-wrap { flex-direction: column; gap: 32px; }
+      [data-format="vertical"] #t1-stat-waffle .waffle-grid { grid-template-columns: repeat(10, 38px); grid-template-rows: repeat(10, 38px); }
+      [data-format="vertical"] #t1-stat-waffle .cell { width: 38px; height: 38px; }
+      [data-format="vertical"] #t1-stat-waffle .stat-block { flex-direction: row; align-items: baseline; gap: 20px; }
+      [data-format="vertical"] #t1-stat-waffle .stat { font-size: calc(140px * var(--type)); }
+      [data-format="square"] #t1-stat-waffle .waffle-wrap { gap: 48px; }
+      [data-format="square"] #t1-stat-waffle .waffle-grid { grid-template-columns: repeat(10, 44px); grid-template-rows: repeat(10, 44px); }
+      [data-format="square"] #t1-stat-waffle .cell { width: 44px; height: 44px; }
+      [data-format="square"] #t1-stat-waffle .stat { font-size: 160px; }
+      [data-format="vertical"] #t1-stat-waffle .label, [data-format="square"] #t1-stat-waffle .label { max-width: 100%; }
     </style>
   </head>
   <body>

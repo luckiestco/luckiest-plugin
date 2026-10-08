@@ -15,7 +15,7 @@
       html, body { margin: 0; background: transparent; }
 
       #t2-lt-chbar {
-        position: absolute; inset: 0; width: 1920px; height: 1080px;
+        position: absolute; inset: 0; width: var(--w); height: var(--h);
         background: transparent; overflow: hidden;
         font-family: var(--font-display);
       }
@@ -23,7 +23,7 @@
       /* Bloom behind the bar */
       #t2-lt-chbar .local-bloom {
         position: absolute;
-        left: -30px; bottom: 100px;
+        left: calc(var(--safe-l) - 110px); bottom: calc(var(--safe-b) + 46px);
         width: 700px; height: 240px;
         border-radius: 50%;
         background: radial-gradient(ellipse at 30% 80%,
@@ -38,7 +38,7 @@
       /* Stack: pill → bar */
       #t2-lt-chbar .stack {
         position: absolute;
-        left: 80px; bottom: 118px;
+        left: var(--safe-l); bottom: calc(var(--safe-b) + 64px);
         display: flex; flex-direction: column;
         align-items: flex-start; gap: 8px;
         z-index: 2;
@@ -66,7 +66,7 @@
 
       #t2-lt-chbar .chapter-num {
         font-family: var(--font-mono);
-        font-size: 18px;
+        font-size: calc(18px * var(--type));
         font-weight: var(--wt-bold);
         letter-spacing: 0.12em;
         color: var(--accent);
@@ -112,7 +112,7 @@
       #t2-lt-chbar .title {
         font-family: var(--font-display);
         font-weight: var(--wt-bold);
-        font-size: 38px;
+        font-size: calc(38px * var(--type));
         letter-spacing: var(--track-snug);
         color: var(--white);
         text-shadow: var(--textglow);
@@ -125,6 +125,13 @@
         color: var(--accent);
         text-shadow: var(--textglow-accent);
       }
+      /* Vertical and square: card sits at the bottom of the safe area, bloom follows, slots wrap. */
+      [data-format="vertical"] #t2-lt-chbar .stack, [data-format="square"] #t2-lt-chbar .stack {
+        bottom: var(--safe-b); max-width: calc(var(--w) - var(--safe-l) - var(--safe-r));
+      }
+      [data-format="vertical"] #t2-lt-chbar .local-bloom, [data-format="square"] #t2-lt-chbar .local-bloom { bottom: calc(var(--safe-b) - 18px); }
+      [data-format="vertical"] #t2-lt-chbar [data-slot], [data-format="square"] #t2-lt-chbar [data-slot] { white-space: normal; }
+      [data-format="vertical"] #t2-lt-chbar .title-bar, [data-format="square"] #t2-lt-chbar .title-bar { width: calc(var(--w) - var(--safe-l) - var(--safe-r)); }
     </style>
   </head>
   <body>

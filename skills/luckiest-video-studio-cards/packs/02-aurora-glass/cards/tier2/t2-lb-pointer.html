@@ -13,13 +13,13 @@
       html, body { margin: 0; background: transparent; }
 
       #t2-lb-point {
-        position: absolute; inset: 0; width: 1920px; height: 1080px;
+        position: absolute; inset: 0; width: var(--w); height: var(--h);
         background: transparent; overflow: hidden;
       }
 
       /* Localized glow - right side */
       #t2-lb-point .local-glow {
-        position: absolute; right: 70px; top: 300px;
+        position: absolute; right: calc(var(--safe-r) - 10px); top: calc(var(--safe-t) + 246px);
         width: 560px; height: 380px; border-radius: 50%;
         background: radial-gradient(ellipse at 50% 50%,
           rgba(var(--accent-rgb), 0.18) 0%,
@@ -31,7 +31,7 @@
 
       /* Glass label card - right anchored */
       #t2-lb-point .card {
-        position: absolute; right: 80px; top: 360px;
+        position: absolute; right: var(--safe-r); top: calc(var(--safe-t) + 306px);
         width: 480px;
         background: var(--glass-bg-dark);
         backdrop-filter: var(--glass-blur);
@@ -42,8 +42,8 @@
                     0 0 0 1px rgba(var(--accent-rgb), 0.08);
         border-radius: var(--radius);
         padding: 28px 32px;
-        overflow: hidden;
-        position: absolute; right: 80px; top: 360px;
+        overflow: hidden; z-index: 1;
+        position: absolute; right: var(--safe-r); top: calc(var(--safe-t) + 306px);
       }
 
       /* Top neon rim */
@@ -58,21 +58,21 @@
 
       #t2-lb-point .term {
         font-family: var(--font-display); font-weight: var(--wt-black);
-        font-size: 34px; letter-spacing: var(--track-tight);
+        font-size: calc(34px * var(--type)); letter-spacing: var(--track-tight);
         color: var(--white); text-shadow: var(--textglow);
         margin-bottom: 12px;
       }
 
       #t2-lb-point .detail {
         font-family: var(--font-body); font-weight: var(--wt-reg);
-        font-size: 24px; line-height: 1.5;
+        font-size: calc(24px * var(--type)); line-height: 1.5;
         color: var(--text-dim);
       }
 
-      /* SVG connector - full canvas so we can draw from label to subject */
+      /* SVG connector - starts at the card's left edge, points down-left to the subject */
       #t2-lb-point .connector-svg {
-        position: absolute; left: 0; top: 0;
-        width: 1920px; height: 1080px;
+        position: absolute; right: calc(var(--safe-r) + 473px); top: calc(var(--safe-t) + 429px);
+        width: 514px; height: 138px;
         pointer-events: none;
         overflow: visible;
       }
@@ -91,28 +91,37 @@
         filter: drop-shadow(0 0 6px rgba(var(--accent-rgb), 0.80))
                 drop-shadow(0 0 14px rgba(var(--accent-rgb), 0.50));
       }
+      /* Vertical and square: the card drops to the bottom of the safe area, left aligned, and the connector
+         turns to run up-right from the card's top edge toward the subject. */
+      [data-format="vertical"] #t2-lb-point .card, [data-format="square"] #t2-lb-point .card {
+        anchor-name: --t2-lb-point-card;
+        top: auto; right: auto; left: var(--safe-l); bottom: var(--safe-b);
+        max-width: calc(var(--w) - var(--safe-l) - var(--safe-r));
+      }
+      [data-format="vertical"] #t2-lb-point .connector-svg, [data-format="square"] #t2-lb-point .connector-svg {
+        position-anchor: --t2-lb-point-card; top: auto; right: auto;
+        left: calc(anchor(left) + 150px); bottom: calc(anchor(top) - 7px); transform: rotate(180deg);
+      }
+      [data-format="vertical"] #t2-lb-point .local-glow, [data-format="square"] #t2-lb-point .local-glow { top: auto; right: auto; left: calc(var(--safe-l) - 40px); bottom: calc(var(--safe-b) - 80px); }
+      [data-format="vertical"] #t2-lb-point [data-slot], [data-format="square"] #t2-lb-point [data-slot] { white-space: normal; }
     </style>
   </head>
   <body>
     <div id="t2-lb-point" data-composition-id="t2-lb-point" data-start="0" data-width="1920" data-height="1080">
       <div class="local-glow"></div>
 
-      <!-- Connector drawn behind the card -->
-      <svg class="connector-svg" viewBox="0 0 1920 1080">
-        <!--
-          Line goes from ~left edge of the card (x=80 to x=460) at card vertical center
-          outward left, ending with a dot near the subject (center-left zone).
-          Card is at right:80px (x=1840-480=1360 right edge, left edge x=1360).
-          We draw from the card's left edge (1360, 490) diagonally to a point-tip (860, 610).
-        -->
-        <line class="conn-line" id="point-line" x1="1360" y1="490" x2="870" y2="610" />
-        <circle class="conn-dot" id="point-dot" cx="860" cy="614" r="7" />
-      </svg>
-
       <div class="card">
         <div class="term" data-slot="term">Attention Head</div>
         <div class="detail" data-slot="detail">Each head learns a different relationship pattern across the token sequence.</div>
       </div>
+
+      <!-- Connector, drawn behind the card (card z-index 1). Local box 514x138: the line starts
+           at the card's left edge (507,7) and runs down-left to the tip dot (7,131). It sits after the
+           card in the DOM so it can anchor to the card in vertical and square. -->
+      <svg class="connector-svg" viewBox="0 0 514 138">
+        <line class="conn-line" id="point-line" x1="507" y1="7" x2="17" y2="127" />
+        <circle class="conn-dot" id="point-dot" cx="7" cy="131" r="7" />
+      </svg>
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>

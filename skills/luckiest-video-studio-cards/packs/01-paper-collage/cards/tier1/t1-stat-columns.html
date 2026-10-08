@@ -13,7 +13,8 @@
     <style>
       html, body { margin: 0; }
       #t1-stat-col {
-        position: absolute; inset: 0; width: 1920px; height: 1080px;
+        --col-max: 600px; /* height of the tallest column; JS sizes the rest as fractions of it */
+        position: absolute; inset: 0; width: var(--w); height: var(--h);
         background: var(--paper); color: var(--ink);
         font-family: var(--font-display); overflow: hidden;
       }
@@ -32,14 +33,14 @@
         background: radial-gradient(120% 120% at 50% 50%, transparent 54%, rgba(23,19,14,0.18) 100%);
       }
       #t1-stat-col .kicker {
-        position: absolute; left: 130px; top: 100px;
+        position: absolute; left: calc(var(--safe-l) + 34px); top: calc(var(--safe-t) + 46px);
         font-family: var(--font-label); font-weight: var(--wt-bold);
         font-size: var(--size-label); letter-spacing: var(--track-wide);
         text-transform: uppercase; color: var(--red);
       }
       /* chart wrapper */
       #t1-stat-col .chart-wrap {
-        position: absolute; left: 200px; right: 200px; top: 160px; bottom: 260px;
+        position: absolute; left: calc(var(--safe-l) + 104px); right: calc(var(--safe-r) + 104px); top: calc(var(--safe-t) + 106px); bottom: calc(var(--safe-b) + 206px);
         display: flex; align-items: flex-end; justify-content: space-between;
         border-bottom: 5px solid var(--ink);
       }
@@ -55,7 +56,7 @@
       }
       /* hero value floats above hero column */
       #t1-stat-col .col-group.hero .stat {
-        font-weight: var(--wt-black); font-size: 110px; line-height: 1;
+        font-weight: var(--wt-black); font-size: calc(110px * var(--type)); line-height: 1;
         letter-spacing: -0.04em; font-variant-numeric: tabular-nums;
         color: var(--ink); margin-bottom: 12px;
       }
@@ -73,21 +74,38 @@
       #t1-stat-col .col-label {
         margin-top: 20px;
         font-family: var(--font-label); font-weight: var(--wt-bold);
-        font-size: 26px; letter-spacing: var(--track-wide); text-transform: uppercase;
+        font-size: calc(26px * var(--type)); letter-spacing: var(--track-wide); text-transform: uppercase;
         color: var(--ink); text-align: center;
       }
       #t1-stat-col .label {
-        position: absolute; left: 130px; right: 130px; bottom: 130px;
-        font-weight: var(--wt-thin); font-size: 54px; line-height: 1.06;
+        position: absolute; left: calc(var(--safe-l) + 34px); right: calc(var(--safe-r) + 34px); bottom: calc(var(--safe-b) + 76px);
+        font-weight: var(--wt-thin); font-size: calc(54px * var(--type)); line-height: 1.06;
         letter-spacing: var(--track-tight); color: var(--ink);
       }
       #t1-stat-col .label em { font-style: italic; font-weight: var(--wt-black); }
       #t1-stat-col .source {
-        position: absolute; left: 130px; bottom: 76px;
+        position: absolute; left: calc(var(--safe-l) + 34px); bottom: calc(var(--safe-b) + 22px);
         font-family: var(--font-label); font-weight: var(--wt-bold);
         font-size: var(--size-tiny); letter-spacing: var(--track-wide);
         text-transform: uppercase; color: var(--muted);
       }
+
+      /* Vertical and square: shorter columns (--col-max) with a gap between them across the safe width,
+         a smaller hero number so it stays over its own column, label and source at the safe bottom. */
+      [data-format="vertical"] #t1-stat-col { --col-max: 520px; }
+      [data-format="square"] #t1-stat-col { --col-max: 540px; }
+      [data-format="vertical"] #t1-stat-col .kicker, [data-format="square"] #t1-stat-col .kicker { left: var(--safe-l); top: var(--safe-t); }
+      [data-format="vertical"] #t1-stat-col .chart-wrap {
+        left: var(--safe-l); right: calc(var(--safe-r) + 24px); top: calc(var(--safe-t) + 80px); bottom: calc(var(--safe-b) + 248px); gap: 28px;
+      }
+      [data-format="square"] #t1-stat-col .chart-wrap {
+        left: calc(var(--safe-l) + 20px); right: calc(var(--safe-r) + 20px); top: calc(var(--safe-t) + 60px); bottom: calc(var(--safe-b) + 180px); gap: 40px;
+      }
+      [data-format="vertical"] #t1-stat-col .col-group.hero .stat { font-size: calc(70px * var(--type)); }
+      [data-format="square"] #t1-stat-col .col-group.hero .stat { font-size: 90px; }
+      [data-format="vertical"] #t1-stat-col .label, [data-format="square"] #t1-stat-col .label { left: var(--safe-l); right: var(--safe-r); bottom: calc(var(--safe-b) + 50px); }
+      [data-format="vertical"] #t1-stat-col .label { bottom: calc(var(--safe-b) + 90px); }
+      [data-format="vertical"] #t1-stat-col .source, [data-format="square"] #t1-stat-col .source { left: var(--safe-l); bottom: var(--safe-b); }
     </style>
   </head>
   <body>
@@ -132,7 +150,7 @@
 
         var col = document.createElement("div");
         col.className = "col";
-        col.style.height = d.heightPx + "px";
+        col.style.height = "calc(var(--col-max) * " + (d.heightPx / 600) + ")";
         group.appendChild(col);
 
         var lbl = document.createElement("div");

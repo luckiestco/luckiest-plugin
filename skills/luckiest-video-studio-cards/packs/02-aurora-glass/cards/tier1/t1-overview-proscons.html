@@ -13,7 +13,7 @@
       html, body { margin: 0; }
 
       #t1-ov-procons {
-        position: absolute; inset: 0; width: 1920px; height: 1080px;
+        position: absolute; inset: 0; width: var(--w); height: var(--h);
         background: var(--canvas); color: var(--text);
         font-family: var(--font-display); overflow: hidden;
       }
@@ -34,7 +34,7 @@
 
       /* Title */
       #t1-ov-procons .title-row {
-        position: absolute; left: 0; right: 0; top: 68px; text-align: center; z-index: 4;
+        position: absolute; left: var(--safe-l); right: var(--safe-r); top: calc(var(--safe-t) + 14px); text-align: center; z-index: 4;
       }
       #t1-ov-procons .title {
         font-family: var(--font-display); font-weight: var(--wt-bold);
@@ -48,7 +48,7 @@
 
       /* Two-column layout */
       #t1-ov-procons .columns {
-        position: absolute; left: 120px; right: 120px; top: 210px; bottom: 80px;
+        position: absolute; left: 120px; right: 120px; top: 210px; bottom: calc(var(--safe-b) + 26px);
         display: flex; gap: 60px; z-index: 4;
       }
 
@@ -78,7 +78,7 @@
       #t1-ov-procons .panel-icon {
         width: 56px; height: 56px; border-radius: 50%;
         display: flex; align-items: center; justify-content: center;
-        font-size: 28px; font-weight: var(--wt-black); line-height: 1; flex-shrink: 0;
+        font-size: calc(28px * var(--type)); font-weight: var(--wt-black); line-height: 1; flex-shrink: 0;
       }
       #t1-ov-procons .pros .panel-icon {
         background: rgba(var(--accent-rgb), 0.12);
@@ -129,7 +129,7 @@
         width: 36px; height: 36px; border-radius: 50%;
         display: flex; align-items: center; justify-content: center;
         flex-shrink: 0; margin-top: 2px;
-        font-size: 22px; font-weight: var(--wt-black); line-height: 1;
+        font-size: calc(22px * var(--type)); font-weight: var(--wt-black); line-height: 1;
       }
       #t1-ov-procons .pros .glyph {
         background: rgba(var(--accent-rgb), 0.10);
@@ -146,7 +146,7 @@
 
       #t1-ov-procons .item-text {
         font-family: var(--font-body); font-weight: var(--wt-med);
-        font-size: 30px; line-height: 1.45; color: var(--text);
+        font-size: calc(30px * var(--type)); line-height: 1.45; color: var(--text);
         padding-top: 2px;
       }
 
@@ -165,6 +165,21 @@
         background-size: 200px 200px; mix-blend-mode: overlay; opacity: 0.10;
         pointer-events: none; z-index: 7;
       }
+
+      /* Vertical: the two panels stack, pros over cons. Square: they stay side by side, tighter. */
+      [data-format="vertical"] #t1-ov-procons .title-row, [data-format="square"] #t1-ov-procons .title-row { top: var(--safe-t); }
+      [data-format="vertical"] #t1-ov-procons .title { font-size: calc(64px * var(--type)); }
+      [data-format="vertical"] #t1-ov-procons .columns, [data-format="square"] #t1-ov-procons .columns { left: var(--safe-l); right: var(--safe-r); bottom: var(--safe-b); }
+      [data-format="vertical"] #t1-ov-procons .columns { top: 400px; flex-direction: column; gap: 24px; }
+      [data-format="square"] #t1-ov-procons .columns { top: 190px; gap: 32px; }
+      [data-format="vertical"] #t1-ov-procons .panel { padding: 30px 40px; }
+      [data-format="square"] #t1-ov-procons .panel { padding: 40px 36px; }
+      [data-format="vertical"] #t1-ov-procons .panel-hdr { margin-bottom: 20px; }
+      [data-format="vertical"] #t1-ov-procons .panel-rule { margin-bottom: 12px; }
+      [data-format="vertical"] #t1-ov-procons .item { padding: 12px 0; }
+      [data-format="square"] #t1-ov-procons .panel-hdr { margin-bottom: 28px; }
+      [data-format="square"] #t1-ov-procons .panel-rule { margin-bottom: 20px; }
+      [data-format="square"] #t1-ov-procons .item { padding: 18px 0; gap: 18px; }
     </style>
   </head>
   <body>
