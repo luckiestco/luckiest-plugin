@@ -135,13 +135,13 @@ function copyWithPathReplacement(srcDir, destDir, pathPrefix) {
   }
 }
 
-// The plan/go/finish skills live in short folders (skills/plan) so the plugin
-// menu shows /luckiest:plan with no folder alias. Outside the plugin there is
-// no namespace, so they go to ~/.claude/skills as luckiest-plan instead of a
-// bare plan that could overwrite or clash with the user's own skills.
-const COMMAND_SKILLS = new Set(['plan', 'go', 'finish', 'next', 'status', 'home', 'start', 'charms',
-  'helpers', 'leaderboard', 'merge', 'overlaps', 'skills', 'updates', 'vouch', 'wishes']);
-const homeName = (folder) => (COMMAND_SKILLS.has(folder) ? `luckiest-${folder}` : folder);
+// Plugin skills live in short folders (skills/ads, skills/plan) so the plugin
+// menu shows /luckiest:ads with no folder alias. Outside the plugin there is no
+// namespace, so they go to ~/.claude/skills as luckiest-ads instead of a bare
+// ads that could overwrite or clash with the user's own skills.
+const BARE_SKILLS = new Set(['brainstorm', 'remix']);
+const homeName = (folder) =>
+  folder.startsWith('luckiest-') || BARE_SKILLS.has(folder) ? folder : `luckiest-${folder}`;
 
 /** Copy each plugin skill folder into skillsRoot under its home name, then fix its name line. */
 function copySkills(srcDir, skillsRoot, pathPrefix) {

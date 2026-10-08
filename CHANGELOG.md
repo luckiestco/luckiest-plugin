@@ -1,3 +1,7 @@
+## 0.1.38 — 2026-10-08 (npm luckiest-co 1.0.39)
+- Every skill drops the repeated prefix in the `/` menu: `/luckiest:luckiest-ads` is now `/luckiest:ads`, `/luckiest:luckiest-copywriting` is now `/luckiest:copywriting`, and so on for all 96. The old long names no longer work as slash commands. Asking in plain words still works the same.
+- Without the plugin, npx still installs every skill as `luckiest-ads`, `luckiest-copywriting`, and so on, and never overwrites a skill of yours named `ads` or `copywriting`.
+
 ## 0.1.37 — 2026-10-08 (npm luckiest-co 1.0.38)
 - The `/` menu no longer shows a gray `(luckiest:luckiest-plan)` next to `/luckiest:plan`. The 16 plan, go, finish and other command skills now live in folders named `plan`, `go`, `finish`, and so on. Without the plugin, npx still installs them as `luckiest-plan`, `luckiest-go`, and so on, and never overwrites a skill folder of yours named `plan` or `go`.
 
