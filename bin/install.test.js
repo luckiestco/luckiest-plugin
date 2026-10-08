@@ -79,3 +79,22 @@ test('a plugin added through Claude desktop counts as installed, and its skills 
   assert.ok(names.has('luckiest-ads'));
   assert.ok(names.has('luckiest-plan'));
 });
+
+test('npx copy: short command folders install as luckiest-<x> and never touch a bare folder of the same name', () => {
+  const { copySkills, homeName } = require('./install.js');
+  const tmp = fs.mkdtempSync(path.join(os.tmpdir(), 'copy-'));
+  const src = path.join(tmp, 'src');
+  const home = path.join(tmp, 'home');
+  tree(src, {
+    'plan/SKILL.md': '---\nname: plan\n---\nbody',
+    'luckiest-ads/SKILL.md': '---\nname: luckiest-ads\n---\n',
+    'remix/SKILL.md': '---\nname: remix\n---\n',
+  });
+  tree(home, { 'plan/SKILL.md': '---\nname: plan\n---\nmine' });
+
+  assert.deepStrictEqual(copySkills(src, home, '~/.claude/').sort(), ['luckiest-ads', 'luckiest-plan', 'remix']);
+  assert.match(fs.readFileSync(path.join(home, 'luckiest-plan/SKILL.md'), 'utf8'), /^---\nname: luckiest-plan\n/);
+  assert.strictEqual(fs.readFileSync(path.join(home, 'plan/SKILL.md'), 'utf8'), '---\nname: plan\n---\nmine');
+  assert.strictEqual(homeName('go'), 'luckiest-go');
+  assert.strictEqual(homeName('luckiest-ads'), 'luckiest-ads');
+});

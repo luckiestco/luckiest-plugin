@@ -1,3 +1,6 @@
+## 0.1.37 — 2026-10-08 (npm luckiest-co 1.0.38)
+- The `/` menu no longer shows a gray `(luckiest:luckiest-plan)` next to `/luckiest:plan`. The 16 plan, go, finish and other command skills now live in folders named `plan`, `go`, `finish`, and so on. Without the plugin, npx still installs them as `luckiest-plan`, `luckiest-go`, and so on, and never overwrites a skill folder of yours named `plan` or `go`.
+
 ## 0.1.36 — 2026-10-08 (npm luckiest-co 1.0.37)
 - `/luckiest:plan`, `/luckiest:go`, `/luckiest:finish` and the other 13 work again when the plugin is added through Claude desktop. They are now skills named `plan`, `go`, `finish` and so on, instead of separate command files that desktop plugins do not load. Each one shows once in every install. Without the plugin, npx installs them as `/luckiest-plan`, `/luckiest-go` and so on.
 - The installer now sees a Luckiest plugin added through Claude desktop, so `--sync-only` stops copying the skills the plugin already ships into `~/.claude/skills`, and removes copies left there.
