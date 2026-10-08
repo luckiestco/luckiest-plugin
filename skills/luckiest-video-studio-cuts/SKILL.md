@@ -14,7 +14,7 @@ user-invocable: false
 license: MIT. See ATTRIBUTION.md
 allowed-tools: Bash, Read, Write, Glob, AskUserQuestion
 metadata:
-  version: "1.0.0"
+  version: "1.1.0"
   listing_id: luckiest-video-studio-cuts
   author: luckiest
 ---
@@ -28,11 +28,11 @@ decides. Nothing here changes the words that stay.
 ## Staying current
 
 On activation, call the Luckiest MCP `check_updates` tool with
-`{ listingId: "luckiest-video-studio-cuts", installedSemver: "1.0.0" }`. If
+`{ listingId: "luckiest-video-studio-cuts", installedSemver: "1.1.0" }`. If
 `upToDate: false`, surface the `notice` once and continue. Never block on it.
 
 When done, call `report_usage` once with
-`{ listing_id: "luckiest-video-studio-cuts", skill_version: "1.0.0", matched: true, success: <true|false> }`.
+`{ listing_id: "luckiest-video-studio-cuts", skill_version: "1.1.0", matched: true, success: <true|false> }`.
 Metadata only. Skip silently if unavailable.
 
 ## Standing rules
@@ -100,18 +100,26 @@ a readable `raw.silence-decisions.md`. Drop `--apply` for a plan without a rende
    transcript to `clean.json`. Otherwise copy `raw.mistakes-transcript.json` to
    `clean.json`.
 
-## Step 4: Review page
+## Step 4: Review in the review player
+
+The cut is reviewed in the same review player as the finished video (the
+`luckiest-video-studio-review` sub-skill):
 
 ```bash
-node <skill-dir>/scripts/build-edl-review.mjs <run-dir>/footage/raw.silence-edl.json \
-  --original <run-dir>/footage/raw.mp4 --edited <run-dir>/footage/silenced.mp4 \
-  --output <run-dir>/footage/review.html
+node <skill-dir>/scripts/build-cuts-reel.mjs <run-dir>/footage/raw.silence-edl.json \
+  --transcript <run-dir>/footage/raw.silence-transcript.json --video <run-dir>/footage/silenced.mp4
+node <review-dir>/editor/serve.mjs <run-dir>/footage      # run in the background
 ```
 
-Give the user the file path to open in a browser. Click a cut to hear it. Listen
-across two or three joins yourself if you can; a join that clips a word tail
-sounds like a stutter. Fix by raising `--gap` or removing that cut, not by editing
-the video by hand.
+`<review-dir>` is the `luckiest-video-studio-review` folder beside this one. The
+player opens on `silenced.mp4` with one scene per kept range, so every join is a
+scene boundary: `[` and `]` jump between them. Each scene lists its words and the
+pause cut before it. Tell the user to play across the joins, press N and click the
+frame where a word sounds clipped, then **Send to Claude** and paste the prompt.
+Listen across two or three joins yourself if you can; a join that clips a word
+tail sounds like a stutter. Fix by raising `--gap` or removing that cut, not by
+editing the video by hand, then rerun both commands: the version goes up and the
+open player reloads.
 
 ## Step 5: Hand back to the storyboard
 

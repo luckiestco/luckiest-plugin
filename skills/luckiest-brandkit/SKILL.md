@@ -19,7 +19,7 @@ argument-hint: "[shot list or brief] [--shots 01,04,06] [--out .luckiest/shots]"
 user-invocable: true
 allowed-tools: Bash, Read, Write, Edit, Glob, Grep, AskUserQuestion
 metadata:
-  version: "1.4.0"
+  version: "1.5.0"
   listing_id: luckiest-brandkit
   author: luckiest
 ---
@@ -33,11 +33,11 @@ retouch-erase, and file upload), plus five local scripts in `scripts/`.
 ## Staying current
 
 On activation, call the Luckiest MCP `check_updates` tool with
-`{ listingId: "luckiest-brandkit", installedSemver: "1.4.0" }`. If
+`{ listingId: "luckiest-brandkit", installedSemver: "1.5.0" }`. If
 `upToDate: false`, surface the `notice` once and continue. Never block on it.
 
 When done, call `report_usage` once with
-`{ listing_id: "luckiest-brandkit", skill_version: "1.4.0", matched: true, success: <true|false> }`.
+`{ listing_id: "luckiest-brandkit", skill_version: "1.5.0", matched: true, success: <true|false> }`.
 Metadata only, never prompt text. Skip silently if unavailable.
 
 ## Output layout
@@ -62,6 +62,7 @@ Never commit `<out>` unless asked. It holds hundreds of MB.
 |---|---|---|
 | 1, 4, 5, 6, 8 | `luckiest-video-studio-art-director` | The look of the whole set. Use section 0 (design system first), 0b (rules with a reason and an example path), 3 (palette, accent budget, faces, texture, banned list), and 3b (Real, not generated) with `references/shot-prompting.md` for every shot prompt. Skip its "Video-safe color" and "Type in motion" parts and its motion, timing, and `art-direction.json` sections. Stills rules live in this skill's `references/` |
 | 2, 7 | `luckiest-video-studio-composition` | Where things sit inside each frame: placement system, focal point, white space, the 20 rules |
+| 2, 7 | `luckiest-brandkit-sizing` | How big the logo is on the product and where it sits: apparel, hats, bags, stationery, signage |
 
 Load [references/prompt-recipes.md](references/prompt-recipes.md) whenever you
 write or edit the style block or a shot prompt. Load
@@ -89,6 +90,11 @@ generation: one placement system, the focal point as a fraction of the frame,
 the tilt direction, the empty-space side, and one to three of the 20 rules.
 Write it all to `prompts.md` as a table plus one entry per shot:
 `SHOT` (object and set), `COMPOSITION`, `TEXT` (every exact string).
+
+For every merch, stationery, and signage shot, load `luckiest-brandkit-sizing`
+and add the logo's placement and real size to the COMPOSITION line, in words:
+"left chest logo about 3.5 inches wide, about one sixth of the chest width".
+Models draw logos too big when the size is left open.
 
 Then apply the art director's prompt rules. The two that broke real runs:
 
@@ -180,6 +186,7 @@ in this order, cheapest first:
 | A screen, board, or poster must show exact existing artwork | `scripts/composite_screen.py photo.png art.png out.png TL TR BR BL`. Zoom each corner to read inner-corner pixels first |
 | Misspelled or leaked text | Retouch `replace` on that region with the exact string, or regenerate the shot with the text list tightened |
 | Composition off | Regenerate with the corrected COMPOSITION line. Prompt edits that try to keep the rest of the image rarely fix a mark |
+| Logo the wrong size for the product (check with the sizing sub-skill's "Check it in the image") | Regenerate with the size in the COMPOSITION line, or erase the mark and run `composite_mark.py` at the planned height |
 
 An image-model "edit" that asks to replace a logo usually returns the same
 wrong logo. Go straight to erase + composite after one failed try.

@@ -1,5 +1,15 @@
 # Changelog — luckiest-video-studio
 
+## 1.9.0 — 2026-10-07
+- The review player is the default editor (`--editor review`). Step 5 hands the
+  run to the new `luckiest-video-studio-review` sub-skill, built from Motion OS
+  (`jasonlee-breadcrumb/motion-os`, MIT). The user edits copy and colors per
+  scene, pins notes on the frame, and sends one prompt back; edits land in
+  `storyboard.json` and re-render only the touched scenes.
+- Concat moves to `--editor concat`. OpenScreen and Diffusion Studio are unchanged.
+- The cuts sub-skill's review page now opens in the same player (cuts 1.1.0).
+- SECURITY.md S48 to S50 cover the player.
+
 ## 1.8.1 — 2026-10-05
 - Bundle ships art director 1.4.0 (section 3b Real, not generated, and shot prompting).
 

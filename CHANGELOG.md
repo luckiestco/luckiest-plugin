@@ -1,3 +1,12 @@
+## 0.1.31 — 2026-10-07 (npm luckiest-co 1.0.32)
+Brandkit sizes logos like the real product, and video studio opens finished videos in a review player.
+
+- New `luckiest-brandkit-sizing` 1.0.0: real logo size and placement for apparel (inches, cm, and share of chest width), hats, bags, embroidery limits, stationery, minimum size and clear space, and signage letter height by viewing distance.
+- `luckiest-brandkit` 1.5.0: merch, stationery, and signage shots state the logo size in their COMPOSITION line, and QA checks it.
+- New `luckiest-video-studio-review` 1.0.0: the review player, built from Motion OS (MIT). Review a rendered video scene by scene, edit copy and colors, pin notes on the frame, and send one prompt back that re-renders only the touched scenes.
+- `luckiest-video-studio` 1.9.0: the review player is the default editor (`--editor review`); Concat moves to `--editor concat`.
+- `luckiest-video-studio-cuts` 1.1.0: the silence cut is reviewed in the same player, replacing `review.html`.
+
 ## 0.1.30 — 2026-10-06 (npm luckiest-co 1.0.31)
 Brandkit reviews raw shots first.
 
