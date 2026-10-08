@@ -1,3 +1,12 @@
+## Unreleased
+- `npm publish` now stops before upload when the `package.json` version is already on npm, and names the 4 files to bump. Maintainer-only, not in the npm package.
+- `npm run sync-plugin` mirrors this package into luckiestco/luckiest-plugin and opens the sync PR there (`-- --dry-run` to preview). Maintainer-only.
+
+## 0.1.34 — 2026-10-08 (npm luckiest-co 1.0.35)
+Each Luckiest skill now shows up once, not twice.
+
+- The installer no longer copies skills into `~/.claude/skills` when the Luckiest plugin is installed, and `--sync-only` removes the copies older installs left behind, so `luckiest-ads` no longer also appears as `luckiest:luckiest-ads`.
+
 ## 0.1.33 — 2026-10-08 (npm luckiest-co 1.0.34)
 The video watcher keeps keys out of chat and only watches the videos you give it.
 
