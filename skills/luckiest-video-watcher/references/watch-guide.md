@@ -1,6 +1,6 @@
 # Watch guide (upstream)
 
-The full operating guide from the upstream `watch` skill (bradautomates/claude-video 0.3.2, MIT), kept close to verbatim so upstream updates merge cleanly. `SKILL_DIR` is the luckiest-video-watcher directory. Load this file on first run, when setup fails, or when a run needs an option, sampling, transcription, or failure detail that SKILL.md does not cover.
+The full operating guide from the upstream `watch` skill (bradautomates/claude-video 0.3.2, MIT), kept close to verbatim so upstream updates merge cleanly. `SKILL_DIR` is the luckiest-video-watcher directory. Load this file on first run, when setup fails, or when a run needs an option, sampling, transcription, or failure detail that SKILL.md does not cover. Where this guide and SKILL.md differ, SKILL.md wins: keys are never taken in chat (skip the guide's "Paste it in chat" option), and questions are single-quoted.
 
 ## Resolve the skill and interpreter
 

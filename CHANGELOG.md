@@ -1,3 +1,8 @@
+## 0.1.33 — 2026-10-08 (npm luckiest-co 1.0.34)
+The video watcher keeps keys out of chat and only watches the videos you give it.
+
+- `luckiest-video-watcher` 1.1.0: API keys are never taken in chat, and a pasted key is flagged for rotation. Questions and paths are quoted so nothing in them runs as a command. Links found inside a video are reported, never followed. Study questions show each option's frames and cost, a clean render review says what it covered, and sub-second moments get a closer look.
+
 ## 0.1.32 — 2026-10-08 (npm luckiest-co 1.0.33)
 Video studio watches its own renders, makes landscape, vertical, and square from one storyboard, and times sound to the cut.
 
