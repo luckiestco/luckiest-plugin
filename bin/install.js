@@ -135,6 +135,27 @@ function copyWithPathReplacement(srcDir, destDir, pathPrefix) {
   }
 }
 
+// The plan/go/finish skills live in short folders (skills/plan) so the plugin
+// menu shows /luckiest:plan with no folder alias. Outside the plugin there is
+// no namespace, so they go to ~/.claude/skills as luckiest-plan instead of a
+// bare plan that could overwrite or clash with the user's own skills.
+const COMMAND_SKILLS = new Set(['plan', 'go', 'finish', 'next', 'status', 'home', 'start', 'charms',
+  'helpers', 'leaderboard', 'merge', 'overlaps', 'skills', 'updates', 'vouch', 'wishes']);
+const homeName = (folder) => (COMMAND_SKILLS.has(folder) ? `luckiest-${folder}` : folder);
+
+/** Copy each plugin skill folder into skillsRoot under its home name, then fix its name line. */
+function copySkills(srcDir, skillsRoot, pathPrefix) {
+  const placed = [];
+  for (const folder of fs.readdirSync(srcDir)) {
+    if (!fs.statSync(path.join(srcDir, folder)).isDirectory()) continue;
+    const dest = homeName(folder);
+    copyWithPathReplacement(path.join(srcDir, folder), path.join(skillsRoot, dest), pathPrefix);
+    placed.push(dest);
+  }
+  restoreSkillNames(skillsRoot, placed);
+  return placed;
+}
+
 /**
  * Plugin skills carry short names (name: ads) so the plugin menu shows
  * /luckiest:ads. A copy in ~/.claude/skills has no namespace, so a bare /ads
@@ -264,7 +285,7 @@ function pluginSkillNames(globalClaudeDir) {
   // A desktop plugin has no folder to read; it ships the same skills as this package.
   if (desktopPlugin(globalClaudeDir)) {
     const own = path.join(__dirname, '..', 'skills');
-    if (fs.existsSync(own)) fs.readdirSync(own).forEach((n) => names.add(n));
+    if (fs.existsSync(own)) fs.readdirSync(own).forEach((n) => names.add(homeName(n)));
   }
   try {
     const manifest = JSON.parse(
@@ -274,7 +295,7 @@ function pluginSkillNames(globalClaudeDir) {
       if (!key.startsWith('luckiest@')) continue;
       for (const item of Array.isArray(value) ? value : [value]) {
         const dir = item && item.installPath && path.join(item.installPath, 'skills');
-        if (dir && fs.existsSync(dir)) fs.readdirSync(dir).forEach((n) => names.add(n));
+        if (dir && fs.existsSync(dir)) fs.readdirSync(dir).forEach((n) => names.add(homeName(n)));
       }
     }
   } catch {
@@ -536,8 +557,8 @@ function install(isGlobal) {
     const dirSrc = path.join(src, dir);
     const dirDest = path.join(claudeDir, dir);
     if (fs.existsSync(dirSrc)) {
-      copyWithPathReplacement(dirSrc, dirDest, pathPrefix);
-      if (dir === 'skills') restoreSkillNames(dirDest, fs.readdirSync(dirSrc));
+      if (dir === 'skills') copySkills(dirSrc, dirDest, pathPrefix);
+      else copyWithPathReplacement(dirSrc, dirDest, pathPrefix);
       console.log(`  ${green}✓${reset} Installed ${dir}`);
     }
   }
@@ -822,4 +843,4 @@ if (require.main === module) {
   });
 }
 
-module.exports = { placeSkills, dropPluginDuplicates, restoreSkillNames, hasMarketplacePlugin, pluginSkillNames };
+module.exports = { placeSkills, dropPluginDuplicates, restoreSkillNames, hasMarketplacePlugin, pluginSkillNames, copySkills, homeName };
