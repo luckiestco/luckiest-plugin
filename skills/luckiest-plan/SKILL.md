@@ -1,5 +1,6 @@
 ---
 name: luckiest-plan
+user-invocable: false
 description: "Use when the user says /luckiest plan or luckiest plan, or wants to plan a feature, a launch, or their next piece of work before building it, even if they do not say plan (for example \"what should I build next\" or \"break this down into tasks\"). Looks at the project first, drafts 3 to 7 tasks with a suggested skill, model, and runnable check each, saves the context for /luckiest go, and stages the plan after one approval question."
 ---
 

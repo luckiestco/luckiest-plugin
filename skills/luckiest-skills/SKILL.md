@@ -1,5 +1,6 @@
 ---
 name: luckiest-skills
+user-invocable: false
 description: "Your Luckiest skills: list what is installed, pull new purchases. Use when the user says /luckiest skills, luckiest skills, or asks what Luckiest skills they have."
 ---
 
