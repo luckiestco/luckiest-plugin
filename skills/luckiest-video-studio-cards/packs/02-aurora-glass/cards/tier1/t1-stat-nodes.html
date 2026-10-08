@@ -14,7 +14,7 @@
       html, body { margin: 0; }
 
       #t1-stat-nodes {
-        position: absolute; inset: 0; width: 1920px; height: 1080px;
+        position: absolute; inset: 0; width: var(--w); height: var(--h);
         background: var(--canvas); color: var(--text);
         font-family: var(--font-display); overflow: hidden;
       }
@@ -32,7 +32,7 @@
 
       /* ── SVG graph layer ── */
       #t1-stat-nodes .node-svg {
-        position: absolute; inset: 0; width: 1920px; height: 1080px; z-index: 3;
+        position: absolute; inset: 0; width: var(--w); height: var(--h); z-index: 3;
         overflow: visible;
       }
 
@@ -75,14 +75,14 @@
 
       /* node-label chips (positioned absolutely via inline style) */
       #t1-stat-nodes .node-label {
-        position: absolute; font-family: var(--font-mono); font-size: 20px;
+        position: absolute; font-family: var(--font-mono); font-size: calc(20px * var(--type));
         font-weight: var(--wt-bold); letter-spacing: 0.10em;
         text-transform: uppercase; color: var(--text-dim);
         white-space: nowrap;
       }
 
       #t1-stat-nodes .source {
-        position: absolute; left: var(--pad); bottom: 44px;
+        position: absolute; left: var(--safe-l); bottom: var(--safe-b);
         font-family: var(--font-mono); font-size: var(--size-tiny);
         font-weight: var(--wt-reg); letter-spacing: 0.12em;
         text-transform: uppercase; color: var(--text-faint); z-index: 5;
@@ -97,6 +97,47 @@
         background-size: 200px 200px; mix-blend-mode: overlay; opacity: 0.10;
         pointer-events: none; z-index: 7;
       }
+      /* Vertical and square: content centers in the safe box; the graph stays at scale 1 with the
+         hub behind the stat, and the five nodes move into the safe box corners (CSS cx/cy/d). */
+      [data-format="vertical"] #t1-stat-nodes .content, [data-format="square"] #t1-stat-nodes .content {
+        inset: var(--safe-t) var(--safe-r) var(--safe-b) var(--safe-l); padding-bottom: 0; gap: 36px;
+      }
+      [data-format="vertical"] #t1-stat-nodes .kicker, [data-format="square"] #t1-stat-nodes .kicker { text-align: center; }
+      [data-format="vertical"] #t1-stat-nodes .label, [data-format="square"] #t1-stat-nodes .label { max-width: 100%; }
+      [data-format="vertical"] #t1-stat-nodes .stat { font-size: calc(250px * var(--type)); }
+      [data-format="vertical"] #t1-stat-nodes .content { top: calc(var(--safe-t) + 110px); bottom: calc(var(--safe-b) + 110px); }
+      [data-format="vertical"] #t1-stat-nodes .node-svg { inset: auto; left: -420px; top: 228px; width: 1920px; height: 1080px; }
+      [data-format="square"] #t1-stat-nodes .node-svg { inset: auto; left: -420px; top: 0; width: 1920px; height: 1080px; }
+      [data-format="vertical"] #t1-stat-nodes #nd-l1 { d: path("M610 92 L960 540"); }
+      [data-format="vertical"] #t1-stat-nodes #nd-l2 { d: path("M610 942 L960 540"); }
+      [data-format="vertical"] #t1-stat-nodes #nd-l3 { d: path("M960 72 L960 540"); }
+      [data-format="vertical"] #t1-stat-nodes #nd-l4 { d: path("M1270 92 L960 540"); }
+      [data-format="vertical"] #t1-stat-nodes #nd-l5 { d: path("M1270 942 L960 540"); }
+      [data-format="vertical"] #t1-stat-nodes #nd-n1 { cx: 610px; cy: 92px; }
+      [data-format="vertical"] #t1-stat-nodes #nd-n2 { cx: 610px; cy: 942px; }
+      [data-format="vertical"] #t1-stat-nodes #nd-n3 { cx: 960px; cy: 72px; }
+      [data-format="vertical"] #t1-stat-nodes #nd-n4 { cx: 1270px; cy: 92px; }
+      [data-format="vertical"] #t1-stat-nodes #nd-n5 { cx: 1270px; cy: 942px; }
+      [data-format="vertical"] #t1-stat-nodes #nd-lbl1 { left: 150px !important; top: 352px !important; }
+      [data-format="vertical"] #t1-stat-nodes #nd-lbl2 { left: 224px !important; top: 1158px !important; }
+      [data-format="vertical"] #t1-stat-nodes #nd-lbl3 { left: 580px !important; top: 290px !important; }
+      [data-format="vertical"] #t1-stat-nodes #nd-lbl4 { left: 790px !important; top: 352px !important; }
+      [data-format="vertical"] #t1-stat-nodes #nd-lbl5 { left: 740px !important; top: 1158px !important; }
+      [data-format="square"] #t1-stat-nodes #nd-l1 { d: path("M580 170 L960 540"); }
+      [data-format="square"] #t1-stat-nodes #nd-l2 { d: path("M580 920 L960 540"); }
+      [data-format="square"] #t1-stat-nodes #nd-l3 { d: path("M960 110 L960 540"); }
+      [data-format="square"] #t1-stat-nodes #nd-l4 { d: path("M1340 170 L960 540"); }
+      [data-format="square"] #t1-stat-nodes #nd-l5 { d: path("M1340 920 L960 540"); }
+      [data-format="square"] #t1-stat-nodes #nd-n1 { cx: 580px; cy: 170px; }
+      [data-format="square"] #t1-stat-nodes #nd-n2 { cx: 580px; cy: 920px; }
+      [data-format="square"] #t1-stat-nodes #nd-n3 { cx: 960px; cy: 110px; }
+      [data-format="square"] #t1-stat-nodes #nd-n4 { cx: 1340px; cy: 170px; }
+      [data-format="square"] #t1-stat-nodes #nd-n5 { cx: 1340px; cy: 920px; }
+      [data-format="square"] #t1-stat-nodes #nd-lbl1 { left: 120px !important; top: 202px !important; }
+      [data-format="square"] #t1-stat-nodes #nd-lbl2 { left: 192px !important; top: 908px !important; }
+      [data-format="square"] #t1-stat-nodes #nd-lbl3 { left: 580px !important; top: 98px !important; }
+      [data-format="square"] #t1-stat-nodes #nd-lbl4 { left: 880px !important; top: 202px !important; }
+      [data-format="square"] #t1-stat-nodes #nd-lbl5 { left: 820px !important; top: 908px !important; }
     </style>
   </head>
   <body>
@@ -123,15 +164,15 @@
 
         <!-- 5 spoke lines from satellite nodes to center (960,540) -->
         <!-- each given a unique id for dash-draw animation -->
-        <line id="nd-l1" x1="310" y1="260" x2="960" y2="540"
+        <path id="nd-l1" d="M310 260 L960 540"
               stroke="url(#lineGrad)" stroke-width="1.5" stroke-dasharray="0 800"/>
-        <line id="nd-l2" x1="310" y1="820" x2="960" y2="540"
+        <path id="nd-l2" d="M310 820 L960 540"
               stroke="url(#lineGrad)" stroke-width="1.5" stroke-dasharray="0 800"/>
-        <line id="nd-l3" x1="680" y1="150" x2="960" y2="540"
+        <path id="nd-l3" d="M680 150 L960 540"
               stroke="url(#lineGrad)" stroke-width="1.5" stroke-dasharray="0 800"/>
-        <line id="nd-l4" x1="1610" y1="260" x2="960" y2="540"
+        <path id="nd-l4" d="M1610 260 L960 540"
               stroke="url(#lineGrad)" stroke-width="1.5" stroke-dasharray="0 800"/>
-        <line id="nd-l5" x1="1610" y1="820" x2="960" y2="540"
+        <path id="nd-l5" d="M1610 820 L960 540"
               stroke="url(#lineGrad)" stroke-width="1.5" stroke-dasharray="0 800"/>
 
         <!-- satellite node circles -->

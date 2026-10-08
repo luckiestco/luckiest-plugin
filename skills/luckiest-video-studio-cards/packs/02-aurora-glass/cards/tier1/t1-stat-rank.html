@@ -15,7 +15,7 @@
       html, body { margin: 0; }
 
       #t1-st-rank {
-        position: absolute; inset: 0; width: 1920px; height: 1080px;
+        position: absolute; inset: 0; width: var(--w); height: var(--h);
         background: var(--canvas); color: var(--text);
         font-family: var(--font-display); overflow: hidden;
       }
@@ -90,7 +90,7 @@
       #t1-st-rank .hash {
         font-family: var(--font-display);
         font-weight: var(--wt-black);
-        font-size: 100px;
+        font-size: calc(100px * var(--type));
         line-height: 1;
         letter-spacing: var(--track-tight);
         color: rgba(255, 255, 255, 0.55);
@@ -104,7 +104,7 @@
       #t1-st-rank .stat {
         font-family: var(--font-display);
         font-weight: var(--wt-black);
-        font-size: 220px;
+        font-size: calc(220px * var(--type));
         line-height: 0.88;
         letter-spacing: var(--track-tight);
         background: linear-gradient(155deg, #ffffff 10%, rgba(var(--accent-rgb), 0.85) 76%);
@@ -117,7 +117,7 @@
       /* "out of N" sub-label inside the badge */
       #t1-st-rank .out-of {
         font-family: var(--font-mono);
-        font-size: 22px;
+        font-size: calc(22px * var(--type));
         letter-spacing: 0.12em;
         text-transform: uppercase;
         color: var(--text-faint);
@@ -139,7 +139,7 @@
       }
 
       #t1-st-rank .source {
-        position: absolute; left: var(--pad); bottom: 44px;
+        position: absolute; left: var(--safe-l); bottom: var(--safe-b);
         font-family: var(--font-mono); font-size: var(--size-tiny);
         font-weight: var(--wt-reg); letter-spacing: 0.12em;
         text-transform: uppercase; color: var(--text-faint); z-index: 5;
@@ -154,6 +154,14 @@
         background-size: 200px 200px; mix-blend-mode: overlay; opacity: 0.10;
         pointer-events: none; z-index: 7;
       }
+
+      /* Vertical and square: the stack centers in the safe box; square uses a smaller badge. */
+      [data-format="vertical"] #t1-st-rank .content, [data-format="square"] #t1-st-rank .content { inset: var(--safe-t) var(--safe-r) calc(var(--safe-b) + 48px) var(--safe-l); padding-bottom: 0; gap: 60px; }
+      [data-format="vertical"] #t1-st-rank .kicker, [data-format="square"] #t1-st-rank .kicker { text-align: center; }
+      [data-format="vertical"] #t1-st-rank .label, [data-format="square"] #t1-st-rank .label { max-width: 100%; }
+      [data-format="square"] #t1-st-rank .content { gap: 48px; }
+      [data-format="square"] #t1-st-rank .badge { width: 400px; height: 400px; }
+      [data-format="square"] #t1-st-rank .hash { margin-left: 86px; }
     </style>
   </head>
   <body>

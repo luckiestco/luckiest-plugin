@@ -14,7 +14,7 @@
       html, body { margin: 0; }
 
       #t1-sec-dots {
-        position: absolute; inset: 0; width: 1920px; height: 1080px;
+        position: absolute; inset: 0; width: var(--w); height: var(--h);
         background: var(--canvas); color: var(--text);
         font-family: var(--font-display); overflow: hidden;
       }
@@ -82,6 +82,12 @@
         background-size: 200px 200px; mix-blend-mode: overlay; opacity: 0.10;
         pointer-events: none; z-index: 7;
       }
+
+      /* Vertical and square: the centred title block centres in the safe area, not the frame. */
+      [data-format="vertical"] #t1-sec-dots .content, [data-format="square"] #t1-sec-dots .content {
+        left: var(--safe-l); right: var(--safe-r); top: var(--safe-t); bottom: var(--safe-b);
+      }
+      [data-format="vertical"] #t1-sec-dots .headline, [data-format="square"] #t1-sec-dots .headline { max-width: none; padding: 0; }
     </style>
   </head>
   <body>

@@ -15,7 +15,7 @@
       html, body { margin: 0; }
 
       #t1-ov-levels {
-        position: absolute; inset: 0; width: 1920px; height: 1080px;
+        position: absolute; inset: 0; width: var(--w); height: var(--h);
         background: var(--canvas); color: var(--text);
         font-family: var(--font-display); overflow: hidden;
       }
@@ -32,8 +32,8 @@
 
       /* Layout: three columns - left label | center stack | right label */
       #t1-ov-levels .layout {
-        position: absolute; left: 80px; right: 80px;
-        top: 120px; bottom: 80px;
+        position: absolute; left: var(--safe-l); right: var(--safe-r);
+        top: calc(var(--safe-t) + 66px); bottom: calc(var(--safe-b) + 26px);
         display: flex; align-items: center; gap: 56px; z-index: 4;
       }
 
@@ -97,11 +97,11 @@
       /* Level label */
       #t1-ov-levels .level-label {
         font-family: var(--font-display); font-weight: var(--wt-semi);
-        font-size: 38px; letter-spacing: var(--track-snug); line-height: 1.2;
+        font-size: calc(38px * var(--type)); letter-spacing: var(--track-snug); line-height: 1.2;
         color: var(--white); text-shadow: var(--textglow);
       }
       #t1-ov-levels #lv3 .level-label {
-        font-weight: var(--wt-bold); font-size: 42px;
+        font-weight: var(--wt-bold); font-size: calc(42px * var(--type));
       }
 
       #t1-ov-levels .vignette {
@@ -113,6 +113,20 @@
         background-size: 200px 200px; mix-blend-mode: overlay; opacity: 0.10;
         pointer-events: none; z-index: 7;
       }
+
+      /* Vertical and square: "From" title on top, the level stack, "To" title under it; titles run on one line. */
+      [data-format="vertical"] #t1-ov-levels .layout, [data-format="square"] #t1-ov-levels .layout {
+        top: var(--safe-t); bottom: var(--safe-b); flex-direction: column; justify-content: center; gap: 40px;
+      }
+      [data-format="vertical"] #t1-ov-levels .side-title, [data-format="square"] #t1-ov-levels .side-title { flex: none; }
+      [data-format="vertical"] #t1-ov-levels .side-title-text, [data-format="square"] #t1-ov-levels .side-title-text { max-width: none; }
+      [data-format="vertical"] #t1-ov-levels .side-title-text em, [data-format="square"] #t1-ov-levels .side-title-text em { display: inline; }
+      [data-format="vertical"] #t1-ov-levels .stack { width: 767px; }
+      [data-format="vertical"] #t1-ov-levels #lv3 { width: 500px; height: 120px; }
+      [data-format="vertical"] #t1-ov-levels #lv2 { width: 634px; height: 136px; }
+      [data-format="vertical"] #t1-ov-levels #lv1 { width: 767px; height: 152px; }
+      [data-format="vertical"] #t1-ov-levels .level { padding: 0 32px; box-sizing: border-box; }
+      [data-format="vertical"] #t1-ov-levels .level-tag { margin-right: 20px; min-width: 80px; }
     </style>
   </head>
   <body>

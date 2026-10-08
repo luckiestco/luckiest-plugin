@@ -15,7 +15,7 @@
     <style>
       html, body { margin: 0; }
       #t1-ov-matrix {
-        position: absolute; inset: 0; width: 1920px; height: 1080px;
+        position: absolute; inset: 0; width: var(--w); height: var(--h);
         background: var(--paper); color: var(--ink);
         font-family: var(--font-display); overflow: hidden;
       }
@@ -37,7 +37,7 @@
 
       /* marker title */
       #t1-ov-matrix .marker-title {
-        position: absolute; top: 72px; left: 50%; transform: translateX(-50%) skewX(var(--marker-skew));
+        position: absolute; top: calc(var(--safe-t) + 18px); left: 50%; transform: translateX(-50%) skewX(var(--marker-skew));
         background: var(--yellow); padding: 10px 36px; z-index: 5;
         font-weight: var(--wt-black); font-size: var(--size-title);
         letter-spacing: var(--track-tight); text-transform: uppercase; white-space: nowrap;
@@ -45,7 +45,7 @@
 
       /* table wrapper - centered */
       #t1-ov-matrix .table-wrap {
-        position: absolute; top: 240px; left: 50%; transform: translateX(-50%);
+        position: absolute; top: calc(var(--safe-t) + 186px); left: 50%; transform: translateX(-50%);
         width: 1360px;
       }
 
@@ -59,7 +59,7 @@
       #t1-ov-matrix .matrix thead th {
         padding: 22px 28px;
         font-family: var(--font-label); font-weight: var(--wt-bold);
-        font-size: 36px; letter-spacing: var(--track-wide); text-transform: uppercase;
+        font-size: calc(36px * var(--type)); letter-spacing: var(--track-wide); text-transform: uppercase;
         border-bottom: 5px solid var(--ink);
       }
       #t1-ov-matrix .matrix thead th:first-child {
@@ -82,7 +82,7 @@
       }
       #t1-ov-matrix .row-label {
         font-family: var(--font-label); font-weight: var(--wt-bold);
-        font-size: 40px; color: var(--ink); text-align: left;
+        font-size: calc(40px * var(--type)); color: var(--ink); text-align: left;
       }
       #t1-ov-matrix .cell {
         text-align: center;
@@ -91,7 +91,7 @@
       /* check / cross marks - NOT arrows */
       #t1-ov-matrix .mark {
         display: inline-block;
-        font-size: 72px; line-height: 1; font-weight: var(--wt-black);
+        font-size: calc(72px * var(--type)); line-height: 1; font-weight: var(--wt-black);
         font-family: var(--font-label);
       }
       #t1-ov-matrix .mark.yes {
@@ -112,11 +112,39 @@
 
       /* source */
       #t1-ov-matrix .source {
-        position: absolute; bottom: 72px; left: 120px; z-index: 6;
+        position: absolute; bottom: calc(var(--safe-b) + 18px); left: calc(var(--safe-l) + 24px); z-index: 6;
         font-family: var(--font-label); font-weight: var(--wt-bold);
         font-size: var(--size-tiny); letter-spacing: var(--track-wide);
         text-transform: uppercase; color: var(--muted);
       }
+
+      /* Vertical and square: title and table centred on the safe box, the table narrowed to the
+         safe width with smaller header, labels and marks; source at the bottom left of the safe area. */
+      [data-format="vertical"] #t1-ov-matrix .marker-title, [data-format="square"] #t1-ov-matrix .marker-title,
+      [data-format="vertical"] #t1-ov-matrix .table-wrap, [data-format="square"] #t1-ov-matrix .table-wrap {
+        left: calc(var(--safe-l) + (var(--w) - var(--safe-l) - var(--safe-r)) / 2);
+      }
+      [data-format="vertical"] #t1-ov-matrix .marker-title, [data-format="square"] #t1-ov-matrix .marker-title {
+        top: var(--safe-t); width: max-content; max-width: calc(var(--w) - var(--safe-l) - var(--safe-r) - 72px);
+        white-space: normal; text-align: center;
+      }
+      [data-format="vertical"] #t1-ov-matrix .marker-title { font-size: calc(64px * var(--type)); }
+      [data-format="vertical"] #t1-ov-matrix .table-wrap, [data-format="square"] #t1-ov-matrix .table-wrap { width: calc(var(--w) - var(--safe-l) - var(--safe-r)); }
+      [data-format="vertical"] #t1-ov-matrix .table-wrap { top: calc(var(--safe-t) + 190px); }
+      [data-format="square"] #t1-ov-matrix .table-wrap { top: calc(var(--safe-t) + 170px); }
+      [data-format="vertical"] #t1-ov-matrix .matrix thead th { padding: 18px 10px; font-size: calc(24px * var(--type)); letter-spacing: 0.1em; }
+      [data-format="vertical"] #t1-ov-matrix .matrix thead th:first-child { width: 267px; }
+      [data-format="vertical"] #t1-ov-matrix .th-col { width: 220px; }
+      [data-format="vertical"] #t1-ov-matrix .matrix tbody td { padding: 48px 14px; }
+      [data-format="vertical"] #t1-ov-matrix .row-label { font-size: calc(32px * var(--type)); }
+      [data-format="vertical"] #t1-ov-matrix .mark { font-size: calc(54px * var(--type)); }
+      [data-format="square"] #t1-ov-matrix .matrix thead th { padding: 20px 14px; font-size: 30px; }
+      [data-format="square"] #t1-ov-matrix .matrix thead th:first-child { width: 332px; }
+      [data-format="square"] #t1-ov-matrix .th-col { width: 256px; }
+      [data-format="square"] #t1-ov-matrix .matrix tbody td { padding: 40px 20px; }
+      [data-format="square"] #t1-ov-matrix .row-label { font-size: 38px; }
+      [data-format="square"] #t1-ov-matrix .mark { font-size: 64px; }
+      [data-format="vertical"] #t1-ov-matrix .source, [data-format="square"] #t1-ov-matrix .source { left: var(--safe-l); bottom: var(--safe-b); }
     </style>
   </head>
   <body>

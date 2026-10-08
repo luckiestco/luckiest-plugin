@@ -13,7 +13,9 @@
       html, body { margin: 0; background: transparent; }
 
       #t2-lt-neon {
-        position: absolute; inset: 0; width: 1920px; height: 1080px;
+        position: absolute; inset: 0; width: var(--w); height: var(--h);
+        /* the lower-third group's anchor: left / bottom of the main card */
+        --lt-x: var(--safe-l); --lt-y: calc(var(--safe-b) + 56px);
         background: transparent; overflow: hidden;
         font-family: var(--font-display);
       }
@@ -21,7 +23,7 @@
       /* Localized bloom behind card */
       #t2-lt-neon .local-bloom {
         position: absolute;
-        left: 40px; bottom: 85px;
+        left: calc(var(--lt-x) - 40px); bottom: calc(var(--lt-y) - 25px);
         width: 600px; height: 240px;
         border-radius: 50%;
         background: radial-gradient(ellipse at 45% 80%,
@@ -36,7 +38,7 @@
       /* Neon frame container - uses SVG for the outline draw animation */
       #t2-lt-neon .frame-wrap {
         position: absolute;
-        left: 80px; bottom: 110px;
+        left: var(--lt-x); bottom: var(--lt-y);
         width: 500px;
         z-index: 2;
       }
@@ -81,7 +83,7 @@
       #t2-lt-neon .name {
         font-family: var(--font-display);
         font-weight: var(--wt-bold);
-        font-size: 38px;
+        font-size: calc(38px * var(--type));
         letter-spacing: var(--track-snug);
         color: var(--white);
         text-shadow: var(--textglow);
@@ -92,11 +94,18 @@
       #t2-lt-neon .role {
         font-family: var(--font-body);
         font-weight: var(--wt-med);
-        font-size: 23px;
+        font-size: calc(23px * var(--type));
         letter-spacing: 0.01em;
         color: var(--text-dim);
         line-height: 1.3;
       }
+      /* Vertical and square: the group sits at the bottom-left of the safe area and slots wrap. */
+      [data-format="vertical"] #t2-lt-neon, [data-format="square"] #t2-lt-neon { --lt-y: var(--safe-b); }
+      /* The JS neon outline is a fixed 500 x 116 rect, so the card keeps that box in every format. */
+      [data-format="vertical"] #t2-lt-neon .card {
+        height: 116px; box-sizing: border-box; padding-top: 14px; padding-bottom: 12px;
+      }
+      [data-format="vertical"] #t2-lt-neon [data-slot], [data-format="square"] #t2-lt-neon [data-slot] { white-space: normal; }
     </style>
   </head>
   <body>

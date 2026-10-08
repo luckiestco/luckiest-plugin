@@ -16,7 +16,7 @@
       html, body { margin: 0; }
 
       #t1-ov-journey {
-        position: absolute; inset: 0; width: 1920px; height: 1080px;
+        position: absolute; inset: 0; width: var(--w); height: var(--h);
         background: var(--canvas); color: var(--text);
         font-family: var(--font-display); overflow: hidden;
       }
@@ -33,7 +33,7 @@
 
       /* Title */
       #t1-ov-journey .title-row {
-        position: absolute; left: 0; right: 0; top: 68px; text-align: center; z-index: 5;
+        position: absolute; left: var(--safe-l); right: var(--safe-r); top: calc(var(--safe-t) + 14px); text-align: center; z-index: 5;
       }
       #t1-ov-journey .title {
         font-family: var(--font-display); font-weight: var(--wt-bold);
@@ -47,7 +47,7 @@
 
       /* SVG layer for the winding path */
       #t1-ov-journey .journey-svg {
-        position: absolute; left: 0; top: 0; width: 1920px; height: 1080px;
+        position: absolute; left: 0; top: 0; width: var(--w); height: var(--h);
         z-index: 3; pointer-events: none; overflow: visible;
       }
 
@@ -111,18 +111,18 @@
       #t1-ov-journey .stop-card.below { top: 42px; }
 
       #t1-ov-journey .stop-num {
-        font-family: var(--font-mono); font-size: 16px; font-weight: var(--wt-bold);
+        font-family: var(--font-mono); font-size: calc(16px * var(--type)); font-weight: var(--wt-bold);
         color: var(--accent); text-shadow: var(--textglow-accent);
         letter-spacing: 0.12em; margin-bottom: 8px;
       }
       #t1-ov-journey .stop-label {
         font-family: var(--font-display); font-weight: var(--wt-bold);
-        font-size: 30px; letter-spacing: var(--track-snug); line-height: 1.2;
+        font-size: calc(30px * var(--type)); letter-spacing: var(--track-snug); line-height: 1.2;
         color: var(--white); text-shadow: var(--textglow);
         margin-bottom: 8px;
       }
       #t1-ov-journey .stop-body {
-        font-family: var(--font-body); font-size: 20px; line-height: 1.45;
+        font-family: var(--font-body); font-size: calc(20px * var(--type)); line-height: 1.45;
         color: var(--text-dim);
       }
 
@@ -141,6 +141,41 @@
         background-size: 200px 200px; mix-blend-mode: overlay; opacity: 0.10;
         pointer-events: none; z-index: 7;
       }
+
+      /* Vertical and square: the journey runs top to bottom. The path SVG is scaled (0.4494) and turned
+         90deg so it snakes down the safe box; stops sit on the turned path and their cards alternate
+         left and right of the dot at a fixed size (the left offsets absorb the card's translateX(-50%)). */
+      [data-format="vertical"] #t1-ov-journey .title-row, [data-format="square"] #t1-ov-journey .title-row { top: var(--safe-t); }
+      [data-format="vertical"] #t1-ov-journey .title { font-size: calc(48px * var(--type)); }
+      [data-format="square"] #t1-ov-journey .title { font-size: 60px; }
+      [data-format="vertical"] #t1-ov-journey .journey-svg, [data-format="square"] #t1-ov-journey .journey-svg {
+        width: 862.8px; height: 485.4px; transform-origin: 0 0; transform: rotate(90deg);
+      }
+      [data-format="vertical"] #t1-ov-journey .journey-svg { left: 794.6px; top: 384px; }
+      [data-format="square"] #t1-ov-journey .journey-svg { left: 832.1px; top: 154px; }
+      [data-format="vertical"] .journey-path, [data-format="square"] .journey-path { stroke-width: 6; }
+      [data-format="vertical"] .journey-path-ghost, [data-format="square"] .journey-path-ghost { stroke-width: 24; }
+      [data-format="vertical"] #t1-ov-journey #jrn-s1 { left: 462px !important; top: 492px !important; }
+      [data-format="vertical"] #t1-ov-journey #jrn-s2 { left: 543px !important; top: 708px !important; }
+      [data-format="vertical"] #t1-ov-journey #jrn-s3 { left: 462px !important; top: 923px !important; }
+      [data-format="vertical"] #t1-ov-journey #jrn-s4 { left: 543px !important; top: 1139px !important; }
+      [data-format="square"] #t1-ov-journey #jrn-s1 { left: 499.5px !important; top: 262px !important; }
+      [data-format="square"] #t1-ov-journey #jrn-s2 { left: 580.4px !important; top: 477.6px !important; }
+      [data-format="square"] #t1-ov-journey #jrn-s3 { left: 499.5px !important; top: 693.3px !important; }
+      [data-format="square"] #t1-ov-journey #jrn-s4 { left: 580.4px !important; top: 909px !important; }
+      [data-format="vertical"] #t1-ov-journey .stop-card, [data-format="square"] #t1-ov-journey .stop-card {
+        box-sizing: border-box; display: flex; flex-direction: column; justify-content: center;
+        bottom: auto; padding: 16px 20px; text-align: left;
+      }
+      [data-format="vertical"] #t1-ov-journey .stop-card { width: 280px; min-width: 280px; max-width: 280px; height: 180px; top: -76px; }
+      [data-format="square"] #t1-ov-journey .stop-card { width: 320px; min-width: 320px; max-width: 320px; height: 180px; top: -76px; }
+      [data-format="vertical"] #t1-ov-journey #jrn-s1 .stop-card, [data-format="vertical"] #t1-ov-journey #jrn-s3 .stop-card { left: -162px; }
+      [data-format="vertical"] #t1-ov-journey #jrn-s2 .stop-card, [data-format="vertical"] #t1-ov-journey #jrn-s4 .stop-card { left: 190px; }
+      [data-format="square"] #t1-ov-journey #jrn-s1 .stop-card, [data-format="square"] #t1-ov-journey #jrn-s3 .stop-card { left: -182px; }
+      [data-format="square"] #t1-ov-journey #jrn-s2 .stop-card, [data-format="square"] #t1-ov-journey #jrn-s4 .stop-card { left: 210px; }
+      [data-format="vertical"] #t1-ov-journey .stop-label { font-size: calc(26px * var(--type)); margin-bottom: 6px; }
+      [data-format="vertical"] #t1-ov-journey .stop-body { font-size: calc(17px * var(--type)); line-height: 1.4; }
+      [data-format="square"] #t1-ov-journey .stop-body { line-height: 1.4; }
     </style>
   </head>
   <body>

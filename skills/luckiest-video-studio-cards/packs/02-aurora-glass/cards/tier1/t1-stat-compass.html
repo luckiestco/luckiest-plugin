@@ -15,7 +15,7 @@
       html, body { margin: 0; }
 
       #t1-stat-compass {
-        position: absolute; inset: 0; width: 1920px; height: 1080px;
+        position: absolute; inset: 0; width: var(--w); height: var(--h);
         background: var(--canvas); color: var(--text);
         font-family: var(--font-display); overflow: hidden;
       }
@@ -74,7 +74,7 @@
       }
       #t1-stat-compass .stat {
         font-family: var(--font-display); font-weight: var(--wt-black);
-        font-size: 116px; line-height: 1; letter-spacing: var(--track-tight);
+        font-size: calc(116px * var(--type)); line-height: 1; letter-spacing: var(--track-tight);
         background: linear-gradient(150deg, #ffffff 10%, rgba(var(--accent-rgb),0.82) 72%);
         -webkit-background-clip: text; background-clip: text;
         -webkit-text-fill-color: transparent; text-fill-color: transparent;
@@ -91,7 +91,7 @@
       }
 
       #t1-stat-compass .source {
-        position: absolute; left: var(--pad); bottom: 44px;
+        position: absolute; left: var(--safe-l); bottom: var(--safe-b);
         font-family: var(--font-mono); font-size: var(--size-tiny);
         font-weight: var(--wt-reg); letter-spacing: 0.12em;
         text-transform: uppercase; color: var(--text-faint); z-index: 5;
@@ -106,6 +106,10 @@
         background-size: 200px 200px; mix-blend-mode: overlay; opacity: 0.10;
         pointer-events: none; z-index: 7;
       }
+
+      /* Vertical and square: the stack centers inside the safe area. */
+      [data-format="vertical"] #t1-stat-compass .content, [data-format="square"] #t1-stat-compass .content { inset: var(--safe-t) var(--safe-r) var(--safe-b) var(--safe-l); gap: 36px; padding-bottom: 40px; }
+      [data-format="vertical"] #t1-stat-compass .kicker, [data-format="square"] #t1-stat-compass .kicker { text-align: center; }
     </style>
   </head>
   <body>

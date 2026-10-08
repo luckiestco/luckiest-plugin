@@ -13,7 +13,7 @@
     <style>
       html, body { margin: 0; }
       #t1-stat-engrave {
-        position: absolute; inset: 0; width: 1920px; height: 1080px;
+        position: absolute; inset: 0; width: var(--w); height: var(--h);
         background: var(--ink); color: var(--paper);
         font-family: var(--font-display); overflow: hidden;
       }
@@ -64,7 +64,7 @@
 
       /* kicker */
       #t1-stat-engrave .kicker {
-        position: absolute; left: 130px; top: 220px; z-index: 4;
+        position: absolute; left: calc(var(--safe-l) + 34px); top: calc(var(--safe-t) + 166px); z-index: 4;
         font-family: var(--font-label); font-weight: var(--wt-bold);
         font-size: var(--size-label); letter-spacing: var(--track-wide);
         text-transform: uppercase; color: var(--orange);
@@ -72,8 +72,8 @@
 
       /* big stat */
       #t1-stat-engrave .stat {
-        position: absolute; left: 110px; top: 50%; transform: translateY(-52%); z-index: 4;
-        font-weight: var(--wt-black); font-size: 480px; line-height: 0.85;
+        position: absolute; left: calc(var(--safe-l) + 14px); top: calc(var(--safe-t) + (var(--h) - var(--safe-t) - var(--safe-b)) / 2); transform: translateY(-52%); z-index: 4;
+        font-weight: var(--wt-black); font-size: calc(480px * var(--type)); line-height: 0.85;
         letter-spacing: -0.06em; color: var(--paper);
         font-variant-numeric: tabular-nums;
         text-shadow: 0 12px 48px rgba(23,19,14,0.6);
@@ -81,8 +81,8 @@
 
       /* label */
       #t1-stat-engrave .label {
-        position: absolute; left: 130px; right: 860px; bottom: 200px; z-index: 4;
-        font-weight: var(--wt-thin); font-size: 60px; line-height: 1.08;
+        position: absolute; left: calc(var(--safe-l) + 34px); right: calc(var(--safe-r) + 764px); bottom: calc(var(--safe-b) + 146px); z-index: 4;
+        font-weight: var(--wt-thin); font-size: calc(60px * var(--type)); line-height: 1.08;
         letter-spacing: var(--track-tight); color: var(--paper);
       }
       #t1-stat-engrave .label em {
@@ -93,7 +93,7 @@
 
       /* source */
       #t1-stat-engrave .source {
-        position: absolute; left: 130px; bottom: 96px; z-index: 4;
+        position: absolute; left: calc(var(--safe-l) + 34px); bottom: calc(var(--safe-b) + 42px); z-index: 4;
         font-family: var(--font-label); font-weight: var(--wt-bold);
         font-size: var(--size-tiny); letter-spacing: var(--track-wide);
         text-transform: uppercase; color: rgba(239,233,220,0.6);
@@ -101,10 +101,32 @@
 
       /* small decorative orange rule under kicker */
       #t1-stat-engrave .rule {
-        position: absolute; left: 130px; top: 256px; width: 80px; height: 4px;
+        position: absolute; left: calc(var(--safe-l) + 34px); top: calc(var(--safe-t) + 202px); width: 80px; height: 4px;
         background: var(--orange); z-index: 4;
       }
+
+      /* Vertical: the engraving fills the top of the frame and fades into ink; kicker, number,
+         label and source stack in the dark lower part of the safe box. */
+      [data-format="vertical"] #t1-stat-engrave .engraving {
+        -webkit-mask-image: linear-gradient(180deg, rgba(0,0,0,1) 0%, rgba(0,0,0,1) 18%, rgba(0,0,0,0.18) 30%, rgba(0,0,0,0) 40%);
+        mask-image:         linear-gradient(180deg, rgba(0,0,0,1) 0%, rgba(0,0,0,1) 18%, rgba(0,0,0,0.18) 30%, rgba(0,0,0,0) 40%);
+      }
+      [data-format="vertical"] #t1-stat-engrave .scrim {
+        background: linear-gradient(180deg, transparent 0%, rgba(23,19,14,0.10) 16%, rgba(23,19,14,0.72) 28%, rgba(23,19,14,0.92) 40%);
+      }
+      [data-format="vertical"] #t1-stat-engrave .kicker { left: var(--safe-l); top: calc(var(--safe-t) + 250px); }
+      [data-format="vertical"] #t1-stat-engrave .rule { left: var(--safe-l); top: calc(var(--safe-t) + 290px); }
+      [data-format="vertical"] #t1-stat-engrave .stat { left: var(--safe-l); top: calc(var(--safe-t) + 490px); font-size: calc(300px * var(--type)); }
+      [data-format="vertical"] #t1-stat-engrave .label { left: var(--safe-l); right: var(--safe-r); bottom: calc(var(--safe-b) + 60px); }
+      [data-format="vertical"] #t1-stat-engrave .source { left: var(--safe-l); bottom: var(--safe-b); }
+      /* Square: same left-dark layout as landscape, number sized to the safe width. */
+      [data-format="square"] #t1-stat-engrave .kicker { left: var(--safe-l); top: var(--safe-t); }
+      [data-format="square"] #t1-stat-engrave .rule { left: var(--safe-l); top: calc(var(--safe-t) + 36px); }
+      [data-format="square"] #t1-stat-engrave .stat { left: var(--safe-l); font-size: 400px; }
+      [data-format="square"] #t1-stat-engrave .label { left: var(--safe-l); right: calc(var(--safe-r) + 260px); bottom: calc(var(--safe-b) + 60px); }
+      [data-format="square"] #t1-stat-engrave .source { left: var(--safe-l); bottom: var(--safe-b); }
     </style>
+
   </head>
   <body>
     <div id="t1-stat-engrave" data-composition-id="t1-stat-engrave" data-start="0" data-width="1920" data-height="1080">

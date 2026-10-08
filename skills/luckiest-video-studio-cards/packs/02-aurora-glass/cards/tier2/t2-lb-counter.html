@@ -13,7 +13,7 @@
       html, body { margin: 0; background: transparent; }
 
       #t2-lb-cntr {
-        position: absolute; inset: 0; width: 1920px; height: 1080px;
+        position: absolute; inset: 0; width: var(--w); height: var(--h);
         background: transparent; overflow: hidden;
       }
 
@@ -31,7 +31,7 @@
 
       /* Main wrapper anchored right */
       #t2-lb-cntr .wrapper {
-        position: absolute; right: 140px; top: 340px;
+        position: absolute; right: calc(var(--safe-r) + 44px); top: calc(var(--safe-t) + 286px);
         display: flex; flex-direction: column; align-items: flex-end; gap: 0;
       }
 
@@ -42,7 +42,7 @@
 
       #t2-lb-cntr .count-num {
         font-family: var(--font-display); font-weight: var(--wt-black);
-        font-size: 110px; line-height: 1; letter-spacing: var(--track-tight);
+        font-size: calc(110px * var(--type)); line-height: 1; letter-spacing: var(--track-tight);
         background: linear-gradient(150deg, #ffffff 10%, rgba(var(--accent-rgb), 0.90) 85%);
         -webkit-background-clip: text; background-clip: text;
         -webkit-text-fill-color: transparent;
@@ -51,7 +51,7 @@
 
       #t2-lb-cntr .count-suffix {
         font-family: var(--font-mono); font-weight: var(--wt-bold);
-        font-size: 38px; letter-spacing: 0.05em;
+        font-size: calc(38px * var(--type)); letter-spacing: 0.05em;
         color: var(--accent); text-shadow: var(--textglow-accent);
         padding-bottom: 12px;
       }
@@ -85,16 +85,27 @@
 
       #t2-lb-cntr .term {
         font-family: var(--font-display); font-weight: var(--wt-bold);
-        font-size: 28px; letter-spacing: var(--track-snug);
+        font-size: calc(28px * var(--type)); letter-spacing: var(--track-snug);
         color: var(--white); text-shadow: var(--textglow);
         margin-bottom: 4px;
       }
 
       #t2-lb-cntr .detail {
         font-family: var(--font-body); font-weight: var(--wt-reg);
-        font-size: 20px; line-height: 1.45;
+        font-size: calc(20px * var(--type)); line-height: 1.45;
         color: var(--text-dim);
       }
+      /* Vertical and square: number and card move to the bottom-left of the safe area and align left, glow follows, slots wrap. */
+      [data-format="vertical"] #t2-lb-cntr .wrapper, [data-format="square"] #t2-lb-cntr .wrapper {
+        top: auto; right: auto; left: var(--safe-l); bottom: var(--safe-b);
+        max-width: calc(var(--w) - var(--safe-l) - var(--safe-r));
+      }
+      [data-format="vertical"] #t2-lb-cntr .local-glow, [data-format="square"] #t2-lb-cntr .local-glow {
+        top: auto; right: auto; left: calc(var(--safe-l) - 40px); bottom: calc(var(--safe-b) - 40px);
+      }
+      [data-format="vertical"] #t2-lb-cntr .wrapper, [data-format="square"] #t2-lb-cntr .wrapper { align-items: flex-start; }
+      [data-format="vertical"] #t2-lb-cntr .text-block, [data-format="square"] #t2-lb-cntr .text-block { text-align: left; }
+      [data-format="vertical"] #t2-lb-cntr [data-slot], [data-format="square"] #t2-lb-cntr [data-slot] { white-space: normal; }
     </style>
   </head>
   <body>

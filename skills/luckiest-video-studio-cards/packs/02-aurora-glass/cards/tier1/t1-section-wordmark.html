@@ -14,7 +14,7 @@
       html, body { margin: 0; }
 
       #t1-sec-mark {
-        position: absolute; inset: 0; width: 1920px; height: 1080px;
+        position: absolute; inset: 0; width: var(--w); height: var(--h);
         background: var(--canvas); color: var(--text);
         font-family: var(--font-display); overflow: hidden;
       }
@@ -55,14 +55,14 @@
       }
       #t1-sec-mark .kicker {
         font-family: var(--font-display); font-style: italic;
-        font-weight: var(--wt-semi); font-size: 36px;
+        font-weight: var(--wt-semi); font-size: calc(36px * var(--type));
         letter-spacing: 0.22em; text-transform: uppercase;
         color: var(--text-dim); text-shadow: var(--textglow);
         margin-bottom: 36px;
       }
       #t1-sec-mark .headline {
         font-family: var(--font-display); font-weight: var(--wt-black);
-        font-size: 112px; line-height: 1.0; letter-spacing: var(--track-tight);
+        font-size: calc(112px * var(--type)); line-height: 1.0; letter-spacing: var(--track-tight);
         color: var(--white); text-shadow: var(--textglow);
         text-align: center; max-width: 1600px; padding: 0 80px;
         /* clip to reveal letter-by-letter via clip-path (via GSAP chars) */
@@ -99,6 +99,14 @@
         background-size: 200px 200px; mix-blend-mode: overlay; opacity: 0.10;
         pointer-events: none; z-index: 7;
       }
+
+      /* Vertical and square: wordmark centres in the safe area at its width; the sweep follows. */
+      [data-format="vertical"] #t1-sec-mark .content, [data-format="square"] #t1-sec-mark .content {
+        left: var(--safe-l); right: var(--safe-r); top: var(--safe-t); bottom: var(--safe-b);
+      }
+      [data-format="vertical"] #t1-sec-mark .headline, [data-format="square"] #t1-sec-mark .headline { max-width: none; padding: 0; }
+      [data-format="vertical"] #t1-sec-mark .rule-wrap, [data-format="square"] #t1-sec-mark .rule-wrap { max-width: 100%; }
+      [data-format="vertical"] #t1-sec-mark .sweep-bar, [data-format="square"] #t1-sec-mark .sweep-bar { top: calc(calc((var(--safe-t) + var(--h) - var(--safe-b)) / 2) - 50px); }
     </style>
   </head>
   <body>

@@ -16,7 +16,7 @@
       html, body { margin: 0; }
 
       #t1-ov-duallist {
-        position: absolute; inset: 0; width: 1920px; height: 1080px;
+        position: absolute; inset: 0; width: var(--w); height: var(--h);
         background: var(--canvas); color: var(--text);
         font-family: var(--font-body); overflow: hidden;
       }
@@ -38,7 +38,7 @@
       #t1-ov-duallist .layout {
         position: absolute; inset: 0; z-index: 3;
         display: flex; flex-direction: column;
-        padding: 82px var(--pad) 76px;
+        padding: calc(var(--safe-t) + 28px) var(--safe-r) calc(var(--safe-b) + 22px) var(--safe-l);
       }
 
       /* Title */
@@ -111,7 +111,7 @@
 
       #t1-ov-duallist .col-title {
         font-family: var(--font-display); font-weight: var(--wt-bold);
-        font-size: 36px; letter-spacing: var(--track-wide);
+        font-size: calc(36px * var(--type)); letter-spacing: var(--track-wide);
         text-transform: uppercase;
       }
       #t1-ov-duallist .col.do .col-title {
@@ -162,7 +162,7 @@
       /* Item text */
       #t1-ov-duallist .item-text {
         font-family: var(--font-body); font-weight: var(--wt-med);
-        font-size: 30px; color: var(--text); line-height: 1.35;
+        font-size: calc(30px * var(--type)); color: var(--text); line-height: 1.35;
       }
 
       /* Vignette + grain */
@@ -175,6 +175,26 @@
         background-size: 200px 200px; mix-blend-mode: overlay; opacity: 0.10;
         pointer-events: none; z-index: 7;
       }
+
+      /* Vertical and square: Do column stacked over Avoid column, divider turns horizontal, rows tighter. */
+      [data-format="vertical"] #t1-ov-duallist .layout, [data-format="square"] #t1-ov-duallist .layout { padding: var(--safe-t) var(--safe-r) var(--safe-b) var(--safe-l); }
+      [data-format="vertical"] #t1-ov-duallist .card-title, [data-format="square"] #t1-ov-duallist .card-title { margin-bottom: 28px; }
+      [data-format="square"] #t1-ov-duallist .card-title { font-size: 50px; }
+      [data-format="vertical"] #t1-ov-duallist .card-title { font-size: calc(48px * var(--type)); }
+      [data-format="vertical"] #t1-ov-duallist .columns, [data-format="square"] #t1-ov-duallist .columns { flex-direction: column; }
+      [data-format="vertical"] #t1-ov-duallist .col-divider, [data-format="square"] #t1-ov-duallist .col-divider {
+        width: auto; height: 1.5px; margin: 14px 0;
+        background: linear-gradient(to right, transparent, rgba(255,255,255,0.18) 20%, rgba(255,255,255,0.18) 80%, transparent);
+      }
+      [data-format="vertical"] #t1-ov-duallist .col-header, [data-format="square"] #t1-ov-duallist .col-header { padding: 16px 28px 14px; gap: 16px; }
+      [data-format="vertical"] #t1-ov-duallist .col-icon, [data-format="square"] #t1-ov-duallist .col-icon { width: 34px; height: 34px; }
+      [data-format="vertical"] #t1-ov-duallist .col-title { font-size: calc(26px * var(--type)); }
+      [data-format="square"] #t1-ov-duallist .col-title { font-size: 28px; }
+      [data-format="vertical"] #t1-ov-duallist .col-items, [data-format="square"] #t1-ov-duallist .col-items { padding: 4px 0 0; justify-content: space-evenly; }
+      [data-format="vertical"] #t1-ov-duallist .item, [data-format="square"] #t1-ov-duallist .item { padding: 8px 28px; gap: 18px; }
+      [data-format="vertical"] #t1-ov-duallist .glyph, [data-format="square"] #t1-ov-duallist .glyph { width: 30px; height: 30px; }
+      [data-format="vertical"] #t1-ov-duallist .item-text { font-size: calc(19px * var(--type)); line-height: 1.3; }
+      [data-format="square"] #t1-ov-duallist .item-text { font-size: 23px; line-height: 1.3; }
     </style>
   </head>
   <body>

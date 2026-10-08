@@ -13,7 +13,7 @@
       html, body { margin: 0; }
 
       #t1-ov-num {
-        position: absolute; inset: 0; width: 1920px; height: 1080px;
+        position: absolute; inset: 0; width: var(--w); height: var(--h);
         background: var(--canvas); color: var(--text);
         font-family: var(--font-body); overflow: hidden;
       }
@@ -33,7 +33,7 @@
       #t1-ov-num .layout {
         position: absolute; inset: 0; z-index: 3;
         display: flex; flex-direction: column;
-        padding: 90px var(--pad) 80px;
+        padding: calc(var(--safe-t) + 36px) var(--safe-r) calc(var(--safe-b) + 26px) var(--safe-l);
         gap: 0;
       }
 
@@ -69,7 +69,7 @@
       /* Big glowing numeral */
       #t1-ov-num .num {
         font-family: var(--font-display); font-weight: var(--wt-black);
-        font-size: 120px; line-height: 1; min-width: 110px;
+        font-size: calc(120px * var(--type)); line-height: 1; min-width: 110px;
         text-align: center;
         color: var(--accent);
         text-shadow: var(--textglow-accent),
@@ -88,7 +88,7 @@
       #t1-ov-num .text { flex: 1; min-width: 0; }
       #t1-ov-num .row-heading {
         font-family: var(--font-display); font-weight: var(--wt-semi);
-        font-size: 38px; color: var(--white);
+        font-size: calc(38px * var(--type)); color: var(--white);
         letter-spacing: var(--track-snug); line-height: 1.15;
         margin-bottom: 8px;
       }
@@ -106,6 +106,18 @@
         background-size: 200px 200px; mix-blend-mode: overlay; opacity: 0.10;
         pointer-events: none; z-index: 7;
       }
+
+      /* Vertical and square: tighter rows and a smaller numeral so the copy gets the narrower width. */
+      [data-format="vertical"] #t1-ov-num .card-title, [data-format="square"] #t1-ov-num .card-title { margin-bottom: 40px; }
+      [data-format="vertical"] #t1-ov-num .rows, [data-format="square"] #t1-ov-num .rows { gap: 16px; flex: none; }
+      [data-format="vertical"] #t1-ov-num .row { gap: 22px; padding: 22px 26px 22px 20px; }
+      [data-format="square"] #t1-ov-num .row { gap: 32px; padding: 28px 36px 28px 28px; }
+      [data-format="vertical"] #t1-ov-num .num { font-size: calc(76px * var(--type)); min-width: 70px; }
+      [data-format="square"] #t1-ov-num .num { font-size: 96px; min-width: 80px; }
+      [data-format="vertical"] #t1-ov-num .row-heading { margin-bottom: 6px; }
+      [data-format="vertical"] #t1-ov-num .layout { padding: var(--safe-t) var(--safe-r) var(--safe-b) calc(var(--safe-l) + 12px); }
+      [data-format="square"] #t1-ov-num .layout { padding: var(--safe-t) var(--safe-r) var(--safe-b) calc(var(--safe-l) + 8px); }
+      [data-format="vertical"] #t1-ov-num .row-body { font-size: calc(26px * var(--type)); line-height: 1.35; }
     </style>
   </head>
   <body>

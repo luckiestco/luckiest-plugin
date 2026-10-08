@@ -15,7 +15,7 @@
       html, body { margin: 0; }
 
       #t1-ov-gantt {
-        position: absolute; inset: 0; width: 1920px; height: 1080px;
+        position: absolute; inset: 0; width: var(--w); height: var(--h);
         background: var(--canvas); color: var(--text);
         font-family: var(--font-display); overflow: hidden;
       }
@@ -32,7 +32,7 @@
 
       /* Title */
       #t1-ov-gantt .title-row {
-        position: absolute; left: 0; right: 0; top: 68px; text-align: center; z-index: 5;
+        position: absolute; left: var(--safe-l); right: var(--safe-r); top: calc(var(--safe-t) + 14px); text-align: center; z-index: 5;
       }
       #t1-ov-gantt .title {
         font-family: var(--font-display); font-weight: var(--wt-bold);
@@ -46,7 +46,7 @@
 
       /* Gantt container */
       #t1-ov-gantt .gantt-wrap {
-        position: absolute; left: 96px; right: 96px; top: 218px; bottom: 72px;
+        position: absolute; left: calc(var(--safe-l) + 8px); right: calc(var(--safe-r) + 92px); top: calc(var(--safe-t) + 164px); bottom: calc(var(--safe-b) + 18px);
         display: flex; flex-direction: column; gap: 0; z-index: 4;
       }
 
@@ -62,7 +62,7 @@
       }
       #t1-ov-gantt .header-ticks {
         flex: 1; display: flex; gap: 0;
-        font-family: var(--font-mono); font-size: 20px;
+        font-family: var(--font-mono); font-size: calc(20px * var(--type));
         color: var(--text-faint); letter-spacing: 0.08em;
       }
       #t1-ov-gantt .tick {
@@ -88,7 +88,7 @@
       #t1-ov-gantt .row-label {
         width: 340px; flex-shrink: 0;
         font-family: var(--font-display); font-weight: var(--wt-semi);
-        font-size: 34px; letter-spacing: var(--track-snug);
+        font-size: calc(34px * var(--type)); letter-spacing: var(--track-snug);
         color: var(--text); text-shadow: var(--textglow);
         padding-right: 32px;
       }
@@ -134,7 +134,7 @@
       /* Duration label beside bar */
       #t1-ov-gantt .bar-duration {
         position: absolute; right: -92px; top: 50%; transform: translateY(-50%);
-        font-family: var(--font-mono); font-size: 20px;
+        font-family: var(--font-mono); font-size: calc(20px * var(--type));
         color: var(--text-faint); white-space: nowrap;
       }
 
@@ -147,6 +147,22 @@
         background-size: 200px 200px; mix-blend-mode: overlay; opacity: 0.10;
         pointer-events: none; z-index: 7;
       }
+
+      /* Vertical: each task label sits above its full-width bar lane. Square: same table, narrower label column.
+         Duration tags hang off the bar end, so the chart keeps 92px clear of the safe edge. */
+      [data-format="vertical"] #t1-ov-gantt .title-row, [data-format="square"] #t1-ov-gantt .title-row { top: var(--safe-t); }
+      [data-format="vertical"] #t1-ov-gantt .title { font-size: calc(60px * var(--type)); }
+      [data-format="square"] #t1-ov-gantt .title { font-size: 58px; }
+      [data-format="vertical"] #t1-ov-gantt .gantt-wrap { left: calc(var(--safe-l) + 8px); top: calc(var(--safe-t) + 210px); bottom: calc(var(--safe-b) + 40px); }
+      [data-format="square"] #t1-ov-gantt .gantt-wrap { left: calc(var(--safe-l) + 8px); top: calc(var(--safe-t) + 110px); bottom: var(--safe-b); }
+      [data-format="vertical"] #t1-ov-gantt .row-label-col { width: 0; }
+      [data-format="square"] #t1-ov-gantt .row-label-col, [data-format="square"] #t1-ov-gantt .row-label { width: 230px; }
+      [data-format="vertical"] #t1-ov-gantt .tick { font-size: calc(16px * var(--type)); }
+      [data-format="square"] #t1-ov-gantt .tick { font-size: 17px; }
+      [data-format="vertical"] #t1-ov-gantt .gantt-row { flex-direction: column; align-items: stretch; justify-content: center; }
+      [data-format="vertical"] #t1-ov-gantt .row-label { width: auto; padding-right: 0; margin-bottom: 14px; font-size: calc(30px * var(--type)); }
+      [data-format="square"] #t1-ov-gantt .row-label { padding-right: 24px; font-size: 32px; }
+      [data-format="vertical"] #t1-ov-gantt .bar-track { flex: none; height: 64px; }
     </style>
   </head>
   <body>

@@ -14,7 +14,7 @@
       html, body { margin: 0; background: transparent; }
 
       #t2-lb-brk {
-        position: absolute; inset: 0; width: 1920px; height: 1080px;
+        position: absolute; inset: 0; width: var(--w); height: var(--h);
         background: transparent; overflow: hidden;
         font-family: var(--font-display);
       }
@@ -33,7 +33,7 @@
 
       /* Outer wrapper - holds glass backing + bracket SVG */
       #t2-lb-brk .bracket-wrap {
-        position: absolute; left: 80px; top: 320px;
+        position: absolute; left: var(--safe-l); top: calc(var(--safe-t) + 266px);
         width: 500px;
       }
 
@@ -80,7 +80,7 @@
       /* Term */
       #t2-lb-brk .term {
         font-family: var(--font-display); font-weight: var(--wt-bold);
-        font-size: 36px; letter-spacing: var(--track-tight);
+        font-size: calc(36px * var(--type)); letter-spacing: var(--track-tight);
         color: var(--white); text-shadow: var(--textglow);
         margin-bottom: 14px; line-height: 1.2;
       }
@@ -98,9 +98,18 @@
       /* Detail */
       #t2-lb-brk .detail {
         font-family: var(--font-body); font-weight: var(--wt-reg);
-        font-size: 26px; line-height: 1.55;
+        font-size: calc(26px * var(--type)); line-height: 1.55;
         color: var(--text-dim);
       }
+      /* Vertical and square: card moves to the bottom-left of the safe area, glow follows, slots wrap. */
+      [data-format="vertical"] #t2-lb-brk .bracket-wrap, [data-format="square"] #t2-lb-brk .bracket-wrap {
+        top: auto; right: auto; left: var(--safe-l); bottom: var(--safe-b);
+        max-width: calc(var(--w) - var(--safe-l) - var(--safe-r));
+      }
+      [data-format="vertical"] #t2-lb-brk .local-glow, [data-format="square"] #t2-lb-brk .local-glow {
+        top: auto; right: auto; left: calc(var(--safe-l) - 40px); bottom: calc(var(--safe-b) - 40px);
+      }
+      [data-format="vertical"] #t2-lb-brk [data-slot], [data-format="square"] #t2-lb-brk [data-slot] { white-space: normal; }
     </style>
   </head>
   <body>

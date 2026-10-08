@@ -14,7 +14,7 @@
     <style>
       html, body { margin: 0; }
       #t1-ov-maplegend {
-        position: absolute; inset: 0; width: 1920px; height: 1080px;
+        position: absolute; inset: 0; width: var(--w); height: var(--h);
         background: var(--paper); color: var(--ink);
         font-family: var(--font-display); overflow: hidden;
       }
@@ -36,7 +36,7 @@
 
       /* marker title */
       #t1-ov-maplegend .marker-title {
-        position: absolute; top: 72px; left: 50%; transform: translateX(-50%) skewX(var(--marker-skew));
+        position: absolute; top: calc(var(--safe-t) + 18px); left: 50%; transform: translateX(-50%) skewX(var(--marker-skew));
         background: var(--yellow); padding: 10px 36px; z-index: 5;
         font-weight: var(--wt-black); font-size: var(--size-title);
         letter-spacing: var(--track-tight); text-transform: uppercase; white-space: nowrap;
@@ -74,7 +74,7 @@
         width: 56px; height: 56px;
         background: var(--yellow); border: 3px solid var(--ink);
         display: flex; align-items: center; justify-content: center;
-        font-weight: var(--wt-black); font-size: 32px;
+        font-weight: var(--wt-black); font-size: calc(32px * var(--type));
         box-shadow: 4px 4px 0 rgba(23,19,14,0.25);
         transform: rotate(-4deg);
       }
@@ -99,8 +99,8 @@
 
       /* legend panel: right 40% */
       #t1-ov-maplegend .legend {
-        position: absolute; left: 1165px; top: 200px; right: 40px;
-        bottom: 80px; z-index: 3;
+        position: absolute; left: 1165px; top: calc(var(--safe-t) + 146px); right: var(--safe-r);
+        bottom: calc(var(--safe-b) + 26px); z-index: 3;
         display: flex; flex-direction: column; justify-content: center;
         gap: 0;
       }
@@ -120,22 +120,53 @@
         width: 52px; height: 52px;
         background: var(--yellow); border: 3px solid var(--ink);
         display: flex; align-items: center; justify-content: center;
-        font-weight: var(--wt-black); font-size: 30px;
+        font-weight: var(--wt-black); font-size: calc(30px * var(--type));
         box-shadow: 3px 3px 0 rgba(23,19,14,0.2);
         transform: rotate(-2deg); margin-top: 4px;
       }
       #t1-ov-maplegend .leg-text {
         font-family: var(--font-label); font-weight: var(--wt-bold);
-        font-size: 40px; line-height: 1.2; color: var(--ink);
+        font-size: calc(40px * var(--type)); line-height: 1.2; color: var(--ink);
       }
 
       /* source */
       #t1-ov-maplegend .source {
-        position: absolute; left: 120px; bottom: 36px; z-index: 6;
+        position: absolute; left: calc(var(--safe-l) + 24px); bottom: var(--safe-b); z-index: 6;
         font-family: var(--font-label); font-weight: var(--wt-bold);
         font-size: var(--size-tiny); letter-spacing: var(--track-wide);
         text-transform: uppercase; color: var(--muted);
       }
+
+      /* Vertical: map strip on top, a horizontal divider, then the legend across the safe width;
+         pins move inside the shorter map. Square: map left and legend right as landscape, narrowed. */
+      [data-format="vertical"] #t1-ov-maplegend .marker-title, [data-format="square"] #t1-ov-maplegend .marker-title {
+        top: var(--safe-t); left: calc(var(--safe-l) + (var(--w) - var(--safe-l) - var(--safe-r)) / 2);
+        width: max-content; max-width: calc(var(--w) - var(--safe-l) - var(--safe-r) - 72px);
+        white-space: normal; text-align: center;
+      }
+      [data-format="vertical"] #t1-ov-maplegend .marker-title { font-size: calc(64px * var(--type)); }
+      [data-format="square"] #t1-ov-maplegend .marker-title { font-size: 80px; }
+      [data-format="vertical"] #t1-ov-maplegend .map-area { width: var(--w); top: calc(var(--safe-t) + 110px); bottom: auto; height: 330px; }
+      [data-format="vertical"] #t1-ov-maplegend .pin1 { left: 230px; top: 120px; }
+      [data-format="vertical"] #t1-ov-maplegend .pin2 { left: 600px; top: 60px; }
+      [data-format="vertical"] #t1-ov-maplegend .pin3 { left: 420px; top: 230px; }
+      [data-format="vertical"] #t1-ov-maplegend .pin4 { left: 760px; top: 200px; }
+      [data-format="vertical"] #t1-ov-maplegend .divider { left: var(--safe-l); right: var(--safe-r); width: auto; top: calc(var(--safe-t) + 450px); bottom: auto; height: 5px; }
+      [data-format="vertical"] #t1-ov-maplegend .legend { left: var(--safe-l); right: var(--safe-r); top: calc(var(--safe-t) + 480px); bottom: calc(var(--safe-b) + 34px); justify-content: flex-start; }
+      [data-format="vertical"] #t1-ov-maplegend .legend-header { margin-bottom: 6px; padding-bottom: 10px; }
+      [data-format="vertical"] #t1-ov-maplegend .leg-row { padding: 16px 0; gap: 26px; }
+      [data-format="vertical"] #t1-ov-maplegend .leg-text { font-size: calc(30px * var(--type)); }
+      [data-format="square"] #t1-ov-maplegend .map-area { width: 570px; top: calc(var(--safe-t) + 140px); bottom: calc(var(--safe-b) + 30px); }
+      [data-format="square"] #t1-ov-maplegend .pin1 { left: 150px; top: 170px; }
+      [data-format="square"] #t1-ov-maplegend .pin2 { left: 400px; top: 110px; }
+      [data-format="square"] #t1-ov-maplegend .pin3 { left: 270px; top: 380px; }
+      [data-format="square"] #t1-ov-maplegend .pin4 { left: 440px; top: 330px; }
+      [data-format="square"] #t1-ov-maplegend .divider { left: 570px; top: calc(var(--safe-t) + 140px); bottom: calc(var(--safe-b) + 30px); }
+      [data-format="square"] #t1-ov-maplegend .legend { left: 600px; top: calc(var(--safe-t) + 140px); bottom: calc(var(--safe-b) + 30px); }
+      [data-format="square"] #t1-ov-maplegend .legend-header { margin-bottom: 16px; }
+      [data-format="square"] #t1-ov-maplegend .leg-row { padding: 20px 0; gap: 22px; }
+      [data-format="square"] #t1-ov-maplegend .leg-text { font-size: 30px; }
+      [data-format="vertical"] #t1-ov-maplegend .source, [data-format="square"] #t1-ov-maplegend .source { left: var(--safe-l); bottom: var(--safe-b); }
     </style>
   </head>
   <body>

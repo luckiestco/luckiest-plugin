@@ -15,7 +15,7 @@
       html, body { margin: 0; background: transparent; }
 
       #t2-lt-hndl {
-        position: absolute; inset: 0; width: 1920px; height: 1080px;
+        position: absolute; inset: 0; width: var(--w); height: var(--h);
         background: transparent; overflow: hidden;
         font-family: var(--font-mono);
       }
@@ -23,7 +23,7 @@
       /* Localized glow - tight, behind the pill */
       #t2-lt-hndl .local-glow {
         position: absolute;
-        left: 62px; bottom: 124px;
+        left: calc(var(--safe-l) - 18px); bottom: calc(var(--safe-b) + 70px);
         width: 440px; height: 130px;
         border-radius: 50%;
         background: radial-gradient(ellipse at 30% 80%,
@@ -38,7 +38,7 @@
       /* Pill container */
       #t2-lt-hndl .pill {
         position: absolute;
-        left: 80px; bottom: 142px;
+        left: var(--safe-l); bottom: calc(var(--safe-b) + 88px);
         display: inline-flex;
         align-items: center;
         gap: 0;
@@ -83,7 +83,7 @@
       #t2-lt-hndl .platform-name {
         font-family: var(--font-body);
         font-weight: var(--wt-bold);
-        font-size: 17px;
+        font-size: calc(17px * var(--type));
         letter-spacing: var(--track-wide);
         text-transform: uppercase;
         color: var(--accent);
@@ -102,7 +102,7 @@
       #t2-lt-hndl .handle {
         font-family: var(--font-mono);
         font-weight: 700;
-        font-size: 28px;
+        font-size: calc(28px * var(--type));
         letter-spacing: 0.02em;
         color: var(--white);
         text-shadow: var(--textglow);
@@ -119,6 +119,12 @@
         vertical-align: middle;
         position: relative; top: -1px;
       }
+      /* Vertical and square: card sits at the bottom of the safe area, bloom follows, slots wrap. */
+      [data-format="vertical"] #t2-lt-hndl .pill, [data-format="square"] #t2-lt-hndl .pill {
+        bottom: var(--safe-b); max-width: calc(var(--w) - var(--safe-l) - var(--safe-r));
+      }
+      [data-format="vertical"] #t2-lt-hndl .local-glow, [data-format="square"] #t2-lt-hndl .local-glow { bottom: calc(var(--safe-b) - 18px); }
+      [data-format="vertical"] #t2-lt-hndl [data-slot], [data-format="square"] #t2-lt-hndl [data-slot] { white-space: normal; }
     </style>
   </head>
   <body>

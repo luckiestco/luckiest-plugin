@@ -15,7 +15,7 @@
       html, body { margin: 0; }
 
       #t1-sec-curtain {
-        position: absolute; inset: 0; width: 1920px; height: 1080px;
+        position: absolute; inset: 0; width: var(--w); height: var(--h);
         background: var(--canvas); color: var(--text);
         font-family: var(--font-display); overflow: hidden;
       }
@@ -33,7 +33,7 @@
 
       /* Content behind the curtains */
       #t1-sec-curtain .content {
-        position: absolute; left: 0; right: 0; top: 0; bottom: 0;
+        position: absolute; left: var(--safe-l); right: var(--safe-r); top: var(--safe-t); bottom: var(--safe-b);
         display: flex; flex-direction: column; align-items: center;
         justify-content: center;
         z-index: 2; gap: 20px;
@@ -56,7 +56,9 @@
 
       /* Center bloom that appears as curtains part */
       #t1-sec-curtain .reveal-glow {
-        position: absolute; left: 50%; top: 50%;
+        position: absolute;
+        left: calc(var(--safe-l) + (var(--w) - var(--safe-l) - var(--safe-r)) / 2);
+        top: calc(var(--safe-t) + (var(--h) - var(--safe-t) - var(--safe-b)) / 2);
         transform: translate(-50%, -50%);
         width: 800px; height: 600px;
         background: radial-gradient(ellipse, rgba(var(--accent-rgb), 0.20) 0%, transparent 65%);
@@ -113,6 +115,10 @@
         background-size: 200px 200px; mix-blend-mode: overlay; opacity: 0.10;
         pointer-events: none; z-index: 9;
       }
+
+      /* Vertical and square: the title centers on the safe box (insets above) and the headline
+         drops its side padding so it wraps inside the narrower width; the curtains stay full bleed. */
+      [data-format="vertical"] #t1-sec-curtain .headline, [data-format="square"] #t1-sec-curtain .headline { padding: 0; }
     </style>
   </head>
   <body>

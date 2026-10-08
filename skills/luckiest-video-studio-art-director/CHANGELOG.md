@@ -1,5 +1,13 @@
 # Changelog — luckiest-video-studio-art-director
 
+## 1.5.0 — 2026-10-08
+- "Do not repeat earlier runs": reads earlier `art-direction.json` files in the
+  workspace and bans their signature transition, wow device, texture, and concept,
+  plus palette and fonts unless the design system fixes them or the user wants a
+  series. Recorded under `bannedFromEarlierRuns`; `wowDevice` is now written so
+  later runs can read it.
+- Practice studied from the Motion Studio skill bundle. Ideas only, no code or text copied: the bundle carries no license for its own scripts or docs.
+
 ## 1.4.0 — 2026-10-05
 - Section 3b "Real, not generated": named light direction with hard shadows,
   film stock and grain, skin texture, off-center candid framing, specific

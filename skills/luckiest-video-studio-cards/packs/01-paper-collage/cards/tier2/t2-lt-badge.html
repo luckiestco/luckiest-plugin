@@ -14,7 +14,7 @@
     <style>
       html, body { margin: 0; background: transparent; }
       #t2-lt-badge {
-        position: absolute; inset: 0; width: 1920px; height: 1080px;
+        position: absolute; inset: 0; width: var(--w); height: var(--h);
         background: transparent;
       }
       #t2-lt-badge .wrap {
@@ -35,7 +35,7 @@
       #t2-lt-badge .initials {
         font-family: var(--font-display);
         font-weight: var(--wt-black);
-        font-size: 52px;
+        font-size: calc(52px * var(--type));
         line-height: 1;
         letter-spacing: var(--track-tight);
         color: var(--ink);
@@ -63,7 +63,7 @@
       #t2-lt-badge .name {
         font-family: var(--font-display);
         font-weight: var(--wt-black);
-        font-size: 88px;
+        font-size: calc(88px * var(--type));
         line-height: 0.95;
         letter-spacing: var(--track-tight);
         color: var(--paper);
@@ -82,6 +82,13 @@
         margin-top: 10px;
         box-shadow: 4px 4px 0 rgba(23,19,14,0.22);
       }
+
+      /* Vertical and square: sit at the bottom of the safe area, clear of the speaker's face. */
+      [data-format="vertical"] #t2-lt-badge .wrap, [data-format="square"] #t2-lt-badge .wrap {
+        top: auto; left: calc(var(--safe-l) + 12px); bottom: calc(var(--safe-b) + 24px);
+        width: auto; max-width: calc(var(--w) - var(--safe-l) - var(--safe-r));
+      }
+      [data-format="vertical"] #t2-lt-badge [data-slot], [data-format="square"] #t2-lt-badge [data-slot] { white-space: normal; }
     </style>
   </head>
   <body>

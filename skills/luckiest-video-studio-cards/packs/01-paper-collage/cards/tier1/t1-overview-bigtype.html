@@ -13,7 +13,7 @@
     <style>
       html, body { margin: 0; }
       #t1-ov-bigtype {
-        position: absolute; inset: 0; width: 1920px; height: 1080px;
+        position: absolute; inset: 0; width: var(--w); height: var(--h);
         background: var(--paper); color: var(--ink);
         font-family: var(--font-display); overflow: hidden;
       }
@@ -35,7 +35,7 @@
 
       /* kicker - small Archivo label at top */
       #t1-ov-bigtype .kicker {
-        position: absolute; top: 64px; left: 130px; z-index: 4;
+        position: absolute; top: calc(var(--safe-t) + 10px); left: calc(var(--safe-l) + 34px); z-index: 4;
         display: flex; align-items: center; gap: 20px;
       }
       #t1-ov-bigtype .kicker-rule {
@@ -49,7 +49,7 @@
 
       /* type lines container */
       #t1-ov-bigtype .lines {
-        position: absolute; top: 150px; left: 80px; right: 80px;
+        position: absolute; top: calc(var(--safe-t) + 96px); left: var(--safe-l); right: var(--safe-r);
         display: flex; flex-direction: column; gap: 10px; z-index: 4;
       }
       /* each line wrapper - clip overflow for reveal wipe */
@@ -60,7 +60,7 @@
       #t1-ov-bigtype .line-inner {
         display: block;
         font-weight: var(--wt-black);
-        font-size: 150px;
+        font-size: calc(150px * var(--type));
         letter-spacing: -0.045em;
         line-height: 0.98;
         color: var(--ink);
@@ -80,11 +80,21 @@
       }
 
       #t1-ov-bigtype .source {
-        position: absolute; right: 130px; bottom: 72px; z-index: 4;
+        position: absolute; right: calc(var(--safe-r) + 34px); bottom: calc(var(--safe-b) + 18px); z-index: 4;
         font-family: var(--font-label); font-weight: var(--wt-bold);
         font-size: var(--size-tiny); letter-spacing: var(--track-wide);
         text-transform: uppercase; color: var(--muted);
       }
+
+      /* Vertical and square: the type lines wrap inside the safe width at a smaller size; square
+         centres the block vertically. Kicker and source pin to the safe corners. */
+      [data-format="vertical"] #t1-ov-bigtype .kicker, [data-format="square"] #t1-ov-bigtype .kicker { top: var(--safe-t); left: var(--safe-l); }
+      [data-format="vertical"] #t1-ov-bigtype .line-inner, [data-format="square"] #t1-ov-bigtype .line-inner { white-space: normal; }
+      [data-format="vertical"] #t1-ov-bigtype .lines { top: calc(var(--safe-t) + 96px); gap: 18px; }
+      [data-format="vertical"] #t1-ov-bigtype .line-inner { font-size: calc(76px * var(--type)); }
+      [data-format="square"] #t1-ov-bigtype .lines { top: 50%; transform: translateY(-50%); gap: 16px; }
+      [data-format="square"] #t1-ov-bigtype .line-inner { font-size: 90px; }
+      [data-format="vertical"] #t1-ov-bigtype .source, [data-format="square"] #t1-ov-bigtype .source { right: auto; left: var(--safe-l); bottom: var(--safe-b); }
     </style>
   </head>
   <body>

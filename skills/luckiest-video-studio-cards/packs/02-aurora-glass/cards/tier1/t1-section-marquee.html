@@ -1,8 +1,8 @@
 <!doctype html>
 <!--
   AURORA GLASS · tier1 · section · MARQUEE
-  Full-screen chapter takeover. A mono-font scrolling ticker strip glides
-  continuously across the frame (finite repeats, deterministic); the big
+  Full-screen chapter takeover. A mono-font ticker strip glides in from the
+  right inside the safe area and settles (finite, deterministic); the big
   display headline sits center-stage above it. Clean, editorial, tech-zine energy.
   Slots: marquee (the repeating strip text, ~60 chars), headline (~48 chars).
 -->
@@ -14,7 +14,7 @@
       html, body { margin: 0; }
 
       #t1-sec-marq {
-        position: absolute; inset: 0; width: 1920px; height: 1080px;
+        position: absolute; inset: 0; width: var(--w); height: var(--h);
         background: var(--canvas); color: var(--text);
         font-family: var(--font-display); overflow: hidden;
       }
@@ -34,7 +34,7 @@
 
       /* Marquee strip - positioned below center */
       #t1-sec-marq .strip-wrap {
-        position: absolute; left: 0; right: 0; top: 700px; height: 62px;
+        position: absolute; left: 0; right: 0; top: calc(var(--safe-t) + 646px); height: 62px;
         background: rgba(var(--accent-rgb), 0.10);
         border-top:    1.5px solid rgba(var(--accent-rgb), 0.45);
         border-bottom: 1.5px solid rgba(var(--accent-rgb), 0.45);
@@ -42,21 +42,27 @@
         overflow: hidden; z-index: 3;
         display: flex; align-items: center;
       }
-      /* The scrolling inner track - wide enough for animation */
+      /* The crawl window - inside the safe insets, so the text never shows past them */
+      #t1-sec-marq .marqwin {
+        position: absolute; left: var(--safe-l); right: var(--safe-r); top: 0; bottom: 0;
+        overflow: hidden; display: flex; align-items: center;
+      }
+      /* The moving track - window-wide; GSAP slides it in from the window's right edge */
       #t1-sec-marq .strip-inner {
-        display: flex; align-items: center; gap: 0; white-space: nowrap;
+        flex: none; width: 100%;
         will-change: transform;
       }
+      /* One visible line; anything longer wraps onto hidden lines inside the window width */
       #t1-sec-marq .strip-segment {
-        font-family: var(--font-mono); font-size: 22px;
+        font-family: var(--font-mono); font-size: calc(22px * var(--type));
         letter-spacing: 0.22em; text-transform: uppercase;
         color: var(--accent); text-shadow: var(--textglow-accent);
-        padding: 0 60px;
-        display: flex; align-items: center; gap: 40px;
+        box-sizing: border-box; padding: 0 60px;
+        height: 1.6em; line-height: 1.6em; overflow: hidden;
       }
       #t1-sec-marq .strip-segment::before {
-        content: "◆";
-        font-size: 10px; color: rgba(var(--accent-rgb), 0.55);
+        content: "◆"; margin-right: 40px; vertical-align: middle;
+        font-size: calc(10px * var(--type)); color: rgba(var(--accent-rgb), 0.55);
       }
 
       /* Left/right edge fade masks */
@@ -76,7 +82,7 @@
 
       /* Headline - large, centered, above the strip */
       #t1-sec-marq .content {
-        position: absolute; left: 0; right: 0; top: 0; bottom: 0;
+        position: absolute; left: var(--safe-l); right: var(--safe-r); top: var(--safe-t); bottom: var(--safe-b);
         display: flex; flex-direction: column; align-items: center; justify-content: center;
         padding-bottom: 80px; z-index: 4;
       }
@@ -110,6 +116,12 @@
         background-size: 200px 200px; mix-blend-mode: overlay; opacity: 0.10;
         pointer-events: none; z-index: 7;
       }
+
+      /* Vertical and square: the headline steps down so its longest word fits the safe width
+         and the strip moves low in the safe box under it; the crawl window stays in the insets. */
+      [data-format="vertical"] #t1-sec-marq .headline { font-size: calc(96px * var(--type)); text-wrap: balance; }
+      [data-format="square"] #t1-sec-marq .headline { font-size: 116px; text-wrap: balance; }
+      [data-format="vertical"] #t1-sec-marq .strip-wrap { top: calc(var(--safe-t) + 780px); }
     </style>
   </head>
   <body>
@@ -118,12 +130,10 @@
       <div class="grid"></div>
 
       <div class="strip-wrap">
-        <div class="strip-inner" id="t1-sec-marq-track">
-          <!-- 8 identical segments for seamless scroll width -->
-          <div class="strip-segment" data-slot="marquee">Prompt Engineering · Context Windows · Fine-Tuning · Retrieval-Augmented Generation · Agents · Tool Use</div>
-          <div class="strip-segment">Prompt Engineering · Context Windows · Fine-Tuning · Retrieval-Augmented Generation · Agents · Tool Use</div>
-          <div class="strip-segment">Prompt Engineering · Context Windows · Fine-Tuning · Retrieval-Augmented Generation · Agents · Tool Use</div>
-          <div class="strip-segment">Prompt Engineering · Context Windows · Fine-Tuning · Retrieval-Augmented Generation · Agents · Tool Use</div>
+        <div class="marqwin">
+          <div class="strip-inner" id="t1-sec-marq-track">
+            <div class="strip-segment" data-slot="marquee">Prompt Engineering · Context Windows · Fine-Tuning · Retrieval-Augmented Generation · Agents · Tool Use</div>
+          </div>
         </div>
       </div>
 
@@ -153,15 +163,14 @@
       /* Strip slides in from below */
       tl.from("#t1-sec-marq .strip-wrap", { autoAlpha: 0, y: 40, duration: 0.9, ease: "power3.out" }, 0.4);
 
-      /* Marquee scroll - translate the inner track leftward one segment width.
-         Each segment is ~1280px wide in practice; we scroll 2560px so it loops cleanly.
-         Finite: 4 repeats × ~1.8s each = 7.2s total - covers the hold. */
+      /* Marquee crawl - the track starts one window-width to the right (hidden by the window)
+         and glides left until it fills the window, settling by the hold frame. The window width
+         is read from layout, so the crawl fits every format. */
       const track = document.getElementById("t1-sec-marq-track");
-      /* measure one segment width after layout - use fixed value for determinism */
-      const segW = 1540; /* px per segment at 22px mono + spacing */
+      const winW = track.parentNode.offsetWidth;
       tl.fromTo(track,
-        { x: 0 },
-        { x: -segW * 2, duration: 7.0, ease: "none" }, 0.4);
+        { x: winW },
+        { x: 0, duration: 5.0, ease: "power1.out" }, 0.4);
 
       /* rule slides in */
       tl.from("#t1-sec-marq .rule", { autoAlpha: 0, scaleX: 0, transformOrigin: "50% 50%", duration: 0.6, ease: "power3.out" }, 0.85);

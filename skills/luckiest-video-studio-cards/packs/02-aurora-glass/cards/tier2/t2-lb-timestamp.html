@@ -13,13 +13,13 @@
       html, body { margin: 0; background: transparent; }
 
       #t2-lb-ts {
-        position: absolute; inset: 0; width: 1920px; height: 1080px;
+        position: absolute; inset: 0; width: var(--w); height: var(--h);
         background: transparent; overflow: hidden;
       }
 
       /* Localized ambient glow - right side, contained */
       #t2-lb-ts .local-glow {
-        position: absolute; right: 50px; top: 290px;
+        position: absolute; right: calc(var(--safe-r) - 30px); top: calc(var(--safe-t) + 236px);
         width: 560px; height: 420px; border-radius: 50%;
         background: radial-gradient(ellipse at 50% 50%,
           rgba(var(--accent-rgb), 0.15) 0%,
@@ -31,7 +31,7 @@
 
       /* Glass card anchored right */
       #t2-lb-ts .card {
-        position: absolute; right: 80px; top: 330px;
+        position: absolute; right: var(--safe-r); top: calc(var(--safe-t) + 276px);
         width: 500px;
         background: var(--glass-bg-dark);
         backdrop-filter: var(--glass-blur);
@@ -90,7 +90,7 @@
       /* Space Mono time text */
       #t2-lb-ts .time-chip {
         font-family: var(--font-mono); font-weight: 700;
-        font-size: 20px; letter-spacing: 0.06em;
+        font-size: calc(20px * var(--type)); letter-spacing: 0.06em;
         color: var(--accent);
         text-shadow: var(--textglow-accent);
         line-height: 1;
@@ -99,7 +99,7 @@
       /* Term heading */
       #t2-lb-ts .term {
         font-family: var(--font-display); font-weight: var(--wt-black);
-        font-size: 38px; letter-spacing: var(--track-tight);
+        font-size: calc(38px * var(--type)); letter-spacing: var(--track-tight);
         color: var(--white); text-shadow: var(--textglow);
         line-height: 1.15; margin-bottom: 14px;
       }
@@ -117,9 +117,18 @@
       /* Detail body */
       #t2-lb-ts .detail {
         font-family: var(--font-body); font-weight: var(--wt-reg);
-        font-size: 26px; line-height: 1.52;
+        font-size: calc(26px * var(--type)); line-height: 1.52;
         color: var(--text-dim);
       }
+      /* Vertical and square: the card drops to the bottom of the safe area, left aligned, its glow following. */
+      [data-format="vertical"] #t2-lb-ts .card, [data-format="square"] #t2-lb-ts .card {
+        top: auto; right: auto; left: var(--safe-l); bottom: var(--safe-b);
+        max-width: calc(var(--w) - var(--safe-l) - var(--safe-r));
+      }
+      [data-format="vertical"] #t2-lb-ts .local-glow, [data-format="square"] #t2-lb-ts .local-glow {
+        top: auto; right: auto; left: calc(var(--safe-l) - 30px); bottom: calc(var(--safe-b) - 50px);
+      }
+      [data-format="vertical"] #t2-lb-ts [data-slot], [data-format="square"] #t2-lb-ts [data-slot] { white-space: normal; }
     </style>
   </head>
   <body>

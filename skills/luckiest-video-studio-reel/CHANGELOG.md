@@ -1,5 +1,11 @@
 # Changelog: luckiest-video-studio-reel
 
+## 1.3.0 — 2026-10-08
+- `templates/reel.html` renders landscape, vertical, and square from one file:
+  laid out from the safe-area center, phrase wraps between words, grid 16x9, 7x8,
+  or 8x8, HUD on the safe edges with the real size printed. In landscape the HUD
+  moves in to the 5% safe area.
+
 ## 1.2.0 — 2026-10-05
 - Follows `art-direction.json` and runs the director's score loop when installed.
 

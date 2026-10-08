@@ -1,5 +1,10 @@
 # Changelog — luckiest-research
 
+## 1.1.0 — 2026-10-08
+- New Video source: shared videos and "summarize this video" go to
+  `luckiest-video-watcher` quick mode, with `m:ss` citations. `yt-dlp`
+  transcripts stay the fallback when the watcher is not installed.
+
 ## 1.0.0 — 2026-09-22
 New skill built from Agent Reach (MIT, v1.5.0) and PixelRAG pixelbrowse (Apache-2.0, v0.4.0).
 

@@ -14,7 +14,7 @@
       html, body { margin: 0; background: transparent; }
 
       #t2-lb-bub {
-        position: absolute; inset: 0; width: 1920px; height: 1080px;
+        position: absolute; inset: 0; width: var(--w); height: var(--h);
         background: transparent; overflow: hidden;
         font-family: var(--font-display);
       }
@@ -33,7 +33,7 @@
 
       /* Bubble wrapper - anchored right */
       #t2-lb-bub .bubble-wrap {
-        position: absolute; right: 130px; top: 360px;
+        position: absolute; right: calc(var(--safe-r) + 34px); top: calc(var(--safe-t) + 306px);
         display: flex; flex-direction: column; gap: 0;
         /* transform-origin bottom-left for tail-anchored spring */
         transform-origin: calc(100% - 60px) 100%;
@@ -75,7 +75,7 @@
       /* Term text */
       #t2-lb-bub .bubble-term {
         font-family: var(--font-display); font-weight: var(--wt-bold);
-        font-size: 32px; letter-spacing: var(--track-snug);
+        font-size: calc(32px * var(--type)); letter-spacing: var(--track-snug);
         color: var(--white); text-shadow: var(--textglow);
         margin-bottom: 10px;
         line-height: 1.1;
@@ -84,7 +84,7 @@
       /* Detail text */
       #t2-lb-bub .bubble-detail {
         font-family: var(--font-body); font-weight: var(--wt-reg);
-        font-size: 21px; line-height: 1.5;
+        font-size: calc(21px * var(--type)); line-height: 1.5;
         color: var(--text-dim);
         max-width: 420px;
       }
@@ -107,6 +107,18 @@
         stroke-linejoin: round;
         filter: drop-shadow(0 2px 8px rgba(0,0,0,0.50));
       }
+      /* Vertical and square: bubble sits bottom-left of the safe area with its tail just under it. */
+      [data-format="vertical"] #t2-lb-bub .bubble-wrap, [data-format="square"] #t2-lb-bub .bubble-wrap {
+        top: auto; right: auto; left: var(--safe-l); bottom: calc(var(--safe-b) + 24px);
+        max-width: calc(var(--w) - var(--safe-l) - var(--safe-r));
+      }
+      [data-format="vertical"] #t2-lb-bub .tail-svg, [data-format="square"] #t2-lb-bub .tail-svg {
+        top: auto; right: auto; left: calc(var(--safe-l) + 60px); bottom: var(--safe-b);
+      }
+      [data-format="vertical"] #t2-lb-bub .local-glow, [data-format="square"] #t2-lb-bub .local-glow {
+        top: auto; right: auto; left: calc(var(--safe-l) - 40px); bottom: calc(var(--safe-b) - 40px);
+      }
+      [data-format="vertical"] #t2-lb-bub [data-slot], [data-format="square"] #t2-lb-bub [data-slot] { white-space: normal; }
     </style>
   </head>
   <body>

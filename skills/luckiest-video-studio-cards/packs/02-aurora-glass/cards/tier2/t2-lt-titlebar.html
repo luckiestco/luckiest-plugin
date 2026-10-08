@@ -13,7 +13,9 @@
       html, body { margin: 0; background: transparent; }
 
       #t2-lt-tbar {
-        position: absolute; inset: 0; width: 1920px; height: 1080px;
+        position: absolute; inset: 0; width: var(--w); height: var(--h);
+        /* the lower-third group's anchor: left / bottom of the main card */
+        --lt-x: var(--safe-l); --lt-y: calc(var(--safe-b) + 54px);
         background: transparent; overflow: hidden;
         font-family: var(--font-display);
       }
@@ -21,7 +23,7 @@
       /* Localized bloom behind the bar */
       #t2-lt-tbar .local-bloom {
         position: absolute;
-        left: 60px; bottom: 82px;
+        left: calc(var(--lt-x) - 20px); bottom: calc(var(--lt-y) - 26px);
         width: 820px; height: 160px;
         border-radius: 50%;
         background: radial-gradient(ellipse at 30% 80%,
@@ -36,7 +38,7 @@
       /* Bar wrapper - clips the wipe */
       #t2-lt-tbar .bar-clip {
         position: absolute;
-        left: 80px; bottom: 108px;
+        left: var(--lt-x); bottom: var(--lt-y);
         width: 800px;
         overflow: hidden;
         border-radius: var(--radius-sm);
@@ -87,7 +89,7 @@
       #t2-lt-tbar .name {
         font-family: var(--font-display);
         font-weight: var(--wt-bold);
-        font-size: 34px;
+        font-size: calc(34px * var(--type));
         letter-spacing: var(--track-snug);
         color: var(--white);
         text-shadow: var(--textglow);
@@ -113,7 +115,7 @@
       #t2-lt-tbar .role {
         font-family: var(--font-body);
         font-weight: var(--wt-med);
-        font-size: 22px;
+        font-size: calc(22px * var(--type));
         letter-spacing: 0.01em;
         color: var(--text-dim);
         line-height: 1.1;
@@ -122,6 +124,18 @@
         text-overflow: ellipsis;
         max-width: 340px;
       }
+      /* Vertical and square: the group sits at the bottom-left of the safe area and slots wrap. */
+      [data-format="vertical"] #t2-lt-tbar, [data-format="square"] #t2-lt-tbar { --lt-y: var(--safe-b); }
+      /* GSAP wipes the clip's width open, so it stays a fixed width (capped to the safe width). */
+      [data-format="vertical"] #t2-lt-tbar .bar-clip, [data-format="square"] #t2-lt-tbar .bar-clip {
+        width: min(800px, calc(var(--w) - var(--safe-l) - var(--safe-r)));
+      }
+      /* Vertical: name over role. */
+      [data-format="vertical"] #t2-lt-tbar .bar { flex-direction: column; align-items: flex-start; gap: 8px; }
+      [data-format="vertical"] #t2-lt-tbar .divider-dot { display: none; }
+      [data-format="vertical"] #t2-lt-tbar .name { flex: none; }
+      [data-format="vertical"] #t2-lt-tbar .role { max-width: none; padding-left: 16px; }
+      [data-format="vertical"] #t2-lt-tbar [data-slot], [data-format="square"] #t2-lt-tbar [data-slot] { white-space: normal; }
     </style>
   </head>
   <body>

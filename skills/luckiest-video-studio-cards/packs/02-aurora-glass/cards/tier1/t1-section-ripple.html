@@ -15,7 +15,7 @@
       html, body { margin: 0; }
 
       #t1-sec-ripple {
-        position: absolute; inset: 0; width: 1920px; height: 1080px;
+        position: absolute; inset: 0; width: var(--w); height: var(--h);
         background: var(--canvas); color: var(--text);
         font-family: var(--font-display); overflow: hidden;
       }
@@ -96,6 +96,13 @@
         background-size: 200px 200px; mix-blend-mode: overlay; opacity: 0.10;
         pointer-events: none; z-index: 7;
       }
+
+      /* Vertical and square: ripples and title centre on the safe area, title spans its width. */
+      [data-format="vertical"] #t1-sec-ripple .ripple-wrap, [data-format="square"] #t1-sec-ripple .ripple-wrap { top: calc((var(--safe-t) + var(--h) - var(--safe-b)) / 2); left: calc((var(--safe-l) + var(--w) - var(--safe-r)) / 2); }
+      [data-format="vertical"] #t1-sec-ripple .content, [data-format="square"] #t1-sec-ripple .content {
+        left: var(--safe-l); right: var(--safe-r); top: var(--safe-t); bottom: var(--safe-b);
+      }
+      [data-format="vertical"] #t1-sec-ripple .headline, [data-format="square"] #t1-sec-ripple .headline { max-width: none; padding: 0; }
     </style>
   </head>
   <body>

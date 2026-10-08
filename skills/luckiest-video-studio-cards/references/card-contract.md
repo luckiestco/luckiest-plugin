@@ -27,7 +27,8 @@ packs/NN-slug/
 
 1. A standalone HyperFrames composition: a root `<div>` with `id`,
    `data-composition-id`, `data-start="0"`, `data-width="1920"`,
-   `data-height="1080"`, directly in `<body>`, with its own pinned GSAP script tag.
+   `data-height="1080"` (the master size; the renderer rewrites them per format),
+   directly in `<body>`, with its own pinned GSAP script tag.
 2. Exactly one paused GSAP timeline, registered on
    `window.__timelines["<data-composition-id>"]`.
 3. Colors, fonts, and easings come from `tokens.css` variables, linked as
@@ -40,6 +41,15 @@ packs/NN-slug/
 5. All text sits in elements with `data-slot="<name>"`, and every slot is declared
    in `style.json` with its name and type.
 6. Deterministic: no `Math.random()`, no `Date.now()`, no network calls.
+7. One file renders in every format. The canvas is `var(--w)` by `var(--h)`, never
+   px. Text positions are offsets from the safe insets (`left: calc(var(--safe-l) +
+   24px)`), so every slot sits inside the safe area in landscape, vertical, and
+   square. Literal font sizes are `calc(Npx * var(--type))` so vertical runs 20%
+   larger. Layout changes go in `[data-format="vertical"]` and
+   `[data-format="square"]` rules at the end of the card's style: tier1 stacks inside
+   the safe area, tier2 moves to the bottom of the safe area. The pack's
+   `tokens.css` holds the landscape defaults; the renderer's stamp overrides them
+   per format (coordinator `step-3-compose.md`, "Build once, render every format").
 
 ## Mounting a card inside another scene
 
@@ -75,3 +85,7 @@ two lines and jumps back.
 
 Keep new cards to the same rules: no CSS `transform` on anything GSAP tweens,
 plain-string selectors, and motion through transforms only.
+
+Check a new card in all three formats with
+`node scripts/qa-cards.mjs sample <run-dir> --pack <id> --tier <tier> --all --format all`,
+then the coordinator's `render-scenes.mjs` and `qa.mjs safe` on that run.

@@ -13,13 +13,13 @@
       html, body { margin: 0; background: transparent; }
 
       #t2-lb-tag {
-        position: absolute; inset: 0; width: 1920px; height: 1080px;
+        position: absolute; inset: 0; width: var(--w); height: var(--h);
         background: transparent; overflow: hidden;
       }
 
       /* Localized glow behind tag - small, contained */
       #t2-lb-tag .local-glow {
-        position: absolute; right: 140px; top: 400px;
+        position: absolute; right: calc(var(--safe-r) + 44px); top: calc(var(--safe-t) + 346px);
         width: 400px; height: 240px; border-radius: 50%;
         background: radial-gradient(ellipse at 50% 50%,
           rgba(var(--accent-rgb), 0.20) 0%,
@@ -31,7 +31,7 @@
 
       /* Wrapper anchored right */
       #t2-lb-tag .wrapper {
-        position: absolute; right: 140px; top: 440px;
+        position: absolute; right: calc(var(--safe-r) + 44px); top: calc(var(--safe-t) + 386px);
         display: flex; flex-direction: column; align-items: flex-start; gap: 12px;
       }
 
@@ -59,7 +59,7 @@
       /* Term text */
       #t2-lb-tag .pill-term {
         font-family: var(--font-display); font-weight: var(--wt-bold);
-        font-size: 28px; letter-spacing: var(--track-snug);
+        font-size: calc(28px * var(--type)); letter-spacing: var(--track-snug);
         color: var(--white);
         text-shadow: var(--textglow);
         white-space: nowrap;
@@ -79,9 +79,18 @@
 
       #t2-lb-tag .detail {
         font-family: var(--font-body); font-weight: var(--wt-reg);
-        font-size: 22px; line-height: 1.45;
+        font-size: calc(22px * var(--type)); line-height: 1.45;
         color: var(--text-dim);
       }
+      /* Vertical and square: the card drops to the bottom of the safe area, left aligned, its glow following. */
+      [data-format="vertical"] #t2-lb-tag .wrapper, [data-format="square"] #t2-lb-tag .wrapper {
+        top: auto; right: auto; left: var(--safe-l); bottom: var(--safe-b); width: auto;
+        max-width: calc(var(--w) - var(--safe-l) - var(--safe-r));
+      }
+      [data-format="vertical"] #t2-lb-tag .local-glow, [data-format="square"] #t2-lb-tag .local-glow {
+        top: auto; right: auto; left: calc(var(--safe-l) + 20px); bottom: calc(var(--safe-b) - 30px);
+      }
+      [data-format="vertical"] #t2-lb-tag [data-slot], [data-format="square"] #t2-lb-tag [data-slot] { white-space: normal; }
     </style>
   </head>
   <body>

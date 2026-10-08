@@ -14,7 +14,7 @@
       html, body { margin: 0; }
 
       #t1-sec-swords {
-        position: absolute; inset: 0; width: 1920px; height: 1080px;
+        position: absolute; inset: 0; width: var(--w); height: var(--h);
         background: var(--canvas); color: var(--text);
         font-family: var(--font-display); overflow: hidden;
       }
@@ -79,7 +79,7 @@
 
       #t1-sec-swords .slab-text {
         font-family: var(--font-display); font-weight: var(--wt-black);
-        font-size: 88px; line-height: 1.0; letter-spacing: var(--track-tight);
+        font-size: calc(88px * var(--type)); line-height: 1.0; letter-spacing: var(--track-tight);
         color: var(--white); text-shadow: var(--textglow);
         text-align: center;
       }
@@ -93,7 +93,7 @@
       }
       /* Third slab - dimmer, supporting */
       #t1-sec-swords .slab:nth-child(3) .slab-text {
-        font-size: 56px; font-weight: var(--wt-semi);
+        font-size: calc(56px * var(--type)); font-weight: var(--wt-semi);
         color: var(--text-dim); text-shadow: none;
         letter-spacing: var(--track-wide); text-transform: uppercase;
         font-family: var(--font-mono);
@@ -108,6 +108,17 @@
         background-size: 200px 200px; mix-blend-mode: overlay; opacity: 0.10;
         pointer-events: none; z-index: 7;
       }
+
+      /* Vertical and square: the slab stack centres in the safe area at its width; slab text wraps
+         at a smaller size. */
+      [data-format="vertical"] #t1-sec-swords .stack, [data-format="square"] #t1-sec-swords .stack {
+        left: calc((var(--safe-l) + var(--w) - var(--safe-r)) / 2); top: calc((var(--safe-t) + var(--h) - var(--safe-b)) / 2); width: calc(var(--w) - var(--safe-l) - var(--safe-r));
+      }
+      [data-format="vertical"] #t1-sec-swords .slab, [data-format="square"] #t1-sec-swords .slab { padding: 30px 36px; }
+      [data-format="vertical"] #t1-sec-swords .slab-text { font-size: calc(64px * var(--type)); }
+      [data-format="vertical"] #t1-sec-swords .slab:nth-child(3) .slab-text { font-size: calc(32px * var(--type)); }
+      [data-format="square"] #t1-sec-swords .slab-text { font-size: 80px; }
+      [data-format="square"] #t1-sec-swords .slab:nth-child(3) .slab-text { font-size: 40px; }
     </style>
   </head>
   <body>

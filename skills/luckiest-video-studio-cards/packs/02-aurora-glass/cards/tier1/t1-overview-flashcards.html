@@ -14,7 +14,7 @@
       html, body { margin: 0; }
 
       #t1-ov-flash {
-        position: absolute; inset: 0; width: 1920px; height: 1080px;
+        position: absolute; inset: 0; width: var(--w); height: var(--h);
         background: var(--canvas); color: var(--text);
         font-family: var(--font-display); overflow: hidden;
       }
@@ -31,7 +31,7 @@
 
       /* Title */
       #t1-ov-flash .title-row {
-        position: absolute; left: 0; right: 0; top: 88px; text-align: center; z-index: 4;
+        position: absolute; left: var(--safe-l); right: var(--safe-r); top: calc(var(--safe-t) + 34px); text-align: center; z-index: 4;
       }
       #t1-ov-flash .title {
         font-family: var(--font-display); font-weight: var(--wt-bold);
@@ -45,7 +45,7 @@
 
       /* Four-card row */
       #t1-ov-flash .cards {
-        position: absolute; left: 80px; right: 80px; top: 258px; bottom: 80px;
+        position: absolute; left: var(--safe-l); right: var(--safe-r); top: calc(var(--safe-t) + 232px); bottom: calc(var(--safe-b) + 26px);
         display: flex; gap: 36px; align-items: stretch; z-index: 4;
       }
 
@@ -86,7 +86,7 @@
       /* Big front label */
       #t1-ov-flash .fc-label {
         font-family: var(--font-display); font-weight: var(--wt-black);
-        font-size: 56px; letter-spacing: var(--track-snug); line-height: 1.12;
+        font-size: calc(56px * var(--type)); letter-spacing: var(--track-snug); line-height: 1.12;
         color: var(--white); text-shadow: var(--textglow);
         margin-bottom: 24px;
       }
@@ -94,7 +94,7 @@
       /* Caption */
       #t1-ov-flash .fc-cap {
         font-family: var(--font-body); font-weight: var(--wt-reg);
-        font-size: 26px; line-height: 1.55;
+        font-size: calc(26px * var(--type)); line-height: 1.55;
         color: var(--text-dim);
       }
 
@@ -114,6 +114,23 @@
         background-size: 200px 200px; mix-blend-mode: overlay; opacity: 0.10;
         pointer-events: none; z-index: 7;
       }
+
+      /* Vertical and square: the row of four cards becomes a 2x2 grid. */
+      [data-format="vertical"] #t1-ov-flash .title-row, [data-format="square"] #t1-ov-flash .title-row { top: var(--safe-t); }
+      [data-format="vertical"] #t1-ov-flash .title { font-size: calc(56px * var(--type)); }
+      [data-format="square"] #t1-ov-flash .title { font-size: 50px; }
+      [data-format="vertical"] #t1-ov-flash .cards, [data-format="square"] #t1-ov-flash .cards {
+        display: grid; grid-template-columns: 1fr 1fr; grid-template-rows: 1fr 1fr; gap: 20px; bottom: var(--safe-b);
+      }
+      [data-format="vertical"] #t1-ov-flash .cards { top: calc(var(--safe-t) + 245px); }
+      [data-format="square"] #t1-ov-flash .cards { top: calc(var(--safe-t) + 150px); }
+      [data-format="vertical"] #t1-ov-flash .fcard, [data-format="square"] #t1-ov-flash .fcard { padding: 56px 28px 30px; }
+      [data-format="vertical"] #t1-ov-flash .fc-num, [data-format="square"] #t1-ov-flash .fc-num { top: 24px; left: 28px; }
+      [data-format="vertical"] #t1-ov-flash .fc-dot, [data-format="square"] #t1-ov-flash .fc-dot { margin-bottom: 16px; }
+      [data-format="vertical"] #t1-ov-flash .fc-label { font-size: calc(40px * var(--type)); margin-bottom: 14px; }
+      [data-format="square"] #t1-ov-flash .fc-label { font-size: 46px; margin-bottom: 14px; }
+      [data-format="vertical"] #t1-ov-flash .fc-cap { font-size: calc(20px * var(--type)); line-height: 1.45; }
+      [data-format="square"] #t1-ov-flash .fc-cap { font-size: 24px; line-height: 1.45; }
     </style>
   </head>
   <body>

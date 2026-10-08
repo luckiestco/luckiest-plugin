@@ -14,14 +14,14 @@
       html, body { margin: 0; background: transparent; }
 
       #t2-lb-mpie {
-        position: absolute; inset: 0; width: 1920px; height: 1080px;
+        position: absolute; inset: 0; width: var(--w); height: var(--h);
         background: transparent; overflow: hidden;
         font-family: var(--font-display);
       }
 
       /* Local bloom behind component */
       #t2-lb-mpie .local-glow {
-        position: absolute; right: 100px; top: 360px;
+        position: absolute; right: calc(var(--safe-r) + 4px); top: calc(var(--safe-t) + 306px);
         width: 520px; height: 300px; border-radius: 50%;
         background: radial-gradient(ellipse at 50% 50%,
           rgba(var(--accent-rgb), 0.22) 0%,
@@ -34,7 +34,7 @@
 
       /* Outer positioning wrapper - right anchored */
       #t2-lb-mpie .wrapper {
-        position: absolute; right: 140px; top: 400px;
+        position: absolute; right: calc(var(--safe-r) + 44px); top: calc(var(--safe-t) + 346px);
         display: flex; flex-direction: row; align-items: center; gap: 30px;
         z-index: 2;
       }
@@ -68,7 +68,7 @@
       #t2-lb-mpie .pct-text {
         font-family: var(--font-mono);
         font-weight: var(--wt-bold);
-        font-size: 28px;
+        font-size: calc(28px * var(--type));
         letter-spacing: -0.02em;
         color: var(--white);
         text-shadow: var(--textglow-accent);
@@ -83,7 +83,7 @@
       #t2-lb-mpie .term {
         font-family: var(--font-display);
         font-weight: var(--wt-bold);
-        font-size: 30px;
+        font-size: calc(30px * var(--type));
         letter-spacing: var(--track-snug);
         color: var(--white);
         text-shadow: var(--textglow);
@@ -110,10 +110,19 @@
       #t2-lb-mpie .detail {
         font-family: var(--font-body);
         font-weight: var(--wt-reg);
-        font-size: 19px;
+        font-size: calc(19px * var(--type));
         line-height: 1.45;
         color: var(--text-dim);
       }
+      /* Vertical and square: the card drops to the bottom of the safe area, left aligned, its glow following. */
+      [data-format="vertical"] #t2-lb-mpie .wrapper, [data-format="square"] #t2-lb-mpie .wrapper {
+        top: auto; right: auto; left: var(--safe-l); bottom: var(--safe-b); width: auto;
+        max-width: calc(var(--w) - var(--safe-l) - var(--safe-r));
+      }
+      [data-format="vertical"] #t2-lb-mpie .local-glow, [data-format="square"] #t2-lb-mpie .local-glow {
+        top: auto; right: auto; left: var(--safe-l); bottom: calc(var(--safe-b) - 60px);
+      }
+      [data-format="vertical"] #t2-lb-mpie [data-slot], [data-format="square"] #t2-lb-mpie [data-slot] { white-space: normal; }
     </style>
   </head>
   <body>

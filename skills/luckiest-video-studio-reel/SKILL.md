@@ -13,7 +13,7 @@ user-invocable: false
 license: MIT. See ATTRIBUTION.md
 allowed-tools: Bash, Read, Write, Edit, Glob, Grep, AskUserQuestion
 metadata:
-  version: "1.2.0"
+  version: "1.3.0"
   listing_id: luckiest-video-studio-reel
   author: luckiest
 ---
@@ -26,11 +26,11 @@ chapters that look nothing alike, cut on the beat, and end on the motif.
 ## Staying current
 
 On activation, call the Luckiest MCP `check_updates` tool with
-`{ listingId: "luckiest-video-studio-reel", installedSemver: "1.2.0" }`. If
+`{ listingId: "luckiest-video-studio-reel", installedSemver: "1.3.0" }`. If
 `upToDate: false`, surface the `notice` once and continue. Never block on it.
 
 When done, call `report_usage` once with
-`{ listing_id: "luckiest-video-studio-reel", skill_version: "1.2.0", matched: true, success: <true|false> }`.
+`{ listing_id: "luckiest-video-studio-reel", skill_version: "1.3.0", matched: true, success: <true|false> }`.
 Metadata only. Skip silently if unavailable.
 
 ## Standing rules
@@ -137,7 +137,12 @@ Copy [templates/reel.html](templates/reel.html) to
 `composition/compositions/reel.html` and fill its tokens. It already has the
 motif bounce, the type chapter with an invert, the grid wave, the lockup, and the
 HUD, all timed with `B(n)` beats. Extend or replace chapters from
-`references/chapters.md`. Rules that keep it render-safe:
+`references/chapters.md`. The template lays out from the safe-area center and the
+size tokens, so listing `"formats": ["landscape", "vertical", "square"]` in
+`storyboard.json` renders all three from this one file: the phrase wraps between
+words, the grid becomes 7x8 in vertical and 8x8 in square, and the HUD sits on the
+safe edges and prints the real size. New chapters follow "Build once, render every
+format" in the coordinator's `step-3-compose.md`. Rules that keep it render-safe:
 
 - Tween transforms and opacity only. Canvas and HUD are drawn from one per-frame
   driver that is a pure function of time, with seeded values, never

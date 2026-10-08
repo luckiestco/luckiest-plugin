@@ -14,14 +14,14 @@
       html, body { margin: 0; background: transparent; }
 
       #t2-lb-quote {
-        position: absolute; inset: 0; width: 1920px; height: 1080px;
+        position: absolute; inset: 0; width: var(--w); height: var(--h);
         background: transparent; overflow: hidden;
         font-family: var(--font-display);
       }
 
       /* Localized glow - left, behind card */
       #t2-lb-quote .local-glow {
-        position: absolute; left: 50px; top: 280px;
+        position: absolute; left: calc(var(--safe-l) - 30px); top: calc(var(--safe-t) + 226px);
         width: 600px; height: 460px; border-radius: 50%;
         background: radial-gradient(ellipse at 40% 50%,
           rgba(var(--accent-rgb), 0.18) 0%,
@@ -33,7 +33,7 @@
 
       /* Card anchored left */
       #t2-lb-quote .card {
-        position: absolute; left: 80px; top: 300px;
+        position: absolute; left: var(--safe-l); top: calc(var(--safe-t) + 246px);
         width: 540px;
         background: var(--glass-bg-dark);
         backdrop-filter: var(--glass-blur);
@@ -43,14 +43,14 @@
         box-shadow: var(--glass-shadow);
         border-radius: var(--radius);
         padding: 36px 36px 32px;
-        position: absolute; left: 80px; top: 300px;
+        position: absolute; left: var(--safe-l); top: calc(var(--safe-t) + 246px);
         width: 540px;
       }
 
       /* Oversized glowing quotation mark */
       #t2-lb-quote .quote-mark {
         font-family: var(--font-display); font-weight: var(--wt-black);
-        font-size: 120px; line-height: 0.7;
+        font-size: calc(120px * var(--type)); line-height: 0.7;
         color: var(--accent);
         filter: drop-shadow(0 0 22px rgba(var(--accent-rgb), 0.65))
                 drop-shadow(0 0 8px rgba(var(--accent-rgb), 0.40));
@@ -64,7 +64,7 @@
       #t2-lb-quote .quote-text {
         font-family: var(--font-display); font-style: italic;
         font-weight: var(--wt-semi);
-        font-size: 28px; line-height: 1.5;
+        font-size: calc(28px * var(--type)); line-height: 1.5;
         color: var(--white); text-shadow: var(--textglow);
         margin-bottom: 22px;
       }
@@ -81,9 +81,18 @@
       }
       #t2-lb-quote .attribution {
         font-family: var(--font-body); font-weight: var(--wt-med);
-        font-size: 20px; letter-spacing: 0.04em;
+        font-size: calc(20px * var(--type)); letter-spacing: 0.04em;
         color: var(--accent); text-shadow: var(--textglow-accent);
       }
+      /* Vertical and square: the card drops to the bottom of the safe area, left aligned, its glow following. */
+      [data-format="vertical"] #t2-lb-quote .card, [data-format="square"] #t2-lb-quote .card {
+        top: auto; right: auto; left: var(--safe-l); bottom: var(--safe-b);
+        max-width: calc(var(--w) - var(--safe-l) - var(--safe-r));
+      }
+      [data-format="vertical"] #t2-lb-quote .local-glow, [data-format="square"] #t2-lb-quote .local-glow {
+        top: auto; right: auto; left: calc(var(--safe-l) - 30px); bottom: calc(var(--safe-b) - 80px);
+      }
+      [data-format="vertical"] #t2-lb-quote [data-slot], [data-format="square"] #t2-lb-quote [data-slot] { white-space: normal; }
     </style>
   </head>
   <body>

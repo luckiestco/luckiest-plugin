@@ -15,7 +15,7 @@
       html, body { margin: 0; }
 
       #t1-stat-qstat {
-        position: absolute; inset: 0; width: 1920px; height: 1080px;
+        position: absolute; inset: 0; width: var(--w); height: var(--h);
         background: var(--canvas); color: var(--text);
         font-family: var(--font-display); overflow: hidden;
       }
@@ -48,7 +48,7 @@
       #t1-stat-qstat .quotemark {
         position: absolute; left: 228px; top: 175px;
         font-family: var(--font-display); font-weight: var(--wt-black);
-        font-size: 220px; line-height: 1; color: rgba(var(--accent-rgb), 0.10);
+        font-size: calc(220px * var(--type)); line-height: 1; color: rgba(var(--accent-rgb), 0.10);
         z-index: 2; user-select: none; pointer-events: none;
         letter-spacing: -0.05em;
       }
@@ -62,7 +62,7 @@
       /* The sentence – built of prose spans + stat span */
       #t1-stat-qstat .sentence {
         font-family: var(--font-display); font-weight: var(--wt-bold);
-        font-size: 88px; line-height: 1.12; letter-spacing: var(--track-snug);
+        font-size: calc(88px * var(--type)); line-height: 1.12; letter-spacing: var(--track-snug);
         color: var(--text); text-shadow: var(--textglow);
         max-width: 1380px;
       }
@@ -81,7 +81,7 @@
       /* Source */
       #t1-stat-qstat .label-line {
         margin-top: 64px;
-        font-family: var(--font-body); font-size: 30px;
+        font-family: var(--font-body); font-size: calc(30px * var(--type));
         font-weight: var(--wt-med); color: var(--text-dim);
         line-height: 1.5; max-width: 1200px;
       }
@@ -90,7 +90,7 @@
       }
 
       #t1-stat-qstat .source {
-        position: absolute; left: var(--pad); bottom: 44px;
+        position: absolute; left: var(--safe-l); bottom: var(--safe-b);
         font-family: var(--font-mono); font-size: var(--size-tiny);
         font-weight: var(--wt-reg); letter-spacing: 0.12em;
         text-transform: uppercase; color: var(--text-faint); z-index: 5;
@@ -105,6 +105,16 @@
         background-size: 200px 200px; mix-blend-mode: overlay; opacity: 0.10;
         pointer-events: none; z-index: 7;
       }
+
+      /* Vertical and square: bar, quote mark and text move to the safe box; the sentence shrinks to wrap there. */
+      [data-format="vertical"] #t1-stat-qstat .accent-bar, [data-format="square"] #t1-stat-qstat .accent-bar { left: var(--safe-l); top: var(--safe-t); }
+      [data-format="vertical"] #t1-stat-qstat .accent-bar { height: 900px; }
+      [data-format="square"] #t1-stat-qstat .accent-bar { height: 860px; }
+      [data-format="vertical"] #t1-stat-qstat .quotemark, [data-format="square"] #t1-stat-qstat .quotemark { left: calc(var(--safe-l) + 28px); top: calc(var(--safe-t) - 35px); }
+      [data-format="vertical"] #t1-stat-qstat .content, [data-format="square"] #t1-stat-qstat .content { left: calc(var(--safe-l) + 56px); right: var(--safe-r); top: calc(var(--safe-t) + 60px); }
+      [data-format="vertical"] #t1-stat-qstat .sentence { font-size: calc(62px * var(--type)); }
+      [data-format="square"] #t1-stat-qstat .sentence { font-size: 64px; }
+      [data-format="vertical"] #t1-stat-qstat .label-line, [data-format="square"] #t1-stat-qstat .label-line { margin-top: 48px; }
     </style>
   </head>
   <body>

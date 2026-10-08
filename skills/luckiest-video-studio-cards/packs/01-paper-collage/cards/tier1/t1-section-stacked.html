@@ -12,7 +12,7 @@
     <style>
       html, body { margin: 0; }
       #t1-sec-stacked {
-        position: absolute; inset: 0; width: 1920px; height: 1080px;
+        position: absolute; inset: 0; width: var(--w); height: var(--h);
         background: var(--paper); color: var(--ink);
         font-family: var(--font-display); overflow: hidden;
       }
@@ -32,28 +32,44 @@
         background: radial-gradient(120% 120% at 50% 50%, transparent 56%, rgba(23,19,14,0.15) 100%);
       }
       #t1-sec-stacked .stage { position: absolute; inset: 0; transform-origin: 50% 50%; }
-      #t1-sec-stacked .title { position: absolute; left: 150px; top: 250px; width: 1620px; }
+      #t1-sec-stacked .title { position: absolute; left: calc(var(--safe-l) + 54px); top: calc(var(--safe-t) + 196px); width: 1620px; }
       #t1-sec-stacked .line { display: block; line-height: 0.94; letter-spacing: var(--track-tight); overflow: hidden; }
-      #t1-sec-stacked .l1 { font-weight: var(--wt-thin); font-size: 150px; }
-      #t1-sec-stacked .l2 { font-weight: var(--wt-black); font-style: italic; font-size: 176px; }
-      #t1-sec-stacked .l3 { font-weight: var(--wt-thin); font-size: 150px; }
+      #t1-sec-stacked .l1 { font-weight: var(--wt-thin); font-size: calc(150px * var(--type)); }
+      #t1-sec-stacked .l2 { font-weight: var(--wt-black); font-style: italic; font-size: calc(176px * var(--type)); }
+      #t1-sec-stacked .l3 { font-weight: var(--wt-thin); font-size: calc(150px * var(--type)); }
       #t1-sec-stacked .l1 span, #t1-sec-stacked .l2 span, #t1-sec-stacked .l3 span { display: inline-block; }
       /* keyword over a circle */
       #t1-sec-stacked .key {
-        position: absolute; left: 1130px; top: 470px; z-index: 3;
-        font-weight: var(--wt-black); font-style: italic; font-size: 176px; color: var(--ink);
+        position: absolute; left: calc(var(--safe-l) + 1034px); top: calc(var(--safe-t) + 416px); z-index: 3;
+        font-weight: var(--wt-black); font-style: italic; font-size: calc(176px * var(--type)); color: var(--ink);
       }
       #t1-sec-stacked .circle {
-        position: absolute; left: 1090px; top: 430px; width: 340px; height: 340px;
+        position: absolute; left: calc(var(--safe-l) + 994px); top: calc(var(--safe-t) + 376px); width: 340px; height: 340px;
         background: var(--yellow); border-radius: 50%; z-index: 1;
       }
       #t1-sec-stacked .source {
-        position: absolute; left: 150px; bottom: 96px; z-index: 3;
+        position: absolute; left: calc(var(--safe-l) + 54px); bottom: calc(var(--safe-b) + 42px); z-index: 3;
         font-family: var(--font-label); font-weight: var(--wt-bold);
         font-size: var(--size-tiny); letter-spacing: var(--track-wide);
         text-transform: uppercase; color: var(--muted);
       }
-      #t1-sec-stacked .rule { position: absolute; left: 150px; bottom: 150px; width: 0; height: 6px; background: var(--red); z-index: 3; }
+      #t1-sec-stacked .rule { position: absolute; left: calc(var(--safe-l) + 54px); bottom: calc(var(--safe-b) + 96px); width: 0; height: 6px; background: var(--red); z-index: 3; }
+
+      /* Vertical and square: the three lines stack from the top of the safe area, the keyword
+         circle sits under them (right of center), rule and source at the safe bottom. */
+      [data-format="vertical"] #t1-sec-stacked .stage { transform-origin: 46% 40%; }
+      /* text keeps ~28px clear of the safe edges because the stage zooms 4% toward its origin */
+      [data-format="vertical"] #t1-sec-stacked .title, [data-format="square"] #t1-sec-stacked .title { left: calc(var(--safe-l) + 28px); top: calc(var(--safe-t) + 24px); width: calc(var(--w) - var(--safe-l) - var(--safe-r) - 56px); }
+      [data-format="vertical"] #t1-sec-stacked .l1, [data-format="vertical"] #t1-sec-stacked .l3 { font-size: calc(124px * var(--type)); }
+      [data-format="vertical"] #t1-sec-stacked .l2 { font-size: calc(128px * var(--type)); }
+      [data-format="square"] #t1-sec-stacked .l1, [data-format="square"] #t1-sec-stacked .l3 { font-size: 124px; }
+      [data-format="square"] #t1-sec-stacked .l2 { font-size: 144px; }
+      [data-format="vertical"] #t1-sec-stacked .circle { left: calc(var(--safe-l) + 330px); top: calc(var(--safe-t) + 500px); }
+      [data-format="vertical"] #t1-sec-stacked .key { left: calc(var(--safe-l) + 370px); top: calc(var(--safe-t) + 540px); font-size: calc(146px * var(--type)); }
+      [data-format="square"] #t1-sec-stacked .circle { left: calc(var(--safe-l) + 540px); top: calc(var(--safe-t) + 420px); width: 300px; height: 300px; }
+      [data-format="square"] #t1-sec-stacked .key { left: calc(var(--safe-l) + 570px); top: calc(var(--safe-t) + 450px); font-size: 150px; }
+      [data-format="vertical"] #t1-sec-stacked .source, [data-format="square"] #t1-sec-stacked .source { left: calc(var(--safe-l) + 28px); bottom: calc(var(--safe-b) + 28px); }
+      [data-format="vertical"] #t1-sec-stacked .rule, [data-format="square"] #t1-sec-stacked .rule { left: calc(var(--safe-l) + 28px); bottom: calc(var(--safe-b) + 82px); }
     </style>
   </head>
   <body>

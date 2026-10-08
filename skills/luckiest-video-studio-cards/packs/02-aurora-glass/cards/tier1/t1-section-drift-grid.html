@@ -15,7 +15,7 @@
       html, body { margin: 0; }
 
       #t1-sec-dgrid {
-        position: absolute; inset: 0; width: 1920px; height: 1080px;
+        position: absolute; inset: 0; width: var(--w); height: var(--h);
         background: var(--canvas); color: var(--text);
         font-family: var(--font-display); overflow: hidden;
       }
@@ -41,10 +41,11 @@
 
       /* Content - title in centre at z-index 5 */
       #t1-sec-dgrid .content {
-        position: absolute; left: 0; right: 0; top: 50%;
+        position: absolute; left: var(--safe-l); right: var(--safe-r);
+        top: calc(var(--safe-t) + (var(--h) - var(--safe-t) - var(--safe-b)) / 2);
         transform: translateY(-50%);
         text-align: center; z-index: 5;
-        padding: 0 120px;
+        padding: 0 24px;
       }
 
       #t1-sec-dgrid .kicker {
@@ -76,6 +77,11 @@
         background-size: 200px 200px; mix-blend-mode: overlay; opacity: 0.10;
         pointer-events: none; z-index: 7;
       }
+
+      /* Vertical and square: the title centers on the safe box (top above) and wraps inside
+         the safe width; the dot grid reads the frame size, so it fills any format. */
+      [data-format="vertical"] #t1-sec-dgrid .content, [data-format="square"] #t1-sec-dgrid .content { padding: 0; }
+      [data-format="vertical"] #t1-sec-dgrid .headline, [data-format="square"] #t1-sec-dgrid .headline { text-wrap: balance; }
     </style>
   </head>
   <body>
@@ -138,7 +144,8 @@
 
       const canvas = document.getElementById("t1-sec-dgrid-canvas");
       const cols = 14, rows = 9;
-      const cw = 1920, ch = 1080;
+      /* frame size of the stamped format (the canvas is inset: 0 on the root) */
+      const cw = canvas.offsetWidth, ch = canvas.offsetHeight;
       const dotEls = [];
       let idx = 0;
       for (let r = 0; r < rows; r++) {

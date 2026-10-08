@@ -14,7 +14,7 @@
       html, body { margin: 0; }
 
       #t1-stat-spark {
-        position: absolute; inset: 0; width: 1920px; height: 1080px;
+        position: absolute; inset: 0; width: var(--w); height: var(--h);
         background: var(--canvas); color: var(--text);
         font-family: var(--font-display); overflow: hidden;
       }
@@ -51,7 +51,7 @@
       #t1-stat-spark .stat {
         font-family: var(--font-display);
         font-weight: var(--wt-black);
-        font-size: var(--size-mega);
+        font-size: calc(180px * var(--type));
         line-height: 0.9;
         letter-spacing: var(--track-tight);
         background: linear-gradient(155deg, #ffffff 10%, rgba(var(--accent-rgb), 0.80) 85%);
@@ -96,7 +96,7 @@
       }
 
       #t1-stat-spark .source {
-        position: absolute; left: var(--pad); bottom: 44px;
+        position: absolute; left: var(--safe-l); bottom: var(--safe-b);
         font-family: var(--font-mono); font-size: var(--size-tiny);
         font-weight: var(--wt-reg); letter-spacing: 0.12em;
         text-transform: uppercase; color: var(--text-faint); z-index: 5;
@@ -111,6 +111,12 @@
         background-size: 200px 200px; mix-blend-mode: overlay; opacity: 0.10;
         pointer-events: none; z-index: 7;
       }
+
+      /* Vertical and square: text block on top, the sparkline scaled to the safe width below it. */
+      [data-format="vertical"] #t1-stat-spark .left-col, [data-format="square"] #t1-stat-spark .left-col { left: calc(var(--safe-l) + 12px); right: var(--safe-r); top: var(--safe-t); transform: none; max-width: none; }
+      [data-format="vertical"] #t1-stat-spark .stat { font-size: calc(150px * var(--type)); }
+      [data-format="vertical"] #t1-stat-spark .spark-wrap { right: auto; left: var(--safe-l); top: calc(var(--safe-t) + 500px); transform: scale(0.7236); transform-origin: 0 0; }
+      [data-format="square"] #t1-stat-spark .spark-wrap { right: auto; left: var(--safe-l); top: 544px; transform: scale(0.8755); transform-origin: 0 0; }
     </style>
   </head>
   <body>

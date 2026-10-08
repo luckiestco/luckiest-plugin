@@ -14,7 +14,7 @@
     <style>
       html, body { margin: 0; }
       #t1-stat-semi {
-        position: absolute; inset: 0; width: 1920px; height: 1080px;
+        position: absolute; inset: 0; width: var(--w); height: var(--h);
         background: var(--paper); color: var(--ink);
         font-family: var(--font-display); overflow: hidden;
       }
@@ -33,14 +33,14 @@
         background: radial-gradient(120% 120% at 50% 40%, transparent 52%, rgba(23,19,14,0.2) 100%);
       }
       #t1-stat-semi .kicker {
-        position: absolute; left: 50%; transform: translateX(-50%); top: 92px;
+        position: absolute; left: 50%; transform: translateX(-50%); top: calc(var(--safe-t) + 38px);
         font-family: var(--font-label); font-weight: var(--wt-bold);
         font-size: var(--size-label); letter-spacing: var(--track-wide);
         text-transform: uppercase; color: var(--red); white-space: nowrap;
       }
       /* gauge container - centered */
       #t1-stat-semi .gaugewrap {
-        position: absolute; left: 50%; top: 148px;
+        position: absolute; left: 50%; top: calc(var(--safe-t) + 94px);
         transform: translateX(-50%);
         width: 800px; height: 440px;  /* half the SVG height since it's a semicircle */
       }
@@ -51,7 +51,7 @@
       }
       #t1-stat-semi .stat {
         position: absolute; bottom: 0; left: 0; right: 0; text-align: center;
-        font-weight: var(--wt-black); font-size: 220px; line-height: 1;
+        font-weight: var(--wt-black); font-size: calc(220px * var(--type)); line-height: 1;
         letter-spacing: -0.05em; font-variant-numeric: tabular-nums; color: var(--ink);
       }
       /* end-cap labels positioned at the two arc termini */
@@ -66,17 +66,32 @@
       #t1-stat-semi .max-label { right: 0; }
       /* label + source */
       #t1-stat-semi .label {
-        position: absolute; left: 130px; right: 130px; bottom: 160px;
-        font-weight: var(--wt-thin); font-size: 52px; line-height: 1.06;
+        position: absolute; left: calc(var(--safe-l) + 34px); right: calc(var(--safe-r) + 34px); bottom: calc(var(--safe-b) + 106px);
+        font-weight: var(--wt-thin); font-size: calc(52px * var(--type)); line-height: 1.06;
         letter-spacing: var(--track-tight); color: var(--ink); text-align: center;
       }
       #t1-stat-semi .label em { font-style: italic; font-weight: var(--wt-black); }
       #t1-stat-semi .source {
-        position: absolute; left: 50%; transform: translateX(-50%); bottom: 90px;
+        position: absolute; left: 50%; transform: translateX(-50%); bottom: calc(var(--safe-b) + 36px);
         font-family: var(--font-label); font-weight: var(--wt-bold);
         font-size: var(--size-tiny); letter-spacing: var(--track-wide);
         text-transform: uppercase; color: var(--muted); white-space: nowrap;
       }
+
+      /* Vertical and square: kicker, gauge, label, source stacked on the safe-area center (--cx);
+         in vertical the gauge shrinks to 680px to fit the safe width. */
+      [data-format="vertical"] #t1-stat-semi, [data-format="square"] #t1-stat-semi {
+        --cx: calc(var(--safe-l) + (var(--w) - var(--safe-l) - var(--safe-r)) / 2);
+      }
+      [data-format="vertical"] #t1-stat-semi .kicker, [data-format="square"] #t1-stat-semi .kicker { left: var(--cx); top: var(--safe-t); }
+      [data-format="vertical"] #t1-stat-semi .gaugewrap { left: var(--cx); top: calc(var(--safe-t) + 170px); width: 680px; height: 374px; }
+      [data-format="vertical"] #t1-stat-semi svg { width: 680px; height: 680px; }
+      [data-format="vertical"] #t1-stat-semi .stat { font-size: calc(160px * var(--type)); }
+      [data-format="vertical"] #t1-stat-semi .min-label, [data-format="vertical"] #t1-stat-semi .max-label { bottom: 20px; }
+      [data-format="square"] #t1-stat-semi .gaugewrap { left: var(--cx); top: calc(var(--safe-t) + 110px); }
+      [data-format="vertical"] #t1-stat-semi .label, [data-format="square"] #t1-stat-semi .label { left: var(--safe-l); right: var(--safe-r); bottom: auto; top: calc(var(--safe-t) + 600px); }
+      [data-format="vertical"] #t1-stat-semi .label { top: calc(var(--safe-t) + 640px); }
+      [data-format="vertical"] #t1-stat-semi .source, [data-format="square"] #t1-stat-semi .source { left: var(--cx); bottom: var(--safe-b); }
     </style>
   </head>
   <body>

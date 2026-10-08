@@ -15,7 +15,7 @@
       html, body { margin: 0; }
 
       #t1-st-col {
-        position: absolute; inset: 0; width: 1920px; height: 1080px;
+        position: absolute; inset: 0; width: var(--w); height: var(--h);
         background: var(--canvas); color: var(--text);
         font-family: var(--font-display); overflow: hidden;
       }
@@ -138,7 +138,7 @@
         bottom: calc(100% + 14px);
         width: 100%; text-align: center;
         font-family: var(--font-mono);
-        font-size: 22px;
+        font-size: calc(22px * var(--type));
         font-weight: var(--wt-bold);
         letter-spacing: 0.06em;
         color: var(--text-dim);
@@ -170,7 +170,7 @@
         flex: 1;
         text-align: center;
         font-family: var(--font-mono);
-        font-size: 20px;
+        font-size: calc(20px * var(--type));
         font-weight: var(--wt-bold);
         letter-spacing: 0.08em;
         text-transform: uppercase;
@@ -199,7 +199,7 @@
 
       /* Source */
       #t1-st-col .source {
-        position: absolute; left: var(--pad); bottom: 44px;
+        position: absolute; left: var(--safe-l); bottom: var(--safe-b);
         font-family: var(--font-mono); font-size: var(--size-tiny);
         font-weight: var(--wt-reg); letter-spacing: 0.12em;
         text-transform: uppercase; color: var(--text-faint); z-index: 5;
@@ -214,6 +214,14 @@
         background-size: 200px 200px; mix-blend-mode: overlay; opacity: 0.10;
         pointer-events: none; z-index: 7;
       }
+
+      /* Vertical and square: the stack centers inside the safe area; the chart takes the safe width. */
+      [data-format="vertical"] #t1-st-col .content, [data-format="square"] #t1-st-col .content { inset: var(--safe-t) var(--safe-r) var(--safe-b) var(--safe-l); padding-bottom: 40px; }
+      [data-format="vertical"] #t1-st-col .kicker, [data-format="square"] #t1-st-col .kicker { text-align: center; }
+      [data-format="vertical"] #t1-st-col .chart-wrap, [data-format="square"] #t1-st-col .chart-wrap,
+      [data-format="vertical"] #t1-st-col .axis-labels, [data-format="square"] #t1-st-col .axis-labels { width: 100%; }
+      [data-format="vertical"] #t1-st-col .columns, [data-format="vertical"] #t1-st-col .axis-labels { gap: 24px; }
+      [data-format="square"] #t1-st-col .columns, [data-format="square"] #t1-st-col .axis-labels { gap: 32px; }
     </style>
   </head>
   <body>

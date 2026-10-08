@@ -15,7 +15,7 @@
       html, body { margin: 0; }
 
       #t1-sec-grad {
-        position: absolute; inset: 0; width: 1920px; height: 1080px;
+        position: absolute; inset: 0; width: var(--w); height: var(--h);
         background: var(--canvas); color: var(--text);
         font-family: var(--font-display); overflow: hidden;
       }
@@ -36,7 +36,7 @@
 
       /* Kicker - upper left, editorial */
       #t1-sec-grad .kicker-wrap {
-        position: absolute; left: var(--pad); top: var(--pad); z-index: 4;
+        position: absolute; left: var(--safe-l); top: calc(var(--safe-t) + 26px); z-index: 4;
       }
       #t1-sec-grad .kicker {
         font-family: var(--font-body); font-style: italic; font-weight: var(--wt-med);
@@ -46,8 +46,8 @@
 
       /* Main content - left-aligned, vertically centred-low */
       #t1-sec-grad .content {
-        position: absolute; left: var(--pad); right: var(--pad);
-        top: 50%; transform: translateY(-50%);
+        position: absolute; left: var(--safe-l); right: var(--safe-r);
+        top: calc(var(--safe-t) + (var(--h) - var(--safe-t) - var(--safe-b)) / 2); transform: translateY(-50%);
         z-index: 4;
       }
 
@@ -91,7 +91,8 @@
 
       /* Soft glow bloom behind the hero word */
       #t1-sec-grad .word-bloom {
-        position: absolute; left: calc(var(--pad) - 60px); top: 50%;
+        position: absolute; left: calc(var(--safe-l) - 60px);
+        top: calc(var(--safe-t) + (var(--h) - var(--safe-t) - var(--safe-b)) / 2);
         transform: translateY(-50%);
         width: 900px; height: 500px;
         background: radial-gradient(ellipse at 30% 50%,
@@ -112,6 +113,15 @@
         background-size: 200px 200px; mix-blend-mode: overlay; opacity: 0.10;
         pointer-events: none; z-index: 7;
       }
+
+      /* Vertical and square: the giant word steps down so it fits the safe width on one line;
+         kicker stays top-left of the safe box, the block centers on it (top above). */
+      [data-format="vertical"] #t1-sec-grad .hero-word { font-size: calc(110px * var(--type)); }
+      [data-format="square"] #t1-sec-grad .hero-word { font-size: 160px; }
+      /* the italic glyphs and their glow overhang the left edge; inset the block a little */
+      [data-format="vertical"] #t1-sec-grad .content, [data-format="square"] #t1-sec-grad .content { left: calc(var(--safe-l) + 24px); }
+
+      [data-format="vertical"] #t1-sec-grad .word-bloom { width: 700px; height: 600px; }
     </style>
   </head>
   <body>

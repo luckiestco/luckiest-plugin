@@ -14,7 +14,7 @@ user-invocable: false
 license: MIT. See ATTRIBUTION.md
 allowed-tools: Bash, Read, Write, Edit, Glob, Grep, AskUserQuestion
 metadata:
-  version: "1.1.0"
+  version: "1.3.0"
   listing_id: luckiest-video-studio-cards
   author: luckiest
 ---
@@ -28,11 +28,11 @@ consistent than drawing each beat from scratch.
 ## Staying current
 
 On activation, call the Luckiest MCP `check_updates` tool with
-`{ listingId: "luckiest-video-studio-cards", installedSemver: "1.1.0" }`. If
+`{ listingId: "luckiest-video-studio-cards", installedSemver: "1.3.0" }`. If
 `upToDate: false`, surface the `notice` once and continue. Never block on it.
 
 When done, call `report_usage` once with
-`{ listing_id: "luckiest-video-studio-cards", skill_version: "1.1.0", matched: true, success: <true|false> }`.
+`{ listing_id: "luckiest-video-studio-cards", skill_version: "1.3.0", matched: true, success: <true|false> }`.
 Metadata only. Skip silently if unavailable.
 
 ## Standing rules
@@ -98,16 +98,31 @@ If the run already has `art-direction.json`, follow it; otherwise, if `luckiest-
 
 Scene templates in `<skill-dir>/templates/` (`graph-paper` for a full-frame
 backdrop, `glass-popout` for a side panel over a reframed camera) are starting
-points for a whole scene rather than one card.
+points for a whole scene rather than one card. Both are sized with the coordinator's
+size tokens, so they render landscape, vertical, and square from one file when the
+storyboard lists `formats`. `glass-popout` moves its panel to the bottom of the safe
+area in vertical and square.
+
+Every pack card renders in all three formats from one file. The card reads the
+coordinator's size tokens (`--w`, `--h`, the `--safe-*` insets) and restacks under
+`[data-format=vertical]` and `[data-format=square]`: tier1 layouts stack inside the
+safe area, tier2 overlays move to the bottom of the safe area clear of the face, and
+type runs 20% larger in vertical. Nothing extra to do: add `formats` to the storyboard
+once the master is approved (coordinator `step-4-deliver.md`, "Other formats (last)").
 
 ## Step 4: Check
 
 Easing, duration, and stagger edits to a card follow `luckiest-video-studio-motion`.
 
 Render the scene with the coordinator's `render-scenes.mjs` and look at the hero
-frame at full size and phone size: every slot filled with real copy, no text
-clipped at the longest slot value, the brand colors in place of the pack
-defaults.
+frame at full size and phone size, in every format the storyboard lists: every slot
+filled with real copy, no text clipped at the longest slot value, text inside the
+safe area (`node <coordinator>/scripts/qa.mjs safe <run-dir>`), the brand colors in
+place of the pack defaults.
+
+To check cards themselves, `node <skill-dir>/scripts/qa-cards.mjs sample <run-dir>
+--format all` writes a sample run with one card per purpose in each format
+(`--pack`, `--tier`, `--all` narrow or widen it; tier2 cards get a gray backdrop).
 
 ## Make a new pack
 

@@ -14,7 +14,7 @@
     <style>
       html, body { margin: 0; }
       #t1-stat-quote {
-        position: absolute; inset: 0; width: 1920px; height: 1080px;
+        position: absolute; inset: 0; width: var(--w); height: var(--h);
         background: var(--paper); color: var(--ink);
         font-family: var(--font-display); overflow: hidden;
       }
@@ -34,30 +34,30 @@
       }
       /* oversized quotation mark */
       #t1-stat-quote .quote-mark {
-        position: absolute; left: 100px; top: 60px;
+        position: absolute; left: calc(var(--safe-l) + 4px); top: calc(var(--safe-t) + 6px);
         font-family: var(--font-display); font-weight: var(--wt-black);
-        font-size: 480px; line-height: 1; color: var(--yellow);
+        font-size: calc(480px * var(--type)); line-height: 1; color: var(--yellow);
         user-select: none; pointer-events: none;
       }
       /* main content block, left-aligned with generous gutter */
       #t1-stat-quote .body {
-        position: absolute; left: 180px; right: 130px; top: 290px;
+        position: absolute; left: calc(var(--safe-l) + 84px); right: calc(var(--safe-r) + 34px); top: calc(var(--safe-t) + 236px);
       }
       #t1-stat-quote .stat {
         font-weight: var(--wt-black); font-style: italic;
-        font-size: 260px; line-height: 0.9; letter-spacing: -0.04em;
+        font-size: calc(260px * var(--type)); line-height: 0.9; letter-spacing: -0.04em;
         color: var(--ink); font-variant-numeric: tabular-nums;
         clip-path: inset(0 100% 0 0); /* revealed by GSAP */
       }
       #t1-stat-quote .label {
         margin-top: 36px; font-weight: var(--wt-thin); font-style: italic;
-        font-size: 64px; line-height: 1.1; letter-spacing: var(--track-tight);
+        font-size: calc(64px * var(--type)); line-height: 1.1; letter-spacing: var(--track-tight);
         color: var(--ink); max-width: 1300px;
       }
       #t1-stat-quote .label em { font-style: normal; font-weight: var(--wt-black); }
       /* attribution row - short ink rule then kicker text */
       #t1-stat-quote .attr {
-        position: absolute; left: 180px; bottom: 140px;
+        position: absolute; left: calc(var(--safe-l) + 84px); bottom: calc(var(--safe-b) + 86px);
         display: flex; align-items: center; gap: 28px;
       }
       #t1-stat-quote .attr-rule {
@@ -69,11 +69,24 @@
         text-transform: uppercase; color: var(--red);
       }
       #t1-stat-quote .source {
-        position: absolute; left: 180px; bottom: 96px;
+        position: absolute; left: calc(var(--safe-l) + 84px); bottom: calc(var(--safe-b) + 42px);
         font-family: var(--font-label); font-weight: var(--wt-bold);
         font-size: var(--size-tiny); letter-spacing: var(--track-wide);
         text-transform: uppercase; color: var(--muted);
       }
+
+      /* Vertical and square: quote mark at the top of the safe area, figure and quote line
+         full safe width under it, attribution and source pinned to the safe bottom. */
+      [data-format="vertical"] #t1-stat-quote .quote-mark, [data-format="square"] #t1-stat-quote .quote-mark { left: var(--safe-l); top: calc(var(--safe-t) - 40px); }
+      [data-format="vertical"] #t1-stat-quote .quote-mark { font-size: calc(360px * var(--type)); }
+      [data-format="square"] #t1-stat-quote .quote-mark { font-size: 360px; }
+      [data-format="vertical"] #t1-stat-quote .body, [data-format="square"] #t1-stat-quote .body { left: var(--safe-l); right: var(--safe-r); top: calc(var(--safe-t) + 190px); }
+      [data-format="vertical"] #t1-stat-quote .stat { font-size: calc(190px * var(--type)); }
+      [data-format="square"] #t1-stat-quote .stat { font-size: 220px; }
+      [data-format="square"] #t1-stat-quote .label { font-size: 56px; }
+      [data-format="vertical"] #t1-stat-quote .attr, [data-format="square"] #t1-stat-quote .attr { left: var(--safe-l); bottom: calc(var(--safe-b) + 44px); }
+      [data-format="vertical"] #t1-stat-quote .kicker, [data-format="square"] #t1-stat-quote .kicker { white-space: normal; }
+      [data-format="vertical"] #t1-stat-quote .source, [data-format="square"] #t1-stat-quote .source { left: var(--safe-l); bottom: var(--safe-b); }
     </style>
   </head>
   <body>

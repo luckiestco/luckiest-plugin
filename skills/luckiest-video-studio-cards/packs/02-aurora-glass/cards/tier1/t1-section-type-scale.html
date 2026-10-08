@@ -16,7 +16,7 @@
       html, body { margin: 0; }
 
       #t1-sec-tscale {
-        position: absolute; inset: 0; width: 1920px; height: 1080px;
+        position: absolute; inset: 0; width: var(--w); height: var(--h);
         background: var(--canvas); color: var(--text);
         font-family: var(--font-display); overflow: hidden;
       }
@@ -75,7 +75,7 @@
       #t1-sec-tscale .kicker {
         margin-top: 36px;
         font-family: var(--font-display); font-style: italic;
-        font-weight: var(--wt-semi); font-size: 36px;
+        font-weight: var(--wt-semi); font-size: calc(36px * var(--type));
         letter-spacing: 0.18em; text-transform: uppercase;
         color: var(--text-dim); text-shadow: var(--textglow);
       }
@@ -90,6 +90,13 @@
         background-size: 200px 200px; mix-blend-mode: overlay; opacity: 0.10;
         pointer-events: none; z-index: 7;
       }
+
+      /* Vertical and square: title centres in the safe area at its width. */
+      [data-format="vertical"] #t1-sec-tscale .content, [data-format="square"] #t1-sec-tscale .content {
+        left: var(--safe-l); right: var(--safe-r); top: var(--safe-t); bottom: var(--safe-b);
+      }
+      [data-format="vertical"] #t1-sec-tscale .headline, [data-format="square"] #t1-sec-tscale .headline { max-width: none; padding: 0; }
+      [data-format="vertical"] #t1-sec-tscale .radial-glow, [data-format="square"] #t1-sec-tscale .radial-glow { top: calc((var(--safe-t) + var(--h) - var(--safe-b)) / 2); left: calc((var(--safe-l) + var(--w) - var(--safe-r)) / 2); }
     </style>
   </head>
   <body>

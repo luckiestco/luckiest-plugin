@@ -8,9 +8,11 @@
 //       `npx --no-install hyperframes@0.8.84` (it never downloads).
 //   node qa-cards.mjs mark <status> <card-id>...
 //       Sets qa by hand, for example "render-ok" after a rendered card was inspected.
-//   node qa-cards.mjs sample <run-dir> [--pack <id>]
-//       Writes a run folder with one tier1 and one tier2 card per purpose per pack as
-//       motion scenes, ready for render-scenes.mjs.
+//   node qa-cards.mjs sample <run-dir> [--pack <id>] [--tier <tier>] [--all] [--format <name,...|all>]
+//       Writes a run folder with one tier1 and one tier2 card per purpose per pack (every
+//       card with --all) as motion scenes, ready for render-scenes.mjs. --format lists the
+//       storyboard formats (landscape, vertical, square) so each card renders in each one.
+//       tier2 cards get a mid-gray backdrop in the sample so ink and paper both show.
 
 import { cpSync, existsSync, mkdirSync, mkdtempSync, readFileSync, readdirSync, rmSync, writeFileSync } from "node:fs";
 import { tmpdir } from "node:os";
@@ -99,23 +101,27 @@ function sample(runDir) {
   const run = resolve(runDir), comp = join(run, "composition");
   mkdirSync(join(comp, "compositions"), { recursive: true });
   const scenes = [];
+  const fmt = flag("--format");
+  const formats = fmt && (fmt === "all" ? ["landscape", "vertical", "square"] : fmt.split(","));
+  for (const f of formats ?? []) if (!["landscape", "vertical", "square"].includes(f)) { console.error(`unknown format "${f}"`); process.exit(1); }
   for (const d of packDirs()) {
     const m = readManifest(d), id = m.id;
     cpSync(join(PACKS, d), join(comp, "cards", id), { recursive: true });
     const seen = new Set();
     for (const c of m.cards) {
-      const key = `${c.tier}.${c.purpose}`;
-      if (seen.has(key) || c.qa === "broken") continue;
+      const key = args.includes("--all") ? c.id : `${c.tier}.${c.purpose}`;
+      if (seen.has(key) || c.qa === "broken" || (flag("--tier") && c.tier !== flag("--tier"))) continue;
       seen.add(key);
       const sceneId = c.id.replace(/\./g, "-");
       const dur = c.duration?.min ?? 5;
-      const html = readFileSync(join(PACKS, d, c.file), "utf8");
+      let html = readFileSync(join(PACKS, d, c.file), "utf8");
+      if (c.tier === "tier2") html = html.replace("</head>", "<style>html { background: #808080 !important; }</style></head>");
       writeFileSync(join(comp, "compositions", `${sceneId}.html`), html);
       scenes.push({ id: sceneId, kind: "motion", duration: dur, composition: `compositions/${sceneId}.html`, line: c.id });
     }
   }
   writeFileSync(join(run, "storyboard.json"), JSON.stringify({ version: 1, title: "Card QA sample", mode: "launch",
-    hyperframes: HF_VERSION, format: { width: 1920, height: 1080, fps: 30 }, scenes }, null, 2) + "\n");
+    hyperframes: HF_VERSION, format: { width: 1920, height: 1080, fps: 30 }, ...(formats && { formats }), scenes }, null, 2) + "\n");
   console.log(JSON.stringify({ run, scenes: scenes.map((s) => s.line) }, null, 2));
 }
 
@@ -123,4 +129,4 @@ const [cmd, ...rest] = args;
 if (cmd === "lint") await lintAll();
 else if (cmd === "mark" && rest.length > 1) mark(rest[0], rest.slice(1));
 else if (cmd === "sample" && rest[0]) sample(rest[0]);
-else { console.error("Usage: qa-cards.mjs lint [--pack id] [--jobs n] [--bin path] | mark <status> <id>... | sample <run-dir>"); process.exit(1); }
+else { console.error("Usage: qa-cards.mjs lint [--pack id] [--jobs n] [--bin path] | mark <status> <id>... | sample <run-dir> [--pack id] [--tier t] [--all] [--format name,...|all]"); process.exit(1); }

@@ -12,7 +12,7 @@
     <style>
       html, body { margin: 0; }
       #t1-sec-classified {
-        position: absolute; inset: 0; width: 1920px; height: 1080px;
+        position: absolute; inset: 0; width: var(--w); height: var(--h);
         background: var(--paper-2); color: var(--ink);
         font-family: var(--font-display); overflow: hidden;
       }
@@ -32,7 +32,7 @@
       }
       /* the pinned paper card */
       #t1-sec-classified .card {
-        position: absolute; left: 360px; top: 300px; width: 1200px; height: 470px;
+        position: absolute; left: calc(var(--safe-l) + 264px); top: calc(var(--safe-t) + 246px); width: 1200px; height: 470px;
         background: var(--paper); z-index: 2; transform: rotate(-1.6deg);
         box-shadow: 0 24px 50px rgba(23,19,14,0.32);
         display: flex; flex-direction: column; align-items: center; justify-content: center;
@@ -43,7 +43,7 @@
         text-transform: uppercase; color: var(--muted); margin-bottom: 18px;
       }
       #t1-sec-classified .card .title {
-        font-weight: var(--wt-black); font-size: 116px; line-height: 0.96;
+        font-weight: var(--wt-black); font-size: calc(116px * var(--type)); line-height: 0.96;
         letter-spacing: var(--track-tight); text-align: center; max-width: 1040px;
       }
       /* tape pieces */
@@ -59,19 +59,37 @@
         letter-spacing: 0.08em; text-transform: uppercase; color: var(--red);
         border: 6px solid var(--red); padding: 10px 22px; border-radius: 6px; opacity: 0.92;
       }
-      #t1-sec-classified .stamp.main { right: 300px; top: 600px; font-size: 60px; transform: rotate(-12deg); }
-      #t1-sec-classified .stamp.sub  { left: 380px; top: 250px; font-size: 30px; transform: rotate(8deg); }
+      #t1-sec-classified .stamp.main { right: calc(var(--safe-r) + 204px); top: calc(var(--safe-t) + 546px); font-size: calc(60px * var(--type)); transform: rotate(-12deg); }
+      #t1-sec-classified .stamp.sub  { left: calc(var(--safe-l) + 284px); top: calc(var(--safe-t) + 196px); font-size: calc(30px * var(--type)); transform: rotate(8deg); }
       /* magnifier */
       #t1-sec-classified .mag { position: absolute; left: 210px; bottom: 150px; z-index: 6; transform: rotate(12deg); }
       #t1-sec-classified .mag .lens { width: 190px; height: 190px; border: 14px solid var(--ink); border-radius: 50%; background: rgba(255,255,255,0.12); }
       #t1-sec-classified .mag .handle { position: absolute; right: -64px; bottom: -54px; width: 96px; height: 22px; background: var(--ink); border-radius: 11px; transform: rotate(45deg); }
       /* sticky note */
       #t1-sec-classified .note {
-        position: absolute; right: 180px; top: 250px; z-index: 6; width: 230px; height: 200px;
+        position: absolute; right: calc(var(--safe-r) + 84px); top: calc(var(--safe-t) + 196px); z-index: 6; width: 230px; height: 200px;
         background: var(--yellow); transform: rotate(7deg); box-shadow: 0 10px 22px rgba(23,19,14,0.22);
         display: flex; align-items: center; justify-content: center; text-align: center;
-        font-family: var(--font-hand); font-size: 50px; color: var(--ink); padding: 16px;
+        font-family: var(--font-hand); font-size: calc(50px * var(--type)); color: var(--ink); padding: 16px;
       }
+
+      /* Vertical and square: the card spans the safe width, sticky note above it on the right,
+         stamps pinned to its top-left and bottom-right edges, magnifier below. */
+      [data-format="vertical"] #t1-sec-classified .card { left: var(--safe-l); top: calc(var(--safe-t) + 190px); width: calc(var(--w) - var(--safe-l) - var(--safe-r)); height: 480px; }
+      [data-format="square"] #t1-sec-classified .card { left: calc(var(--safe-l) + 20px); top: calc(var(--safe-t) + 230px); width: calc(var(--w) - var(--safe-l) - var(--safe-r) - 40px); height: 420px; }
+      [data-format="vertical"] #t1-sec-classified .card .title { max-width: 640px; }
+      [data-format="square"] #t1-sec-classified .card .title { max-width: 760px; font-size: 104px; }
+      [data-format="vertical"] #t1-sec-classified .tape.tl { left: calc(var(--safe-l) - 40px); top: calc(var(--safe-t) + 170px); }
+      [data-format="vertical"] #t1-sec-classified .tape.br { right: calc(var(--safe-r) - 40px); bottom: auto; top: calc(var(--safe-t) + 640px); }
+      [data-format="square"] #t1-sec-classified .tape.tl { left: calc(var(--safe-l) - 20px); top: calc(var(--safe-t) + 210px); }
+      [data-format="square"] #t1-sec-classified .tape.br { right: calc(var(--safe-r) - 20px); bottom: auto; top: calc(var(--safe-t) + 630px); }
+      [data-format="vertical"] #t1-sec-classified .stamp.sub { left: calc(var(--safe-l) + 30px); top: calc(var(--safe-t) + 150px); }
+      [data-format="square"] #t1-sec-classified .stamp.sub { left: calc(var(--safe-l) + 40px); top: calc(var(--safe-t) + 190px); }
+      [data-format="vertical"] #t1-sec-classified .stamp.main { right: calc(var(--safe-r) + 20px); top: calc(var(--safe-t) + 600px); }
+      [data-format="square"] #t1-sec-classified .stamp.main { right: calc(var(--safe-r) + 30px); top: calc(var(--safe-t) + 580px); }
+      [data-format="vertical"] #t1-sec-classified .note, [data-format="square"] #t1-sec-classified .note { right: calc(var(--safe-r) + 10px); top: calc(var(--safe-t) + 10px); }
+      [data-format="vertical"] #t1-sec-classified .mag { left: calc(var(--safe-l) + 20px); bottom: calc(var(--safe-b) + 10px); }
+      [data-format="square"] #t1-sec-classified .mag { left: calc(var(--safe-l) + 10px); bottom: calc(var(--safe-b) + 50px); }
     </style>
   </head>
   <body>

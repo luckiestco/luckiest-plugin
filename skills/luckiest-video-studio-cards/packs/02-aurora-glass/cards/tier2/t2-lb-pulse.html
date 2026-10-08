@@ -14,14 +14,14 @@
       html, body { margin: 0; background: transparent; }
 
       #t2-lb-pulse {
-        position: absolute; inset: 0; width: 1920px; height: 1080px;
+        position: absolute; inset: 0; width: var(--w); height: var(--h);
         background: transparent; overflow: hidden;
         font-family: var(--font-display);
       }
 
       /* Soft localized bloom behind the component */
       #t2-lb-pulse .local-glow {
-        position: absolute; left: 60px; top: 360px;
+        position: absolute; left: calc(var(--safe-l) - 36px); top: calc(var(--safe-t) + 306px);
         width: 500px; height: 340px; border-radius: 50%;
         background: radial-gradient(ellipse at 30% 50%,
           rgba(var(--accent-rgb), 0.24) 0%,
@@ -34,7 +34,7 @@
 
       /* Outer positioning wrapper */
       #t2-lb-pulse .wrapper {
-        position: absolute; left: 100px; top: 430px;
+        position: absolute; left: calc(var(--safe-l) + 4px); top: calc(var(--safe-t) + 376px);
         display: flex; flex-direction: row; align-items: center; gap: 36px;
         z-index: 2;
       }
@@ -76,7 +76,7 @@
       #t2-lb-pulse .term {
         font-family: var(--font-display);
         font-weight: var(--wt-bold);
-        font-size: 32px;
+        font-size: calc(32px * var(--type));
         letter-spacing: var(--track-snug);
         color: var(--white);
         text-shadow: var(--textglow);
@@ -103,10 +103,19 @@
       #t2-lb-pulse .detail {
         font-family: var(--font-body);
         font-weight: var(--wt-reg);
-        font-size: 20px;
+        font-size: calc(20px * var(--type));
         line-height: 1.45;
         color: var(--text-dim);
       }
+      /* Vertical and square: the card drops to the bottom of the safe area, left aligned, its glow following. */
+      [data-format="vertical"] #t2-lb-pulse .wrapper, [data-format="square"] #t2-lb-pulse .wrapper {
+        top: auto; right: auto; left: var(--safe-l); bottom: var(--safe-b); width: auto;
+        max-width: calc(var(--w) - var(--safe-l) - var(--safe-r));
+      }
+      [data-format="vertical"] #t2-lb-pulse .local-glow, [data-format="square"] #t2-lb-pulse .local-glow {
+        top: auto; right: auto; left: calc(var(--safe-l) + 20px); bottom: calc(var(--safe-b) - 90px);
+      }
+      [data-format="vertical"] #t2-lb-pulse [data-slot], [data-format="square"] #t2-lb-pulse [data-slot] { white-space: normal; }
     </style>
   </head>
   <body>

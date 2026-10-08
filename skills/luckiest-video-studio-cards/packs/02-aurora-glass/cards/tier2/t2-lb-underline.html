@@ -14,13 +14,13 @@
       html, body { margin: 0; background: transparent; }
 
       #t2-lb-uline {
-        position: absolute; inset: 0; width: 1920px; height: 1080px;
+        position: absolute; inset: 0; width: var(--w); height: var(--h);
         background: transparent; overflow: hidden;
       }
 
       /* Localized glow - left side */
       #t2-lb-uline .local-glow {
-        position: absolute; left: 60px; top: 360px;
+        position: absolute; left: calc(var(--safe-l) - 20px); top: calc(var(--safe-t) + 306px);
         width: 580px; height: 360px; border-radius: 50%;
         background: radial-gradient(ellipse at 50% 50%,
           rgba(var(--accent-rgb), 0.20) 0%,
@@ -32,7 +32,7 @@
 
       /* Wrapper anchored left */
       #t2-lb-uline .wrapper {
-        position: absolute; left: 80px; top: 390px;
+        position: absolute; left: var(--safe-l); top: calc(var(--safe-t) + 336px);
         display: flex; flex-direction: column; gap: 14px;
       }
 
@@ -68,7 +68,7 @@
       /* Term text */
       #t2-lb-uline .term {
         font-family: var(--font-display); font-weight: var(--wt-black);
-        font-size: 52px; letter-spacing: var(--track-tight);
+        font-size: calc(52px * var(--type)); letter-spacing: var(--track-tight);
         color: var(--white); text-shadow: var(--textglow);
         display: block;
       }
@@ -100,9 +100,18 @@
 
       #t2-lb-uline .detail {
         font-family: var(--font-body); font-weight: var(--wt-reg);
-        font-size: 24px; line-height: 1.5;
+        font-size: calc(24px * var(--type)); line-height: 1.5;
         color: var(--text-dim);
       }
+      /* Vertical and square: the card drops to the bottom of the safe area, left aligned, its glow following. */
+      [data-format="vertical"] #t2-lb-uline .wrapper, [data-format="square"] #t2-lb-uline .wrapper {
+        top: auto; right: auto; left: var(--safe-l); bottom: var(--safe-b); width: auto;
+        max-width: calc(var(--w) - var(--safe-l) - var(--safe-r));
+      }
+      [data-format="vertical"] #t2-lb-uline .local-glow, [data-format="square"] #t2-lb-uline .local-glow {
+        top: auto; right: auto; left: calc(var(--safe-l) - 10px); bottom: calc(var(--safe-b) - 50px);
+      }
+      [data-format="vertical"] #t2-lb-uline [data-slot], [data-format="square"] #t2-lb-uline [data-slot] { white-space: normal; }
     </style>
   </head>
   <body>

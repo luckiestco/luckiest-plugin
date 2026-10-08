@@ -15,7 +15,7 @@ user-invocable: false
 license: MIT. See ATTRIBUTION.md
 allowed-tools: Bash, Read, Write, Glob, AskUserQuestion
 metadata:
-  version: "1.0.0"
+  version: "1.1.0"
   listing_id: luckiest-video-studio-reference
   author: luckiest
 ---
@@ -28,11 +28,11 @@ output is a shot list and a draft storyboard, never a copy.
 ## Staying current
 
 On activation, call the Luckiest MCP `check_updates` tool with
-`{ listingId: "luckiest-video-studio-reference", installedSemver: "1.0.0" }`. If
+`{ listingId: "luckiest-video-studio-reference", installedSemver: "1.1.0" }`. If
 `upToDate: false`, surface the `notice` once and continue. Never block on it.
 
 When done, call `report_usage` once with
-`{ listing_id: "luckiest-video-studio-reference", skill_version: "1.0.0", matched: true, success: <true|false> }`.
+`{ listing_id: "luckiest-video-studio-reference", skill_version: "1.1.0", matched: true, success: <true|false> }`.
 Metadata only. Skip silently if unavailable.
 
 ## Standing rules
@@ -59,6 +59,12 @@ ffmpeg's scene score, saves three frames per shot (in, middle, out), and writes
 `shots.json` and `contact.jpg`. Fast-cut edits may need `--threshold 0.2`; slow
 dissolves that hide cuts may need `--threshold 0.4`. Very long videos: break down
 the first 60 seconds unless the user asks for more.
+
+`shots.mjs` keeps no audio. For sound and speech, also run
+`luckiest-video-watcher` in study mode on the same source with
+`--out-dir <run-dir>/reference/watch`. Use its transcript, music energy, and
+sound on cuts in the breakdown. Keep the shot list from `shots.json`. If the
+watcher is not installed, say so in one line and continue without sound notes.
 
 ## Step 2: Read every shot
 
@@ -90,6 +96,7 @@ Write `<run-dir>/reference/reference.md`:
 1. **One line on the structure**, for example "cold open hook, 4 feature beats
    each demo then motion stat, logo close, 28s".
 2. **Pacing:** shot count, average shot length, where it speeds up or slows down.
+   **Sound:** music energy, hits on cuts, voiceover tone (from the watcher).
 3. **Shot table** with the fields above and each shot's start and end.
 4. **What to keep** (structure, rhythm, a signature move) and **what not to copy**
    (their footage, characters, logo, exact copy).

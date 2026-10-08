@@ -14,7 +14,7 @@
       html, body { margin: 0; }
 
       #t1-sec-rib {
-        position: absolute; inset: 0; width: 1920px; height: 1080px;
+        position: absolute; inset: 0; width: var(--w); height: var(--h);
         background: var(--canvas); color: var(--text);
         font-family: var(--font-display); overflow: hidden;
       }
@@ -121,6 +121,17 @@
         background-size: 200px 200px; mix-blend-mode: overlay; opacity: 0.10;
         pointer-events: none; z-index: 7;
       }
+
+      /* Vertical and square: ribbon crosses the safe centre and grows to hold the wrapped title,
+         whose padding keeps it inside the safe edges. */
+      [data-format="vertical"] #t1-sec-rib .ribbon-wrap, [data-format="square"] #t1-sec-rib .ribbon-wrap { top: calc((var(--safe-t) + var(--h) - var(--safe-b)) / 2); }
+      [data-format="vertical"] #t1-sec-rib .ribbon, [data-format="square"] #t1-sec-rib .ribbon { height: auto; min-height: 200px; padding: 44px 0; box-sizing: border-box; }
+      [data-format="vertical"] #t1-sec-rib .headline, [data-format="square"] #t1-sec-rib .headline {
+        padding: 0 calc(var(--safe-r) + 60px) 0 calc(var(--safe-l) + 60px);
+      }
+      [data-format="vertical"] #t1-sec-rib .kicker, [data-format="square"] #t1-sec-rib .kicker { left: var(--safe-l); right: var(--safe-r); }
+      [data-format="vertical"] #t1-sec-rib .kicker { top: calc(calc((var(--safe-t) + var(--h) - var(--safe-b)) / 2) - 270px); }
+      [data-format="square"] #t1-sec-rib .kicker { top: calc(calc((var(--safe-t) + var(--h) - var(--safe-b)) / 2) - 190px); }
     </style>
   </head>
   <body>

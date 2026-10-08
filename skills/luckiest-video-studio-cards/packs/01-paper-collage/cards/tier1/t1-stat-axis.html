@@ -15,7 +15,7 @@
     <style>
       html, body { margin: 0; }
       #t1-stat-axis {
-        position: absolute; inset: 0; width: 1920px; height: 1080px;
+        position: absolute; inset: 0; width: var(--w); height: var(--h);
         background: var(--paper); color: var(--ink);
         font-family: var(--font-display); overflow: hidden;
       }
@@ -34,14 +34,14 @@
         background: radial-gradient(120% 120% at 50% 50%, transparent 56%, rgba(23,19,14,0.16) 100%);
       }
       #t1-stat-axis .kicker {
-        position: absolute; left: 130px; top: 180px;
+        position: absolute; left: calc(var(--safe-l) + 34px); top: calc(var(--safe-t) + 126px);
         font-family: var(--font-label); font-weight: var(--wt-bold);
         font-size: var(--size-label); letter-spacing: var(--track-wide);
         text-transform: uppercase; color: var(--red);
       }
       /* ---- axis track container ---- */
       #t1-stat-axis .axis-track {
-        position: absolute; left: 130px; right: 130px; top: 540px; height: 10px;
+        position: absolute; left: calc(var(--safe-l) + 34px); right: calc(var(--safe-r) + 34px); top: calc(var(--safe-t) + 486px); height: 10px;
         background: var(--ink); transform-origin: left center;
       }
       /* end-cap ticks */
@@ -55,16 +55,16 @@
       /* ---- end-point labels ---- */
       #t1-stat-axis .axis-start-label,
       #t1-stat-axis .axis-end-label {
-        position: absolute; top: 600px;
+        position: absolute; top: calc(var(--safe-t) + 546px);
         font-family: var(--font-label); font-weight: var(--wt-bold);
         font-size: var(--size-label); letter-spacing: var(--track-wide);
         text-transform: uppercase; color: var(--muted);
       }
-      #t1-stat-axis .axis-start-label { left: 130px; }
-      #t1-stat-axis .axis-end-label   { right: 130px; text-align: right; }
+      #t1-stat-axis .axis-start-label { left: calc(var(--safe-l) + 34px); }
+      #t1-stat-axis .axis-end-label   { right: calc(var(--safe-r) + 34px); text-align: right; }
       /* ---- point + callout group - positioned by JS ---- */
       #t1-stat-axis .point-group {
-        position: absolute; top: 440px;
+        position: absolute; top: calc(var(--safe-t) + 386px);
         transform: translateX(-50%);
         display: flex; flex-direction: column; align-items: center;
         z-index: 3;
@@ -75,7 +75,7 @@
         box-shadow: inset 0 0 0 5px var(--ink);
       }
       #t1-stat-axis .callout-box .stat {
-        font-weight: var(--wt-black); font-size: 120px;
+        font-weight: var(--wt-black); font-size: calc(120px * var(--type));
         font-variant-numeric: tabular-nums; line-height: 1; white-space: nowrap;
         display: block;
       }
@@ -100,18 +100,38 @@
       }
       /* ---- label + source ---- */
       #t1-stat-axis .label {
-        position: absolute; left: 130px; right: 130px; top: 700px;
-        font-weight: var(--wt-thin); font-size: 56px; line-height: 1.05;
+        position: absolute; left: calc(var(--safe-l) + 34px); right: calc(var(--safe-r) + 34px); top: calc(var(--safe-t) + 646px);
+        font-weight: var(--wt-thin); font-size: calc(56px * var(--type)); line-height: 1.05;
         letter-spacing: var(--track-tight); color: var(--ink);
       }
       #t1-stat-axis .label em { font-style: italic; font-weight: var(--wt-black); }
       #t1-stat-axis .source {
-        position: absolute; left: 130px; bottom: 96px;
+        position: absolute; left: calc(var(--safe-l) + 34px); bottom: calc(var(--safe-b) + 42px);
         font-family: var(--font-label); font-weight: var(--wt-bold);
         font-size: var(--size-tiny); letter-spacing: var(--track-wide);
         text-transform: uppercase; color: var(--muted);
       }
+
+      /* Vertical and square: the axis spans the safe width; kicker, callout, axis, end labels,
+         label and source stack down the safe area. */
+      [data-format="vertical"] #t1-stat-axis .kicker, [data-format="square"] #t1-stat-axis .kicker { left: var(--safe-l); top: var(--safe-t); }
+      [data-format="vertical"] #t1-stat-axis .axis-track, [data-format="vertical"] #t1-stat-axis .label,
+      [data-format="square"] #t1-stat-axis .axis-track, [data-format="square"] #t1-stat-axis .label { left: var(--safe-l); right: var(--safe-r); }
+      [data-format="vertical"] #t1-stat-axis .axis-start-label, [data-format="square"] #t1-stat-axis .axis-start-label { left: var(--safe-l); }
+      [data-format="vertical"] #t1-stat-axis .axis-end-label, [data-format="square"] #t1-stat-axis .axis-end-label { right: var(--safe-r); }
+      [data-format="vertical"] #t1-stat-axis .point-group { top: calc(var(--safe-t) + 330px); }
+      [data-format="vertical"] #t1-stat-axis .callout-box .stat { font-size: calc(100px * var(--type)); }
+
+      [data-format="vertical"] #t1-stat-axis .axis-track { top: calc(var(--safe-t) + 430px); }
+      [data-format="vertical"] #t1-stat-axis .axis-start-label, [data-format="vertical"] #t1-stat-axis .axis-end-label { top: calc(var(--safe-t) + 490px); }
+      [data-format="vertical"] #t1-stat-axis .label { top: calc(var(--safe-t) + 610px); }
+      [data-format="square"] #t1-stat-axis .point-group { top: calc(var(--safe-t) + 280px); }
+      [data-format="square"] #t1-stat-axis .axis-track { top: calc(var(--safe-t) + 380px); }
+      [data-format="square"] #t1-stat-axis .axis-start-label, [data-format="square"] #t1-stat-axis .axis-end-label { top: calc(var(--safe-t) + 440px); }
+      [data-format="square"] #t1-stat-axis .label { top: calc(var(--safe-t) + 540px); font-size: 56px; }
+      [data-format="vertical"] #t1-stat-axis .source, [data-format="square"] #t1-stat-axis .source { left: var(--safe-l); bottom: var(--safe-b); }
     </style>
+
   </head>
   <body>
     <div id="t1-stat-axis" data-composition-id="t1-stat-axis" data-start="0" data-width="1920" data-height="1080">
@@ -141,9 +161,9 @@
       // Position the point group on the axis
       const axisTrack = document.getElementById("axis-track");
       const pos = Math.max(0, Math.min(1, parseFloat(axisTrack.getAttribute("data-pos")) || 0.62));
-      // axis spans from left:130px to right:130px → usable width = 1920 - 260 = 1660px
-      const AXIS_LEFT = 130;
-      const AXIS_WIDTH = 1920 - 260;
+      // measured from the laid-out track so it follows the format's safe insets
+      const AXIS_LEFT = axisTrack.offsetLeft;
+      const AXIS_WIDTH = axisTrack.offsetWidth;
       const pointGroup = document.getElementById("point-group");
       pointGroup.style.left = (AXIS_LEFT + pos * AXIS_WIDTH) + "px";
 

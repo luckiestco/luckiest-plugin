@@ -9,7 +9,8 @@ import { spawnSync } from "node:child_process";
 import {
   scanTokens, scanCrossfades, scanMotion, legibility, findPops, deadFrames, presence,
   beatSync, findAnchor, cutTimes, beatGrid, grayFrames, probe,
-  faceCover, pairVerdict, parseWinner,
+  faceCover, pairVerdict, parseWinner, audioOnsets, avSync, visibleText, scanFacts, loopCheck,
+  fullFrameSelectors, safeAreas,
 } from "./qa.mjs";
 
 const dir = mkdtempSync(join(tmpdir(), "qa-gates-"));
@@ -149,4 +150,101 @@ test("judge CLI: pending without a verdict, keeps or rejects with verdicts, fake
   assert.equal(cli("judge", n, o, "--out", out, "--verdicts", "A,B").status, 0);
   assert.equal(cli("judge", n, o, "--out", out, "--verdicts", "A,A").status, 1);
   assert.equal(cli("judge", n, o, "--out", out, "--cmd", "echo WINNER: A").status, 1); // first-position bias
+});
+
+// Gray video with a 50 ms tone burst starting at each time in `hits`.
+function withHits(name, hits, d = 2) {
+  const out = join(dir, name);
+  const expr = hits.length ? hits.map((h) => `between(t,${h},${h + 0.05})`).join("+") : "0";
+  const r = spawnSync("ffmpeg", ["-v", "error", "-y", "-f", "lavfi", "-i", `color=c=gray:size=160x90:rate=30:duration=${d}`,
+    "-f", "lavfi", "-i", `aevalsrc='0.8*(${expr})*sin(2*PI*1000*t)':s=48000:d=${d}`,
+    "-c:v", "libx264", "-crf", "12", "-c:a", "aac", "-shortest", out]);
+  assert.equal(r.status, 0, r.stderr?.toString());
+  return out;
+}
+
+test("avsync: hits on time pass; a hit 3 frames late, no audio, or the wrong length fail", () => {
+  const clip = withHits("hits.mp4", [0.5, 1.2]);
+  const on = audioOnsets(clip);
+  assert.ok(on.some((t) => Math.abs(t - 0.5) < 1 / 30) && on.some((t) => Math.abs(t - 1.2) < 1 / 30), JSON.stringify(on));
+  assert.equal(avSync(clip, { expect: [0.5, 1.2], duration: 2 }).ok, true);
+  const late = avSync(clip, { expect: [0.5, 1.1] });
+  assert.equal(late.ok, false);
+  assert.equal(late.hits.filter((h) => !h.ok).length, 1);
+  assert.equal(avSync(clip, { duration: 3 }).ok, false);
+  const silent = avSync(video("noaudio.mp4", [["gray", 1]]));
+  assert.equal(silent.ok, false);
+  assert.equal(silent.audio, false);
+  assert.equal(cli("avsync", clip, "--expect", "0.5,1.1").status, 1);
+  assert.equal(cli("avsync", clip, "--expect", "0.5,1.2", "--duration", "2").status, 0);
+});
+
+test("facts: on-screen numbers must be story facts; code numbers and single digits are ignored; em dashes fail", () => {
+  const html = `<style>.t{font-size:84px;letter-spacing:-0.02em}</style>
+    <template><div class="t" data-start="1.25">3 unpaid, $4,792.44 total</div><p>INV-0043 opened twice</p></template>
+    <script>tl.to(".t", { y: 120, duration: 0.35 }, 2.5);</script>`;
+  assert.equal(visibleText(html).replace(/\s+/g, " ").trim(), "3 unpaid, $4,792.44 total INV-0043 opened twice");
+  const facts = ["3 unpaid invoices, $4,792.44 total", "Maya Chen INV-0043 $781.94"];
+  assert.deepEqual(scanFacts([{ where: "a.html", text: visibleText(html) }], facts), []);
+  const drift = scanFacts([{ where: "b.html", text: "Total $4,792.40, up 12% since INV-0044" }], facts);
+  assert.deepEqual(drift.map((f) => f.token), ["$4,792.40", "12%", "INV-0044"]);
+  assert.deepEqual(scanFacts([{ where: "c.html", text: "Fast \u2014 and free" }], facts).map((f) => f.rule), ["em-dash"]);
+  assert.deepEqual(scanFacts([{ where: "d.html", text: visibleText("<p>Fast &mdash; free</p>") }], facts).map((f) => f.rule), ["em-dash"]);
+  const run = join(dir, "factsrun");
+  mkdirSync(join(run, "composition/compositions"), { recursive: true });
+  writeFileSync(join(run, "composition/compositions/hook.html"), "<p>Paid $2,860.50</p>");
+  writeFileSync(join(run, "storyboard.json"), JSON.stringify({ facts: ["Nair Dental $2,860.50"], scenes: [{ id: "hook", kind: "motion", duration: 2, line: "Paid $2,860.50", variables: { value: "3x" } }] }));
+  assert.equal(cli("facts", run).status, 0);
+  writeFileSync(join(run, "composition/compositions/hook.html"), "<p>Paid $2,680.50</p>");
+  const r = cli("facts", run);
+  assert.equal(r.status, 1);
+  assert.match(r.stdout, /2,680\.50/);
+});
+
+test("loop: last frame matching the first passes, a different end frame fails", () => {
+  const loops = video("loops.mp4", [["0x3050a0", 0.5], ["0xa05030", 0.5], ["0x3050a0", 0.5]]);
+  assert.equal(loopCheck(loops).ok, true);
+  const ends = video("ends.mp4", [["0x3050a0", 0.5], ["0xa05030", 1]]);
+  assert.equal(loopCheck(ends).ok, false);
+  assert.equal(cli("loop", ends).status, 1);
+});
+
+test("crossfade: a full-frame layer is found at the composition's own size, not only 1920x1080", () => {
+  const html = `<div data-composition-id="m" data-width="1080" data-height="1920"></div><style>.bg{width:1080px;height:1920px}.v{width:var(--w);height:var(--h)}.wide{width:1920px;height:1080px}</style>`;
+  assert.deepEqual([...fullFrameSelectors(html)], [".bg", ".v"]);
+});
+
+test("safe: sharp content in vertical's covered bottom fails, the same content in the safe area passes", () => {
+  // A 320x180 test pattern (sharp text and bars) on a plain vertical frame.
+  const place = (name, y) => {
+    const run = join(dir, name);
+    mkdirSync(run, { recursive: true });
+    const r = spawnSync("ffmpeg", ["-v", "error", "-y", "-f", "lavfi", "-i", "color=c=0xf3efe6:size=1080x1920:rate=30:duration=1", "-f", "lavfi", "-i", "testsrc2=size=320x180:rate=30:duration=1",
+      "-filter_complex", `[0][1]overlay=x=380:y=${y},format=yuv420p`, "-c:v", "libx264", "-crf", "12", join(run, "final-vertical.mp4")]);
+    assert.equal(r.status, 0, r.stderr?.toString());
+    writeFileSync(join(run, "storyboard.json"), JSON.stringify({ format: { width: 1920, height: 1080, fps: 30 }, formats: ["vertical"], scenes: [{ id: "end", kind: "motion", duration: 1 }] }));
+    return run;
+  };
+  const low = safeAreas(place("safe-low", 1500));
+  assert.equal(low.ok, false);
+  assert.ok(low.hits.every((h) => h.side === "bottom" && h.format === "vertical"), JSON.stringify(low.hits));
+  assert.equal(safeAreas(place("safe-mid", 700)).ok, true);
+  assert.equal(cli("safe", join(dir, "safe-low")).status, 1);
+});
+
+test("safe --stills reads the hold-frame PNGs from render-scenes --stills, no final needed", () => {
+  const place = (name, y) => {
+    const run = join(dir, name);
+    mkdirSync(join(run, "stills/vertical"), { recursive: true });
+    const r = spawnSync("ffmpeg", ["-v", "error", "-y", "-f", "lavfi", "-i", "color=c=0xf3efe6:size=1080x1920", "-f", "lavfi", "-i", "testsrc2=size=320x180",
+      "-filter_complex", `[0][1]overlay=x=380:y=${y}`, "-frames:v", "1", join(run, "stills/vertical/01-end.png")]);
+    assert.equal(r.status, 0, r.stderr?.toString());
+    writeFileSync(join(run, "storyboard.json"), JSON.stringify({ format: { width: 1920, height: 1080, fps: 30 }, formats: ["vertical"], scenes: [{ id: "end", kind: "motion", duration: 1 }] }));
+    return run;
+  };
+  const low = safeAreas(place("stills-low", 1500), { stills: true });
+  assert.equal(low.ok, false);
+  assert.deepEqual(low.hits.map((h) => h.side), ["bottom"]);
+  assert.equal(safeAreas(place("stills-mid", 700), { stills: true }).ok, true);
+  assert.equal(cli("safe", join(dir, "stills-low"), "--stills").status, 1);
 });

@@ -17,7 +17,7 @@
       html, body { margin: 0; }
 
       #t1-ov-spectrum {
-        position: absolute; inset: 0; width: 1920px; height: 1080px;
+        position: absolute; inset: 0; width: var(--w); height: var(--h);
         background: var(--canvas); color: var(--text);
         font-family: var(--font-display); overflow: hidden;
       }
@@ -35,7 +35,7 @@
 
       /* Title */
       #t1-ov-spectrum .title-row {
-        position: absolute; left: 0; right: 0; top: 66px; text-align: center; z-index: 4;
+        position: absolute; left: var(--safe-l); right: var(--safe-r); top: calc(var(--safe-t) + 12px); text-align: center; z-index: 4;
       }
       #t1-ov-spectrum .title {
         font-family: var(--font-display); font-weight: var(--wt-bold);
@@ -90,6 +90,9 @@
         gap: 0;
       }
 
+      #t1-ov-spectrum #sp-m1 { left: 22%; }
+      #t1-ov-spectrum #sp-m2 { left: 50%; }
+      #t1-ov-spectrum #sp-m3 { left: 80%; }
       /* Label above the bar (positioned via margin-bottom trick) */
       #t1-ov-spectrum .m-label-wrap {
         position: absolute; bottom: calc(100% + 28px);
@@ -99,7 +102,7 @@
       }
       #t1-ov-spectrum .m-label {
         font-family: var(--font-display); font-weight: var(--wt-semi);
-        font-size: 28px; color: var(--white); text-shadow: var(--textglow);
+        font-size: calc(28px * var(--type)); color: var(--white); text-shadow: var(--textglow);
         white-space: nowrap;
       }
       /* Connector line from label to dot */
@@ -171,6 +174,26 @@
         background-size: 200px 200px; mix-blend-mode: overlay; opacity: 0.10;
         pointer-events: none; z-index: 7;
       }
+
+      /* Vertical: the bar turns vertical down the left of the safe box, endpoints at its ends, each
+         marker's label above and value chip below a line to its right. Square: landscape bar, safe width. */
+      [data-format="vertical"] #t1-ov-spectrum .title-row, [data-format="square"] #t1-ov-spectrum .title-row { top: var(--safe-t); }
+      [data-format="vertical"] #t1-ov-spectrum .title { font-size: calc(64px * var(--type)); }
+      [data-format="vertical"] #t1-ov-spectrum .scene { left: var(--safe-l); right: var(--safe-r); top: 880px; height: 700px; margin-top: 0; }
+      [data-format="vertical"] #t1-ov-spectrum .ep-row { position: absolute; inset: 0; flex-direction: column; justify-content: space-between; align-items: flex-start; margin: 0; }
+      [data-format="vertical"] #t1-ov-spectrum .bar-track { position: absolute; left: 40px; top: 70px; bottom: 70px; width: 12px; height: auto; }
+      [data-format="vertical"] #t1-ov-spectrum .bar-fill { background: linear-gradient(180deg, rgba(var(--accent-rgb), 0.30) 0%, rgba(var(--accent-rgb), 0.70) 50%, rgba(var(--accent2-rgb), 0.55) 100%); }
+      [data-format="vertical"] #t1-ov-spectrum #sp-m1 { left: 50%; top: 22%; }
+      [data-format="vertical"] #t1-ov-spectrum #sp-m2 { left: 50%; top: 50%; }
+      [data-format="vertical"] #t1-ov-spectrum #sp-m3 { left: 50%; top: 80%; }
+      [data-format="vertical"] #t1-ov-spectrum .m-label-wrap { bottom: auto; top: 50%; left: calc(100% + 36px); transform: translateY(calc(-100% - 6px)); align-items: flex-start; }
+      [data-format="vertical"] #t1-ov-spectrum .m-connector { display: none; }
+      [data-format="vertical"] #t1-ov-spectrum .m-label { font-size: calc(38px * var(--type)); }
+      [data-format="vertical"] #t1-ov-spectrum .m-val { font-size: calc(22px * var(--type)); padding: 10px 24px; }
+      [data-format="vertical"] #t1-ov-spectrum .m-val-wrap { top: calc(50% + 8px); left: calc(100% + 36px); translate: 50% 0; }
+      [data-format="square"] #t1-ov-spectrum .scene { top: 620px; left: calc(var(--safe-l) + 40px); right: calc(var(--safe-r) + 40px); display: flex; flex-direction: column; }
+      /* square: endpoints drop under the chips so they never meet the marker connectors */
+      [data-format="square"] #t1-ov-spectrum .ep-row { order: 1; margin: 120px 0 0; }
     </style>
   </head>
   <body>
@@ -194,7 +217,7 @@
           <div class="bar-fill" id="sp-fill"></div>
 
           <!-- Marker 1 - left ~22% -->
-          <div class="marker" id="sp-m1" style="left:22%">
+          <div class="marker" id="sp-m1">
             <div class="m-label-wrap">
               <div class="m-label" data-slot="m1_label">Index Funds</div>
               <div class="m-connector" id="sp-m1-conn"></div>
@@ -206,7 +229,7 @@
           </div>
 
           <!-- Marker 2 - center ~50% -->
-          <div class="marker" id="sp-m2" style="left:50%">
+          <div class="marker" id="sp-m2">
             <div class="m-label-wrap">
               <div class="m-label" data-slot="m2_label">Real Estate</div>
               <div class="m-connector" id="sp-m2-conn"></div>
@@ -218,7 +241,7 @@
           </div>
 
           <!-- Marker 3 - right ~80% -->
-          <div class="marker" id="sp-m3" style="left:80%">
+          <div class="marker" id="sp-m3">
             <div class="m-label-wrap">
               <div class="m-label" data-slot="m3_label">Crypto</div>
               <div class="m-connector" id="sp-m3-conn"></div>

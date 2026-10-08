@@ -19,7 +19,7 @@
       html, body { margin: 0; }
 
       #t1-ov-fcomp {
-        position: absolute; inset: 0; width: 1920px; height: 1080px;
+        position: absolute; inset: 0; width: var(--w); height: var(--h);
         background: var(--canvas); color: var(--text);
         font-family: var(--font-display); overflow: hidden;
       }
@@ -37,7 +37,7 @@
 
       /* Title */
       #t1-ov-fcomp .title-row {
-        position: absolute; left: 0; right: 0; top: 66px; text-align: center; z-index: 4;
+        position: absolute; left: var(--safe-l); right: var(--safe-r); top: calc(var(--safe-t) + 12px); text-align: center; z-index: 4;
       }
       #t1-ov-fcomp .title {
         font-family: var(--font-display); font-weight: var(--wt-bold);
@@ -51,7 +51,7 @@
 
       /* Table */
       #t1-ov-fcomp .table-wrap {
-        position: absolute; left: 300px; right: 300px; top: 200px; bottom: 80px;
+        position: absolute; left: calc(var(--safe-l) + 204px); right: calc(var(--safe-r) + 204px); top: calc(var(--safe-t) + 146px); bottom: calc(var(--safe-b) + 26px);
         z-index: 4;
       }
 
@@ -107,7 +107,7 @@
         padding: 0 36px 0 0;
         border-top: 1px solid rgba(255,255,255,0.07);
         font-family: var(--font-body); font-weight: var(--wt-semi);
-        font-size: 30px; color: var(--text);
+        font-size: calc(30px * var(--type)); color: var(--text);
       }
       #t1-ov-fcomp .fc-cell {
         display: flex; align-items: center; justify-content: center;
@@ -124,7 +124,7 @@
       #t1-ov-fcomp .glyph-no {
         width: 52px; height: 52px; border-radius: 50%;
         display: flex; align-items: center; justify-content: center;
-        font-size: 26px; font-weight: var(--wt-black); line-height: 1;
+        font-size: calc(26px * var(--type)); font-weight: var(--wt-black); line-height: 1;
         flex-shrink: 0;
       }
       #t1-ov-fcomp .glyph-yes {
@@ -154,6 +154,20 @@
         background-size: 200px 200px; mix-blend-mode: overlay; opacity: 0.10;
         pointer-events: none; z-index: 7;
       }
+
+      /* Vertical and square: table spans the safe width with narrower value columns; header chips stack
+         the dot over the name so it fits. */
+      [data-format="vertical"] #t1-ov-fcomp .title-row, [data-format="square"] #t1-ov-fcomp .title-row { top: var(--safe-t); }
+      [data-format="vertical"] #t1-ov-fcomp .title { font-size: calc(56px * var(--type)); }
+      [data-format="square"] #t1-ov-fcomp .title { font-size: 64px; }
+      [data-format="vertical"] #t1-ov-fcomp .table-wrap { left: var(--safe-l); right: var(--safe-r); top: calc(var(--safe-t) + 210px); bottom: calc(var(--safe-b) + 60px); }
+      [data-format="square"] #t1-ov-fcomp .table-wrap { left: var(--safe-l); right: var(--safe-r); top: calc(var(--safe-t) + 110px); bottom: var(--safe-b); }
+      [data-format="vertical"] #t1-ov-fcomp .fc-grid { grid-template-columns: 1fr 190px 190px; }
+      [data-format="square"] #t1-ov-fcomp .fc-grid { grid-template-columns: 1fr 230px 230px; }
+      [data-format="vertical"] #t1-ov-fcomp .fc-hdr-cell, [data-format="square"] #t1-ov-fcomp .fc-hdr-cell { flex-direction: column; gap: 8px; padding: 20px 12px; }
+      [data-format="vertical"] #t1-ov-fcomp .fc-hdr-text { font-size: calc(16px * var(--type)); }
+      [data-format="square"] #t1-ov-fcomp .fc-hdr-text { font-size: 20px; }
+      [data-format="vertical"] #t1-ov-fcomp .fc-feat-label, [data-format="square"] #t1-ov-fcomp .fc-feat-label { padding: 0 24px 0 20px; }
     </style>
   </head>
   <body>

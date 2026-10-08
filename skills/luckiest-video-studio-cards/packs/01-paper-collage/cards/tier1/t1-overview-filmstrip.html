@@ -14,7 +14,7 @@
     <style>
       html, body { margin: 0; }
       #t1-ov-film {
-        position: absolute; inset: 0; width: 1920px; height: 1080px;
+        position: absolute; inset: 0; width: var(--w); height: var(--h);
         background: var(--paper); color: var(--ink);
         font-family: var(--font-display); overflow: hidden;
       }
@@ -35,7 +35,7 @@
       }
       /* marker title */
       #t1-ov-film .title {
-        position: absolute; top: 62px; left: 50%;
+        position: absolute; top: calc(var(--safe-t) + 8px); left: 50%;
         transform: translateX(-50%) skewX(var(--marker-skew));
         background: var(--yellow); padding: 8px 28px; z-index: 10;
         font-weight: var(--wt-black); font-size: var(--size-title);
@@ -92,13 +92,13 @@
       #t1-ov-film .frame-num {
         position: absolute; top: 6px; left: 8px;
         font-family: var(--font-label); font-weight: var(--wt-bold);
-        font-size: 16px; letter-spacing: 0.1em;
+        font-size: calc(16px * var(--type)); letter-spacing: 0.1em;
         color: var(--paper); opacity: 0.6;
         font-variant-numeric: tabular-nums;
       }
       /* captions - sit below the strip band */
       #t1-ov-film .captions {
-        position: absolute; left: 100px; right: 100px; top: 716px;
+        position: absolute; left: calc(var(--safe-l) + 4px); right: calc(var(--safe-r) + 4px); top: 716px;
         display: flex; gap: 28px; z-index: 3;
       }
       #t1-ov-film .cap {
@@ -114,11 +114,42 @@
       }
       /* source */
       #t1-ov-film .source {
-        position: absolute; left: 130px; bottom: 60px; z-index: 10;
+        position: absolute; left: calc(var(--safe-l) + 34px); bottom: calc(var(--safe-b) + 6px); z-index: 10;
         font-family: var(--font-label); font-weight: var(--wt-bold);
         font-size: var(--size-tiny); letter-spacing: var(--track-wide);
         text-transform: uppercase; color: var(--muted);
       }
+
+      /* Vertical: the strip turns upright under the title and runs off the bottom edge, frames
+         stacked; captions sit in a column to the right, one beside each frame. */
+      [data-format="vertical"] #t1-ov-film .title, [data-format="square"] #t1-ov-film .title {
+        top: var(--safe-t); left: calc(var(--safe-l) + (var(--w) - var(--safe-l) - var(--safe-r)) / 2);
+      }
+      [data-format="vertical"] #t1-ov-film .title { font-size: calc(64px * var(--type)); }
+      [data-format="vertical"] #t1-ov-film .strip-band { left: var(--safe-l); right: auto; width: 400px; top: calc(var(--safe-t) + 140px); height: auto; bottom: -40px; }
+      [data-format="vertical"] #t1-ov-film .sprockets-top, [data-format="vertical"] #t1-ov-film .sprockets-bottom {
+        top: 0; bottom: 0; height: auto; width: 32px;
+        background-image: repeating-linear-gradient(180deg, transparent 0px, transparent 32px,
+          var(--paper-2) 32px, var(--paper-2) 56px, transparent 56px, transparent 88px);
+      }
+      [data-format="vertical"] #t1-ov-film .sprockets-top { left: 14px; right: auto; }
+      [data-format="vertical"] #t1-ov-film .sprockets-bottom { right: 14px; left: auto; }
+      [data-format="vertical"] #t1-ov-film .frames {
+        left: 60px; right: 60px; top: 30px; bottom: auto; height: 790px;
+        flex-direction: column;
+      }
+      [data-format="vertical"] #t1-ov-film .captions {
+        left: calc(var(--safe-l) + 440px); right: var(--safe-r); top: calc(var(--safe-t) + 170px); height: 790px;
+        flex-direction: column;
+      }
+      [data-format="vertical"] #t1-ov-film .cap { display: flex; flex-direction: column; justify-content: center; align-items: flex-start; text-align: left; }
+      [data-format="vertical"] #t1-ov-film .cap-1::after { margin: 10px 0 0; }
+      [data-format="vertical"] #t1-ov-film .source { left: calc(var(--safe-l) + 440px); bottom: var(--safe-b); }
+      [data-format="square"] #t1-ov-film .source { left: var(--safe-l); bottom: var(--safe-b); }
+      /* Square: same horizontal strip, frames and captions aligned to the safe width. */
+      [data-format="square"] #t1-ov-film .strip-band { top: calc(var(--safe-t) + 170px); }
+      [data-format="square"] #t1-ov-film .frames { left: calc(var(--safe-l) + 40px); right: calc(var(--safe-r) + 40px); gap: 20px; }
+      [data-format="square"] #t1-ov-film .captions { left: var(--safe-l); right: var(--safe-r); top: calc(var(--safe-t) + 600px); gap: 20px; }
     </style>
   </head>
   <body>

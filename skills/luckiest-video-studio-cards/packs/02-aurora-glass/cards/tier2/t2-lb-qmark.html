@@ -14,14 +14,14 @@
       html, body { margin: 0; background: transparent; }
 
       #t2-lb-qmk {
-        position: absolute; inset: 0; width: 1920px; height: 1080px;
+        position: absolute; inset: 0; width: var(--w); height: var(--h);
         background: transparent; overflow: hidden;
         font-family: var(--font-display);
       }
 
       /* Soft glow bloom anchored left-mid */
       #t2-lb-qmk .local-glow {
-        position: absolute; left: 60px; top: 280px;
+        position: absolute; left: calc(var(--safe-l) - 36px); top: calc(var(--safe-t) + 226px);
         width: 600px; height: 420px; border-radius: 50%;
         background: radial-gradient(ellipse at 28% 50%,
           rgba(var(--accent-rgb), 0.20) 0%,
@@ -34,7 +34,7 @@
 
       /* Component wrapper */
       #t2-lb-qmk .wrapper {
-        position: absolute; left: 100px; top: 330px;
+        position: absolute; left: calc(var(--safe-l) + 4px); top: calc(var(--safe-t) + 276px);
         display: flex; flex-direction: row; align-items: flex-start; gap: 28px;
         z-index: 2;
         max-width: 720px;
@@ -44,7 +44,7 @@
       #t2-lb-qmk .qmark {
         font-family: var(--font-display);
         font-weight: var(--wt-black);
-        font-size: 160px;
+        font-size: calc(160px * var(--type));
         line-height: 0.8;
         color: var(--accent);
         text-shadow: var(--textglow-accent),
@@ -65,7 +65,7 @@
         font-family: var(--font-display);
         font-weight: var(--wt-semi);
         font-style: italic;
-        font-size: 34px;
+        font-size: calc(34px * var(--type));
         line-height: 1.28;
         letter-spacing: var(--track-snug);
         color: var(--white);
@@ -94,10 +94,19 @@
       #t2-lb-qmk .detail {
         font-family: var(--font-body);
         font-weight: var(--wt-reg);
-        font-size: 20px;
+        font-size: calc(20px * var(--type));
         line-height: 1.50;
         color: var(--text-dim);
       }
+      /* Vertical and square: the card drops to the bottom of the safe area, left aligned, its glow following. */
+      [data-format="vertical"] #t2-lb-qmk .wrapper, [data-format="square"] #t2-lb-qmk .wrapper {
+        top: auto; right: auto; left: var(--safe-l); bottom: var(--safe-b); width: auto;
+        max-width: calc(var(--w) - var(--safe-l) - var(--safe-r));
+      }
+      [data-format="vertical"] #t2-lb-qmk .local-glow, [data-format="square"] #t2-lb-qmk .local-glow {
+        top: auto; right: auto; left: var(--safe-l); bottom: calc(var(--safe-b) - 80px);
+      }
+      [data-format="vertical"] #t2-lb-qmk [data-slot], [data-format="square"] #t2-lb-qmk [data-slot] { white-space: normal; }
     </style>
   </head>
   <body>

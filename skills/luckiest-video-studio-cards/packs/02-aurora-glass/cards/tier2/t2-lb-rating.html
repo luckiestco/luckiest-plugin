@@ -15,14 +15,14 @@
       html, body { margin: 0; background: transparent; }
 
       #t2-lb-rate {
-        position: absolute; inset: 0; width: 1920px; height: 1080px;
+        position: absolute; inset: 0; width: var(--w); height: var(--h);
         background: transparent; overflow: hidden;
         font-family: var(--font-display);
       }
 
       /* Localized glow - right side */
       #t2-lb-rate .local-glow {
-        position: absolute; right: 70px; top: 390px;
+        position: absolute; right: calc(var(--safe-r) - 10px); top: calc(var(--safe-t) + 336px);
         width: 540px; height: 340px; border-radius: 50%;
         background: radial-gradient(ellipse at 50% 50%,
           rgba(var(--accent2-rgb), 0.20) 0%,     /* yellow glow for star */
@@ -34,7 +34,7 @@
 
       /* Glass chip */
       #t2-lb-rate .chip {
-        position: absolute; right: 80px; top: 420px;
+        position: absolute; right: var(--safe-r); top: calc(var(--safe-t) + 366px);
         width: 420px;
         background: var(--glass-bg-dark);
         backdrop-filter: var(--glass-blur);
@@ -71,7 +71,7 @@
       /* Big numeric value - yellow (accent-2) for that rare pop */
       #t2-lb-rate .rating-value {
         font-family: var(--font-mono); font-weight: 700;
-        font-size: 56px; letter-spacing: -0.02em; line-height: 1.0;
+        font-size: calc(56px * var(--type)); letter-spacing: -0.02em; line-height: 1.0;
         background: linear-gradient(110deg,
           #FFFFFF 0%, var(--accent-2) 70%);
         -webkit-background-clip: text; background-clip: text;
@@ -116,9 +116,18 @@
       /* Detail */
       #t2-lb-rate .detail {
         font-family: var(--font-body); font-weight: var(--wt-reg);
-        font-size: 21px; line-height: 1.45; letter-spacing: 0.01em;
+        font-size: calc(21px * var(--type)); line-height: 1.45; letter-spacing: 0.01em;
         color: var(--text-dim);
       }
+      /* Vertical and square: the card drops to the bottom of the safe area, left aligned, its glow following. */
+      [data-format="vertical"] #t2-lb-rate .chip, [data-format="square"] #t2-lb-rate .chip {
+        top: auto; right: auto; left: var(--safe-l); bottom: var(--safe-b);
+        max-width: calc(var(--w) - var(--safe-l) - var(--safe-r));
+      }
+      [data-format="vertical"] #t2-lb-rate .local-glow, [data-format="square"] #t2-lb-rate .local-glow {
+        top: auto; right: auto; left: calc(var(--safe-l) - 60px); bottom: calc(var(--safe-b) - 60px);
+      }
+      [data-format="vertical"] #t2-lb-rate [data-slot], [data-format="square"] #t2-lb-rate [data-slot] { white-space: normal; }
     </style>
   </head>
   <body>

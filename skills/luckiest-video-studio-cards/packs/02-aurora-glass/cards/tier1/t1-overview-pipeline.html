@@ -14,7 +14,7 @@
       html, body { margin: 0; }
 
       #t1-ov-pipe {
-        position: absolute; inset: 0; width: 1920px; height: 1080px;
+        position: absolute; inset: 0; width: var(--w); height: var(--h);
         background: var(--canvas); color: var(--text);
         font-family: var(--font-display); overflow: hidden;
       }
@@ -31,7 +31,7 @@
 
       /* Title */
       #t1-ov-pipe .title-row {
-        position: absolute; left: 0; right: 0; top: 88px; text-align: center; z-index: 4;
+        position: absolute; left: var(--safe-l); right: var(--safe-r); top: calc(var(--safe-t) + 34px); text-align: center; z-index: 4;
       }
       #t1-ov-pipe .title {
         font-family: var(--font-display); font-weight: var(--wt-bold);
@@ -46,7 +46,7 @@
       /* Pipeline row - horizontally centered */
       #t1-ov-pipe .pipe-row {
         position: absolute;
-        left: 60px; right: 60px; top: 50%; margin-top: -80px;
+        left: var(--safe-l); right: var(--safe-r); top: 50%; margin-top: -80px;
         z-index: 4;
         display: flex; align-items: center; justify-content: center; gap: 0;
       }
@@ -107,7 +107,7 @@
       }
       .pipe-seg .seg-label {
         font-family: var(--font-display); font-weight: var(--wt-semi);
-        font-size: 28px; color: var(--white); letter-spacing: var(--track-snug);
+        font-size: calc(28px * var(--type)); color: var(--white); letter-spacing: var(--track-snug);
         line-height: 1.25;
       }
 
@@ -136,6 +136,27 @@
         background-size: 200px 200px; mix-blend-mode: overlay; opacity: 0.10;
         pointer-events: none; z-index: 7;
       }
+      /* Vertical and square: the chevrons turn to point down and stack in a column centred on the
+         safe box; the spine runs down behind them. */
+      [data-format="vertical"] #t1-ov-pipe .title-row { top: var(--safe-t); }
+      [data-format="vertical"] #t1-ov-pipe .pipe-row { top: 520px; margin-top: 0; flex-direction: column; }
+      [data-format="vertical"] .pipe-seg { width: 560px; height: 160px; clip-path: polygon(0% 0%, 50% 15%, 100% 0%, 100% 85%, 50% 100%, 0% 85%); }
+      [data-format="vertical"] #pseg1 { clip-path: polygon(0% 0%, 100% 0%, 100% 85%, 50% 100%, 0% 85%); margin-right: 0; margin-bottom: -24px; }
+      [data-format="vertical"] #pseg2, [data-format="vertical"] #pseg3 { margin-right: 0; margin-bottom: -24px; }
+      [data-format="vertical"] #pseg4 { clip-path: polygon(0% 0%, 50% 15%, 100% 0%, 100% 100%, 0% 100%); }
+      [data-format="vertical"] .pipe-seg .seg-content { padding-top: 12px; }
+      [data-format="vertical"] #t1-ov-pipe .pipe-spine { left: calc(var(--safe-l) + (var(--w) - var(--safe-l) - var(--safe-r)) / 2 - 2px); right: auto; width: 4px; height: 568px; top: 520px; margin-top: 0;
+        background: linear-gradient(180deg, rgba(var(--accent-rgb), 0.08) 0%, rgba(var(--accent-rgb), 0.55) 50%, rgba(var(--accent-rgb), 0.08) 100%); }
+      [data-format="square"] #t1-ov-pipe .title-row { top: var(--safe-t); }
+      [data-format="square"] #t1-ov-pipe .pipe-row { top: 250px; margin-top: 0; flex-direction: column; }
+      [data-format="square"] .pipe-seg { width: 600px; height: 150px; clip-path: polygon(0% 0%, 50% 15%, 100% 0%, 100% 85%, 50% 100%, 0% 85%); }
+      [data-format="square"] #pseg1 { clip-path: polygon(0% 0%, 100% 0%, 100% 85%, 50% 100%, 0% 85%); margin-right: 0; margin-bottom: -22px; }
+      [data-format="square"] #pseg2, [data-format="square"] #pseg3 { margin-right: 0; margin-bottom: -22px; }
+      [data-format="square"] #pseg4 { clip-path: polygon(0% 0%, 50% 15%, 100% 0%, 100% 100%, 0% 100%); }
+      [data-format="square"] .pipe-seg .seg-content { padding-top: 11px; }
+      [data-format="square"] #t1-ov-pipe .pipe-spine { left: calc(var(--safe-l) + (var(--w) - var(--safe-l) - var(--safe-r)) / 2 - 2px); right: auto; width: 4px; height: 534px; top: 250px; margin-top: 0;
+        background: linear-gradient(180deg, rgba(var(--accent-rgb), 0.08) 0%, rgba(var(--accent-rgb), 0.55) 50%, rgba(var(--accent-rgb), 0.08) 100%); }
+      [data-format="vertical"] #t1-ov-pipe .title { font-size: calc(72px * var(--type)); }
     </style>
   </head>
   <body>

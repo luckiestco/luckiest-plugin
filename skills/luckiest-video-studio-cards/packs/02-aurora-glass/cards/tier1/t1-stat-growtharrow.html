@@ -14,7 +14,7 @@
       html, body { margin: 0; }
 
       #t1-stat-garrow {
-        position: absolute; inset: 0; width: 1920px; height: 1080px;
+        position: absolute; inset: 0; width: var(--w); height: var(--h);
         background: var(--canvas); color: var(--text);
         font-family: var(--font-display); overflow: hidden;
       }
@@ -32,7 +32,7 @@
 
       /* Layout: text left, arrow SVG right */
       #t1-stat-garrow .text-block {
-        position: absolute; left: 180px; top: 50%; transform: translateY(-52%);
+        position: absolute; left: calc(var(--safe-l) + 84px); top: 50%; transform: translateY(-52%);
         z-index: 4; display: flex; flex-direction: column; gap: 44px;
         max-width: 840px;
       }
@@ -45,6 +45,7 @@
       #t1-stat-garrow .stat {
         font-family: var(--font-display); font-weight: var(--wt-black);
         font-size: var(--size-mega); line-height: 0.88; letter-spacing: var(--track-tight);
+        width: max-content; /* the gradient fill spans the whole word, so the last glyph is not lost past the column */
         background: linear-gradient(145deg, #ffffff 10%, rgba(var(--accent-rgb), 0.88) 80%);
         -webkit-background-clip: text; background-clip: text;
         -webkit-text-fill-color: transparent; text-fill-color: transparent;
@@ -61,12 +62,12 @@
 
       /* Arrow SVG - positioned right */
       #t1-stat-garrow .arrow-wrap {
-        position: absolute; right: 120px; top: 50%; transform: translateY(-50%);
+        position: absolute; right: calc(var(--safe-r) + 24px); top: 50%; transform: translateY(-50%);
         width: 680px; height: 640px; z-index: 3;
       }
 
       #t1-stat-garrow .source {
-        position: absolute; left: var(--pad); bottom: 44px;
+        position: absolute; left: var(--safe-l); bottom: var(--safe-b);
         font-family: var(--font-mono); font-size: var(--size-tiny);
         font-weight: var(--wt-reg); letter-spacing: 0.12em;
         text-transform: uppercase; color: var(--text-faint); z-index: 5;
@@ -81,6 +82,19 @@
         background-size: 200px 200px; mix-blend-mode: overlay; opacity: 0.10;
         pointer-events: none; z-index: 7;
       }
+
+      /* Vertical and square: kicker, stat and label run across the top of the safe area and the arrow
+         sits in the lower right, sized to the space left. */
+      [data-format="vertical"] #t1-stat-garrow .text-block, [data-format="square"] #t1-stat-garrow .text-block {
+        left: var(--safe-l); right: var(--safe-r); top: var(--safe-t); transform: none; max-width: none;
+      }
+      [data-format="vertical"] #t1-stat-garrow .stat { font-size: calc(170px * var(--type)); }
+      [data-format="square"] #t1-stat-garrow .stat { font-size: 200px; }
+      [data-format="vertical"] #t1-stat-garrow .arrow-wrap, [data-format="square"] #t1-stat-garrow .arrow-wrap {
+        right: var(--safe-r); top: auto; bottom: calc(var(--safe-b) + 40px); transform: none; width: 440px; height: 400px;
+      }
+      [data-format="vertical"] #t1-stat-garrow .arrow-wrap svg, [data-format="square"] #t1-stat-garrow .arrow-wrap svg { width: 100%; height: 100%; }
+      [data-format="square"] #t1-stat-garrow .arrow-wrap { width: 400px; height: 380px; }
     </style>
   </head>
   <body>

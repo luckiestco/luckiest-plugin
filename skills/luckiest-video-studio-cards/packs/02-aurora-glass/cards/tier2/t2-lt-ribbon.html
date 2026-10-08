@@ -15,7 +15,9 @@
       html, body { margin: 0; background: transparent; }
 
       #t2-lt-rib {
-        position: absolute; inset: 0; width: 1920px; height: 1080px;
+        position: absolute; inset: 0; width: var(--w); height: var(--h);
+        /* the lower-third group's anchor: left / bottom of the main card */
+        --lt-x: var(--safe-l); --lt-y: calc(var(--safe-b) + 64px);
         background: transparent; overflow: hidden;
         font-family: var(--font-display);
       }
@@ -23,7 +25,7 @@
       /* Localized bloom */
       #t2-lt-rib .local-bloom {
         position: absolute;
-        left: 30px; bottom: 88px;
+        left: calc(var(--lt-x) - 30px); bottom: calc(var(--lt-y) - 30px);
         width: 700px; height: 200px;
         border-radius: 50%;
         background: radial-gradient(ellipse at 28% 90%,
@@ -38,7 +40,7 @@
       /* The angled wrapper - skewed to create parallelogram */
       #t2-lt-rib .ribbon-wrap {
         position: absolute;
-        left: 60px; bottom: 118px;
+        left: var(--lt-x); bottom: var(--lt-y);
         z-index: 2;
         transform: skewX(-3deg);
         transform-origin: left bottom;
@@ -78,7 +80,7 @@
       #t2-lt-rib .name {
         font-family: var(--font-display);
         font-weight: var(--wt-black);
-        font-size: 38px;
+        font-size: calc(38px * var(--type));
         letter-spacing: var(--track-snug);
         color: var(--white);
         text-shadow: var(--textglow);
@@ -105,7 +107,7 @@
       #t2-lt-rib .role {
         font-family: var(--font-body);
         font-weight: var(--wt-semi);
-        font-size: 20px;
+        font-size: calc(20px * var(--type));
         letter-spacing: 0.02em;
         color: var(--accent);
         text-shadow: var(--textglow-accent);
@@ -127,6 +129,12 @@
         box-shadow: 0 0 10px rgba(var(--accent-rgb), 0.70);
         border-radius: 0 2px 2px 0;
       }
+      /* Vertical and square: the group sits at the bottom-left of the safe area and slots wrap. */
+      [data-format="vertical"] #t2-lt-rib, [data-format="square"] #t2-lt-rib { --lt-y: var(--safe-b); }
+      [data-format="vertical"] #t2-lt-rib .ribbon-wrap, [data-format="square"] #t2-lt-rib .ribbon-wrap {
+        top: auto; width: auto; max-width: calc(var(--w) - var(--safe-l) - var(--safe-r));
+      }
+      [data-format="vertical"] #t2-lt-rib [data-slot], [data-format="square"] #t2-lt-rib [data-slot] { white-space: normal; }
     </style>
   </head>
   <body>

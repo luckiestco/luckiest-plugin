@@ -13,7 +13,7 @@
       html, body { margin: 0; }
 
       #t1-ov-grid6 {
-        position: absolute; inset: 0; width: 1920px; height: 1080px;
+        position: absolute; inset: 0; width: var(--w); height: var(--h);
         background: var(--canvas); color: var(--text);
         font-family: var(--font-display); overflow: hidden;
       }
@@ -30,7 +30,7 @@
 
       /* Title */
       #t1-ov-grid6 .title-row {
-        position: absolute; left: 0; right: 0; top: 84px; text-align: center; z-index: 4;
+        position: absolute; left: var(--safe-l); right: var(--safe-r); top: calc(var(--safe-t) + 30px); text-align: center; z-index: 4;
       }
       #t1-ov-grid6 .title {
         font-family: var(--font-display); font-weight: var(--wt-bold);
@@ -44,7 +44,7 @@
 
       /* 3x2 grid */
       #t1-ov-grid6 .grid-wrap {
-        position: absolute; left: 160px; right: 160px; top: 240px; bottom: 80px;
+        position: absolute; left: calc(var(--safe-l) + 64px); right: calc(var(--safe-r) + 64px); top: calc(var(--safe-t) + 186px); bottom: calc(var(--safe-b) + 26px);
         display: grid;
         grid-template-columns: 1fr 1fr 1fr;
         grid-template-rows: 1fr 1fr;
@@ -79,7 +79,7 @@
       /* Tile label - the main content */
       #t1-ov-grid6 .tile-label {
         font-family: var(--font-display); font-weight: var(--wt-semi);
-        font-size: 36px; letter-spacing: var(--track-snug); line-height: 1.25;
+        font-size: calc(36px * var(--type)); letter-spacing: var(--track-snug); line-height: 1.25;
         color: var(--white); text-shadow: var(--textglow);
       }
       /* Small glowing accent line above label */
@@ -99,6 +99,19 @@
         background-size: 200px 200px; mix-blend-mode: overlay; opacity: 0.10;
         pointer-events: none; z-index: 7;
       }
+
+      /* Vertical and square: 3x2 becomes 2 columns x 3 rows across the safe box. */
+      [data-format="vertical"] #t1-ov-grid6 .title-row, [data-format="square"] #t1-ov-grid6 .title-row { top: var(--safe-t); }
+      [data-format="vertical"] #t1-ov-grid6 .title { font-size: calc(54px * var(--type)); }
+      [data-format="square"] #t1-ov-grid6 .title { font-size: 60px; }
+      [data-format="vertical"] #t1-ov-grid6 .grid-wrap, [data-format="square"] #t1-ov-grid6 .grid-wrap {
+        left: var(--safe-l); right: var(--safe-r); bottom: var(--safe-b); gap: 20px;
+        grid-template-columns: 1fr 1fr; grid-template-rows: 1fr 1fr 1fr;
+      }
+      [data-format="vertical"] #t1-ov-grid6 .grid-wrap { top: calc(var(--safe-t) + 200px); }
+      [data-format="square"] #t1-ov-grid6 .grid-wrap { top: calc(var(--safe-t) + 110px); }
+      [data-format="vertical"] #t1-ov-grid6 .tile, [data-format="square"] #t1-ov-grid6 .tile { padding: 28px 30px; }
+      [data-format="vertical"] #t1-ov-grid6 .tile-num, [data-format="square"] #t1-ov-grid6 .tile-num { top: 22px; right: 26px; }
     </style>
   </head>
   <body>

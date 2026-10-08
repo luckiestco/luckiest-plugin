@@ -16,7 +16,7 @@
       html, body { margin: 0; }
 
       #t1-ov-statgrid {
-        position: absolute; inset: 0; width: 1920px; height: 1080px;
+        position: absolute; inset: 0; width: var(--w); height: var(--h);
         background: var(--canvas); color: var(--text);
         font-family: var(--font-display); overflow: hidden;
       }
@@ -35,7 +35,7 @@
 
       /* Title */
       #t1-ov-statgrid .title-row {
-        position: absolute; left: 0; right: 0; top: 80px; text-align: center; z-index: 4;
+        position: absolute; left: var(--safe-l); right: var(--safe-r); top: calc(var(--safe-t) + 26px); text-align: center; z-index: 4;
       }
       #t1-ov-statgrid .title {
         font-family: var(--font-display); font-weight: var(--wt-bold);
@@ -49,7 +49,7 @@
 
       /* 2x2 stat grid */
       #t1-ov-statgrid .stat-grid {
-        position: absolute; left: 140px; right: 140px; top: 238px; bottom: 80px;
+        position: absolute; left: 140px; right: 140px; top: 238px; bottom: calc(var(--safe-b) + 26px);
         display: grid;
         grid-template-columns: 1fr 1fr;
         grid-template-rows: 1fr 1fr;
@@ -84,7 +84,7 @@
       /* Big stat number */
       #t1-ov-statgrid .stat-num {
         font-family: var(--font-display); font-weight: var(--wt-black);
-        font-size: 140px; letter-spacing: var(--track-tight); line-height: 1;
+        font-size: calc(140px * var(--type)); letter-spacing: var(--track-tight); line-height: 1;
         color: var(--white); text-shadow: var(--textglow);
         /* gradient accent fill */
         background: linear-gradient(160deg, var(--white) 10%, var(--accent) 90%);
@@ -96,7 +96,7 @@
       /* Suffix (%, x, K, M, etc.) */
       #t1-ov-statgrid .stat-suffix {
         font-family: var(--font-display); font-weight: var(--wt-bold);
-        font-size: 72px; letter-spacing: var(--track-snug); line-height: 1;
+        font-size: calc(72px * var(--type)); letter-spacing: var(--track-snug); line-height: 1;
         background: linear-gradient(160deg, var(--white) 0%, var(--accent) 100%);
         -webkit-background-clip: text; -webkit-text-fill-color: transparent;
         background-clip: text;
@@ -127,6 +127,18 @@
         background-size: 200px 200px; mix-blend-mode: overlay; opacity: 0.10;
         pointer-events: none; z-index: 7;
       }
+
+      /* Vertical and square: the 2x2 grid fills the safe box under a smaller title; numerals shrink to
+         the narrower tiles in vertical. */
+      [data-format="vertical"] #t1-ov-statgrid .title-row, [data-format="square"] #t1-ov-statgrid .title-row { top: var(--safe-t); }
+      [data-format="vertical"] #t1-ov-statgrid .title { font-size: calc(54px * var(--type)); }
+      [data-format="square"] #t1-ov-statgrid .title { font-size: 64px; }
+      [data-format="vertical"] #t1-ov-statgrid .stat-grid, [data-format="square"] #t1-ov-statgrid .stat-grid { left: var(--safe-l); right: var(--safe-r); bottom: var(--safe-b); gap: 24px; }
+      [data-format="vertical"] #t1-ov-statgrid .stat-grid { top: 400px; }
+      [data-format="square"] #t1-ov-statgrid .stat-grid { top: 180px; }
+      [data-format="vertical"] #t1-ov-statgrid .stat-tile, [data-format="square"] #t1-ov-statgrid .stat-tile { padding: 32px 28px; }
+      [data-format="vertical"] #t1-ov-statgrid .stat-num { font-size: calc(110px * var(--type)); }
+      [data-format="vertical"] #t1-ov-statgrid .stat-suffix { font-size: calc(56px * var(--type)); }
     </style>
   </head>
   <body>

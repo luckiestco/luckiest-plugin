@@ -14,14 +14,14 @@
       html, body { margin: 0; background: transparent; }
 
       #t2-lb-tcode {
-        position: absolute; inset: 0; width: 1920px; height: 1080px;
+        position: absolute; inset: 0; width: var(--w); height: var(--h);
         background: transparent; overflow: hidden;
         font-family: var(--font-display);
       }
 
       /* Localized glow behind card */
       #t2-lb-tcode .local-glow {
-        position: absolute; right: 120px; top: 320px;
+        position: absolute; right: calc(var(--safe-r) + 24px); top: calc(var(--safe-t) + 266px);
         width: 480px; height: 280px; border-radius: 50%;
         background: radial-gradient(ellipse at 50% 50%,
           rgba(var(--accent-rgb), 0.22) 0%,
@@ -34,7 +34,7 @@
 
       /* Wrapper anchored right */
       #t2-lb-tcode .wrapper {
-        position: absolute; right: 140px; top: 360px;
+        position: absolute; right: calc(var(--safe-r) + 44px); top: calc(var(--safe-t) + 306px);
         display: flex; flex-direction: column; align-items: flex-end; gap: 10px;
         z-index: 2;
       }
@@ -74,7 +74,7 @@
       #t2-lb-tcode .tcode-readout {
         font-family: var(--font-mono);
         font-weight: var(--wt-bold);
-        font-size: 42px;
+        font-size: calc(42px * var(--type));
         letter-spacing: 0.10em;
         color: var(--white);
         text-shadow: var(--textglow-accent);
@@ -96,7 +96,7 @@
       #t2-lb-tcode .term {
         font-family: var(--font-display);
         font-weight: var(--wt-semi);
-        font-size: 22px;
+        font-size: calc(22px * var(--type));
         letter-spacing: 0.01em;
         color: var(--white);
         text-shadow: var(--textglow);
@@ -107,11 +107,23 @@
       #t2-lb-tcode .detail {
         font-family: var(--font-body);
         font-weight: var(--wt-reg);
-        font-size: 20px;
+        font-size: calc(20px * var(--type));
         line-height: 1.45;
         color: var(--text-dim);
         text-align: right;
       }
+      /* Vertical and square: the card drops to the bottom of the safe area, left aligned, its glow following. */
+      [data-format="vertical"] #t2-lb-tcode .wrapper, [data-format="square"] #t2-lb-tcode .wrapper {
+        top: auto; right: auto; left: var(--safe-l); bottom: var(--safe-b); width: auto;
+        max-width: calc(var(--w) - var(--safe-l) - var(--safe-r));
+      }
+      [data-format="vertical"] #t2-lb-tcode .local-glow, [data-format="square"] #t2-lb-tcode .local-glow {
+        top: auto; right: auto; left: var(--safe-l); bottom: calc(var(--safe-b) - 40px);
+      }
+      [data-format="vertical"] #t2-lb-tcode [data-slot], [data-format="square"] #t2-lb-tcode [data-slot] { white-space: normal; }
+      [data-format="vertical"] #t2-lb-tcode .wrapper, [data-format="square"] #t2-lb-tcode .wrapper { align-items: flex-start; }
+      [data-format="vertical"] #t2-lb-tcode .term, [data-format="square"] #t2-lb-tcode .term,
+      [data-format="vertical"] #t2-lb-tcode .detail, [data-format="square"] #t2-lb-tcode .detail { text-align: left; }
     </style>
   </head>
   <body>

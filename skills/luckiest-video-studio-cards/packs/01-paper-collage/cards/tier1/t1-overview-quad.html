@@ -13,7 +13,7 @@
     <style>
       html, body { margin: 0; }
       #t1-ov-quad {
-        position: absolute; inset: 0; width: 1920px; height: 1080px;
+        position: absolute; inset: 0; width: var(--w); height: var(--h);
         background: var(--paper); color: var(--ink);
         font-family: var(--font-display); overflow: hidden;
       }
@@ -34,7 +34,7 @@
       }
       /* marker title */
       #t1-ov-quad .title {
-        position: absolute; top: 62px; left: 50%; transform: translateX(-50%) skewX(var(--marker-skew));
+        position: absolute; top: calc(var(--safe-t) + 8px); left: 50%; transform: translateX(-50%) skewX(var(--marker-skew));
         background: var(--yellow); padding: 8px 28px; z-index: 3;
         font-weight: var(--wt-black); font-size: var(--size-title);
         letter-spacing: var(--track-tight); text-transform: uppercase; white-space: nowrap;
@@ -45,7 +45,7 @@
         background: var(--ink); z-index: 2;
       }
       #t1-ov-quad .divider-v {
-        position: absolute; top: 220px; bottom: 0; left: 960px; width: 5px;
+        position: absolute; top: 220px; bottom: 0; left: calc(var(--w) / 2); width: 5px;
         background: var(--ink); z-index: 2;
       }
       /* quadrant tiles */
@@ -57,21 +57,21 @@
         display: flex; flex-direction: column; justify-content: center;
         padding: 56px 72px;
       }
-      #t1-ov-quad .q1 { padding-right: 56px; }
-      #t1-ov-quad .q2 { padding-left: 56px; }
-      #t1-ov-quad .q3 { padding-right: 56px; }
-      #t1-ov-quad .q4 { padding-left: 56px; }
+      #t1-ov-quad .q1 { padding-right: 56px; padding-left: var(--safe-l); }
+      #t1-ov-quad .q2 { padding-left: 56px; padding-right: var(--safe-r); }
+      #t1-ov-quad .q3 { padding-right: 56px; padding-left: var(--safe-l); }
+      #t1-ov-quad .q4 { padding-left: 56px; padding-right: var(--safe-r); }
       /* number chip */
       #t1-ov-quad .chip {
         display: inline-flex; align-items: center; justify-content: center;
         width: 72px; height: 72px;
         background: var(--ink); color: var(--paper);
-        font-weight: var(--wt-black); font-size: 40px;
+        font-weight: var(--wt-black); font-size: calc(40px * var(--type));
         font-variant-numeric: tabular-nums; margin-bottom: 22px;
       }
       #t1-ov-quad .q1 .chip, #t1-ov-quad .q2 .chip { background: var(--yellow); color: var(--ink); }
       #t1-ov-quad .topic {
-        font-weight: var(--wt-black); font-size: 60px;
+        font-weight: var(--wt-black); font-size: calc(60px * var(--type));
         line-height: 1.05; letter-spacing: var(--track-tight); margin-bottom: 14px;
       }
       #t1-ov-quad .sub {
@@ -80,11 +80,42 @@
       }
       /* source */
       #t1-ov-quad .source {
-        position: absolute; left: 130px; bottom: 34px; z-index: 4;
+        position: absolute; left: calc(var(--safe-l) + 34px); bottom: var(--safe-b); z-index: 4;
         font-family: var(--font-label); font-weight: var(--wt-bold);
         font-size: var(--size-tiny); letter-spacing: var(--track-wide);
         text-transform: uppercase; color: var(--muted);
       }
+
+      /* Vertical: the four quadrants become four rows (chip left, topic and sub right) split by
+         rules; the cross dividers are hidden. Title centred on the safe box and allowed to wrap. */
+      [data-format="vertical"] #t1-ov-quad .title, [data-format="square"] #t1-ov-quad .title {
+        top: var(--safe-t); left: calc(var(--safe-l) + (var(--w) - var(--safe-l) - var(--safe-r)) / 2);
+        width: max-content; max-width: calc(var(--w) - var(--safe-l) - var(--safe-r) - 56px);
+        white-space: normal; text-align: center;
+      }
+      [data-format="vertical"] #t1-ov-quad .title { font-size: calc(54px * var(--type)); }
+      [data-format="vertical"] #t1-ov-quad .divider-h, [data-format="vertical"] #t1-ov-quad .divider-v { display: none; }
+      [data-format="vertical"] #t1-ov-quad .quads {
+        left: var(--safe-l); right: var(--safe-r); top: calc(var(--safe-t) + 190px); bottom: calc(var(--safe-b) + 30px);
+        grid-template-columns: 1fr; grid-template-rows: repeat(4, 1fr);
+      }
+      [data-format="vertical"] #t1-ov-quad .q {
+        display: grid; grid-template-columns: 72px 1fr; column-gap: 30px; align-content: center;
+        padding: 0; border-top: 3px solid var(--ink);
+      }
+      [data-format="vertical"] #t1-ov-quad .chip { grid-column: 1; grid-row: 1 / span 2; margin: 6px 0 0 0; }
+      [data-format="vertical"] #t1-ov-quad .topic { grid-column: 2; margin-bottom: 8px; font-size: calc(52px * var(--type)); }
+      [data-format="vertical"] #t1-ov-quad .sub { grid-column: 2; }
+      [data-format="vertical"] #t1-ov-quad .source, [data-format="square"] #t1-ov-quad .source { left: var(--safe-l); bottom: var(--safe-b); }
+      /* Square: keep the 2x2 cross, fitted to the safe box. */
+      [data-format="square"] #t1-ov-quad .title { font-size: 64px; }
+      [data-format="square"] #t1-ov-quad .quads { left: var(--safe-l); right: var(--safe-r); top: calc(var(--safe-t) + 130px); bottom: calc(var(--safe-b) + 40px); }
+      [data-format="square"] #t1-ov-quad .q { padding: 24px 28px; }
+      [data-format="square"] #t1-ov-quad .q1, [data-format="square"] #t1-ov-quad .q3 { padding-left: 0; }
+      [data-format="square"] #t1-ov-quad .q2, [data-format="square"] #t1-ov-quad .q4 { padding-right: 0; }
+      [data-format="square"] #t1-ov-quad .topic { font-size: 54px; }
+      [data-format="square"] #t1-ov-quad .divider-v { top: calc(var(--safe-t) + 130px); bottom: calc(var(--safe-b) + 40px); }
+      [data-format="square"] #t1-ov-quad .divider-h { top: calc(var(--safe-t) + 130px + (var(--h) - var(--safe-t) - var(--safe-b) - 170px) / 2); }
     </style>
   </head>
   <body>

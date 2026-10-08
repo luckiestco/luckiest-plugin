@@ -46,6 +46,13 @@ landing-page-only, write "none — landing-page only" and rely on Key moments in
 - Interpretation: [one sentence on how this affects pacing, writing, visual energy, and restraint]
 
 ## Format: [landscape / vertical / square] — [width]x[height]
+## Also render: [none / vertical / square / landscape]
+Ask which formats the video goes out in when the user names more than one place to
+post it (TikTok and YouTube, Reels and LinkedIn): vertical 1080x1920 for TikTok,
+Reels, and Shorts, square 1080x1080 for feeds, landscape 1920x1080 for YouTube and
+the web. Default is the master format only. Each extra format costs one more render,
+not one more design, and is added to storyboard `formats` only after the master is
+approved (`step-4-deliver.md`, "Other formats (last)").
 ## Duration: [target seconds]
 
 ## Visual identity (from the project)
@@ -178,7 +185,31 @@ If a scene has either of these, commit to it explicitly in the scene description
 
 Hyperframes can implement both patterns well — but only if the plan specifies what's appearing, in what order, and that interaction is being simulated. The plan is the contract.
 
-## Audio planning
+## One shape, never cut (state list)
+
+When the product is a set of UI states (a button that becomes a loader, then a
+player, then a chart), plan the scene as a **state list** instead of a shot list.
+One element carries the whole scene: it morphs size, radius, color, and content
+from state to state, a cursor drives each change with a real click, and nothing
+cuts. Write it in `storyboard.json` as `scenes[].states`:
+
+```json
+"states": [
+  { "t": 0,   "label": "Send invoice", "shape": "button 240x56 r28 #1F1447" },
+  { "t": 0.9, "label": "Sending",      "shape": "loader 56x56 r28",  "cursor": "click" },
+  { "t": 1.6, "label": "Paid $2,860.50", "shape": "card 420x140 r22 #22C55E" },
+  { "t": 3.2, "label": "Send invoice", "shape": "button 240x56 r28 #1F1447" }
+]
+```
+
+- Each state names what the viewer reads and the shape it holds. The move between
+  two states retargets one spring (`Spring.track` from the motion sub-skill), so the
+  element never restarts or stops dead.
+- Hold each state long enough to read it (the reading-time rule below), and let
+  the cursor arrive before the click, never with it.
+- For a loop (a social post, a hero background), the last state equals the first,
+  and `qa.mjs loop` checks that the rendered last frame matches the first.
+
 
 Choose the music direction in the plan. Leave exact SFX file selection and exact timestamps to Hyperframes during composition, because SFX should match the actual visual implementation.
 

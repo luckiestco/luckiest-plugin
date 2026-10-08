@@ -1,5 +1,10 @@
 {
   "id": "dark-graph-paper-template",
   "name": "dark-graph-paper-template",
-  "createdAt": "2026-05-21T22:43:35.061Z"
+  "createdAt": "2026-05-21T22:43:35.061Z",
+  "formats": [
+    "landscape",
+    "vertical",
+    "square"
+  ]
 }

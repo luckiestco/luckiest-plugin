@@ -15,7 +15,7 @@
       html, body { margin: 0; }
 
       #t1-st-trend {
-        position: absolute; inset: 0; width: 1920px; height: 1080px;
+        position: absolute; inset: 0; width: var(--w); height: var(--h);
         background: var(--canvas); color: var(--text);
         font-family: var(--font-display); overflow: hidden;
       }
@@ -74,7 +74,7 @@
       #t1-st-trend .end-callout .stat {
         font-family: var(--font-display);
         font-weight: var(--wt-black);
-        font-size: 90px;
+        font-size: calc(90px * var(--type));
         line-height: 1;
         letter-spacing: var(--track-tight);
         background: linear-gradient(160deg, #ffffff 15%, rgba(var(--accent-rgb), 0.85) 80%);
@@ -100,7 +100,7 @@
       }
       #t1-st-trend .x-lbl {
         font-family: var(--font-mono);
-        font-size: 20px;
+        font-size: calc(20px * var(--type));
         font-weight: var(--wt-bold);
         letter-spacing: 0.08em;
         text-transform: uppercase;
@@ -124,7 +124,7 @@
 
       /* Source */
       #t1-st-trend .source {
-        position: absolute; left: var(--pad); bottom: 44px;
+        position: absolute; left: var(--safe-l); bottom: var(--safe-b);
         font-family: var(--font-mono); font-size: var(--size-tiny);
         font-weight: var(--wt-reg); letter-spacing: 0.12em;
         text-transform: uppercase; color: var(--text-faint); z-index: 5;
@@ -139,6 +139,20 @@
         background-size: 200px 200px; mix-blend-mode: overlay; opacity: 0.10;
         pointer-events: none; z-index: 7;
       }
+
+      /* Vertical and square: the chart scales to the safe width (callout and axis labels follow);
+         the stack centers in the safe box. */
+      [data-format="vertical"] #t1-st-trend .content, [data-format="square"] #t1-st-trend .content { inset: var(--safe-t) var(--safe-r) calc(var(--safe-b) + 48px) var(--safe-l); padding-bottom: 0; }
+      [data-format="vertical"] #t1-st-trend .kicker, [data-format="square"] #t1-st-trend .kicker { text-align: center; }
+      [data-format="vertical"] #t1-st-trend .chart-wrap { width: 100%; height: 259px; }
+      [data-format="square"] #t1-st-trend .chart-wrap { width: 100%; height: 314px; }
+      [data-format="vertical"] #t1-st-trend .trend-svg, [data-format="square"] #t1-st-trend .trend-svg { width: 100%; height: 100%; }
+      [data-format="vertical"] #t1-st-trend .end-callout { top: 6px; right: 34px; }
+      [data-format="vertical"] #t1-st-trend .end-callout .stat { font-size: calc(70px * var(--type)); }
+      [data-format="vertical"] #t1-st-trend .x-labels { left: 34px; right: 34px; }
+      [data-format="square"] #t1-st-trend .end-callout { top: 8px; right: 41px; }
+      [data-format="square"] #t1-st-trend .x-labels { left: 41px; right: 41px; }
+      [data-format="vertical"] #t1-st-trend .label, [data-format="square"] #t1-st-trend .label { max-width: 100%; }
     </style>
   </head>
   <body>

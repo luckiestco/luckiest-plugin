@@ -12,7 +12,7 @@
     <style>
       html, body { margin: 0; }
       #t1-sec-index {
-        position: absolute; inset: 0; width: 1920px; height: 1080px;
+        position: absolute; inset: 0; width: var(--w); height: var(--h);
         background: var(--paper-2); color: var(--ink);
         font-family: var(--font-display); overflow: hidden;
         display: flex; align-items: center; justify-content: center;
@@ -36,22 +36,35 @@
       #t1-sec-index .tab {
         position: absolute; left: 90px; top: -54px; height: 54px; display: flex; align-items: center; padding: 0 28px;
         background: var(--red); color: var(--paper);
-        font-family: var(--font-label); font-weight: var(--wt-black); font-size: 26px;
+        font-family: var(--font-label); font-weight: var(--wt-black); font-size: calc(26px * var(--type));
         letter-spacing: 0.14em; text-transform: uppercase;
       }
       #t1-sec-index .code {
         position: absolute; left: 56px; top: 44px;
-        font-family: var(--font-label); font-weight: var(--wt-bold); font-size: 26px;
+        font-family: var(--font-label); font-weight: var(--wt-bold); font-size: calc(26px * var(--type));
         letter-spacing: 0.16em; text-transform: uppercase; color: var(--muted);
       }
       #t1-sec-index .title {
         position: absolute; left: 160px; top: 220px; width: 1080px;
-        font-weight: var(--wt-black); font-size: 130px; line-height: 0.96; letter-spacing: var(--track-tight);
+        font-weight: var(--wt-black); font-size: calc(130px * var(--type)); line-height: 0.96; letter-spacing: var(--track-tight);
       }
       #t1-sec-index .sub {
         position: absolute; left: 160px; top: 470px; width: 1040px;
-        font-family: var(--font-label); font-weight: var(--wt-reg); font-size: 30px; line-height: 1.5; color: var(--ink);
+        font-family: var(--font-label); font-weight: var(--wt-reg); font-size: calc(30px * var(--type)); line-height: 1.5; color: var(--ink);
       }
+
+      /* Vertical and square: the card fits the safe width and is centered on the safe box (not the
+         frame); red margin line, title and note move in to match the narrower card. */
+      [data-format="vertical"] #t1-sec-index .card { top: calc((var(--safe-t) - var(--safe-b)) / 2); left: calc((var(--safe-l) - var(--safe-r)) / 2); width: calc(var(--w) - var(--safe-l) - var(--safe-r)); height: 720px; }
+      [data-format="square"] #t1-sec-index .card { top: 27px; width: calc(var(--w) - var(--safe-l) - var(--safe-r) - 40px); height: 640px; }
+      [data-format="vertical"] #t1-sec-index .redline { left: 76px; }
+      [data-format="square"] #t1-sec-index .redline { left: 96px; }
+      [data-format="vertical"] #t1-sec-index .tab { left: 50px; }
+      [data-format="vertical"] #t1-sec-index .code { left: 40px; }
+      [data-format="vertical"] #t1-sec-index .title { left: 110px; top: 200px; width: 610px; font-size: calc(96px * var(--type)); }
+      [data-format="square"] #t1-sec-index .title { left: 136px; top: 190px; width: 700px; font-size: 112px; }
+      [data-format="vertical"] #t1-sec-index .sub { left: 110px; top: 480px; width: 610px; }
+      [data-format="square"] #t1-sec-index .sub { left: 136px; top: 440px; width: 700px; }
     </style>
   </head>
   <body>

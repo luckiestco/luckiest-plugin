@@ -14,7 +14,10 @@
     <style>
       html, body { margin: 0; }
       #t1-stat-window {
-        position: absolute; inset: 0; width: 1920px; height: 1080px;
+        position: absolute; inset: 0; width: var(--w); height: var(--h);
+        /* window rectangle, shared by the backing, the die-cut overlay and the shadow */
+        --win-l: calc(var(--safe-l) + 164px); --win-t: calc(var(--safe-t) + 136px);
+        --win-w: calc(var(--w) - var(--safe-l) - var(--safe-r) - 328px); --win-h: 620px;
         background: var(--paper); color: var(--ink);
         font-family: var(--font-display); overflow: hidden;
       }
@@ -37,8 +40,8 @@
       #t1-stat-window .backing {
         position: absolute;
         /* window position: centred horizontally, upper-mid vertically */
-        left: 260px; top: 190px;
-        width: 1400px; height: 620px;
+        left: var(--win-l); top: var(--win-t);
+        width: var(--win-w); height: var(--win-h);
         background: var(--yellow);
         z-index: 1;
       }
@@ -46,7 +49,7 @@
       #t1-stat-window .stat {
         position: absolute; inset: 0;
         display: flex; align-items: center; justify-content: center;
-        font-weight: var(--wt-black); font-size: 480px; line-height: 1;
+        font-weight: var(--wt-black); font-size: calc(480px * var(--type)); line-height: 1;
         letter-spacing: -0.06em; color: var(--ink);
         font-variant-numeric: tabular-nums;
         z-index: 2;
@@ -77,8 +80,15 @@
 
       /* Use SVG defs for evenodd clip */
       #t1-stat-window .overlay {
-        /* reset clip-path; actual clip applied via SVG below */
-        clip-path: none;
+        /* The SVG clipPath never cut a hole (its path used fill-rule, which a clipPath ignores),
+           so the paper covered the number. An evenodd polygon cuts the window from the vars. */
+        clip-path: polygon(evenodd,
+          0 0, 100% 0, 100% 100%, 0 100%, 0 0,
+          var(--win-l) var(--win-t),
+          calc(var(--win-l) + var(--win-w)) var(--win-t),
+          calc(var(--win-l) + var(--win-w)) calc(var(--win-t) + var(--win-h)),
+          var(--win-l) calc(var(--win-t) + var(--win-h)),
+          var(--win-l) var(--win-t));
       }
       #t1-stat-window .overlay-svg {
         position: absolute; inset: 0; z-index: 3; pointer-events: none;
@@ -88,8 +98,8 @@
          absolutely positioned div matching the window rect, z above backing  */
       #t1-stat-window .window-shadow {
         position: absolute;
-        left: 260px; top: 190px;
-        width: 1400px; height: 620px;
+        left: var(--win-l); top: var(--win-t);
+        width: var(--win-w); height: var(--win-h);
         z-index: 4;
         box-shadow: inset 0 0 0 5px var(--ink),
                     inset 8px 12px 30px rgba(23,19,14,0.28),
@@ -99,7 +109,7 @@
 
       /* kicker */
       #t1-stat-window .kicker {
-        position: absolute; left: 130px; top: 90px; z-index: 6;
+        position: absolute; left: calc(var(--safe-l) + 34px); top: calc(var(--safe-t) + 36px); z-index: 6;
         font-family: var(--font-label); font-weight: var(--wt-bold);
         font-size: var(--size-label); letter-spacing: var(--track-wide);
         text-transform: uppercase; color: var(--red);
@@ -107,8 +117,8 @@
 
       /* label */
       #t1-stat-window .label {
-        position: absolute; left: 130px; right: 130px; bottom: 170px; z-index: 6;
-        font-weight: var(--wt-thin); font-size: 60px; line-height: 1.08;
+        position: absolute; left: calc(var(--safe-l) + 34px); right: calc(var(--safe-r) + 34px); bottom: calc(var(--safe-b) + 116px); z-index: 6;
+        font-weight: var(--wt-thin); font-size: calc(60px * var(--type)); line-height: 1.08;
         letter-spacing: var(--track-tight); color: var(--ink);
       }
       #t1-stat-window .label em {
@@ -117,12 +127,26 @@
 
       /* source */
       #t1-stat-window .source {
-        position: absolute; left: 130px; bottom: 96px; z-index: 6;
+        position: absolute; left: calc(var(--safe-l) + 34px); bottom: calc(var(--safe-b) + 42px); z-index: 6;
         font-family: var(--font-label); font-weight: var(--wt-bold);
         font-size: var(--size-tiny); letter-spacing: var(--track-wide);
         text-transform: uppercase; color: var(--muted);
       }
+
+      /* Vertical and square: the window spans the safe width under the kicker with the number
+         sized to it; label and source sit on the safe bottom. */
+      [data-format="vertical"] #t1-stat-window, [data-format="square"] #t1-stat-window {
+        --win-l: var(--safe-l); --win-w: calc(var(--w) - var(--safe-l) - var(--safe-r));
+      }
+      [data-format="vertical"] #t1-stat-window { --win-t: calc(var(--safe-t) + 70px); --win-h: 560px; }
+      [data-format="square"] #t1-stat-window { --win-t: calc(var(--safe-t) + 60px); --win-h: 560px; }
+      [data-format="vertical"] #t1-stat-window .stat { font-size: calc(300px * var(--type)); }
+      [data-format="square"] #t1-stat-window .stat { font-size: 400px; }
+      [data-format="vertical"] #t1-stat-window .kicker, [data-format="square"] #t1-stat-window .kicker { left: var(--safe-l); top: var(--safe-t); }
+      [data-format="vertical"] #t1-stat-window .label, [data-format="square"] #t1-stat-window .label { left: var(--safe-l); right: var(--safe-r); bottom: calc(var(--safe-b) + 60px); }
+      [data-format="vertical"] #t1-stat-window .source, [data-format="square"] #t1-stat-window .source { left: var(--safe-l); bottom: var(--safe-b); }
     </style>
+
   </head>
   <body>
     <div id="t1-stat-window" data-composition-id="t1-stat-window" data-start="0" data-width="1920" data-height="1080">
@@ -133,19 +157,8 @@
         <div class="stat" data-slot="stat">38M</div>
       </div>
 
-      <!-- paper overlay with die-cut hole via SVG clip -->
-      <svg style="position:absolute;width:0;height:0">
-        <defs>
-          <clipPath id="win-cut" clipPathUnits="objectBoundingBox">
-            <!-- outer rect -->
-            <path fill-rule="evenodd" d="
-              M 0,0 L 1,0 L 1,1 L 0,1 Z
-              M 0.1354,0.1759 L 0.8646,0.1759 L 0.8646,0.7500 L 0.1354,0.7500 Z
-            "/>
-          </clipPath>
-        </defs>
-      </svg>
-      <div class="overlay" style="clip-path: url(#win-cut);"></div>
+      <!-- paper overlay with die-cut hole (evenodd clip-path in the style) -->
+      <div class="overlay"></div>
 
       <!-- inner shadow framing the window -->
       <div class="window-shadow"></div>

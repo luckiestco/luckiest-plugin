@@ -14,6 +14,7 @@ Create a short launch-style video for [App Name].
 - Composition directory: `<output-dir>/composition/`
 - Rendered video: `<output-dir>/final.mp4`
 - Format: [landscape / vertical / square] — [width]x[height]
+- Also render: [none / vertical / square / landscape] (storyboard `formats`)
 - Duration: [15-25 seconds]
 
 ## Source Material
@@ -204,6 +205,32 @@ Learned on a real run with HyperFrames 0.8.x:
 - Give every timed element an `id`, or check warns that Studio cannot edit it.
 - Before the full render, check every scene's hold frame in one pass: `hyperframes snapshot . --at <hold1>,<hold2>,... --no-end -o ../qa/holds`, then read `qa/holds/contact-sheet.jpg`.
 
+### Build once, render every format
+
+When the storyboard lists `formats`, `render-scenes.mjs` renders each motion and logo
+scene once per format from a stamped copy. The stamp sets the root `data-width`,
+`data-height`, and `data-format` (`landscape`, `vertical`, `square`) and appends these
+tokens after your styles:
+
+| Token | Value |
+|---|---|
+| `--w`, `--h` | Canvas size in px |
+| `--u` | One hundredth of the short side: 10.8px at all three sizes |
+| `--safe-t`, `--safe-b`, `--safe-l`, `--safe-r` | Safe area per side, from `luckiest-video-studio-composition/references/grids-and-ratios.md`. Vertical is the strictest of TikTok, Reels, and Shorts combined: 288, 672, 119, 194 |
+
+Write every scene so the same HTML lays out at any of the three sizes:
+
+1. Declare the master defaults on `:root` (`--w:1920px;--h:1080px;--u:10.8px;--safe-t:54px;--safe-b:54px;--safe-l:96px;--safe-r:96px` for landscape) so the scene still previews on its own.
+2. `html,body{width:var(--w);height:var(--h)}`. Never write the canvas size in px.
+3. Size type, spacing, strokes, and boxes in `calc(var(--u) * n)`, never raw px. Text that would cross the safe area wraps or shrinks; it never runs into it.
+4. Keep every word, logo, and CTA inside a box inset by the safe tokens: `position:absolute; inset:var(--safe-t) var(--safe-r) var(--safe-b) var(--safe-l)`, plus `margin:auto` and a fixed size to center it in the safe area. Padding on the composition root does not move clip elements, so put the insets on the clips themselves. Vertical's safe area sits high (288 top, 672 bottom), so center there, not on the frame.
+5. Restack with `[data-format=vertical]` and `[data-format=square]` selectors: side-by-side rows become columns, a 12-column grid becomes 6. Never make vertical by cropping a landscape layout.
+6. In vertical, set headline and body type 15 to 25% larger than landscape (`calc(var(--u) * 10)` where landscape uses 8), because the phone shows the whole frame smaller.
+7. Motion distances in GSAP use the same tokens: read them once with `getComputedStyle(document.documentElement).getPropertyValue("--u")` and multiply, so a slide is the same share of the frame in every format.
+8. Check each format's hold frame without rendering: `render-scenes.mjs <run-dir> --stills` writes `stills/<format>/sheet.png` per format, and `qa.mjs safe <run-dir> --stills` fails any text outside the format's safe area. Do this once the master is approved (`step-4-deliver.md`, "Other formats (last)"), not on every iteration.
+
+`templates/logo-line-draw.html` is a worked example.
+
 ---
 
 ## Self-review checklist
@@ -213,6 +240,7 @@ Before moving to delivery, verify:
 - [ ] `<output-dir>/composition-brief.md` exists.
 - [ ] The brief clearly identifies the exact product moments to show.
 - [ ] The composition uses the current Hyperframes workflow, not a hardcoded `luckiest-video-studio` template.
+- [ ] With `formats`, every scene sizes itself with `--w`, `--h`, `--u`, and the safe tokens, and restacks under `[data-format]`; no canvas size in px.
 - [ ] Music file is copied into `<output-dir>/composition/assets/music/`.
 - [ ] At least one visual element subtly reacts to the music (audio-reactive treatment present), or extraction failure is documented.
 - [ ] At least 1 major tween is beat-locked to a strong cue (a `strongCue`, or the highest-`strength` beat from `hyperframes beats`) within ±0.15s, marked `// beat-locked` (or natural timing was chosen for readability).

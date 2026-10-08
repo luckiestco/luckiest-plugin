@@ -14,14 +14,14 @@
       html, body { margin: 0; background: transparent; }
 
       #t2-lb-spec {
-        position: absolute; inset: 0; width: 1920px; height: 1080px;
+        position: absolute; inset: 0; width: var(--w); height: var(--h);
         background: transparent; overflow: hidden;
         font-family: var(--font-display);
       }
 
       /* Local glow behind panel */
       #t2-lb-spec .local-glow {
-        position: absolute; left: 80px; top: 330px;
+        position: absolute; left: var(--safe-l); top: calc(var(--safe-t) + 276px);
         width: 580px; height: 360px; border-radius: 50%;
         background: radial-gradient(ellipse at 35% 55%,
           rgba(var(--accent-rgb), 0.22) 0%,
@@ -33,7 +33,7 @@
 
       /* Main spec panel */
       #t2-lb-spec .spec-panel {
-        position: absolute; left: 80px; top: 360px;
+        position: absolute; left: var(--safe-l); top: calc(var(--safe-t) + 306px);
         width: 520px;
         background: var(--glass-bg-dark);
         backdrop-filter: var(--glass-blur);
@@ -63,14 +63,14 @@
 
       #t2-lb-spec .spec-title {
         font-family: var(--font-display); font-weight: var(--wt-bold);
-        font-size: 24px; letter-spacing: var(--track-snug);
+        font-size: calc(24px * var(--type)); letter-spacing: var(--track-snug);
         color: var(--white); text-shadow: var(--textglow);
         white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
         flex: 1;
       }
 
       #t2-lb-spec .spec-badge {
-        font-family: var(--font-mono); font-size: 11px;
+        font-family: var(--font-mono); font-size: calc(11px * var(--type));
         letter-spacing: var(--track-wide); text-transform: uppercase;
         color: var(--accent); text-shadow: var(--textglow-accent);
         padding: 3px 8px;
@@ -97,7 +97,7 @@
       /* Dashed connector between label and value */
       #t2-lb-spec .spec-row-label {
         font-family: var(--font-mono); font-weight: var(--wt-reg);
-        font-size: 14px; letter-spacing: var(--track-wide);
+        font-size: calc(14px * var(--type)); letter-spacing: var(--track-wide);
         color: var(--text-faint); text-transform: uppercase;
         white-space: nowrap; flex-shrink: 0;
       }
@@ -111,7 +111,7 @@
 
       #t2-lb-spec .spec-row-value {
         font-family: var(--font-display); font-weight: var(--wt-semi);
-        font-size: 22px; letter-spacing: var(--track-snug);
+        font-size: calc(22px * var(--type)); letter-spacing: var(--track-snug);
         color: var(--text);
         white-space: nowrap;
       }
@@ -123,7 +123,7 @@
 
       /* Detail note below panel */
       #t2-lb-spec .detail-wrap {
-        position: absolute; left: 80px; top: 656px;
+        position: absolute; left: var(--safe-l); top: calc(var(--safe-t) + 602px);
         padding: 8px 18px 8px 16px;
         background: rgba(16,22,34,0.40);
         backdrop-filter: blur(10px);
@@ -135,15 +135,31 @@
 
       #t2-lb-spec .detail-text {
         font-family: var(--font-body); font-weight: var(--wt-reg);
-        font-size: 20px; line-height: 1.5;
+        font-size: calc(20px * var(--type)); line-height: 1.5;
         color: var(--text-dim);
       }
+      /* Vertical and square: the detail strip sits on the bottom of the safe area with the spec panel stacked above it. */
+      [data-format="vertical"] #t2-lb-spec .detail-wrap, [data-format="square"] #t2-lb-spec .detail-wrap {
+        anchor-name: --t2-lb-spec-detail;
+        top: auto; left: var(--safe-l); bottom: var(--safe-b);
+        max-width: min(500px, calc(var(--w) - var(--safe-l) - var(--safe-r)));
+      }
+      [data-format="vertical"] #t2-lb-spec .spec-panel, [data-format="square"] #t2-lb-spec .spec-panel {
+        position-anchor: --t2-lb-spec-detail; top: auto; left: var(--safe-l); bottom: calc(anchor(top) + 20px);
+        max-width: calc(var(--w) - var(--safe-l) - var(--safe-r));
+      }
+      [data-format="vertical"] #t2-lb-spec .local-glow, [data-format="square"] #t2-lb-spec .local-glow { top: auto; left: calc(var(--safe-l) - 30px); bottom: calc(var(--safe-b) + 40px); }
+      [data-format="vertical"] #t2-lb-spec [data-slot], [data-format="square"] #t2-lb-spec [data-slot] { white-space: normal; }
     </style>
   </head>
   <body>
     <div id="t2-lb-spec" data-composition-id="t2-lb-spec" data-start="0" data-width="1920" data-height="1080">
 
       <div class="local-glow"></div>
+
+      <div class="detail-wrap">
+        <div class="detail-text">First natively multimodal model - processes and generates across all three modes in a single forward pass.</div>
+      </div>
 
       <div class="spec-panel">
         <div class="spec-header">
@@ -168,10 +184,6 @@
             <span class="spec-row-value" data-slot="detail">Text · Vision · Audio</span>
           </div>
         </div>
-      </div>
-
-      <div class="detail-wrap">
-        <div class="detail-text">First natively multimodal model - processes and generates across all three modes in a single forward pass.</div>
       </div>
 
     </div>

@@ -15,7 +15,7 @@
       html, body { margin: 0; }
 
       #t1-sec-ugrow {
-        position: absolute; inset: 0; width: 1920px; height: 1080px;
+        position: absolute; inset: 0; width: var(--w); height: var(--h);
         background: var(--canvas); color: var(--text);
         font-family: var(--font-display); overflow: hidden;
       }
@@ -130,6 +130,18 @@
         background-size: 200px 200px; mix-blend-mode: overlay; opacity: 0.10;
         pointer-events: none; z-index: 7;
       }
+
+      /* Vertical and square: title block centres in the safe area; the underline and its caps
+         span the block width. */
+      [data-format="vertical"] #t1-sec-ugrow .content, [data-format="square"] #t1-sec-ugrow .content {
+        left: var(--safe-l); right: var(--safe-r); top: var(--safe-t); bottom: var(--safe-b);
+      }
+      [data-format="vertical"] #t1-sec-ugrow .headline-block, [data-format="square"] #t1-sec-ugrow .headline-block { padding: 0; max-width: 100%; }
+      [data-format="vertical"] #t1-sec-ugrow .headline, [data-format="square"] #t1-sec-ugrow .headline { max-width: none; }
+      [data-format="vertical"] #t1-sec-ugrow .underline, [data-format="square"] #t1-sec-ugrow .underline { width: 100%; }
+      [data-format="vertical"] #t1-sec-ugrow .underline-glow, [data-format="square"] #t1-sec-ugrow .underline-glow { width: 100%; }
+      [data-format="vertical"] #t1-sec-ugrow .cap-left, [data-format="square"] #t1-sec-ugrow .cap-left { left: -5px; }
+      [data-format="vertical"] #t1-sec-ugrow .cap-right, [data-format="square"] #t1-sec-ugrow .cap-right { right: -5px; }
     </style>
   </head>
   <body>

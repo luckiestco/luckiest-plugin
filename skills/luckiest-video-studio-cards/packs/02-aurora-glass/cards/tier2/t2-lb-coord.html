@@ -14,7 +14,7 @@
       html, body { margin: 0; background: transparent; }
 
       #t2-lb-coord {
-        position: absolute; inset: 0; width: 1920px; height: 1080px;
+        position: absolute; inset: 0; width: var(--w); height: var(--h);
         background: transparent; overflow: hidden;
         font-family: var(--font-mono);
       }
@@ -33,7 +33,7 @@
 
       /* Outer bracket wrapper */
       #t2-lb-coord .bracket-outer {
-        position: absolute; left: 80px; top: 390px;
+        position: absolute; left: var(--safe-l); top: calc(var(--safe-t) + 336px);
         width: 560px;
       }
 
@@ -105,14 +105,14 @@
 
       #t2-lb-coord .coord-axis {
         font-family: var(--font-mono); font-weight: var(--wt-reg);
-        font-size: 13px; letter-spacing: var(--track-wide);
+        font-size: calc(13px * var(--type)); letter-spacing: var(--track-wide);
         color: var(--accent); text-transform: uppercase;
         text-shadow: var(--textglow-accent);
       }
 
       #t2-lb-coord .coord-val {
         font-family: var(--font-mono); font-weight: var(--wt-bold);
-        font-size: 32px; letter-spacing: 0.04em;
+        font-size: calc(32px * var(--type)); letter-spacing: 0.04em;
         color: var(--white); text-shadow: var(--textglow);
         line-height: 1.0;
       }
@@ -125,7 +125,7 @@
 
       /* Term label below chip */
       #t2-lb-coord .term-wrap {
-        position: absolute; left: 80px; top: 530px;
+        position: absolute; left: var(--safe-l); top: calc(var(--safe-t) + 476px);
         display: flex; align-items: center; gap: 12px;
       }
 
@@ -138,7 +138,7 @@
 
       #t2-lb-coord .term-text {
         font-family: var(--font-display); font-weight: var(--wt-semi);
-        font-size: 22px; letter-spacing: var(--track-wide);
+        font-size: calc(22px * var(--type)); letter-spacing: var(--track-wide);
         color: var(--text-dim); text-transform: uppercase;
         text-shadow: var(--textglow);
         white-space: nowrap;
@@ -146,7 +146,7 @@
 
       /* Detail strip */
       #t2-lb-coord .detail-wrap {
-        position: absolute; left: 80px; top: 574px;
+        position: absolute; left: var(--safe-l); top: calc(var(--safe-t) + 520px);
         padding: 8px 18px 8px 16px;
         background: var(--glass-bg-dark);
         backdrop-filter: var(--glass-blur);
@@ -159,9 +159,27 @@
 
       #t2-lb-coord .detail-text {
         font-family: var(--font-body); font-weight: var(--wt-reg);
-        font-size: 22px; line-height: 1.45;
+        font-size: calc(22px * var(--type)); line-height: 1.45;
         color: var(--text-dim);
       }
+      /* Vertical and square: chip, term and detail stack in flow at the bottom-left of the safe area;
+         the loose corner-bracket decoration (top-left of the frame) is hidden. */
+      [data-format="vertical"] #t2-lb-coord, [data-format="square"] #t2-lb-coord {
+        display: flex; flex-direction: column; justify-content: flex-end; align-items: flex-start;
+        box-sizing: border-box; padding: var(--safe-t) var(--safe-r) var(--safe-b) var(--safe-l);
+      }
+      [data-format="vertical"] #t2-lb-coord .bracket-outer, [data-format="square"] #t2-lb-coord .bracket-outer,
+      [data-format="vertical"] #t2-lb-coord .term-wrap, [data-format="square"] #t2-lb-coord .term-wrap,
+      [data-format="vertical"] #t2-lb-coord .detail-wrap, [data-format="square"] #t2-lb-coord .detail-wrap {
+        position: relative; top: auto; left: auto; max-width: 100%;
+      }
+      [data-format="vertical"] #t2-lb-coord .term-wrap, [data-format="square"] #t2-lb-coord .term-wrap { margin-top: 36px; }
+      [data-format="vertical"] #t2-lb-coord .detail-wrap, [data-format="square"] #t2-lb-coord .detail-wrap { margin-top: 14px; max-width: 480px; }
+      [data-format="vertical"] #t2-lb-coord .bracket-svg, [data-format="square"] #t2-lb-coord .bracket-svg { display: none; }
+      [data-format="vertical"] #t2-lb-coord .local-glow, [data-format="square"] #t2-lb-coord .local-glow {
+        top: auto; right: auto; left: calc(var(--safe-l) - 40px); bottom: calc(var(--safe-b) + 60px);
+      }
+      [data-format="vertical"] #t2-lb-coord [data-slot], [data-format="square"] #t2-lb-coord [data-slot] { white-space: normal; }
     </style>
   </head>
   <body>

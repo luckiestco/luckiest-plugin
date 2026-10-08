@@ -14,7 +14,7 @@
       html, body { margin: 0; }
 
       #t1-sec-cdown {
-        position: absolute; inset: 0; width: 1920px; height: 1080px;
+        position: absolute; inset: 0; width: var(--w); height: var(--h);
         background: var(--canvas); color: var(--text);
         font-family: var(--font-display); overflow: hidden;
       }
@@ -32,7 +32,7 @@
 
       /* Layout */
       #t1-sec-cdown .content {
-        position: absolute; left: 0; right: 0; top: 0; bottom: 0;
+        position: absolute; left: var(--safe-l); right: var(--safe-r); top: var(--safe-t); bottom: var(--safe-b);
         display: flex; flex-direction: column; align-items: center;
         justify-content: center;
         z-index: 4;
@@ -43,11 +43,11 @@
       #t1-sec-cdown .number-wrap {
         position: relative;
         display: flex; align-items: center; justify-content: center;
-        height: 360px;
+        height: calc(360px * var(--type));
       }
       #t1-sec-cdown .number {
         font-family: var(--font-display); font-weight: var(--wt-black);
-        font-size: 340px; line-height: 1; letter-spacing: -0.04em;
+        font-size: calc(340px * var(--type)); line-height: 1; letter-spacing: -0.04em;
         /* Gradient text: white-to-blue */
         background: linear-gradient(160deg, #ffffff 10%, rgba(var(--accent-rgb), 0.90) 85%);
         -webkit-background-clip: text; background-clip: text;
@@ -103,6 +103,12 @@
         background-size: 200px 200px; mix-blend-mode: overlay; opacity: 0.10;
         pointer-events: none; z-index: 7;
       }
+
+      /* Vertical and square: the stack centers on the safe box (insets above); the headline
+         drops its side padding and shrinks a step in vertical so the column fits the height. */
+      [data-format="vertical"] #t1-sec-cdown .headline, [data-format="square"] #t1-sec-cdown .headline { padding: 0; }
+      [data-format="vertical"] #t1-sec-cdown .headline { font-size: calc(70px * var(--type)); }
+      [data-format="vertical"] #t1-sec-cdown .content, [data-format="square"] #t1-sec-cdown .content { padding-bottom: 0; }
     </style>
   </head>
   <body>

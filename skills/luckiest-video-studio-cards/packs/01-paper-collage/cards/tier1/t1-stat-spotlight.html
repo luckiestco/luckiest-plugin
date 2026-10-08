@@ -14,7 +14,7 @@
     <style>
       html, body { margin: 0; }
       #t1-stat-spot {
-        position: absolute; inset: 0; width: 1920px; height: 1080px;
+        position: absolute; inset: 0; width: var(--w); height: var(--h);
         /* Dark ink background for the spotlight feel */
         background: var(--ink); color: var(--paper);
         font-family: var(--font-display); overflow: hidden;
@@ -75,11 +75,11 @@
 
       /* === SOFT DUPLICATE STAT (always stays blurred - the out-of-focus layer) === */
       #t1-stat-spot .stat-blur {
-        position: absolute; left: 0; right: 0; top: 50%;
+        position: absolute; left: var(--safe-l); right: var(--safe-r); top: calc(var(--safe-t) + (var(--h) - var(--safe-t) - var(--safe-b)) / 2);
         transform: translateY(-56%);
         z-index: 2;
         text-align: center;
-        font-weight: var(--wt-black); font-size: 520px;
+        font-weight: var(--wt-black); font-size: calc(520px * var(--type));
         line-height: 0.82; letter-spacing: -0.05em;
         color: var(--paper);
         font-variant-numeric: tabular-nums;
@@ -90,11 +90,11 @@
 
       /* === SHARP STAT - the in-focus hero (rack-focus clears blur on entrance) === */
       #t1-stat-spot .stat {
-        position: absolute; left: 0; right: 0; top: 50%;
+        position: absolute; left: var(--safe-l); right: var(--safe-r); top: calc(var(--safe-t) + (var(--h) - var(--safe-t) - var(--safe-b)) / 2);
         transform: translateY(-56%);
         z-index: 4;
         text-align: center;
-        font-weight: var(--wt-black); font-size: 520px;
+        font-weight: var(--wt-black); font-size: calc(520px * var(--type));
         line-height: 0.82; letter-spacing: -0.05em;
         color: var(--paper); font-variant-numeric: tabular-nums;
         text-shadow:
@@ -104,7 +104,7 @@
 
       /* === KICKER - paper text, subtle === */
       #t1-stat-spot .kicker {
-        position: absolute; left: 0; right: 0; top: 120px; z-index: 5;
+        position: absolute; left: var(--safe-l); right: var(--safe-r); top: calc(var(--safe-t) + 66px); z-index: 5;
         text-align: center;
         font-family: var(--font-label); font-weight: var(--wt-bold);
         font-size: var(--size-label); letter-spacing: var(--track-wide);
@@ -114,9 +114,9 @@
 
       /* === LABEL - bottom center === */
       #t1-stat-spot .label {
-        position: absolute; left: 280px; right: 280px; bottom: 190px; z-index: 5;
+        position: absolute; left: calc(var(--safe-l) + 184px); right: calc(var(--safe-r) + 184px); bottom: calc(var(--safe-b) + 136px); z-index: 5;
         text-align: center;
-        font-weight: var(--wt-thin); font-size: 58px; line-height: 1.08;
+        font-weight: var(--wt-thin); font-size: calc(58px * var(--type)); line-height: 1.08;
         letter-spacing: var(--track-tight); color: var(--paper);
         opacity: 0.88;
       }
@@ -130,7 +130,7 @@
 
       /* === SOURCE === */
       #t1-stat-spot .source {
-        position: absolute; left: 0; right: 0; bottom: 96px; z-index: 5;
+        position: absolute; left: var(--safe-l); right: var(--safe-r); bottom: calc(var(--safe-b) + 42px); z-index: 5;
         text-align: center;
         font-family: var(--font-label); font-weight: var(--wt-bold);
         font-size: var(--size-tiny); letter-spacing: var(--track-wide);
@@ -159,7 +159,21 @@
         mix-blend-mode: overlay; opacity: 0.55;
         pointer-events: none; z-index: 7;
       }
+
+      /* Vertical and square: the light pool and vignette follow the safe-box center, the number
+         shrinks to the safe width, kicker on the safe top, label and source on the safe bottom. */
+      [data-format="vertical"] #t1-stat-spot .spotlight, [data-format="vertical"] #t1-stat-spot .spotlight-core { left: 46.5%; top: 40%; }
+      [data-format="vertical"] #t1-stat-spot .vignette {
+        background: radial-gradient(ellipse 85% 50% at 46.5% 40%, transparent 0%, transparent 42%,
+          rgba(9,7,5,0.55) 68%, rgba(5,4,3,0.88) 88%, rgba(2,1,1,0.96) 100%);
+      }
+      [data-format="vertical"] #t1-stat-spot .stat, [data-format="vertical"] #t1-stat-spot .stat-blur { font-size: calc(260px * var(--type)); }
+      [data-format="square"] #t1-stat-spot .stat, [data-format="square"] #t1-stat-spot .stat-blur { font-size: 360px; }
+      [data-format="vertical"] #t1-stat-spot .kicker, [data-format="square"] #t1-stat-spot .kicker { top: var(--safe-t); }
+      [data-format="vertical"] #t1-stat-spot .label, [data-format="square"] #t1-stat-spot .label { left: var(--safe-l); right: var(--safe-r); bottom: calc(var(--safe-b) + 70px); text-wrap: balance; }
+      [data-format="vertical"] #t1-stat-spot .source, [data-format="square"] #t1-stat-spot .source { bottom: var(--safe-b); }
     </style>
+
   </head>
   <body>
     <div id="t1-stat-spot" data-composition-id="t1-stat-spot" data-start="0" data-width="1920" data-height="1080">

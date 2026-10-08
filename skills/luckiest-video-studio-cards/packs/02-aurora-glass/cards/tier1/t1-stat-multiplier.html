@@ -14,7 +14,7 @@
       html, body { margin: 0; }
 
       #t1-stat-mult {
-        position: absolute; inset: 0; width: 1920px; height: 1080px;
+        position: absolute; inset: 0; width: var(--w); height: var(--h);
         background: var(--canvas); color: var(--text);
         font-family: var(--font-display); overflow: hidden;
       }
@@ -67,7 +67,7 @@
       #t1-stat-mult .stat-num {
         font-family: var(--font-display);
         font-weight: var(--wt-black);
-        font-size: 280px;
+        font-size: calc(280px * var(--type));
         line-height: 1;
         letter-spacing: var(--track-tight);
         background: linear-gradient(160deg, #ffffff 12%, rgba(var(--accent-rgb),0.85) 80%);
@@ -80,7 +80,7 @@
       #t1-stat-mult .stat-x {
         font-family: var(--font-display);
         font-weight: var(--wt-black);
-        font-size: 160px;
+        font-size: calc(160px * var(--type));
         line-height: 1;
         letter-spacing: -0.02em;
         color: var(--accent);
@@ -102,7 +102,7 @@
       }
 
       #t1-stat-mult .source {
-        position: absolute; left: var(--pad); bottom: 44px;
+        position: absolute; left: var(--safe-l); bottom: var(--safe-b);
         font-family: var(--font-mono); font-size: var(--size-tiny);
         font-weight: var(--wt-reg); letter-spacing: 0.12em;
         text-transform: uppercase; color: var(--text-faint); z-index: 5;
@@ -117,6 +117,14 @@
         background-size: 200px 200px; mix-blend-mode: overlay; opacity: 0.10;
         pointer-events: none; z-index: 7;
       }
+
+      /* Vertical and square: the stack and its halo center inside the safe area; vertical figures sized to the width. */
+      [data-format="vertical"] #t1-stat-mult .content, [data-format="square"] #t1-stat-mult .content { inset: var(--safe-t) var(--safe-r) calc(var(--safe-b) + 40px) var(--safe-l); padding-bottom: 0; }
+      [data-format="vertical"] #t1-stat-mult .kicker, [data-format="square"] #t1-stat-mult .kicker { text-align: center; }
+      [data-format="vertical"] #t1-stat-mult .halo, [data-format="square"] #t1-stat-mult .halo { top: calc(var(--safe-t) + (var(--h) - var(--safe-t) - var(--safe-b)) / 2); }
+      [data-format="vertical"] #t1-stat-mult .halo { width: 760px; height: 760px; }
+      [data-format="vertical"] #t1-stat-mult .stat-num { font-size: calc(220px * var(--type)); }
+      [data-format="vertical"] #t1-stat-mult .stat-x { font-size: calc(130px * var(--type)); padding-bottom: 14px; }
     </style>
   </head>
   <body>

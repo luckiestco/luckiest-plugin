@@ -15,7 +15,9 @@
       html, body { margin: 0; background: transparent; }
 
       #t2-lt-obadge {
-        position: absolute; inset: 0; width: 1920px; height: 1080px;
+        position: absolute; inset: 0; width: var(--w); height: var(--h);
+        /* the lower-third group's anchor: left / bottom of the main card */
+        --lt-x: var(--safe-l); --lt-y: calc(var(--safe-b) + 78px);
         background: transparent; overflow: hidden;
         font-family: var(--font-display);
       }
@@ -23,7 +25,7 @@
       /* Localized bloom */
       #t2-lt-obadge .local-bloom {
         position: absolute;
-        left: 40px; bottom: 70px;
+        left: calc(var(--lt-x) - 40px); bottom: calc(var(--lt-y) - 62px);
         width: 580px; height: 280px;
         border-radius: 50%;
         background: radial-gradient(ellipse at 28% 78%,
@@ -38,7 +40,7 @@
       /* Anchor: avatar + orbit rig */
       #t2-lt-obadge .badge-rig {
         position: absolute;
-        left: 80px; bottom: 132px;
+        left: var(--lt-x); bottom: var(--lt-y);
         z-index: 2;
         display: flex;
         align-items: center;
@@ -116,7 +118,7 @@
       #t2-lt-obadge .name {
         font-family: var(--font-display);
         font-weight: var(--wt-bold);
-        font-size: 34px;
+        font-size: calc(34px * var(--type));
         letter-spacing: var(--track-snug);
         color: var(--white);
         text-shadow: var(--textglow);
@@ -127,7 +129,7 @@
       #t2-lt-obadge .role {
         font-family: var(--font-body);
         font-weight: var(--wt-med);
-        font-size: 20px;
+        font-size: calc(20px * var(--type));
         letter-spacing: 0.01em;
         color: var(--text-dim);
         line-height: 1.3;
@@ -144,6 +146,12 @@
         vertical-align: middle;
         position: relative; top: -1px;
       }
+      /* Vertical and square: the group sits at the bottom-left of the safe area and slots wrap. */
+      [data-format="vertical"] #t2-lt-obadge, [data-format="square"] #t2-lt-obadge { --lt-y: var(--safe-b); }
+      [data-format="vertical"] #t2-lt-obadge .badge-rig, [data-format="square"] #t2-lt-obadge .badge-rig {
+        top: auto; width: auto; max-width: calc(var(--w) - var(--safe-l) - var(--safe-r));
+      }
+      [data-format="vertical"] #t2-lt-obadge [data-slot], [data-format="square"] #t2-lt-obadge [data-slot] { white-space: normal; }
     </style>
   </head>
   <body>

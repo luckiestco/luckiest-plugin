@@ -14,7 +14,7 @@
       html, body { margin: 0; }
 
       #t1-ov-tree {
-        position: absolute; inset: 0; width: 1920px; height: 1080px;
+        position: absolute; inset: 0; width: var(--w); height: var(--h);
         background: var(--canvas); color: var(--text);
         font-family: var(--font-body); overflow: hidden;
       }
@@ -33,7 +33,7 @@
       /* Layout */
       #t1-ov-tree .layout {
         position: absolute; inset: 0; z-index: 3;
-        padding: 80px var(--pad) 72px;
+        padding: calc(var(--safe-t) + 26px) var(--safe-r) calc(var(--safe-b) + 18px) var(--safe-l);
         display: flex; flex-direction: column; align-items: center;
       }
 
@@ -55,7 +55,7 @@
 
       /* SVG connector overlay - spans the full tree area */
       #t1-ov-tree .connectors {
-        position: absolute; inset: 0; z-index: 1;
+        position: absolute; inset: 0; width: 100%; height: 100%; z-index: 1;
         overflow: visible; pointer-events: none;
       }
       #t1-ov-tree .connectors line, #t1-ov-tree .connectors path {
@@ -65,8 +65,8 @@
         stroke-linecap: round;
         opacity: 0.75;
         filter: drop-shadow(0 0 6px rgba(var(--accent-rgb),0.55));
-        stroke-dasharray: 400;
-        stroke-dashoffset: 400; /* hidden - GSAP draws these in */
+        stroke-dasharray: 1200;
+        stroke-dashoffset: 1200; /* hidden - GSAP draws these in */
       }
 
       /* Nodes */
@@ -95,7 +95,7 @@
       }
       #t1-ov-tree .node-root .node-label {
         font-family: var(--font-display); font-weight: var(--wt-bold);
-        font-size: 38px; color: var(--white);
+        font-size: calc(38px * var(--type)); color: var(--white);
         text-shadow: var(--textglow); letter-spacing: var(--track-snug);
       }
 
@@ -103,16 +103,17 @@
       /* left=0%, 33.3%, 66.6% of 1520px → 0px, 507px, 1014px */
       /* with node ~420px wide, centers at ~190, ~707, ~1224 ← translate(-50%) → left 190, 707, 1224 */
       #t1-ov-tree .node-b1 { left: 0;      top: 440px; transform: translateX(0); min-width: 420px; }
+      #t1-ov-tree .node-b1, #t1-ov-tree .node-b2, #t1-ov-tree .node-b3 { box-sizing: border-box; width: 460px; min-width: 0; }
       #t1-ov-tree .node-b2 { left: 50%;    top: 440px; transform: translateX(-50%); min-width: 420px; }
       #t1-ov-tree .node-b3 { left: 100%;   top: 440px; transform: translateX(-100%); min-width: 420px; }
 
       #t1-ov-tree .node-label {
         font-family: var(--font-display); font-weight: var(--wt-semi);
-        font-size: 32px; color: var(--white);
+        font-size: calc(32px * var(--type)); color: var(--white);
         letter-spacing: var(--track-snug); line-height: 1.25; margin-bottom: 8px;
       }
       #t1-ov-tree .node-sub {
-        font-family: var(--font-body); font-size: 26px;
+        font-family: var(--font-body); font-size: calc(26px * var(--type));
         color: var(--text-dim); line-height: 1.4;
       }
 
@@ -133,6 +134,31 @@
         background-size: 200px 200px; mix-blend-mode: overlay; opacity: 0.10;
         pointer-events: none; z-index: 7;
       }
+
+      /* Vertical: root on top, the three outcomes stack down a left spine. Square: the landscape row with
+         narrower nodes. Connectors are redrawn per format (svg units = px of the tree area). */
+      [data-format="vertical"] #t1-ov-tree .layout, [data-format="square"] #t1-ov-tree .layout { padding: var(--safe-t) var(--safe-r) var(--safe-b) var(--safe-l); }
+      [data-format="vertical"] #t1-ov-tree .card-title, [data-format="square"] #t1-ov-tree .card-title { margin-bottom: 40px; }
+      [data-format="vertical"] #t1-ov-tree .tree-area, [data-format="square"] #t1-ov-tree .tree-area { width: 100%; }
+      [data-format="vertical"] #t1-ov-tree .node-root { box-sizing: border-box; min-width: 0; width: 767px; padding: 20px 32px; }
+      [data-format="vertical"] #t1-ov-tree .node-root .node-label { font-size: calc(32px * var(--type)); }
+      [data-format="vertical"] #t1-ov-tree .node-b1, [data-format="vertical"] #t1-ov-tree .node-b2, [data-format="vertical"] #t1-ov-tree .node-b3 { width: 687px; padding: 18px 36px; }
+      [data-format="vertical"] #t1-ov-tree .node-b1 { left: 80px; top: 170px; }
+      [data-format="vertical"] #t1-ov-tree .node-b2 { left: calc(80px + 687px / 2); top: 362px; }
+      [data-format="vertical"] #t1-ov-tree .node-b3 { left: calc(80px + 687px); top: 554px; }
+      [data-format="vertical"] #t1-ov-tree .node-dot { margin-bottom: 8px; }
+      [data-format="vertical"] #t1-ov-tree .node-sub { font-size: calc(22px * var(--type)); }
+      [data-format="vertical"] #t1-ov-tree #tr-stem { d: path("M383 136 L383 150"); }
+      [data-format="vertical"] #t1-ov-tree #tr-rail { d: path("M383 150 L40 150 L40 647"); }
+      [data-format="vertical"] #t1-ov-tree #tr-drop-1 { d: path("M40 263 L80 263"); }
+      [data-format="vertical"] #t1-ov-tree #tr-drop-2 { d: path("M40 455 L80 455"); }
+      [data-format="vertical"] #t1-ov-tree #tr-drop-3 { d: path("M40 647 L80 647"); }
+      [data-format="square"] #t1-ov-tree .node-b1, [data-format="square"] #t1-ov-tree .node-b2, [data-format="square"] #t1-ov-tree .node-b3 { width: 296px; min-width: 0; padding: 24px 20px; top: 420px; }
+      [data-format="square"] #t1-ov-tree #tr-stem { d: path("M464 102 L464 270"); }
+      [data-format="square"] #t1-ov-tree #tr-rail { d: path("M148 270 L780 270"); }
+      [data-format="square"] #t1-ov-tree #tr-drop-1 { d: path("M148 270 L148 420"); }
+      [data-format="square"] #t1-ov-tree #tr-drop-2 { d: path("M464 270 L464 420"); }
+      [data-format="square"] #t1-ov-tree #tr-drop-3 { d: path("M780 270 L780 420"); }
     </style>
   </head>
   <body>
@@ -156,16 +182,15 @@
               center:  760,280 → 760,450
               right:   760,280 → 1310,280 → 1310,450
           -->
-          <svg class="connectors" viewBox="0 0 1520 600" preserveAspectRatio="none"
-               width="1520" height="600">
+          <svg class="connectors">
             <!-- Vertical stem from root -->
-            <line id="tr-stem"   x1="760" y1="115" x2="760" y2="280" />
+            <path id="tr-stem" d="M760 115 L760 280" />
             <!-- Horizontal rail -->
-            <line id="tr-rail"   x1="210" y1="280" x2="1310" y2="280" />
+            <path id="tr-rail" d="M230 280 L1290 280" />
             <!-- Drops to each child -->
-            <line id="tr-drop-1" x1="210"  y1="280" x2="210"  y2="450" />
-            <line id="tr-drop-2" x1="760"  y1="280" x2="760"  y2="450" />
-            <line id="tr-drop-3" x1="1310" y1="280" x2="1310" y2="450" />
+            <path id="tr-drop-1" d="M230 280 L230 440" />
+            <path id="tr-drop-2" d="M760 280 L760 440" />
+            <path id="tr-drop-3" d="M1290 280 L1290 440" />
           </svg>
 
           <!-- Root node -->

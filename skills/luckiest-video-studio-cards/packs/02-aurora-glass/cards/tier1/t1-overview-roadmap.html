@@ -13,7 +13,7 @@
       html, body { margin: 0; }
 
       #t1-ov-road {
-        position: absolute; inset: 0; width: 1920px; height: 1080px;
+        position: absolute; inset: 0; width: var(--w); height: var(--h);
         background: var(--canvas); color: var(--text);
         font-family: var(--font-display); overflow: hidden;
       }
@@ -30,7 +30,7 @@
 
       /* Title */
       #t1-ov-road .title-row {
-        position: absolute; left: 0; right: 0; top: 88px; text-align: center; z-index: 4;
+        position: absolute; left: var(--safe-l); right: var(--safe-r); top: calc(var(--safe-t) + 34px); text-align: center; z-index: 4;
       }
       #t1-ov-road .title {
         font-family: var(--font-display); font-weight: var(--wt-bold);
@@ -75,8 +75,8 @@
       /* Milestone node wrapper - 4 evenly spaced */
       #t1-ov-road .nodes {
         position: absolute; inset: 0; display: flex;
-        align-items: center; justify-content: space-between;
-        padding: 0 0; /* nodes sit at the very edges + quarters */
+        align-items: flex-start; justify-content: space-between;
+        padding: 124px 0 0; /* discs centre on the track (150 - 26) whatever the card height */
       }
 
       .road-node {
@@ -129,7 +129,7 @@
       }
       .road-node .node-heading {
         font-family: var(--font-display); font-weight: var(--wt-semi);
-        font-size: 26px; color: var(--white); letter-spacing: var(--track-snug);
+        font-size: calc(26px * var(--type)); color: var(--white); letter-spacing: var(--track-snug);
         line-height: 1.25;
       }
 
@@ -142,6 +142,28 @@
         background-size: 200px 200px; mix-blend-mode: overlay; opacity: 0.10;
         pointer-events: none; z-index: 7;
       }
+
+      /* Vertical: the track turns vertical down the left of the safe box; each milestone is a row -
+         disc on the track, phase label over its card. Square: the landscape track inside the safe box. */
+      [data-format="vertical"] #t1-ov-road .title-row, [data-format="square"] #t1-ov-road .title-row { top: var(--safe-t); }
+      [data-format="vertical"] #t1-ov-road .title { font-size: calc(64px * var(--type)); }
+      [data-format="square"] #t1-ov-road .title { font-size: 64px; }
+      [data-format="vertical"] #t1-ov-road .track-area { left: var(--safe-l); right: var(--safe-r); top: 500px; height: auto; bottom: var(--safe-b); }
+      [data-format="vertical"] #t1-ov-road .track-line { left: 24px; right: auto; top: 40px; bottom: 40px; width: 4px; height: auto; margin-top: 0;
+        background: linear-gradient(180deg, rgba(var(--accent-rgb), 0.20) 0%, rgba(var(--accent-rgb), 0.90) 50%, rgba(var(--accent-rgb), 0.20) 100%); }
+      [data-format="vertical"] #t1-ov-road .track-glow { left: 10px; right: auto; top: 40px; bottom: 40px; width: 32px; height: auto; margin-top: 0;
+        background: linear-gradient(180deg, transparent, rgba(var(--accent-rgb), 0.22) 50%, transparent); }
+      [data-format="vertical"] #t1-ov-road .nodes { flex-direction: column; align-items: stretch; padding: 0; }
+      [data-format="vertical"] .road-node {
+        display: grid; grid-template-columns: 52px 1fr; column-gap: 40px; align-items: center; width: auto;
+      }
+      [data-format="vertical"] .road-node .disc { grid-column: 1; grid-row: 1 / span 2; }
+      [data-format="vertical"] .road-node .phase-label { position: static; grid-column: 2; grid-row: 1; translate: 50% 0; margin-bottom: 10px; }
+      [data-format="vertical"] .road-node .node-card { grid-column: 2; grid-row: 2; margin-top: 0; text-align: left; padding: 22px 30px; min-width: 0; }
+      [data-format="vertical"] .road-node .node-heading { font-size: calc(30px * var(--type)); }
+      [data-format="square"] #t1-ov-road .track-area { left: var(--safe-l); right: var(--safe-r); top: 340px; }
+      [data-format="square"] .road-node { width: 214px; }
+      [data-format="square"] .road-node .node-card { box-sizing: border-box; width: 214px; min-width: 0; padding: 20px 16px; }
     </style>
   </head>
   <body>

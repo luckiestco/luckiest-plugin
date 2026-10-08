@@ -16,7 +16,7 @@
       html, body { margin: 0; background: transparent; }
 
       #t2-lt-cite {
-        position: absolute; inset: 0; width: 1920px; height: 1080px;
+        position: absolute; inset: 0; width: var(--w); height: var(--h);
         background: transparent; overflow: hidden;
         font-family: var(--font-display);
       }
@@ -24,7 +24,7 @@
       /* Bloom behind component */
       #t2-lt-cite .local-bloom {
         position: absolute;
-        left: 40px; bottom: 80px;
+        left: calc(var(--safe-l) - 40px); bottom: calc(var(--safe-b) + 26px);
         width: 680px; height: 260px;
         border-radius: 50%;
         background: radial-gradient(ellipse at 25% 75%,
@@ -39,7 +39,7 @@
       /* Outer wrapper */
       #t2-lt-cite .wrap {
         position: absolute;
-        left: 80px; bottom: 112px;
+        left: var(--safe-l); bottom: calc(var(--safe-b) + 58px);
         width: 820px;
         display: flex; align-items: flex-start; gap: 22px;
         z-index: 2;
@@ -50,7 +50,7 @@
         flex-shrink: 0;
         font-family: var(--font-display);
         font-weight: var(--wt-black);
-        font-size: 120px;
+        font-size: calc(120px * var(--type));
         line-height: 0.72;
         color: var(--accent);
         text-shadow: var(--textglow-accent);
@@ -88,7 +88,7 @@
         font-family: var(--font-display);
         font-style: italic;
         font-weight: var(--wt-semi);
-        font-size: 26px;
+        font-size: calc(26px * var(--type));
         line-height: 1.45;
         letter-spacing: var(--track-snug);
         color: var(--text);
@@ -99,7 +99,7 @@
       #t2-lt-cite .attribution {
         font-family: var(--font-body);
         font-weight: var(--wt-med);
-        font-size: 21px;
+        font-size: calc(21px * var(--type));
         letter-spacing: 0.02em;
         color: var(--text-dim);
         padding-left: 28px;
@@ -113,6 +113,12 @@
         color: var(--accent);
         text-shadow: 0 0 8px rgba(var(--accent-rgb), 0.65);
       }
+      /* Vertical and square: card sits at the bottom of the safe area, bloom follows, slots wrap. */
+      [data-format="vertical"] #t2-lt-cite .wrap, [data-format="square"] #t2-lt-cite .wrap {
+        bottom: var(--safe-b); max-width: calc(var(--w) - var(--safe-l) - var(--safe-r));
+      }
+      [data-format="vertical"] #t2-lt-cite .local-bloom, [data-format="square"] #t2-lt-cite .local-bloom { bottom: calc(var(--safe-b) - 32px); }
+      [data-format="vertical"] #t2-lt-cite [data-slot], [data-format="square"] #t2-lt-cite [data-slot] { white-space: normal; }
     </style>
   </head>
   <body>

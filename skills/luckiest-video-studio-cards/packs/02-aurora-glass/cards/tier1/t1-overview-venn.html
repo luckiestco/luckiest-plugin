@@ -15,7 +15,7 @@
       html, body { margin: 0; }
 
       #t1-ov-venn {
-        position: absolute; inset: 0; width: 1920px; height: 1080px;
+        position: absolute; inset: 0; width: var(--w); height: var(--h);
         background: var(--canvas); color: var(--text);
         font-family: var(--font-body); overflow: hidden;
       }
@@ -32,7 +32,7 @@
 
       /* Title top-center */
       #t1-ov-venn .card-title {
-        position: absolute; left: 0; right: 0; top: 58px; z-index: 5;
+        position: absolute; left: var(--safe-l); right: var(--safe-r); top: calc(var(--safe-t) + 4px); z-index: 5;
         text-align: center;
         font-family: var(--font-display); font-weight: var(--wt-bold);
         font-size: var(--size-headline); letter-spacing: var(--track-snug);
@@ -49,7 +49,7 @@
         Overlap intersection midpoint: 960, 540.
       */
       #t1-ov-venn .venn-svg {
-        position: absolute; inset: 0; z-index: 2;
+        position: absolute; inset: 0; width: 100%; height: 100%; z-index: 2;
         pointer-events: none; overflow: visible;
       }
       /* Filled translucent circles */
@@ -74,18 +74,18 @@
       }
       #t1-ov-venn .venn-label .v-title {
         font-family: var(--font-display); font-weight: var(--wt-bold);
-        font-size: 38px; color: var(--white);
+        font-size: calc(38px * var(--type)); color: var(--white);
         text-shadow: var(--textglow); letter-spacing: var(--track-snug);
         margin-bottom: 8px;
       }
       #t1-ov-venn .venn-label .v-sub {
-        font-family: var(--font-body); font-size: 24px;
+        font-family: var(--font-body); font-size: calc(24px * var(--type));
         color: var(--text-dim); line-height: 1.4; max-width: 260px; margin: 0 auto;
       }
 
       /* Overlap label - center, accent */
       #t1-ov-venn .venn-label.overlap .v-title {
-        color: var(--accent); text-shadow: var(--textglow-accent); font-size: 34px;
+        color: var(--accent); text-shadow: var(--textglow-accent); font-size: calc(34px * var(--type));
       }
 
       /*
@@ -107,6 +107,26 @@
         background-size: 200px 200px; mix-blend-mode: overlay; opacity: 0.10;
         pointer-events: none; z-index: 7;
       }
+
+      /* Vertical: the circles stack top and bottom with the overlap lens between them. Square: side by
+         side, smaller. Circle geometry moves per format (svg units = px). */
+      [data-format="vertical"] #t1-ov-venn .card-title { top: var(--safe-t); }
+      [data-format="vertical"] #t1-ov-venn #ven-glow-a, [data-format="vertical"] #t1-ov-venn #ven-circle-a { cx: 502px; cy: 640px; r: 240px; }
+      [data-format="vertical"] #t1-ov-venn #ven-glow-b, [data-format="vertical"] #t1-ov-venn #ven-circle-b { cx: 502px; cy: 940px; r: 240px; }
+      [data-format="vertical"] #t1-ov-venn .venn-label { width: 320px; }
+      [data-format="vertical"] #t1-ov-venn #vl-a { left: 342px; top: 470px; }
+      [data-format="vertical"] #t1-ov-venn #vl-overlap { left: 342px; top: 728px; }
+      [data-format="vertical"] #t1-ov-venn #vl-b { left: 342px; top: 910px; }
+      [data-format="vertical"] #t1-ov-venn .venn-label .v-sub { max-width: 320px; font-size: calc(22px * var(--type)); }
+      [data-format="vertical"] #t1-ov-venn .venn-label.overlap .v-sub { max-width: 300px; }
+      [data-format="square"] #t1-ov-venn .card-title { top: var(--safe-t); }
+      [data-format="square"] #t1-ov-venn #ven-glow-a, [data-format="square"] #t1-ov-venn #ven-circle-a { cx: 390px; cy: 590px; r: 250px; }
+      [data-format="square"] #t1-ov-venn #ven-glow-b, [data-format="square"] #t1-ov-venn #ven-circle-b { cx: 690px; cy: 590px; r: 250px; }
+      [data-format="square"] #t1-ov-venn #vl-a { left: 170px; top: 500px; width: 240px; }
+      [data-format="square"] #t1-ov-venn #vl-overlap { left: 445px; top: 500px; width: 190px; }
+      [data-format="square"] #t1-ov-venn #vl-b { left: 670px; top: 500px; width: 240px; }
+      [data-format="square"] #t1-ov-venn .venn-label .v-sub { max-width: 240px; }
+      [data-format="square"] #t1-ov-venn .venn-label.overlap .v-sub { max-width: 190px; font-size: 22px; }
     </style>
   </head>
   <body>
@@ -117,7 +137,7 @@
       <div class="card-title" data-slot="title">Where <em>Value</em> Is Created</div>
 
       <!-- Venn SVG: two circles, r=310, left cx=760 right cx=1160, cy=560 -->
-      <svg class="venn-svg" viewBox="0 0 1920 1080" width="1920" height="1080">
+      <svg class="venn-svg">
         <!-- Glow halos (behind fills) -->
         <circle class="circle-glow" id="ven-glow-a" cx="760"  cy="560" r="310" />
         <circle class="circle-glow" id="ven-glow-b" cx="1160" cy="560" r="310" />
@@ -150,6 +170,11 @@
     <script>
       window.__timelines = window.__timelines || {};
       const tl = gsap.timeline({ paused: true });
+      /* circle centre in svg px, read from the laid-out geometry (it moves per format) */
+      function ctr(id) {
+        const b = document.getElementById(id).getBBox();
+        return (b.x + b.width / 2) + " " + (b.y + b.height / 2);
+      }
 
       /* grain flicker */
       tl.fromTo("#t1-ov-venn .grain",
@@ -164,8 +189,8 @@
         .from("#t1-ov-venn .card-title", { autoAlpha: 0, y: 26, filter: "blur(12px)", duration: 0.85, ease: "power4.out" }, 0.46)
 
         /* circles scale in from center - left then right, slight stagger */
-        .from("#ven-circle-a, #ven-glow-a", { scale: 0, transformOrigin: "760px 560px", autoAlpha: 0, duration: 0.80, ease: "back.out(1.3)" }, 0.90)
-        .from("#ven-circle-b, #ven-glow-b", { scale: 0, transformOrigin: "1160px 560px", autoAlpha: 0, duration: 0.80, ease: "back.out(1.3)" }, 1.10)
+        .from("#ven-circle-a, #ven-glow-a", { scale: 0, svgOrigin: ctr("ven-circle-a"), autoAlpha: 0, duration: 0.80, ease: "back.out(1.3)" }, 0.90)
+        .from("#ven-circle-b, #ven-glow-b", { scale: 0, svgOrigin: ctr("ven-circle-b"), autoAlpha: 0, duration: 0.80, ease: "back.out(1.3)" }, 1.10)
 
         /* labels glide in */
         .from("#vl-a",       { autoAlpha: 0, x: -30, filter: "blur(10px)", duration: 0.70, ease: "power3.out" }, 1.55)

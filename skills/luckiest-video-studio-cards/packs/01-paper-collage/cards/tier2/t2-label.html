@@ -12,12 +12,12 @@
     <style>
       html, body { margin: 0; background: transparent; }
       #t2-label {
-        position: absolute; inset: 0; width: 1920px; height: 1080px;
+        position: absolute; inset: 0; width: var(--w); height: var(--h);
         background: transparent; font-family: var(--font-display);
       }
       #t2-label .wrap { position: absolute; left: 150px; top: 380px; width: 760px; }
       #t2-label .term {
-        display: inline-block; font-weight: var(--wt-black); font-size: 72px;
+        display: inline-block; font-weight: var(--wt-black); font-size: calc(72px * var(--type));
         letter-spacing: var(--track-tight); color: var(--ink);
         background: var(--yellow); padding: 6px 22px; transform: skewX(var(--marker-skew));
         box-shadow: 6px 6px 0 rgba(23,19,14,0.2);
@@ -27,7 +27,14 @@
         font-family: var(--font-label); font-weight: var(--wt-reg);
         font-size: var(--size-body); line-height: 1.4; color: var(--ink);
         background: rgba(239,233,220,0.92); padding: 10px 16px; display: inline-block;
-      }    </style>
+      }
+      /* Vertical and square: sit at the bottom of the safe area, clear of the speaker's face. */
+      [data-format="vertical"] #t2-label .wrap, [data-format="square"] #t2-label .wrap {
+        top: auto; left: var(--safe-l); bottom: calc(var(--safe-b) + 24px);
+        width: auto; max-width: calc(var(--w) - var(--safe-l) - var(--safe-r));
+      }
+      [data-format="vertical"] #t2-label [data-slot], [data-format="square"] #t2-label [data-slot] { white-space: normal; }
+    </style>
   </head>
   <body>
     <div id="t2-label" data-composition-id="t2-label" data-start="0" data-width="1920" data-height="1080">

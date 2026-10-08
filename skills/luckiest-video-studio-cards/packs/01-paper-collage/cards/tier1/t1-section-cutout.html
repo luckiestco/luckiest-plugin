@@ -12,7 +12,7 @@
     <style>
       html, body { margin: 0; }
       #t1-sec-cutout {
-        position: absolute; inset: 0; width: 1920px; height: 1080px;
+        position: absolute; inset: 0; width: var(--w); height: var(--h);
         background: var(--paper); color: var(--ink);
         font-family: var(--font-display); overflow: hidden;
       }
@@ -31,33 +31,43 @@
         background: radial-gradient(130% 120% at 35% 50%, transparent 58%, rgba(23,19,14,0.16) 100%);
       }
       #t1-sec-cutout .kicker {
-        position: absolute; left: 150px; top: 250px; z-index: 4;
+        position: absolute; left: calc(var(--safe-l) + 54px); top: calc(var(--safe-t) + 196px); z-index: 4;
         font-family: var(--font-label); font-weight: var(--wt-bold);
         font-size: var(--size-label); letter-spacing: var(--track-wide);
         text-transform: uppercase; color: var(--ink); background: var(--yellow); padding: 5px 16px;
         transform: skewX(var(--marker-skew));
       }
       #t1-sec-cutout .headline {
-        position: absolute; left: 150px; top: 330px; width: 880px; z-index: 4;
-        font-weight: var(--wt-black); font-size: 124px; line-height: 0.95;
+        position: absolute; left: calc(var(--safe-l) + 54px); top: calc(var(--safe-t) + 276px); width: 880px; z-index: 4;
+        font-weight: var(--wt-black); font-size: calc(124px * var(--type)); line-height: 0.95;
         letter-spacing: var(--track-tight); color: var(--ink);
       }
       #t1-sec-cutout .headline em { font-style: italic; font-weight: var(--wt-thin); }
       /* the masked subject cutout */
       #t1-sec-cutout .subject {
-        position: absolute; right: 120px; top: 150px; width: 620px; height: 820px;
+        position: absolute; right: calc(var(--safe-r) + 24px); top: calc(var(--safe-t) + 96px); width: 620px; height: 820px;
         background-color: var(--paper-2); background-image: var(--tex-halftone);
         background-size: var(--tex-halftone-size); z-index: 2;
         outline: 12px solid var(--yellow); outline-offset: -12px; transform: rotate(1.5deg);
         box-shadow: -16px 20px 0 rgba(23,19,14,0.14);
       }
       #t1-sec-cutout .wordmark {
-        position: absolute; left: 980px; top: 760px; width: 200px; height: 200px;
+        position: absolute; left: calc(var(--safe-l) + 884px); top: calc(var(--safe-t) + 706px); width: 200px; height: 200px;
         background: var(--yellow); border-radius: 50%; z-index: 5;
         display: flex; align-items: center; justify-content: center;
-        font-weight: var(--wt-black); font-style: italic; font-size: 64px; color: var(--ink);
+        font-weight: var(--wt-black); font-style: italic; font-size: calc(64px * var(--type)); color: var(--ink);
         transform: rotate(-5deg);
-      }    </style>
+      }
+      /* Vertical: kicker and headline on top, the cutout below them at the safe bottom right with
+         the wordmark circle overlapping its left edge. Square: headline left, cutout right column. */
+      [data-format="vertical"] #t1-sec-cutout .kicker, [data-format="square"] #t1-sec-cutout .kicker { left: var(--safe-l); top: var(--safe-t); }
+      [data-format="vertical"] #t1-sec-cutout .headline { left: var(--safe-l); top: calc(var(--safe-t) + 70px); width: calc(var(--w) - var(--safe-l) - var(--safe-r)); font-size: calc(96px * var(--type)); }
+      [data-format="square"] #t1-sec-cutout .headline { left: var(--safe-l); top: calc(var(--safe-t) + 70px); width: 540px; font-size: 96px; }
+      [data-format="vertical"] #t1-sec-cutout .subject { right: var(--safe-r); top: auto; bottom: var(--safe-b); width: 440px; height: 470px; }
+      [data-format="square"] #t1-sec-cutout .subject { right: var(--safe-r); top: calc(var(--safe-t) + 40px); width: 360px; height: 560px; }
+      [data-format="vertical"] #t1-sec-cutout .wordmark { left: calc(var(--safe-l) + 90px); top: auto; bottom: calc(var(--safe-b) + 60px); }
+      [data-format="square"] #t1-sec-cutout .wordmark { left: calc(var(--safe-l) + 380px); top: calc(var(--safe-t) + 500px); }
+    </style>
   </head>
   <body>
     <div id="t1-sec-cutout" data-composition-id="t1-sec-cutout" data-start="0" data-width="1920" data-height="1080">

@@ -16,7 +16,7 @@ user-invocable: true
 license: MIT. See ATTRIBUTION.md
 allowed-tools: Bash, Read, Write, Edit, Glob, Grep
 metadata:
-  version: "1.0.0"
+  version: "1.1.0"
   listing_id: luckiest-video-studio-motion
   author: luckiest
 ---
@@ -32,11 +32,11 @@ interruption, and how often a user triggers something.
 ## Staying current
 
 On activation, call the Luckiest MCP `check_updates` tool with
-`{ listingId: "luckiest-video-studio-motion", installedSemver: "1.0.0" }`. If
+`{ listingId: "luckiest-video-studio-motion", installedSemver: "1.1.0" }`. If
 `upToDate: false`, surface the `notice` once and continue. Never block on it.
 
 When done, call `report_usage` once with
-`{ listing_id: "luckiest-video-studio-motion", skill_version: "1.0.0", matched: true, success: <true|false> }`.
+`{ listing_id: "luckiest-video-studio-motion", skill_version: "1.1.0", matched: true, success: <true|false> }`.
 Metadata only, never prompt text. Skip silently if unavailable.
 
 ## Modes
@@ -111,6 +111,10 @@ short hold.
   annotates (`transformOrigin` at that point). Full-frame cards stay centered.
 - **Exit the way it came.** A card that slides in from the right leaves to the
   right, or cuts.
+- **Springs for things with mass.** Cards, cursors, containers, and logos
+  settle on a spring from `templates/spring.js` (presets and the retarget rule in
+  [references/vocabulary.md](references/vocabulary.md#springs)). Keep GSAP eases
+  for fades, wipes, and linear fills.
 - **Transform, not layout.** Animate `x`, `y`, `scale`, `rotate`, `autoAlpha`,
   `clipPath`, and `filter`. `width`, `height`, `top`, and `left` snap to whole
   pixels and shimmer in the render.

@@ -15,7 +15,7 @@
       html, body { margin: 0; }
 
       #t1-ov-miles {
-        position: absolute; inset: 0; width: 1920px; height: 1080px;
+        position: absolute; inset: 0; width: var(--w); height: var(--h);
         background: var(--canvas); color: var(--text);
         font-family: var(--font-display); overflow: hidden;
       }
@@ -32,7 +32,7 @@
 
       /* Title */
       #t1-ov-miles .title-row {
-        position: absolute; left: 0; right: 0; top: 72px; text-align: center; z-index: 4;
+        position: absolute; left: var(--safe-l); right: var(--safe-r); top: calc(var(--safe-t) + 18px); text-align: center; z-index: 4;
       }
       #t1-ov-miles .title {
         font-family: var(--font-display); font-weight: var(--wt-bold);
@@ -47,7 +47,7 @@
       /* Track area - the full horizontal strip */
       #t1-ov-miles .track-area {
         position: absolute;
-        left: 100px; right: 100px; top: 300px; height: 440px;
+        left: calc(var(--safe-l) + 4px); right: calc(var(--safe-r) + 4px); top: calc(var(--safe-t) + 246px); height: 440px;
         z-index: 4;
       }
 
@@ -101,7 +101,7 @@
       /* Date label - Space Mono, above or below based on class */
       .mile-marker .m-date {
         font-family: var(--font-mono); font-weight: 700;
-        font-size: 20px; color: var(--accent);
+        font-size: calc(20px * var(--type)); color: var(--accent);
         letter-spacing: 0.06em; text-shadow: var(--textglow-accent);
         white-space: nowrap; text-transform: uppercase;
       }
@@ -109,7 +109,7 @@
       /* Heading - glass chip below/above */
       .mile-marker .m-head {
         font-family: var(--font-display); font-weight: var(--wt-semi);
-        font-size: 22px; color: var(--white); letter-spacing: var(--track-snug);
+        font-size: calc(22px * var(--type)); color: var(--white); letter-spacing: var(--track-snug);
         line-height: 1.3; text-align: center;
         background: var(--glass-bg-dark);
         border: var(--stroke) solid var(--glass-border);
@@ -153,6 +153,39 @@
         background-size: 200px 200px; mix-blend-mode: overlay; opacity: 0.10;
         pointer-events: none; z-index: 7;
       }
+
+      /* Vertical and square: the timeline runs top to bottom down the middle of the safe box; each marker
+         is a row (date | tick | diamond | tick | heading, sides swapped on alternate markers). */
+      [data-format="vertical"] #t1-ov-miles .title-row, [data-format="square"] #t1-ov-miles .title-row { top: var(--safe-t); }
+      [data-format="vertical"] #t1-ov-miles .title { font-size: calc(60px * var(--type)); }
+      [data-format="square"] #t1-ov-miles .title { font-size: 60px; }
+      [data-format="vertical"] #t1-ov-miles .track-area, [data-format="square"] #t1-ov-miles .track-area { left: var(--safe-l); right: var(--safe-r); }
+      [data-format="vertical"] #t1-ov-miles .track-area { top: calc(var(--safe-t) + 220px); height: 720px; }
+      [data-format="square"] #t1-ov-miles .track-area { top: calc(var(--safe-t) + 120px); height: 800px; }
+      [data-format="vertical"] #t1-ov-miles .h-track, [data-format="square"] #t1-ov-miles .h-track {
+        left: 50%; right: auto; top: 0; bottom: 0; margin: 0 0 0 -1.5px; width: 3px; height: auto;
+        background: linear-gradient(180deg, rgba(var(--accent-rgb), 0.15) 0%, rgba(var(--accent-rgb), 0.70) 10%,
+          rgba(var(--accent-rgb), 0.85) 50%, rgba(var(--accent-rgb), 0.70) 90%, rgba(var(--accent-rgb), 0.15) 100%);
+      }
+      [data-format="vertical"] #t1-ov-miles .mile-marker, [data-format="square"] #t1-ov-miles .mile-marker {
+        left: 50% !important; display: grid; grid-template-columns: 1fr 44px 22px 44px 1fr; align-items: center;
+        width: calc(var(--w) - var(--safe-l) - var(--safe-r));
+      }
+      [data-format="vertical"] #t1-ov-miles #mm1, [data-format="square"] #t1-ov-miles #mm1 { top: 10%; }
+      [data-format="vertical"] #t1-ov-miles #mm2, [data-format="square"] #t1-ov-miles #mm2 { top: 30%; }
+      [data-format="vertical"] #t1-ov-miles #mm3, [data-format="square"] #t1-ov-miles #mm3 { top: 50%; }
+      [data-format="vertical"] #t1-ov-miles #mm4, [data-format="square"] #t1-ov-miles #mm4 { top: 70%; }
+      [data-format="vertical"] #t1-ov-miles #mm5, [data-format="square"] #t1-ov-miles #mm5 { top: 90%; }
+      [data-format="vertical"] #t1-ov-miles .mile-marker .m-tick-up, [data-format="vertical"] #t1-ov-miles .mile-marker .m-tick-down,
+      [data-format="square"] #t1-ov-miles .mile-marker .m-tick-up, [data-format="square"] #t1-ov-miles .mile-marker .m-tick-down { width: 44px; height: 1.5px; }
+      [data-format="vertical"] #t1-ov-miles .mile-marker.above .m-date, [data-format="vertical"] #t1-ov-miles .mile-marker.below .m-head,
+      [data-format="square"] #t1-ov-miles .mile-marker.above .m-date, [data-format="square"] #t1-ov-miles .mile-marker.below .m-head { justify-self: end; margin: 0 12px 0 0; }
+      [data-format="vertical"] #t1-ov-miles .mile-marker.above .m-head, [data-format="vertical"] #t1-ov-miles .mile-marker.below .m-date,
+      [data-format="square"] #t1-ov-miles .mile-marker.above .m-head, [data-format="square"] #t1-ov-miles .mile-marker.below .m-date { justify-self: start; margin: 0 0 0 12px; }
+      [data-format="vertical"] #t1-ov-miles .m-head { font-size: calc(26px * var(--type)); }
+      [data-format="square"] #t1-ov-miles .m-head { font-size: 28px; }
+      [data-format="vertical"] #t1-ov-miles .m-date { font-size: calc(22px * var(--type)); }
+      [data-format="square"] #t1-ov-miles .m-date { font-size: 24px; }
     </style>
   </head>
   <body>

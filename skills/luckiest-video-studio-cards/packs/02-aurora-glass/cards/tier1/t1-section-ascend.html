@@ -15,7 +15,7 @@
       html, body { margin: 0; }
 
       #t1-sec-ascend {
-        position: absolute; inset: 0; width: 1920px; height: 1080px;
+        position: absolute; inset: 0; width: var(--w); height: var(--h);
         background: var(--canvas); color: var(--text);
         font-family: var(--font-display); overflow: hidden;
       }
@@ -33,7 +33,7 @@
 
       /* Layout: centered column */
       #t1-sec-ascend .content {
-        position: absolute; left: 0; right: 0; top: 0; bottom: 0;
+        position: absolute; left: var(--safe-l); right: var(--safe-r); top: var(--safe-t); bottom: var(--safe-b);
         display: flex; flex-direction: column; align-items: center;
         justify-content: center;
         z-index: 4; gap: 0;
@@ -75,9 +75,10 @@
       /* A soft glow plate beneath the headline that builds up */
       #t1-sec-ascend .plate {
         position: absolute;
-        left: 50%; top: calc(50% + 20px);
+        left: calc(var(--safe-l) + (var(--w) - var(--safe-l) - var(--safe-r)) / 2);
+        top: calc(var(--safe-t) + (var(--h) - var(--safe-t) - var(--safe-b)) / 2 + 20px);
         transform: translate(-50%, -50%);
-        width: 1400px; height: 180px;
+        width: min(1400px, calc(var(--w) - var(--safe-l) - var(--safe-r))); height: 180px;
         border-radius: 50%;
         background: radial-gradient(60% 100% at 50% 50%, rgba(var(--accent-rgb), 0.12), transparent 70%);
         filter: blur(18px);
@@ -94,6 +95,11 @@
         background-size: 200px 200px; mix-blend-mode: overlay; opacity: 0.10;
         pointer-events: none; z-index: 7;
       }
+
+      /* Vertical and square: the centered column sits in the safe box (via the insets above);
+         the headline wraps to more lines and the glow plate grows to cover them. */
+      [data-format="vertical"] #t1-sec-ascend .plate { height: 420px; }
+      [data-format="square"] #t1-sec-ascend .plate { height: 300px; }
     </style>
   </head>
   <body>

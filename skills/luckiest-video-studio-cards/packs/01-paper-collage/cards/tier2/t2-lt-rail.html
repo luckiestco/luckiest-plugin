@@ -13,7 +13,7 @@
     <style>
       html, body { margin: 0; background: transparent; }
       #t2-lt-rail {
-        position: absolute; inset: 0; width: 1920px; height: 1080px;
+        position: absolute; inset: 0; width: var(--w); height: var(--h);
         background: transparent;
       }
       #t2-lt-rail .wrap {
@@ -49,7 +49,7 @@
       #t2-lt-rail .name {
         font-family: var(--font-display);
         font-weight: var(--wt-black);
-        font-size: 88px;
+        font-size: calc(88px * var(--type));
         line-height: 0.95;
         letter-spacing: var(--track-tight);
         color: var(--paper);
@@ -69,6 +69,13 @@
         box-shadow: 4px 4px 0 rgba(23,19,14,0.22);
         transform: skewX(var(--marker-skew));
       }
+
+      /* Vertical and square: sit at the bottom of the safe area, clear of the speaker's face. */
+      [data-format="vertical"] #t2-lt-rail .wrap, [data-format="square"] #t2-lt-rail .wrap {
+        top: auto; left: var(--safe-l); bottom: calc(var(--safe-b) + 24px);
+        width: auto; max-width: calc(var(--w) - var(--safe-l) - var(--safe-r));
+      }
+      [data-format="vertical"] #t2-lt-rail [data-slot], [data-format="square"] #t2-lt-rail [data-slot] { white-space: normal; }
     </style>
   </head>
   <body>

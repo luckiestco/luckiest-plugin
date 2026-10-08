@@ -16,7 +16,7 @@
       html, body { margin: 0; }
 
       #t1-st-pct {
-        position: absolute; inset: 0; width: 1920px; height: 1080px;
+        position: absolute; inset: 0; width: var(--w); height: var(--h);
         background: var(--canvas); color: var(--text);
         font-family: var(--font-display); overflow: hidden;
       }
@@ -90,7 +90,7 @@
         position: relative; z-index: 2;
         font-family: var(--font-display);
         font-weight: var(--wt-black);
-        font-size: 320px;
+        font-size: calc(320px * var(--type));
         line-height: 1;
         letter-spacing: -0.03em;
         background: linear-gradient(160deg, #ffffff 20%, rgba(var(--accent-rgb), 0.80) 85%);
@@ -116,7 +116,7 @@
 
       /* Source */
       #t1-st-pct .source {
-        position: absolute; left: var(--pad); bottom: 44px;
+        position: absolute; left: var(--safe-l); bottom: var(--safe-b);
         font-family: var(--font-mono); font-size: var(--size-tiny);
         font-weight: var(--wt-reg); letter-spacing: 0.12em;
         text-transform: uppercase; color: var(--text-faint); z-index: 5;
@@ -132,6 +132,13 @@
         background-size: 200px 200px; mix-blend-mode: overlay; opacity: 0.10;
         pointer-events: none; z-index: 7;
       }
+
+      /* Vertical and square: the stack centers inside the safe area; vertical numeral sized to the narrow width. */
+      [data-format="vertical"] #t1-st-pct .content, [data-format="square"] #t1-st-pct .content { inset: var(--safe-t) var(--safe-r) var(--safe-b) var(--safe-l); }
+      [data-format="vertical"] #t1-st-pct .kicker, [data-format="square"] #t1-st-pct .kicker { text-align: center; margin-bottom: 32px; }
+      [data-format="vertical"] #t1-st-pct .stat { font-size: calc(260px * var(--type)); }
+      [data-format="square"] #t1-st-pct .halo-wrap { height: 400px; }
+      [data-format="square"] #t1-st-pct .label { margin-top: 32px; }
     </style>
   </head>
   <body>

@@ -11,7 +11,7 @@
     <style>
       html, body { margin: 0; }
       #t1-stat {
-        position: absolute; inset: 0; width: 1920px; height: 1080px;
+        position: absolute; inset: 0; width: var(--w); height: var(--h);
         background: var(--paper); color: var(--ink);
         font-family: var(--font-display); overflow: hidden;
       }
@@ -42,24 +42,43 @@
         font-variant-numeric: tabular-nums;
       }
       #t1-stat .kicker {
-        position: absolute; left: 50%; top: 200px; transform: translateX(-50%); z-index: 3;
+        position: absolute; left: 50%; top: calc(var(--safe-t) + 146px); transform: translateX(-50%); z-index: 3;
         font-family: var(--font-label); font-weight: var(--wt-bold);
         font-size: var(--size-label); letter-spacing: var(--track-wide);
         text-transform: uppercase; color: var(--ink); white-space: nowrap;
       }
       #t1-stat .label {
-        position: absolute; left: 50%; bottom: 180px; transform: translateX(-50%);
+        position: absolute; left: 50%; bottom: calc(var(--safe-b) + 126px); transform: translateX(-50%);
         width: 1100px; text-align: center; z-index: 3;
         font-weight: var(--wt-thin); font-size: var(--size-headline);
         line-height: 1.05; letter-spacing: var(--track-tight); color: var(--ink);
       }
       #t1-stat .label em { font-style: italic; font-weight: var(--wt-black); }
       #t1-stat .source {
-        position: absolute; left: 50%; bottom: 96px; transform: translateX(-50%); z-index: 3;
+        position: absolute; left: 50%; bottom: calc(var(--safe-b) + 42px); transform: translateX(-50%); z-index: 3;
         font-family: var(--font-label); font-weight: var(--wt-bold);
         font-size: var(--size-tiny); letter-spacing: var(--track-wide);
         text-transform: uppercase; color: var(--muted);
       }
+
+      /* Vertical and square: kicker, circle with the number, label, source stacked down the
+         center of the safe area. --cx is the safe area's horizontal center. */
+      [data-format="vertical"] #t1-stat, [data-format="square"] #t1-stat {
+        --cx: calc(var(--safe-l) + (var(--w) - var(--safe-l) - var(--safe-r)) / 2);
+      }
+      /* The stage's slow 1.05 push-in grows from the safe-area center, so the text inset by 30px stays inside. */
+      [data-format="vertical"] #t1-stat .stage, [data-format="square"] #t1-stat .stage {
+        transform-origin: var(--cx) calc(var(--safe-t) + (var(--h) - var(--safe-t) - var(--safe-b)) / 2);
+      }
+      [data-format="vertical"] #t1-stat .kicker, [data-format="square"] #t1-stat .kicker { left: var(--cx); top: calc(var(--safe-t) + 30px); }
+      [data-format="vertical"] #t1-stat .circle { left: var(--cx); top: calc(var(--safe-t) + 390px); width: 580px; height: 580px; margin: -290px 0 0 -290px; }
+      [data-format="vertical"] #t1-stat .stat { left: var(--cx); top: calc(var(--safe-t) + 390px); font-size: calc(250px * var(--type)); }
+      [data-format="square"] #t1-stat .circle { left: var(--cx); top: calc(var(--safe-t) + 340px); width: 520px; height: 520px; margin: -260px 0 0 -260px; }
+      [data-format="square"] #t1-stat .stat { left: var(--cx); top: calc(var(--safe-t) + 340px); font-size: 260px; }
+      [data-format="vertical"] #t1-stat .label, [data-format="square"] #t1-stat .label {
+        left: var(--cx); width: calc(var(--w) - var(--safe-l) - var(--safe-r) - 60px); bottom: calc(var(--safe-b) + 90px);
+      }
+      [data-format="vertical"] #t1-stat .source, [data-format="square"] #t1-stat .source { left: var(--cx); bottom: calc(var(--safe-b) + 30px); white-space: nowrap; }
     </style>
   </head>
   <body>

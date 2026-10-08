@@ -13,7 +13,7 @@
       html, body { margin: 0; background: transparent; }
 
       #t2-lb-call {
-        position: absolute; inset: 0; width: 1920px; height: 1080px;
+        position: absolute; inset: 0; width: var(--w); height: var(--h);
         background: transparent; overflow: hidden;
         font-family: var(--font-display);
       }
@@ -32,7 +32,7 @@
 
       /* Card anchored right */
       #t2-lb-call .card {
-        position: absolute; right: 80px; top: 340px;
+        position: absolute; right: var(--safe-r); top: calc(var(--safe-t) + 286px);
         width: 500px;
         background: var(--glass-bg-dark);
         backdrop-filter: var(--glass-blur);
@@ -59,7 +59,7 @@
       /* Heading */
       #t2-lb-call .heading {
         font-family: var(--font-display); font-weight: var(--wt-black);
-        font-size: 38px; letter-spacing: var(--track-tight);
+        font-size: calc(38px * var(--type)); letter-spacing: var(--track-tight);
         color: var(--white); text-shadow: var(--textglow);
         margin-bottom: 18px;
       }
@@ -77,9 +77,18 @@
       /* Detail body */
       #t2-lb-call .detail {
         font-family: var(--font-body); font-weight: var(--wt-reg);
-        font-size: 27px; line-height: 1.5;
+        font-size: calc(27px * var(--type)); line-height: 1.5;
         color: var(--text-dim);
       }
+      /* Vertical and square: card moves to the bottom-left of the safe area, glow follows, slots wrap. */
+      [data-format="vertical"] #t2-lb-call .card, [data-format="square"] #t2-lb-call .card {
+        top: auto; right: auto; left: var(--safe-l); bottom: var(--safe-b);
+        max-width: calc(var(--w) - var(--safe-l) - var(--safe-r));
+      }
+      [data-format="vertical"] #t2-lb-call .local-glow, [data-format="square"] #t2-lb-call .local-glow {
+        top: auto; right: auto; left: calc(var(--safe-l) - 40px); bottom: calc(var(--safe-b) - 40px);
+      }
+      [data-format="vertical"] #t2-lb-call [data-slot], [data-format="square"] #t2-lb-call [data-slot] { white-space: normal; }
     </style>
   </head>
   <body>

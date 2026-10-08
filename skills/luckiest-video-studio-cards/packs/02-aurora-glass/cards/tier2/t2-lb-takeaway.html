@@ -13,14 +13,14 @@
       html, body { margin: 0; background: transparent; }
 
       #t2-lb-take {
-        position: absolute; inset: 0; width: 1920px; height: 1080px;
+        position: absolute; inset: 0; width: var(--w); height: var(--h);
         background: transparent; overflow: hidden;
         font-family: var(--font-display);
       }
 
       /* Localized glow behind the card - contained, not full-canvas */
       #t2-lb-take .local-glow {
-        position: absolute; left: 72px; top: 340px;
+        position: absolute; left: calc(var(--safe-l) - 8px); top: calc(var(--safe-t) + 286px);
         width: 560px; height: 320px; border-radius: 50%;
         background: radial-gradient(ellipse at 50% 50%,
           rgba(var(--accent-rgb), 0.22) 0%,
@@ -32,7 +32,7 @@
 
       /* Wrapper anchored left side */
       #t2-lb-take .card {
-        position: absolute; left: 80px; top: 360px;
+        position: absolute; left: var(--safe-l); top: calc(var(--safe-t) + 306px);
         width: 520px;
       }
 
@@ -56,7 +56,7 @@
       }
       #t2-lb-take .pill-text {
         font-family: var(--font-body); font-weight: var(--wt-bold);
-        font-size: 17px; letter-spacing: var(--track-wide);
+        font-size: calc(17px * var(--type)); letter-spacing: var(--track-wide);
         text-transform: uppercase; color: var(--accent);
         text-shadow: var(--textglow-accent);
       }
@@ -89,6 +89,15 @@
         font-size: var(--size-body); line-height: 1.45;
         color: var(--text); text-shadow: var(--textglow);
       }
+      /* Vertical and square: the card drops to the bottom of the safe area, left aligned, its glow following. */
+      [data-format="vertical"] #t2-lb-take .card, [data-format="square"] #t2-lb-take .card {
+        top: auto; right: auto; left: var(--safe-l); bottom: var(--safe-b);
+        max-width: calc(var(--w) - var(--safe-l) - var(--safe-r));
+      }
+      [data-format="vertical"] #t2-lb-take .local-glow, [data-format="square"] #t2-lb-take .local-glow {
+        top: auto; right: auto; left: calc(var(--safe-l) - 20px); bottom: calc(var(--safe-b) - 30px);
+      }
+      [data-format="vertical"] #t2-lb-take [data-slot], [data-format="square"] #t2-lb-take [data-slot] { white-space: normal; }
     </style>
   </head>
   <body>

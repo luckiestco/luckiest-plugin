@@ -14,7 +14,7 @@
       html, body { margin: 0; background: transparent; }
 
       #t2-lb-pull {
-        position: absolute; inset: 0; width: 1920px; height: 1080px;
+        position: absolute; inset: 0; width: var(--w); height: var(--h);
         background: transparent; font-family: var(--font-display);
       }
 
@@ -27,7 +27,7 @@
       #t2-lb-pull .q-mark {
         font-family: var(--font-display);
         font-weight: var(--wt-black);
-        font-size: 220px;
+        font-size: calc(220px * var(--type));
         color: var(--yellow);
         line-height: 0.75;
         display: block;
@@ -44,7 +44,7 @@
       #t2-lb-pull .term {
         font-family: var(--font-display);
         font-weight: var(--wt-black);
-        font-size: 66px;
+        font-size: calc(66px * var(--type));
         letter-spacing: var(--track-tight);
         color: var(--ink);
         line-height: 1.1;
@@ -81,6 +81,13 @@
         max-width: 640px;
         border-left: 4px solid var(--yellow);
       }
+
+      /* Vertical and square: sit at the bottom of the safe area, clear of the speaker's face. */
+      [data-format="vertical"] #t2-lb-pull .wrap, [data-format="square"] #t2-lb-pull .wrap {
+        top: auto; left: var(--safe-l); bottom: calc(var(--safe-b) + 24px);
+        width: auto; max-width: calc(var(--w) - var(--safe-l) - var(--safe-r));
+      }
+      [data-format="vertical"] #t2-lb-pull [data-slot], [data-format="square"] #t2-lb-pull [data-slot] { white-space: normal; }
     </style>
   </head>
   <body>

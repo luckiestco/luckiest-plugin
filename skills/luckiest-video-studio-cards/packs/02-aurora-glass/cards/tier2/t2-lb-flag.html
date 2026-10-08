@@ -14,7 +14,7 @@
       html, body { margin: 0; background: transparent; }
 
       #t2-lb-flag {
-        position: absolute; inset: 0; width: 1920px; height: 1080px;
+        position: absolute; inset: 0; width: var(--w); height: var(--h);
         background: transparent; overflow: hidden;
         font-family: var(--font-display);
       }
@@ -33,7 +33,7 @@
 
       /* Pole SVG */
       #t2-lb-flag .pole-svg {
-        position: absolute; right: 276px; top: 360px;
+        position: absolute; right: calc(var(--safe-r) + 186px); top: 360px;
         width: 24px; height: 280px;
         overflow: visible;
       }
@@ -69,7 +69,7 @@
 
       /* Flag body - anchored to the right of the pole */
       #t2-lb-flag .flag-body {
-        position: absolute; right: 90px; top: 360px;
+        position: absolute; right: var(--safe-r); top: calc(var(--safe-t) + 306px);
         width: 200px;
         transform-origin: 100% 50%;  /* unfurl from pole side (right edge) */
       }
@@ -94,7 +94,7 @@
       /* Flag term text */
       #t2-lb-flag .flag-term {
         font-family: var(--font-display); font-weight: var(--wt-bold);
-        font-size: 22px; letter-spacing: var(--track-snug);
+        font-size: calc(22px * var(--type)); letter-spacing: var(--track-snug);
         color: var(--white); text-shadow: var(--textglow);
         white-space: nowrap;
         text-align: center;
@@ -102,7 +102,7 @@
 
       /* Horizontal dashed line below flag to detail */
       #t2-lb-flag .connector-svg {
-        position: absolute; right: 136px; top: 421px;
+        position: absolute; right: calc(var(--safe-r) + 46px); top: 421px;
         width: 2px; height: 80px; overflow: visible;
       }
 
@@ -115,7 +115,7 @@
 
       /* Detail strip at the bottom */
       #t2-lb-flag .detail-wrap {
-        position: absolute; right: 90px; top: 504px;
+        position: absolute; right: var(--safe-r); top: calc(var(--safe-t) + 450px);
         padding: 8px 18px 8px 16px;
         background: var(--glass-bg-dark);
         backdrop-filter: var(--glass-blur);
@@ -128,9 +128,22 @@
 
       #t2-lb-flag .detail-text {
         font-family: var(--font-body); font-weight: var(--wt-reg);
-        font-size: 21px; line-height: 1.45;
+        font-size: calc(21px * var(--type)); line-height: 1.45;
         color: var(--text-dim);
       }
+      /* Vertical and square: the pole, flag, connector and detail keep their geometry but hang from
+         the left of the safe area, low in the safe box. */
+      [data-format="vertical"] #t2-lb-flag .pole-svg, [data-format="square"] #t2-lb-flag .pole-svg { right: auto; left: var(--safe-l); top: calc(var(--h) - var(--safe-b) - 290px); }
+      [data-format="vertical"] #t2-lb-flag .flag-body, [data-format="square"] #t2-lb-flag .flag-body { right: auto; left: calc(var(--safe-l) + 10px); top: calc(var(--h) - var(--safe-b) - 290px); }
+      [data-format="vertical"] #t2-lb-flag .connector-svg, [data-format="square"] #t2-lb-flag .connector-svg { right: auto; left: calc(var(--safe-l) + 162px); top: calc(var(--h) - var(--safe-b) - 290px + 61px); }
+      [data-format="vertical"] #t2-lb-flag .detail-wrap, [data-format="square"] #t2-lb-flag .detail-wrap {
+        right: auto; left: calc(var(--safe-l) + 10px); top: calc(var(--h) - var(--safe-b) - 290px + 144px);
+        max-width: min(440px, calc(var(--w) - var(--safe-l) - var(--safe-r) - 44px));
+      }
+      [data-format="vertical"] #t2-lb-flag .local-glow, [data-format="square"] #t2-lb-flag .local-glow {
+        top: auto; right: auto; left: calc(var(--safe-l) - 40px); bottom: calc(var(--safe-b) + 20px);
+      }
+      [data-format="vertical"] #t2-lb-flag [data-slot], [data-format="square"] #t2-lb-flag [data-slot] { white-space: normal; }
     </style>
   </head>
   <body>

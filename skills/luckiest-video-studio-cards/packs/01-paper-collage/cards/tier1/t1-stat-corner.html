@@ -13,7 +13,7 @@
     <style>
       html, body { margin: 0; }
       #t1-stat-corner {
-        position: absolute; inset: 0; width: 1920px; height: 1080px;
+        position: absolute; inset: 0; width: var(--w); height: var(--h);
         background: var(--paper); color: var(--ink);
         font-family: var(--font-display); overflow: hidden;
       }
@@ -40,12 +40,12 @@
       /* === HUGE NUMBER bleeding off top-right === */
       #t1-stat-corner .stat {
         position: absolute;
-        /* Bleed off right + top edges - only left portion visible */
-        top: -80px;
-        right: -60px;
+        /* Pinned into the top-right of the safe area (it used to bleed off the corner) */
+        top: var(--safe-t);
+        right: calc(var(--safe-r) + 60px);
         z-index: 3;
         font-weight: var(--wt-black);
-        font-size: 720px;
+        font-size: calc(560px * var(--type));
         line-height: 0.8;
         letter-spacing: -0.06em;
         color: var(--ink);
@@ -78,7 +78,7 @@
 
       /* === KICKER === */
       #t1-stat-corner .kicker {
-        position: absolute; left: 130px; bottom: 310px; z-index: 5;
+        position: absolute; left: calc(var(--safe-l) + 34px); bottom: calc(var(--safe-b) + 256px); z-index: 5;
         font-family: var(--font-label); font-weight: var(--wt-bold);
         font-size: var(--size-label); letter-spacing: var(--track-wide);
         text-transform: uppercase; color: var(--red);
@@ -86,15 +86,15 @@
 
       /* === LABEL - bottom-left anchor === */
       #t1-stat-corner .label {
-        position: absolute; left: 130px; right: 820px; bottom: 158px; z-index: 5;
-        font-weight: var(--wt-thin); font-size: 58px; line-height: 1.08;
+        position: absolute; left: calc(var(--safe-l) + 34px); right: calc(var(--safe-r) + 724px); bottom: calc(var(--safe-b) + 104px); z-index: 5;
+        font-weight: var(--wt-thin); font-size: calc(58px * var(--type)); line-height: 1.08;
         letter-spacing: var(--track-tight); color: var(--ink);
       }
       #t1-stat-corner .label em { font-style: italic; font-weight: var(--wt-black); }
 
       /* === SOURCE === */
       #t1-stat-corner .source {
-        position: absolute; left: 130px; bottom: 84px; z-index: 5;
+        position: absolute; left: calc(var(--safe-l) + 34px); bottom: calc(var(--safe-b) + 30px); z-index: 5;
         font-family: var(--font-label); font-weight: var(--wt-bold);
         font-size: var(--size-tiny); letter-spacing: var(--track-wide);
         text-transform: uppercase; color: var(--muted);
@@ -110,7 +110,20 @@
         position: absolute; inset: 0; pointer-events: none; z-index: 7;
         background: radial-gradient(130% 130% at 20% 70%, transparent 50%, rgba(23,19,14,0.18) 100%);
       }
+
+      /* Vertical and square: number shrinks into the top-right of the safe area over the slab,
+         the ink rule runs under it, kicker, label and source stack on the safe bottom-left. */
+      [data-format="vertical"] #t1-stat-corner .stat { font-size: calc(280px * var(--type)); right: calc(var(--safe-r) + 40px); top: calc(var(--safe-t) + 20px); }
+      [data-format="square"] #t1-stat-corner .stat { font-size: 400px; right: calc(var(--safe-r) + 50px); }
+      [data-format="vertical"] #t1-stat-corner .yellow-slab { top: calc(var(--safe-t) - 160px); width: 700px; height: 600px; }
+      [data-format="square"] #t1-stat-corner .yellow-slab { width: 640px; height: 460px; }
+      [data-format="vertical"] #t1-stat-corner .diagonal-rule::after { left: 40px; top: calc(var(--safe-t) + 520px); width: 860px; }
+      [data-format="square"] #t1-stat-corner .diagonal-rule::after { left: 40px; top: 560px; width: 880px; }
+      [data-format="vertical"] #t1-stat-corner .kicker, [data-format="square"] #t1-stat-corner .kicker { left: var(--safe-l); bottom: calc(var(--safe-b) + 230px); }
+      [data-format="vertical"] #t1-stat-corner .label, [data-format="square"] #t1-stat-corner .label { left: var(--safe-l); right: var(--safe-r); bottom: calc(var(--safe-b) + 60px); }
+      [data-format="vertical"] #t1-stat-corner .source, [data-format="square"] #t1-stat-corner .source { left: var(--safe-l); bottom: var(--safe-b); }
     </style>
+
   </head>
   <body>
     <div id="t1-stat-corner" data-composition-id="t1-stat-corner" data-start="0" data-width="1920" data-height="1080">

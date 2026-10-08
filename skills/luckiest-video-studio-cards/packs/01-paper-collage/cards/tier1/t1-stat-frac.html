@@ -12,7 +12,7 @@
     <style>
       html, body { margin: 0; }
       #t1-stat-frac {
-        position: absolute; inset: 0; width: 1920px; height: 1080px;
+        position: absolute; inset: 0; width: var(--w); height: var(--h);
         background: var(--paper); color: var(--ink);
         font-family: var(--font-display); overflow: hidden;
       }
@@ -31,39 +31,55 @@
         background: radial-gradient(120% 120% at 38% 50%, transparent 52%, rgba(23,19,14,0.18) 100%);
       }
       #t1-stat-frac .kicker {
-        position: absolute; left: 150px; top: 200px;
+        position: absolute; left: calc(var(--safe-l) + 54px); top: calc(var(--safe-t) + 146px);
         font-family: var(--font-label); font-weight: var(--wt-bold);
         font-size: var(--size-label); letter-spacing: var(--track-wide);
         text-transform: uppercase; color: var(--red);
       }
       #t1-stat-frac .frac {
-        position: absolute; left: 150px; top: 50%; transform: translateY(-50%);
+        position: absolute; left: calc(var(--safe-l) + 54px); top: 50%; transform: translateY(-50%);
         text-align: center; line-height: 0.82;
       }
       #t1-stat-frac .num {
-        display: block; font-weight: var(--wt-black); font-size: 360px;
+        display: block; font-weight: var(--wt-black); font-size: calc(360px * var(--type));
         color: var(--ink); font-variant-numeric: tabular-nums; letter-spacing: -0.04em;
       }
       #t1-stat-frac .bar {
         width: 460px; height: 12px; background: var(--yellow); margin: 18px auto; transform-origin: center;
       }
       #t1-stat-frac .den {
-        display: block; font-weight: var(--wt-black); font-size: 220px;
+        display: block; font-weight: var(--wt-black); font-size: calc(220px * var(--type));
         color: transparent; -webkit-text-stroke: 4px var(--ink);
         font-variant-numeric: tabular-nums; letter-spacing: -0.04em;
       }
       #t1-stat-frac .label {
-        position: absolute; right: 130px; top: 50%; transform: translateY(-50%);
-        width: 700px; font-weight: var(--wt-thin); font-size: 64px; line-height: 1.08;
+        position: absolute; right: calc(var(--safe-r) + 34px); top: 50%; transform: translateY(-50%);
+        width: 700px; font-weight: var(--wt-thin); font-size: calc(64px * var(--type)); line-height: 1.08;
         letter-spacing: var(--track-tight); color: var(--ink);
       }
       #t1-stat-frac .label em { font-style: italic; font-weight: var(--wt-black); }
       #t1-stat-frac .source {
-        position: absolute; right: 130px; bottom: 96px; text-align: right;
+        position: absolute; right: calc(var(--safe-r) + 34px); bottom: calc(var(--safe-b) + 42px); text-align: right;
         font-family: var(--font-label); font-weight: var(--wt-bold);
         font-size: var(--size-tiny); letter-spacing: var(--track-wide);
         text-transform: uppercase; color: var(--muted);
       }
+
+      /* Vertical and square: kicker, the fraction centered across the safe width, then the label
+         under it and the source at the safe bottom. */
+      [data-format="vertical"] #t1-stat-frac .kicker, [data-format="square"] #t1-stat-frac .kicker { left: var(--safe-l); top: var(--safe-t); }
+      [data-format="vertical"] #t1-stat-frac .frac, [data-format="square"] #t1-stat-frac .frac {
+        left: var(--safe-l); right: var(--safe-r); top: calc(var(--safe-t) + 80px); transform: none;
+      }
+      [data-format="square"] #t1-stat-frac .frac { top: calc(var(--safe-t) + 60px); }
+      [data-format="square"] #t1-stat-frac .num { font-size: 300px; }
+      [data-format="square"] #t1-stat-frac .den { font-size: 180px; }
+      [data-format="vertical"] #t1-stat-frac .label, [data-format="square"] #t1-stat-frac .label {
+        left: var(--safe-l); right: var(--safe-r); width: auto; top: auto; bottom: calc(var(--safe-b) + 70px);
+        transform: none; text-align: center;
+      }
+      [data-format="vertical"] #t1-stat-frac .source, [data-format="square"] #t1-stat-frac .source { right: auto; left: var(--safe-l); width: calc(var(--w) - var(--safe-l) - var(--safe-r)); bottom: var(--safe-b); text-align: center; }
+      [data-format="square"] #t1-stat-frac .label { bottom: auto; top: calc(var(--safe-t) + 600px); }
     </style>
   </head>
   <body>

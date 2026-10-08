@@ -14,7 +14,7 @@
       html, body { margin: 0; }
 
       #t1-ov-grid9 {
-        position: absolute; inset: 0; width: 1920px; height: 1080px;
+        position: absolute; inset: 0; width: var(--w); height: var(--h);
         background: var(--canvas); color: var(--text);
         font-family: var(--font-display); overflow: hidden;
       }
@@ -33,7 +33,7 @@
 
       /* Title */
       #t1-ov-grid9 .title-row {
-        position: absolute; left: 0; right: 0; top: 72px; text-align: center; z-index: 4;
+        position: absolute; left: var(--safe-l); right: var(--safe-r); top: calc(var(--safe-t) + 18px); text-align: center; z-index: 4;
       }
       #t1-ov-grid9 .title {
         font-family: var(--font-display); font-weight: var(--wt-bold);
@@ -47,7 +47,7 @@
 
       /* 3x3 grid */
       #t1-ov-grid9 .grid-wrap {
-        position: absolute; left: 136px; right: 136px; top: 218px; bottom: 68px;
+        position: absolute; left: calc(var(--safe-l) + 40px); right: calc(var(--safe-r) + 40px); top: calc(var(--safe-t) + 164px); bottom: calc(var(--safe-b) + 14px);
         display: grid;
         grid-template-columns: 1fr 1fr 1fr;
         grid-template-rows: 1fr 1fr 1fr;
@@ -89,7 +89,7 @@
       /* Tile label */
       #t1-ov-grid9 .tile-label {
         font-family: var(--font-display); font-weight: var(--wt-semi);
-        font-size: 30px; letter-spacing: var(--track-snug); line-height: 1.25;
+        font-size: calc(30px * var(--type)); letter-spacing: var(--track-snug); line-height: 1.25;
         color: var(--white); text-shadow: var(--textglow);
       }
 
@@ -102,6 +102,17 @@
         background-size: 200px 200px; mix-blend-mode: overlay; opacity: 0.10;
         pointer-events: none; z-index: 7;
       }
+
+      /* Vertical and square: the 3x3 grid fills the safe box under the title; smaller labels in vertical. */
+      [data-format="vertical"] #t1-ov-grid9 .title-row, [data-format="square"] #t1-ov-grid9 .title-row { top: var(--safe-t); }
+      [data-format="vertical"] #t1-ov-grid9 .title { font-size: calc(60px * var(--type)); }
+      [data-format="square"] #t1-ov-grid9 .title { font-size: 58px; }
+      [data-format="vertical"] #t1-ov-grid9 .grid-wrap, [data-format="square"] #t1-ov-grid9 .grid-wrap { left: var(--safe-l); right: var(--safe-r); bottom: var(--safe-b); gap: 16px; }
+      [data-format="vertical"] #t1-ov-grid9 .grid-wrap { top: calc(var(--safe-t) + 200px); }
+      [data-format="square"] #t1-ov-grid9 .grid-wrap { top: calc(var(--safe-t) + 100px); }
+      [data-format="vertical"] #t1-ov-grid9 .tile, [data-format="square"] #t1-ov-grid9 .tile { padding: 22px 20px; }
+      [data-format="vertical"] #t1-ov-grid9 .tile-num, [data-format="square"] #t1-ov-grid9 .tile-num { top: 16px; right: 18px; }
+      [data-format="vertical"] #t1-ov-grid9 .tile-label { font-size: calc(23px * var(--type)); }
     </style>
   </head>
   <body>

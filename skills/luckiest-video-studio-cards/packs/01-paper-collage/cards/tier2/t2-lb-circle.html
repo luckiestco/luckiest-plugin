@@ -12,7 +12,7 @@
     <style>
       html, body { margin: 0; background: transparent; }
       #t2-lb-circ {
-        position: absolute; inset: 0; width: 1920px; height: 1080px;
+        position: absolute; inset: 0; width: var(--w); height: var(--h);
         background: transparent; font-family: var(--font-display);
       }
       #t2-lb-circ .wrap { position: absolute; left: 150px; top: 360px; width: 760px; }
@@ -25,7 +25,7 @@
         display: inline-block;
         font-family: var(--font-display);
         font-weight: var(--wt-black);
-        font-size: 72px;
+        font-size: calc(72px * var(--type));
         letter-spacing: var(--track-tight);
         color: var(--ink);
         padding: 8px 24px;
@@ -55,7 +55,14 @@
         font-family: var(--font-label); font-weight: var(--wt-reg);
         font-size: var(--size-body); line-height: 1.4; color: var(--ink);
         background: rgba(239,233,220,0.92); padding: 10px 16px; display: inline-block;
-      }    </style>
+      }
+      /* Vertical and square: sit at the bottom of the safe area, clear of the speaker's face. */
+      [data-format="vertical"] #t2-lb-circ .wrap, [data-format="square"] #t2-lb-circ .wrap {
+        top: auto; left: var(--safe-l); bottom: calc(var(--safe-b) + 24px);
+        width: auto; max-width: calc(var(--w) - var(--safe-l) - var(--safe-r));
+      }
+      [data-format="vertical"] #t2-lb-circ [data-slot], [data-format="square"] #t2-lb-circ [data-slot] { white-space: normal; }
+    </style>
   </head>
   <body>
     <div id="t2-lb-circ" data-composition-id="t2-lb-circ" data-start="0" data-width="1920" data-height="1080">

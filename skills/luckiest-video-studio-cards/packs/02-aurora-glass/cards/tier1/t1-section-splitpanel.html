@@ -14,7 +14,7 @@
       html, body { margin: 0; }
 
       #t1-sec-spl {
-        position: absolute; inset: 0; width: 1920px; height: 1080px;
+        position: absolute; inset: 0; width: var(--w); height: var(--h);
         background: var(--canvas); color: var(--text);
         font-family: var(--font-display); overflow: hidden;
       }
@@ -34,7 +34,7 @@
 
       /* ── LEFT half - text content ─────────────────────────────────────── */
       #t1-sec-spl .left {
-        position: absolute; left: 0; top: 0; width: 860px; height: 1080px;
+        position: absolute; left: 0; top: 0; width: 860px; height: var(--h);
         display: flex; flex-direction: column; justify-content: center;
         padding-left: 110px; padding-right: 60px; z-index: 4;
       }
@@ -46,7 +46,7 @@
       }
       #t1-sec-spl .headline {
         font-family: var(--font-display); font-weight: var(--wt-black);
-        font-size: 80px; line-height: 1.05; letter-spacing: var(--track-tight);
+        font-size: calc(80px * var(--type)); line-height: 1.05; letter-spacing: var(--track-tight);
         color: var(--white); text-shadow: var(--textglow);
         max-width: 680px;
       }
@@ -63,7 +63,7 @@
 
       /* ── RIGHT half - glass visual panel ─────────────────────────────── */
       #t1-sec-spl .right {
-        position: absolute; left: 920px; top: 0; width: 1000px; height: 1080px;
+        position: absolute; left: 920px; top: 0; width: 1000px; height: var(--h);
         display: flex; align-items: center; justify-content: center; z-index: 3;
       }
       #t1-sec-spl .panel {
@@ -121,6 +121,29 @@
         background-size: 200px 200px; mix-blend-mode: overlay; opacity: 0.10;
         pointer-events: none; z-index: 7;
       }
+
+      /* Vertical and square: the orb panel stacks on top, the divider turns horizontal, and the
+         title sits under it across the safe width. */
+      [data-format="vertical"] #t1-sec-spl .right, [data-format="square"] #t1-sec-spl .right {
+        left: var(--safe-l); right: var(--safe-r); width: auto; top: var(--safe-t);
+      }
+      [data-format="vertical"] #t1-sec-spl .right { height: 460px; }
+      [data-format="square"] #t1-sec-spl .right { height: 420px; }
+      [data-format="vertical"] #t1-sec-spl .panel { width: 460px; height: 460px; }
+      [data-format="square"] #t1-sec-spl .panel { width: 420px; height: 420px; }
+      [data-format="vertical"] #t1-sec-spl .panel-orb, [data-format="square"] #t1-sec-spl .panel-orb { width: 66%; height: 66%; }
+      [data-format="vertical"] #t1-sec-spl .divider, [data-format="square"] #t1-sec-spl .divider {
+        left: var(--safe-l); width: calc(var(--w) - var(--safe-l) - var(--safe-r)); height: 1.5px;
+        background: linear-gradient(to right, transparent 0%, rgba(var(--accent-rgb), 0.55) 30%, rgba(var(--accent-rgb), 0.55) 70%, transparent 100%);
+      }
+      [data-format="vertical"] #t1-sec-spl .divider { top: calc(var(--safe-t) + 494px); }
+      [data-format="square"] #t1-sec-spl .divider { top: calc(var(--safe-t) + 450px); }
+      [data-format="vertical"] #t1-sec-spl .left, [data-format="square"] #t1-sec-spl .left {
+        left: calc(var(--safe-l) + 24px); right: var(--safe-r); width: auto; height: auto; padding: 0; justify-content: flex-start;
+      }
+      [data-format="vertical"] #t1-sec-spl .left { top: calc(var(--safe-t) + 530px); }
+      [data-format="square"] #t1-sec-spl .left { top: calc(var(--safe-t) + 490px); }
+      [data-format="vertical"] #t1-sec-spl .headline, [data-format="square"] #t1-sec-spl .headline { max-width: none; }
     </style>
   </head>
   <body>

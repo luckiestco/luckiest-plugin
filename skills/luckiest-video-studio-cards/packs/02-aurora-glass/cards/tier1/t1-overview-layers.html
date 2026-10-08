@@ -15,7 +15,7 @@
       html, body { margin: 0; }
 
       #t1-ov-layers {
-        position: absolute; inset: 0; width: 1920px; height: 1080px;
+        position: absolute; inset: 0; width: var(--w); height: var(--h);
         background: var(--canvas); color: var(--text);
         font-family: var(--font-display); overflow: hidden;
       }
@@ -32,7 +32,7 @@
 
       /* Title */
       #t1-ov-layers .card-title {
-        position: absolute; left: 0; right: 0; top: 62px; z-index: 5;
+        position: absolute; left: var(--safe-l); right: var(--safe-r); top: calc(var(--safe-t) + 8px); z-index: 5;
         text-align: center;
         font-family: var(--font-display); font-weight: var(--wt-bold);
         font-size: var(--size-headline); letter-spacing: var(--track-snug);
@@ -94,17 +94,17 @@
       /* Slab label */
       #t1-ov-layers .slab-label {
         font-family: var(--font-display); font-weight: var(--wt-semi);
-        font-size: 38px; letter-spacing: var(--track-snug); line-height: 1.2;
+        font-size: calc(38px * var(--type)); letter-spacing: var(--track-snug); line-height: 1.2;
         color: var(--white); text-shadow: var(--textglow);
       }
       #t1-ov-layers #slab1 .slab-label {
-        font-weight: var(--wt-bold); font-size: 42px;
+        font-weight: var(--wt-bold); font-size: calc(42px * var(--type));
       }
 
       /* Right-side dim accent line per slab */
       #t1-ov-layers .slab-accent {
         margin-left: auto; padding-left: 36px; flex-shrink: 0;
-        font-family: var(--font-mono); font-size: 22px;
+        font-family: var(--font-mono); font-size: calc(22px * var(--type));
         color: var(--text-faint); letter-spacing: 0.06em;
       }
 
@@ -117,6 +117,21 @@
         background-size: 200px 200px; mix-blend-mode: overlay; opacity: 0.10;
         pointer-events: none; z-index: 7;
       }
+
+      /* Vertical and square: narrower slabs; the tech list wraps under the layer name so each slab fits. */
+      [data-format="vertical"] #t1-ov-layers .card-title, [data-format="square"] #t1-ov-layers .card-title { top: var(--safe-t); }
+      [data-format="vertical"] #t1-ov-layers .stack-wrap { left: calc(var(--safe-l) + (var(--w) - var(--safe-l) - var(--safe-r)) / 2 - 21px); top: calc(var(--safe-t) + 520px); }
+      [data-format="square"] #t1-ov-layers .stack-wrap { left: calc(50% - 21px); top: calc(var(--safe-t) + 420px); }
+      [data-format="vertical"] #t1-ov-layers .slab, [data-format="square"] #t1-ov-layers .slab {
+        height: auto; flex-wrap: wrap; row-gap: 8px; padding: 26px 34px; box-sizing: border-box;
+      }
+      [data-format="vertical"] #t1-ov-layers .slab { width: 720px; }
+      [data-format="square"] #t1-ov-layers .slab { width: 880px; }
+      [data-format="vertical"] #t1-ov-layers .slab-accent, [data-format="square"] #t1-ov-layers .slab-accent { flex-basis: 100%; margin-left: 0; padding-left: 0; }
+      [data-format="vertical"] #t1-ov-layers .layer-tag { font-size: calc(18px * var(--type)); min-width: 96px; margin-right: 24px; }
+      [data-format="vertical"] #t1-ov-layers .slab-label { font-size: calc(32px * var(--type)); }
+      [data-format="vertical"] #t1-ov-layers #slab1 .slab-label { font-size: calc(36px * var(--type)); }
+      [data-format="vertical"] #t1-ov-layers .slab-accent { font-size: calc(17px * var(--type)); }
     </style>
   </head>
   <body>

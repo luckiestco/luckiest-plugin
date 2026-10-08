@@ -14,7 +14,7 @@
     <style>
       html, body { margin: 0; }
       #t1-ov-deck {
-        position: absolute; inset: 0; width: 1920px; height: 1080px;
+        position: absolute; inset: 0; width: var(--w); height: var(--h);
         background: var(--paper); color: var(--ink);
         font-family: var(--font-display); overflow: hidden;
       }
@@ -35,14 +35,14 @@
       }
       /* marker title */
       #t1-ov-deck .title {
-        position: absolute; top: 62px; left: 50%;
+        position: absolute; top: calc(var(--safe-t) + 8px); left: 50%;
         transform: translateX(-50%) skewX(var(--marker-skew));
         background: var(--yellow); padding: 8px 28px; z-index: 10;
         font-weight: var(--wt-black); font-size: var(--size-title);
         letter-spacing: var(--track-tight); text-transform: uppercase; white-space: nowrap;
       }
       #t1-ov-deck .intro {
-        position: absolute; top: 218px; left: 50%; transform: translateX(-50%);
+        position: absolute; top: calc(var(--safe-t) + 164px); left: 50%; transform: translateX(-50%);
         width: 900px; text-align: center; z-index: 10;
         font-family: var(--font-label); font-weight: var(--wt-reg);
         font-size: var(--size-body); line-height: 1.4; color: var(--muted);
@@ -101,10 +101,10 @@
       }
       #t1-ov-deck .card-1 .card-num { color: var(--ink); }
       #t1-ov-deck .card-topic {
-        font-weight: var(--wt-black); font-size: 52px;
+        font-weight: var(--wt-black); font-size: calc(52px * var(--type));
         line-height: 1.1; letter-spacing: var(--track-tight); color: var(--ink);
       }
-      #t1-ov-deck .card-1 .card-topic { font-size: 58px; }
+      #t1-ov-deck .card-1 .card-topic { font-size: calc(58px * var(--type)); }
       /* ruled lines on the card bodies */
       #t1-ov-deck .card-lines {
         position: absolute; left: 30px; right: 30px; top: 80px; bottom: 120px;
@@ -114,11 +114,31 @@
       }
       /* source */
       #t1-ov-deck .source {
-        position: absolute; left: 130px; bottom: 60px; z-index: 10;
+        position: absolute; left: calc(var(--safe-l) + 34px); bottom: calc(var(--safe-b) + 6px); z-index: 10;
         font-family: var(--font-label); font-weight: var(--wt-bold);
         font-size: var(--size-tiny); letter-spacing: var(--track-wide);
         text-transform: uppercase; color: var(--muted);
       }
+
+      /* Vertical and square: title, intro and the card fan stack top to bottom, centred on the
+         safe box; source at the bottom left of the safe area. */
+      [data-format="vertical"] #t1-ov-deck .title, [data-format="square"] #t1-ov-deck .title {
+        top: var(--safe-t); left: calc(var(--safe-l) + (var(--w) - var(--safe-l) - var(--safe-r)) / 2);
+        width: max-content; max-width: calc(var(--w) - var(--safe-l) - var(--safe-r) - 56px);
+        white-space: normal; text-align: center;
+      }
+      [data-format="vertical"] #t1-ov-deck .title { font-size: calc(62px * var(--type)); }
+      [data-format="square"] #t1-ov-deck .title { font-size: 80px; }
+      [data-format="vertical"] #t1-ov-deck .intro, [data-format="square"] #t1-ov-deck .intro {
+        top: calc(var(--safe-t) + 124px); left: calc(var(--safe-l) + (var(--w) - var(--safe-l) - var(--safe-r)) / 2);
+        width: calc(var(--w) - var(--safe-l) - var(--safe-r));
+      }
+      [data-format="vertical"] #t1-ov-deck .fan, [data-format="square"] #t1-ov-deck .fan {
+        left: calc(var(--safe-l) + (var(--w) - var(--safe-l) - var(--safe-r)) / 2 + 40px); transform: translateX(-50%);
+      }
+      [data-format="vertical"] #t1-ov-deck .fan { top: calc(var(--safe-t) + 300px); margin-left: 20px; }
+      [data-format="square"] #t1-ov-deck .fan { top: calc(var(--safe-t) + 230px); }
+      [data-format="vertical"] #t1-ov-deck .source, [data-format="square"] #t1-ov-deck .source { left: var(--safe-l); bottom: var(--safe-b); }
     </style>
   </head>
   <body>

@@ -14,7 +14,7 @@
       html, body { margin: 0; }
 
       #t1-ov-org {
-        position: absolute; inset: 0; width: 1920px; height: 1080px;
+        position: absolute; inset: 0; width: var(--w); height: var(--h);
         background: var(--canvas); color: var(--text);
         font-family: var(--font-body); overflow: hidden;
       }
@@ -33,7 +33,7 @@
       /* Layout */
       #t1-ov-org .layout {
         position: absolute; inset: 0; z-index: 3;
-        padding: 72px var(--pad) 72px;
+        padding: calc(var(--safe-t) + 18px) var(--safe-r) calc(var(--safe-b) + 18px) var(--safe-l);
         display: flex; flex-direction: column; align-items: center;
       }
 
@@ -55,18 +55,18 @@
 
       /* SVG connector overlay */
       #t1-ov-org .connectors {
-        position: absolute; inset: 0; z-index: 1;
+        position: absolute; inset: 0; width: 100%; height: 100%; z-index: 1;
         overflow: visible; pointer-events: none;
       }
-      #t1-ov-org .connectors line {
+      #t1-ov-org .connectors path {
         stroke: var(--accent);
         stroke-width: 2;
         fill: none;
         stroke-linecap: round;
         opacity: 0.75;
         filter: drop-shadow(0 0 6px rgba(var(--accent-rgb),0.55));
-        stroke-dasharray: 600;
-        stroke-dashoffset: 600;
+        stroke-dasharray: 1200;
+        stroke-dashoffset: 1200;
       }
 
       /* Glass nodes */
@@ -93,7 +93,7 @@
       }
       #t1-ov-org .node-root .node-label {
         font-family: var(--font-display); font-weight: var(--wt-bold);
-        font-size: 38px; color: var(--white);
+        font-size: calc(38px * var(--type)); color: var(--white);
         text-shadow: var(--textglow); letter-spacing: var(--track-snug);
       }
 
@@ -110,11 +110,11 @@
       }
       #t1-ov-org .node-label {
         font-family: var(--font-display); font-weight: var(--wt-semi);
-        font-size: 32px; color: var(--white);
+        font-size: calc(32px * var(--type)); color: var(--white);
         letter-spacing: var(--track-snug); line-height: 1.25; margin-bottom: 8px;
       }
       #t1-ov-org .node-sub {
-        font-family: var(--font-body); font-size: 24px;
+        font-family: var(--font-body); font-size: calc(24px * var(--type));
         color: var(--text-dim); line-height: 1.4;
       }
 
@@ -127,6 +127,27 @@
         background-size: 200px 200px; mix-blend-mode: overlay; opacity: 0.10;
         pointer-events: none; z-index: 7;
       }
+
+      /* Vertical: root on top, the three children stack down a left spine. Square: same row as
+         landscape, narrower nodes. Connectors are redrawn per format (svg units = px of the tree). */
+      [data-format="vertical"] #t1-ov-org .layout { padding: var(--safe-t) var(--safe-r) var(--safe-b) var(--safe-l); }
+      [data-format="vertical"] #t1-ov-org .tree-area, [data-format="square"] #t1-ov-org .tree-area { width: 100%; }
+      [data-format="vertical"] #t1-ov-org .node-c1, [data-format="vertical"] #t1-ov-org .node-c2, [data-format="vertical"] #t1-ov-org .node-c3 { box-sizing: border-box; width: 687px; min-width: 0; padding: 22px 36px; }
+      [data-format="vertical"] #t1-ov-org .node-c1 { left: 80px; top: 180px; }
+      [data-format="vertical"] #t1-ov-org .node-c2 { left: calc(80px + 687px / 2); top: 372px; }
+      [data-format="vertical"] #t1-ov-org .node-c3 { left: calc(80px + 687px); top: 564px; }
+      [data-format="vertical"] #t1-ov-org .node-dot { margin-bottom: 12px; }
+      [data-format="vertical"] #t1-ov-org #org-stem { d: path("M383 117 L383 145"); }
+      [data-format="vertical"] #t1-ov-org #org-rail { d: path("M383 145 L40 145 L40 647"); }
+      [data-format="vertical"] #t1-ov-org #org-drop1 { d: path("M40 263 L80 263"); }
+      [data-format="vertical"] #t1-ov-org #org-drop2 { d: path("M40 455 L80 455"); }
+      [data-format="vertical"] #t1-ov-org #org-drop3 { d: path("M40 647 L80 647"); }
+      [data-format="square"] #t1-ov-org .node-c1, [data-format="square"] #t1-ov-org .node-c2, [data-format="square"] #t1-ov-org .node-c3 { box-sizing: border-box; width: 290px; min-width: 0; padding: 30px 20px; top: 440px; }
+      [data-format="square"] #t1-ov-org #org-stem { d: path("M464 108 L464 280"); }
+      [data-format="square"] #t1-ov-org #org-rail { d: path("M145 280 L783 280"); }
+      [data-format="square"] #t1-ov-org #org-drop1 { d: path("M145 280 L145 440"); }
+      [data-format="square"] #t1-ov-org #org-drop2 { d: path("M464 280 L464 440"); }
+      [data-format="square"] #t1-ov-org #org-drop3 { d: path("M783 280 L783 440"); }
     </style>
   </head>
   <body>
@@ -144,13 +165,12 @@
             Branch mid: x=780, y=268
             Child centers: c1=220, c2=780, c3=1340  drop-top y=420
           -->
-          <svg class="connectors" viewBox="0 0 1560 580" preserveAspectRatio="none"
-               width="1560" height="580">
-            <line id="org-stem"   x1="780" y1="108" x2="780" y2="268" />
-            <line id="org-rail"   x1="220" y1="268" x2="1340" y2="268" />
-            <line id="org-drop1"  x1="220"  y1="268" x2="220"  y2="420" />
-            <line id="org-drop2"  x1="780"  y1="268" x2="780"  y2="420" />
-            <line id="org-drop3"  x1="1340" y1="268" x2="1340" y2="420" />
+          <svg class="connectors">
+            <path id="org-stem" d="M780 108 L780 268" />
+            <path id="org-rail" d="M220 268 L1340 268" />
+            <path id="org-drop1" d="M220 268 L220 420" />
+            <path id="org-drop2" d="M780 268 L780 420" />
+            <path id="org-drop3" d="M1340 268 L1340 420" />
           </svg>
 
           <!-- Root node -->

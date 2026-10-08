@@ -11,7 +11,7 @@
     <style>
       html, body { margin: 0; }
       #t1-sec-num {
-        position: absolute; inset: 0; width: 1920px; height: 1080px;
+        position: absolute; inset: 0; width: var(--w); height: var(--h);
         background: var(--paper); color: var(--ink);
         font-family: var(--font-display); overflow: hidden;
       }
@@ -26,25 +26,39 @@
         background-size: 180px 180px; mix-blend-mode: multiply; opacity: 0.4; pointer-events: none; z-index: 5;
       }
       #t1-sec-num .ghost {
-        position: absolute; right: -40px; top: 50%; transform: translateY(-50%);
-        font-weight: var(--wt-black); font-style: italic; font-size: 1280px; line-height: 0.7;
+        position: absolute; right: calc(var(--safe-r) + 130px); top: 50%; transform: translateY(-50%);
+        font-weight: var(--wt-black); font-style: italic; font-size: calc(1280px * var(--type)); line-height: 0.7;
         color: transparent; -webkit-text-stroke: 5px rgba(23,19,14,0.16);
         z-index: 1; user-select: none;
       }
       #t1-sec-num .kicker {
-        position: absolute; left: 150px; top: 360px; z-index: 3;
+        position: absolute; left: calc(var(--safe-l) + 54px); top: calc(var(--safe-t) + 306px); z-index: 3;
         font-family: var(--font-label); font-weight: var(--wt-bold);
         font-size: var(--size-label); letter-spacing: var(--track-wide);
         text-transform: uppercase; color: var(--ink);
       }
       #t1-sec-num .kicker::before { content: ""; display: inline-block; width: 56px; height: 3px; background: var(--red); margin-right: 16px; vertical-align: middle; }
       #t1-sec-num .headline {
-        position: absolute; left: 150px; top: 410px; width: 1180px; z-index: 3;
-        font-weight: var(--wt-black); font-size: 138px; line-height: 0.95;
+        position: absolute; left: calc(var(--safe-l) + 54px); top: calc(var(--safe-t) + 356px); width: 1180px; z-index: 3;
+        font-weight: var(--wt-black); font-size: calc(138px * var(--type)); line-height: 0.95;
         letter-spacing: var(--track-tight); color: var(--ink);
       }
       #t1-sec-num .headline em { font-style: italic; font-weight: var(--wt-thin); }
-      #t1-sec-num .underline { position: absolute; left: 154px; top: 720px; width: 0; height: 8px; background: var(--yellow); z-index: 2; }
+      #t1-sec-num .underline { position: absolute; left: calc(var(--safe-l) + 58px); top: calc(var(--safe-t) + 666px); width: 0; height: 8px; background: var(--yellow); z-index: 2; }
+
+      /* Vertical and square: the ghost numeral fills the safe box behind the text (vertical) or
+         its right side (square); kicker, headline and underline stack on the left. */
+      [data-format="vertical"] #t1-sec-num .ghost { right: calc(var(--safe-r) + 110px); top: calc((var(--h) + var(--safe-t) - var(--safe-b)) / 2); font-size: calc(900px * var(--type)); }
+      [data-format="square"] #t1-sec-num .ghost { right: calc(var(--safe-r) + 100px); font-size: 1000px; }
+      [data-format="vertical"] #t1-sec-num .kicker, [data-format="square"] #t1-sec-num .kicker { left: var(--safe-l); }
+      [data-format="vertical"] #t1-sec-num .headline, [data-format="square"] #t1-sec-num .headline { left: var(--safe-l); width: calc(var(--w) - var(--safe-l) - var(--safe-r)); }
+      [data-format="vertical"] #t1-sec-num .underline, [data-format="square"] #t1-sec-num .underline { left: calc(var(--safe-l) + 4px); }
+      [data-format="vertical"] #t1-sec-num .kicker { top: calc(var(--safe-t) + 330px); }
+      [data-format="vertical"] #t1-sec-num .headline { top: calc(var(--safe-t) + 380px); font-size: calc(110px * var(--type)); }
+      [data-format="vertical"] #t1-sec-num .underline { top: calc(var(--safe-t) + 800px); }
+      [data-format="square"] #t1-sec-num .kicker { top: calc(var(--safe-t) + 230px); }
+      [data-format="square"] #t1-sec-num .headline { top: calc(var(--safe-t) + 280px); width: 640px; font-size: 116px; }
+      [data-format="square"] #t1-sec-num .underline { top: calc(var(--safe-t) + 640px); }
     </style>
   </head>
   <body>

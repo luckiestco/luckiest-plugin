@@ -14,7 +14,7 @@
       html, body { margin: 0; }
 
       #t1-ov-time {
-        position: absolute; inset: 0; width: 1920px; height: 1080px;
+        position: absolute; inset: 0; width: var(--w); height: var(--h);
         background: var(--canvas); color: var(--text);
         font-family: var(--font-body); overflow: hidden;
       }
@@ -33,7 +33,7 @@
       /* Page layout */
       #t1-ov-time .layout {
         position: absolute; inset: 0; z-index: 3;
-        padding: 90px var(--pad) 80px;
+        padding: calc(var(--safe-t) + 36px) var(--safe-r) calc(var(--safe-b) + 26px) calc(var(--safe-l) + 8px);
       }
 
       /* Title */
@@ -69,6 +69,7 @@
         /* height set inline per segment */
       }
 
+      #t1-ov-time #tl-seg-1, #t1-ov-time #tl-seg-2 { height: 198px; }
       /* Glowing dot */
       #t1-ov-time .dot {
         width: 22px; height: 22px; border-radius: 50%;
@@ -111,7 +112,7 @@
       }
       #t1-ov-time .step-heading {
         font-family: var(--font-display); font-weight: var(--wt-semi);
-        font-size: 34px; color: var(--white);
+        font-size: calc(34px * var(--type)); color: var(--white);
         letter-spacing: var(--track-snug); margin-bottom: 8px;
       }
       #t1-ov-time .step-body {
@@ -128,6 +129,26 @@
         background-size: 200px 200px; mix-blend-mode: overlay; opacity: 0.10;
         pointer-events: none; z-index: 7;
       }
+
+      /* Vertical and square: same spine and steps, smaller copy; each step gets a fixed height so the
+         spine segments (step pitch minus the dot) keep the dots on the step labels. */
+      [data-format="vertical"] #t1-ov-time .layout { padding: var(--safe-t) var(--safe-r) var(--safe-b) calc(var(--safe-l) + 12px); }
+      [data-format="square"] #t1-ov-time .layout { padding: var(--safe-t) var(--safe-r) var(--safe-b) calc(var(--safe-l) + 8px); }
+      [data-format="vertical"] #t1-ov-time .card-title { font-size: calc(46px * var(--type)); margin-bottom: 32px; }
+      [data-format="square"] #t1-ov-time .card-title { margin-bottom: 40px; }
+      [data-format="vertical"] #t1-ov-time .spine-col, [data-format="square"] #t1-ov-time .spine-col { width: 40px; }
+      [data-format="vertical"] #t1-ov-time .steps-col { padding-left: 28px; }
+      [data-format="square"] #t1-ov-time .steps-col { padding-left: 36px; }
+      [data-format="vertical"] #t1-ov-time .step { height: 250px; margin-bottom: 24px; }
+      [data-format="square"] #t1-ov-time .step { height: 245px; margin-bottom: 18px; }
+      [data-format="vertical"] #t1-ov-time #tl-seg-1, [data-format="vertical"] #t1-ov-time #tl-seg-2 { height: 252px; }
+      [data-format="square"] #t1-ov-time #tl-seg-1, [data-format="square"] #t1-ov-time #tl-seg-2 { height: 241px; }
+      [data-format="vertical"] #t1-ov-time .step-card { padding: 20px 24px; }
+      [data-format="square"] #t1-ov-time .step-card { padding: 22px 32px; }
+      [data-format="vertical"] #t1-ov-time .step-heading { font-size: calc(26px * var(--type)); }
+      [data-format="vertical"] #t1-ov-time .step-body { font-size: calc(22px * var(--type)); line-height: 1.4; }
+      [data-format="square"] #t1-ov-time .step-heading { font-size: 32px; }
+      [data-format="square"] #t1-ov-time .step-body { font-size: 26px; line-height: 1.4; }
     </style>
   </head>
   <body>
@@ -142,9 +163,9 @@
           <!-- Spine column: dot → seg → dot → seg → dot -->
           <div class="spine-col">
             <div class="dot" id="tl-dot-1"></div>
-            <div class="spine-seg" id="tl-seg-1" style="height:198px;"></div>
+            <div class="spine-seg" id="tl-seg-1"></div>
             <div class="dot" id="tl-dot-2"></div>
-            <div class="spine-seg" id="tl-seg-2" style="height:198px;"></div>
+            <div class="spine-seg" id="tl-seg-2"></div>
             <div class="dot" id="tl-dot-3"></div>
           </div>
 

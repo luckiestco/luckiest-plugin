@@ -11,12 +11,12 @@
     <style>
       html, body { margin: 0; }
       #t1-sec-split {
-        position: absolute; inset: 0; width: 1920px; height: 1080px;
+        position: absolute; inset: 0; width: var(--w); height: var(--h);
         background: var(--paper); color: var(--ink);
         font-family: var(--font-display); overflow: hidden;
       }
       #t1-sec-split .grid {
-        position: absolute; left: 0; top: 0; width: 1100px; height: 1080px;
+        position: absolute; left: 0; top: 0; width: 1100px; height: var(--h);
         background-image:
           repeating-linear-gradient(0deg,  var(--grid-line) 0 1px, transparent 1px var(--grid-size)),
           repeating-linear-gradient(90deg, var(--grid-line) 0 1px, transparent 1px var(--grid-size));
@@ -27,36 +27,52 @@
       }
       /* right image panel */
       #t1-sec-split .panel {
-        position: absolute; right: 0; top: 0; width: 760px; height: 1080px;
+        position: absolute; right: 0; top: 0; width: 760px; height: var(--h);
         background-color: var(--paper-2); background-image: var(--tex-halftone);
         background-size: var(--tex-halftone-size); z-index: 2;
       }
       #t1-sec-split .panel::after {
-        content: "ARCHIVE"; position: absolute; left: 24px; bottom: 24px;
+        content: "ARCHIVE"; position: absolute; left: 24px; bottom: var(--safe-b);
         font-family: var(--font-label); font-weight: var(--wt-bold);
         font-size: var(--size-tiny); letter-spacing: var(--track-wide);
         color: var(--ink); background: var(--yellow); padding: 3px 12px;
       }
-      #t1-sec-split .rule { position: absolute; right: 760px; top: 0; width: 10px; height: 1080px; background: var(--ink); z-index: 3; transform-origin: top center; }
+      #t1-sec-split .rule { position: absolute; right: 760px; top: 0; width: 10px; height: var(--h); background: var(--ink); z-index: 3; transform-origin: top center; }
       #t1-sec-split .kicker {
-        position: absolute; left: 130px; top: 360px; z-index: 4;
+        position: absolute; left: calc(var(--safe-l) + 34px); top: calc(var(--safe-t) + 306px); z-index: 4;
         font-family: var(--font-label); font-weight: var(--wt-bold);
         font-size: var(--size-label); letter-spacing: var(--track-wide);
         text-transform: uppercase; color: var(--ink);
       }
       #t1-sec-split .kicker::before { content: ""; display: inline-block; width: 50px; height: 3px; background: var(--red); margin-right: 16px; vertical-align: middle; }
       #t1-sec-split .headline {
-        position: absolute; left: 130px; top: 410px; width: 900px; z-index: 4;
-        font-weight: var(--wt-black); font-size: 124px; line-height: 0.95;
+        position: absolute; left: calc(var(--safe-l) + 34px); top: calc(var(--safe-t) + 356px); width: 900px; z-index: 4;
+        font-weight: var(--wt-black); font-size: calc(124px * var(--type)); line-height: 0.95;
         letter-spacing: var(--track-tight); color: var(--ink);
       }
       #t1-sec-split .headline em { font-style: italic; font-weight: var(--wt-thin); }
       #t1-sec-split .source {
-        position: absolute; left: 130px; bottom: 110px; z-index: 4;
+        position: absolute; left: calc(var(--safe-l) + 34px); bottom: calc(var(--safe-b) + 56px); z-index: 4;
         font-family: var(--font-label); font-weight: var(--wt-bold);
         font-size: var(--size-tiny); letter-spacing: var(--track-wide);
         text-transform: uppercase; color: var(--muted);
       }
+
+      /* Vertical and square: side-by-side becomes stacked. The image panel is a full-width band
+         on top with the rule along its bottom edge; kicker, headline and source sit below it. */
+      [data-format="vertical"] #t1-sec-split .grid, [data-format="square"] #t1-sec-split .grid { width: var(--w); }
+      [data-format="vertical"] #t1-sec-split .panel, [data-format="square"] #t1-sec-split .panel { width: var(--w); }
+      [data-format="vertical"] #t1-sec-split .panel { height: 640px; }
+      [data-format="square"] #t1-sec-split .panel { height: 400px; }
+      [data-format="vertical"] #t1-sec-split .panel::after, [data-format="square"] #t1-sec-split .panel::after { left: var(--safe-l); bottom: 24px; }
+      [data-format="vertical"] #t1-sec-split .rule, [data-format="square"] #t1-sec-split .rule { right: 0; width: var(--w); height: 10px; transform-origin: center top; }
+      [data-format="vertical"] #t1-sec-split .rule { top: 640px; }
+      [data-format="square"] #t1-sec-split .rule { top: 400px; }
+      [data-format="vertical"] #t1-sec-split .kicker { left: var(--safe-l); top: 710px; }
+      [data-format="vertical"] #t1-sec-split .headline { left: var(--safe-l); top: 760px; width: calc(var(--w) - var(--safe-l) - var(--safe-r)); font-size: calc(100px * var(--type)); }
+      [data-format="square"] #t1-sec-split .kicker { left: var(--safe-l); top: 450px; }
+      [data-format="square"] #t1-sec-split .headline { left: var(--safe-l); top: 500px; width: calc(var(--w) - var(--safe-l) - var(--safe-r)); font-size: 100px; }
+      [data-format="vertical"] #t1-sec-split .source, [data-format="square"] #t1-sec-split .source { left: var(--safe-l); bottom: var(--safe-b); }
     </style>
   </head>
   <body>

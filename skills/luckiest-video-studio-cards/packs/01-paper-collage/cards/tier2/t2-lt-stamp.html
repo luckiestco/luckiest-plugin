@@ -14,7 +14,7 @@
       html, body { margin: 0; background: transparent; }
 
       #t2-lt-stamp {
-        position: absolute; inset: 0; width: 1920px; height: 1080px;
+        position: absolute; inset: 0; width: var(--w); height: var(--h);
         background: transparent;
       }
 
@@ -52,7 +52,7 @@
       /* name in big Fraunces, ink on paper plate, inside the stamp */
       #t2-lt-stamp .name {
         font-family: var(--font-display); font-weight: var(--wt-black);
-        font-size: 80px; line-height: 0.92;
+        font-size: calc(80px * var(--type)); line-height: 0.92;
         letter-spacing: var(--track-tight);
         color: var(--ink);
         white-space: nowrap;
@@ -78,6 +78,13 @@
         padding: 6px 16px;
         box-shadow: 5px 5px 0 rgba(23,19,14,0.25);
       }
+
+      /* Vertical and square: sit at the bottom of the safe area, clear of the speaker's face. */
+      [data-format="vertical"] #t2-lt-stamp .wrap, [data-format="square"] #t2-lt-stamp .wrap {
+        top: auto; left: var(--safe-l); bottom: calc(var(--safe-b) + 24px);
+        width: auto; max-width: calc(var(--w) - var(--safe-l) - var(--safe-r));
+      }
+      [data-format="vertical"] #t2-lt-stamp [data-slot], [data-format="square"] #t2-lt-stamp [data-slot] { white-space: normal; }
     </style>
   </head>
   <body>

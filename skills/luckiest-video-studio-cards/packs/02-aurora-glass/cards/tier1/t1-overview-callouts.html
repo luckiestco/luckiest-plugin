@@ -15,7 +15,7 @@
       html, body { margin: 0; }
 
       #t1-ov-callouts {
-        position: absolute; inset: 0; width: 1920px; height: 1080px;
+        position: absolute; inset: 0; width: var(--w); height: var(--h);
         background: var(--canvas); color: var(--text);
         font-family: var(--font-display); overflow: hidden;
       }
@@ -35,7 +35,7 @@
 
       /* Title kicker */
       #t1-ov-callouts .title-row {
-        position: absolute; left: 0; right: 0; top: 72px;
+        position: absolute; left: var(--safe-l); right: var(--safe-r); top: calc(var(--safe-t) + 18px);
         text-align: center; z-index: 4;
       }
       #t1-ov-callouts .title {
@@ -52,7 +52,7 @@
 
       /* Connector SVG layer */
       #t1-ov-callouts .connectors-svg {
-        position: absolute; inset: 0; width: 1920px; height: 1080px;
+        position: absolute; inset: 0; width: var(--w); height: var(--h);
         z-index: 3; pointer-events: none;
       }
 
@@ -106,15 +106,15 @@
       }
 
       /* Top left */
-      #co-1 { left: 130px; top: 160px; }
+      #co-1 { left: calc(var(--safe-l) + 34px); top: calc(var(--safe-t) + 106px); }
       /* Top right */
-      #co-2 { right: 130px; top: 160px; }
+      #co-2 { right: calc(var(--safe-r) + 34px); top: calc(var(--safe-t) + 106px); }
       /* Bottom center */
-      #co-3 { left: 50%; transform: translateX(-50%); bottom: 80px; }
+      #co-3 { left: 50%; transform: translateX(-50%); bottom: calc(var(--safe-b) + 26px); }
 
       .callout-num {
         font-family: var(--font-display); font-weight: var(--wt-black);
-        font-size: 110px; line-height: 1; letter-spacing: var(--track-tight);
+        font-size: calc(110px * var(--type)); line-height: 1; letter-spacing: var(--track-tight);
         background: linear-gradient(150deg, #ffffff 15%, rgba(var(--accent-rgb), 0.80) 85%);
         -webkit-background-clip: text; background-clip: text;
         -webkit-text-fill-color: transparent; text-fill-color: transparent;
@@ -142,6 +142,35 @@
         background-size: 200px 200px; mix-blend-mode: overlay; opacity: 0.10;
         pointer-events: none; z-index: 7;
       }
+
+      /* Vertical and square: headline on top, two callouts side by side, the third centered under them,
+         all inside the safe box. The fixed 1920x1080 connector lines no longer meet the tiles, so they hide. */
+      [data-format="vertical"] #t1-ov-callouts .connectors-svg, [data-format="square"] #t1-ov-callouts .connectors-svg { display: none; }
+      [data-format="vertical"] #t1-ov-callouts .title-row, [data-format="square"] #t1-ov-callouts .title-row { top: var(--safe-t); }
+      [data-format="vertical"] #t1-ov-callouts #headline-pill, [data-format="square"] #t1-ov-callouts #headline-pill {
+        left: calc(var(--safe-l) + (var(--w) - var(--safe-l) - var(--safe-r)) / 2) !important;
+        width: calc(var(--w) - var(--safe-l) - var(--safe-r)); max-width: none; box-sizing: border-box;
+        padding: 36px 48px;
+      }
+      [data-format="vertical"] #t1-ov-callouts #headline-pill { top: calc(var(--safe-t) + 175px) !important; }
+      [data-format="square"] #t1-ov-callouts #headline-pill { top: calc(var(--safe-t) + 140px) !important; }
+      [data-format="vertical"] #t1-ov-callouts .callout, [data-format="square"] #t1-ov-callouts .callout {
+        width: calc((var(--w) - var(--safe-l) - var(--safe-r) - 24px) / 2); min-width: 0; box-sizing: border-box;
+        padding: 28px 32px 30px;
+      }
+      [data-format="vertical"] #t1-ov-callouts #co-1, [data-format="square"] #t1-ov-callouts #co-1 { left: var(--safe-l); }
+      [data-format="vertical"] #t1-ov-callouts #co-2, [data-format="square"] #t1-ov-callouts #co-2 { right: var(--safe-r); }
+      [data-format="vertical"] #t1-ov-callouts #co-1, [data-format="vertical"] #t1-ov-callouts #co-2 { top: calc(var(--safe-t) + 330px); }
+      [data-format="square"] #t1-ov-callouts #co-1, [data-format="square"] #t1-ov-callouts #co-2 { top: calc(var(--safe-t) + 270px); }
+      [data-format="vertical"] #t1-ov-callouts #co-3, [data-format="square"] #t1-ov-callouts #co-3 {
+        left: calc(var(--safe-l) + (var(--w) - var(--safe-l) - var(--safe-r)) / 2); bottom: auto;
+      }
+      [data-format="vertical"] #t1-ov-callouts #co-3 { top: calc(var(--safe-t) + 630px); }
+      [data-format="square"] #t1-ov-callouts #co-3 { top: calc(var(--safe-t) + 560px); }
+      [data-format="vertical"] #t1-ov-callouts .callout-num { font-size: calc(84px * var(--type)); }
+      [data-format="square"] #t1-ov-callouts .callout-num { font-size: 96px; }
+      [data-format="vertical"] #t1-ov-callouts .callout-label { font-size: calc(24px * var(--type)); line-height: 1.35; max-width: none; }
+      [data-format="square"] #t1-ov-callouts .callout-label { font-size: 27px; line-height: 1.35; max-width: none; }
     </style>
   </head>
   <body>

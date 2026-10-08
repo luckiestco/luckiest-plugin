@@ -14,7 +14,7 @@
       html, body { margin: 0; }
 
       #t1-ov-ranked {
-        position: absolute; inset: 0; width: 1920px; height: 1080px;
+        position: absolute; inset: 0; width: var(--w); height: var(--h);
         background: var(--canvas); color: var(--text);
         font-family: var(--font-body); overflow: hidden;
       }
@@ -36,7 +36,7 @@
       #t1-ov-ranked .layout {
         position: absolute; inset: 0; z-index: 3;
         display: flex; flex-direction: column;
-        padding: 82px var(--pad) 76px;
+        padding: calc(var(--safe-t) + 28px) var(--safe-r) calc(var(--safe-b) + 22px) var(--safe-l);
       }
 
       /* Title */
@@ -89,7 +89,7 @@
         width: 72px; height: 72px; border-radius: 50%; flex-shrink: 0;
         display: flex; align-items: center; justify-content: center;
         font-family: var(--font-display); font-weight: var(--wt-black);
-        font-size: 34px; line-height: 1;
+        font-size: calc(34px * var(--type)); line-height: 1;
       }
       /* Badge tier colors */
       #t1-ov-ranked .rank.r1 {
@@ -132,14 +132,14 @@
       #t1-ov-ranked .row-text { flex: 1; min-width: 0; }
       #t1-ov-ranked .row-heading {
         font-family: var(--font-display); font-weight: var(--wt-semi);
-        font-size: 34px; color: var(--white);
+        font-size: calc(34px * var(--type)); color: var(--white);
         letter-spacing: var(--track-snug); line-height: 1.15;
         margin-bottom: 5px;
       }
       #t1-ov-ranked .row.top .row-heading { color: var(--white); }
       #t1-ov-ranked .row-body {
         font-family: var(--font-body); font-weight: var(--wt-reg);
-        font-size: 26px; color: var(--text-dim); line-height: 1.4;
+        font-size: calc(26px * var(--type)); color: var(--text-dim); line-height: 1.4;
       }
 
       /* Vignette + grain */
@@ -152,6 +152,20 @@
         background-size: 200px 200px; mix-blend-mode: overlay; opacity: 0.10;
         pointer-events: none; z-index: 7;
       }
+
+      /* Vertical and square: five tighter rows with smaller copy so every row keeps its two lines. */
+      [data-format="vertical"] #t1-ov-ranked .layout { padding: var(--safe-t) var(--safe-r) var(--safe-b) calc(var(--safe-l) + 12px); }
+      [data-format="square"] #t1-ov-ranked .layout { padding: var(--safe-t) var(--safe-r) var(--safe-b) calc(var(--safe-l) + 8px); }
+      [data-format="vertical"] #t1-ov-ranked .card-title { margin-bottom: 28px; }
+      [data-format="square"] #t1-ov-ranked .card-title { margin-bottom: 36px; }
+      [data-format="vertical"] #t1-ov-ranked .rows, [data-format="square"] #t1-ov-ranked .rows { gap: 10px; }
+      [data-format="vertical"] #t1-ov-ranked .row { gap: 20px; padding: 14px 24px 14px 20px; }
+      [data-format="square"] #t1-ov-ranked .row { gap: 28px; padding: 14px 32px 14px 24px; }
+      [data-format="vertical"] #t1-ov-ranked .rank { width: 56px; height: 56px; font-size: calc(28px * var(--type)); }
+      [data-format="vertical"] #t1-ov-ranked .row-divider { display: none; }
+      [data-format="vertical"] #t1-ov-ranked .row-heading { font-size: calc(30px * var(--type)); margin-bottom: 4px; }
+      [data-format="vertical"] #t1-ov-ranked .row-body { font-size: calc(22px * var(--type)); line-height: 1.3; }
+      [data-format="square"] #t1-ov-ranked .row-body { line-height: 1.35; }
     </style>
   </head>
   <body>

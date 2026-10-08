@@ -39,14 +39,21 @@
   --wt-bold:  700;
   --wt-black: 900;
 
-  /* video sizes for 1920x1080 (big - readable in 2s) */
-  --size-mega:     320px;   /* hero stat number */
-  --size-display:  150px;   /* takeover headline */
-  --size-title:    92px;    /* section title */
-  --size-headline: 56px;    /* card headline */
-  --size-body:     32px;    /* supporting copy */
-  --size-label:    24px;    /* kicker / metadata */
-  --size-tiny:     18px;    /* credits, fine print */
+  /* --- format (master landscape defaults) --------------------------------- */
+  /* render-scenes.mjs stamps the real --w, --h, --u and safe insets per format and
+     sets data-format on the root, which raises --type in vertical. */
+  --w: 1920px; --h: 1080px; --u: 10.8px;
+  --safe-t: 54px; --safe-b: 54px; --safe-l: 96px; --safe-r: 96px;
+  --type: 1;
+
+  /* video sizes, scaled up 20% in vertical (big - readable in 2s) */
+  --size-mega:     calc(320px * var(--type));   /* hero stat number */
+  --size-display:  calc(150px * var(--type));   /* takeover headline */
+  --size-title:    calc(92px * var(--type));    /* section title */
+  --size-headline: calc(56px * var(--type));    /* card headline */
+  --size-body:     calc(32px * var(--type));    /* supporting copy */
+  --size-label:    calc(24px * var(--type));    /* kicker / metadata */
+  --size-tiny:     calc(18px * var(--type));    /* credits, fine print */
 
   --track-tight: -0.03em;   /* display tracking, tighter than web */
   --track-wide:  0.16em;    /* uppercase label tracking */
@@ -79,3 +86,6 @@
   --grid-line: rgba(23, 19, 14, 0.07);
   --grid-size: 64px;
 }
+
+/* The phone shows the whole vertical frame smaller, so type runs 20% larger there. */
+:root[data-format="vertical"] { --type: 1.2; }

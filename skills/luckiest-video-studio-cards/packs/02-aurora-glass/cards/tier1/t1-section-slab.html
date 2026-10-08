@@ -15,7 +15,7 @@
       html, body { margin: 0; }
 
       #t1-sec-slab {
-        position: absolute; inset: 0; width: 1920px; height: 1080px;
+        position: absolute; inset: 0; width: var(--w); height: var(--h);
         background: var(--canvas); color: var(--text);
         font-family: var(--font-display); overflow: hidden;
       }
@@ -72,7 +72,7 @@
       #t1-sec-slab .kicker {
         display: inline-block;
         font-family: var(--font-display); font-style: italic;
-        font-weight: var(--wt-semi); font-size: 30px;
+        font-weight: var(--wt-semi); font-size: calc(30px * var(--type));
         letter-spacing: 0.18em; text-transform: uppercase;
         color: var(--accent); text-shadow: var(--textglow-accent);
         background: rgba(var(--accent-rgb), 0.10);
@@ -104,6 +104,13 @@
         background-size: 200px 200px; mix-blend-mode: overlay; opacity: 0.10;
         pointer-events: none; z-index: 7;
       }
+
+      /* Vertical and square: the slab centres in the safe area at the safe width. */
+      [data-format="vertical"] #t1-sec-slab .slab-wrap, [data-format="square"] #t1-sec-slab .slab-wrap { top: calc((var(--safe-t) + var(--h) - var(--safe-b)) / 2); left: calc((var(--safe-l) + var(--w) - var(--safe-r)) / 2); }
+      [data-format="vertical"] #t1-sec-slab .slab, [data-format="square"] #t1-sec-slab .slab {
+        width: calc(var(--w) - var(--safe-l) - var(--safe-r)); box-sizing: border-box; padding: 56px 52px 64px;
+      }
+      [data-format="vertical"] #t1-sec-slab .headline, [data-format="square"] #t1-sec-slab .headline { max-width: none; }
     </style>
   </head>
   <body>

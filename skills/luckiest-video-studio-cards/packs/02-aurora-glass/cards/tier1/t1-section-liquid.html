@@ -15,7 +15,7 @@
       html, body { margin: 0; }
 
       #t1-sec-liquid {
-        position: absolute; inset: 0; width: 1920px; height: 1080px;
+        position: absolute; inset: 0; width: var(--w); height: var(--h);
         background: var(--canvas); color: var(--text);
         font-family: var(--font-display); overflow: hidden;
       }
@@ -37,7 +37,8 @@
       /* Liquid blob - morphing border-radius, glass surface */
       #t1-sec-liquid .blob-wrap {
         position: absolute;
-        left: 50%; top: 50%;
+        left: calc(var(--safe-l) + (var(--w) - var(--safe-l) - var(--safe-r)) / 2);
+        top: calc(var(--safe-t) + (var(--h) - var(--safe-t) - var(--safe-b)) / 2);
         width: 960px; height: 720px;
         margin-left: -480px; margin-top: -360px;
         z-index: 2;
@@ -70,15 +71,15 @@
 
       /* Content - z-index above the blob */
       #t1-sec-liquid .content {
-        position: absolute; left: 0; right: 0;
-        top: 0; bottom: 0;
+        position: absolute; left: var(--safe-l); right: var(--safe-r);
+        top: var(--safe-t); bottom: var(--safe-b);
         display: flex; flex-direction: column;
         align-items: center; justify-content: center;
         z-index: 4;
       }
       #t1-sec-liquid .kicker {
         font-family: var(--font-display); font-style: italic;
-        font-weight: var(--wt-semi); font-size: 36px;
+        font-weight: var(--wt-semi); font-size: calc(36px * var(--type));
         letter-spacing: 0.18em; text-transform: uppercase;
         color: var(--accent); text-shadow: var(--textglow-accent);
         margin-bottom: 28px;
@@ -105,6 +106,12 @@
         background-size: 200px 200px; mix-blend-mode: overlay; opacity: 0.10;
         pointer-events: none; z-index: 7;
       }
+
+      /* Vertical and square: the blob and title center on the safe box (above); in vertical the
+         blob turns portrait to hold the taller wrapped headline. */
+      [data-format="vertical"] #t1-sec-liquid .blob-wrap { width: 800px; height: 860px; margin-left: -400px; margin-top: -430px; }
+      [data-format="vertical"] #t1-sec-liquid .headline, [data-format="square"] #t1-sec-liquid .headline { padding: 0; text-wrap: balance; }
+      [data-format="vertical"] #t1-sec-liquid .headline { max-width: 680px; }
     </style>
   </head>
   <body>

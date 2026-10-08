@@ -13,7 +13,7 @@
       html, body { margin: 0; background: transparent; }
 
       #t2-lb-leg {
-        position: absolute; inset: 0; width: 1920px; height: 1080px;
+        position: absolute; inset: 0; width: var(--w); height: var(--h);
         background: transparent; overflow: hidden;
       }
 
@@ -31,7 +31,7 @@
 
       /* Wrapper anchored right */
       #t2-lb-leg .wrapper {
-        position: absolute; right: 140px; top: 490px;
+        position: absolute; right: calc(var(--safe-r) + 44px); top: calc(var(--safe-t) + 436px);
         display: flex; flex-direction: column; align-items: flex-end; gap: 0;
       }
 
@@ -62,7 +62,7 @@
       /* Optional header kicker inside card */
       #t2-lb-leg .legend-header {
         font-family: var(--font-mono); font-weight: var(--wt-bold);
-        font-size: 16px; letter-spacing: var(--track-wide);
+        font-size: calc(16px * var(--type)); letter-spacing: var(--track-wide);
         text-transform: uppercase; color: var(--text-faint);
         margin-bottom: 14px; text-align: right;
       }
@@ -82,7 +82,7 @@
       /* Row label */
       #t2-lb-leg .row-label {
         font-family: var(--font-display); font-weight: var(--wt-semi);
-        font-size: 24px; color: var(--white); text-shadow: var(--textglow);
+        font-size: calc(24px * var(--type)); color: var(--white); text-shadow: var(--textglow);
         white-space: nowrap;
         text-align: right;
       }
@@ -111,9 +111,18 @@
       /* Sub-label beneath each row (the "detail" slot is row 2's label) */
       #t2-lb-leg .row-sub {
         font-family: var(--font-body); font-weight: var(--wt-reg);
-        font-size: 18px; color: var(--text-dim);
+        font-size: calc(18px * var(--type)); color: var(--text-dim);
         text-align: right; margin-top: 2px;
       }
+      /* Vertical and square: card moves to the bottom-left of the safe area, glow follows, slots wrap. */
+      [data-format="vertical"] #t2-lb-leg .wrapper, [data-format="square"] #t2-lb-leg .wrapper {
+        top: auto; right: auto; left: var(--safe-l); bottom: var(--safe-b);
+        max-width: calc(var(--w) - var(--safe-l) - var(--safe-r));
+      }
+      [data-format="vertical"] #t2-lb-leg .local-glow, [data-format="square"] #t2-lb-leg .local-glow {
+        top: auto; right: auto; left: calc(var(--safe-l) - 40px); bottom: calc(var(--safe-b) - 40px);
+      }
+      [data-format="vertical"] #t2-lb-leg [data-slot], [data-format="square"] #t2-lb-leg [data-slot] { white-space: normal; }
     </style>
   </head>
   <body>

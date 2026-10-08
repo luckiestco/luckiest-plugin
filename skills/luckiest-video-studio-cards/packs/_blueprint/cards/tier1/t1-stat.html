@@ -13,13 +13,15 @@
     <style>
       html, body { margin: 0; }
       #t1-stat {
-        position: absolute; inset: 0; width: 1920px; height: 1080px;
+        position: absolute; inset: 0; width: var(--w); height: var(--h);
         background: var(--bg);                /* opaque: this is a takeover */
         color: var(--fg);
         font-family: var(--font-body);
         display: flex; flex-direction: column;
         align-items: center; justify-content: center; text-align: center;
         overflow: hidden;
+        /* centered in the safe area, not the frame: vertical's safe area sits high */
+        box-sizing: border-box; padding: var(--safe-t) var(--safe-r) var(--safe-b) var(--safe-l);
       }
       #t1-stat .kicker {
         font-family: var(--font-mono); font-size: var(--size-label);
@@ -31,7 +33,7 @@
         font-size: var(--size-display); line-height: 0.95; color: var(--accent);
       }
       #t1-stat .label {
-        font-size: var(--size-headline); font-weight: 500; max-width: 1200px;
+        font-size: var(--size-headline); font-weight: 500; max-width: min(1200px, 100%);
         margin-top: 28px; color: var(--fg);
       }
     </style>

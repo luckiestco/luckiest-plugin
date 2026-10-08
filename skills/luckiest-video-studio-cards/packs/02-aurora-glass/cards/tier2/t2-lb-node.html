@@ -14,14 +14,14 @@
       html, body { margin: 0; background: transparent; }
 
       #t2-lb-node {
-        position: absolute; inset: 0; width: 1920px; height: 1080px;
+        position: absolute; inset: 0; width: var(--w); height: var(--h);
         background: transparent; overflow: hidden;
         font-family: var(--font-display);
       }
 
       /* Local glow centered on node */
       #t2-lb-node .local-glow {
-        position: absolute; left: 140px; top: 400px;
+        position: absolute; left: calc(var(--safe-l) + 44px); top: calc(var(--safe-t) + 346px);
         width: 400px; height: 400px; border-radius: 50%;
         background: radial-gradient(ellipse at 50% 50%,
           rgba(var(--accent-rgb), 0.28) 0%,
@@ -33,7 +33,7 @@
 
       /* Node group - SVG */
       #t2-lb-node .node-svg {
-        position: absolute; left: 140px; top: 430px;
+        position: absolute; left: calc(var(--safe-l) + 44px); top: calc(var(--safe-t) + 376px);
         width: 120px; height: 120px;
         overflow: visible;
       }
@@ -67,7 +67,7 @@
 
       /* Connector line from node to label */
       #t2-lb-node .conn-svg {
-        position: absolute; left: 268px; top: 488px;
+        position: absolute; left: calc(var(--safe-l) + 172px); top: calc(var(--safe-t) + 434px);
         width: 50px; height: 2px; overflow: visible;
       }
 
@@ -81,7 +81,7 @@
 
       /* Label group beside node */
       #t2-lb-node .label-group {
-        position: absolute; left: 330px; top: 446px;
+        position: absolute; left: calc(var(--safe-l) + 234px); top: calc(var(--safe-t) + 392px);
         display: flex; flex-direction: column; gap: 10px;
       }
 
@@ -92,14 +92,14 @@
 
       #t2-lb-node .term-text {
         font-family: var(--font-display); font-weight: var(--wt-bold);
-        font-size: 34px; letter-spacing: var(--track-snug);
+        font-size: calc(34px * var(--type)); letter-spacing: var(--track-snug);
         color: var(--white); text-shadow: var(--textglow);
         white-space: nowrap;
       }
 
       /* Tiny status badge inline */
       #t2-lb-node .status-badge {
-        font-family: var(--font-mono); font-size: 11px;
+        font-family: var(--font-mono); font-size: calc(11px * var(--type));
         letter-spacing: var(--track-wide); text-transform: uppercase;
         color: var(--accent); text-shadow: var(--textglow-accent);
         padding: 3px 8px;
@@ -123,15 +123,35 @@
 
       #t2-lb-node .detail-text {
         font-family: var(--font-body); font-weight: var(--wt-reg);
-        font-size: 22px; line-height: 1.45;
+        font-size: calc(22px * var(--type)); line-height: 1.45;
         color: var(--text-dim);
       }
+      /* Vertical and square: the label drops to the bottom of the safe area, the node and connector ride beside its top. */
+      [data-format="vertical"] #t2-lb-node .label-group, [data-format="square"] #t2-lb-node .label-group {
+        anchor-name: --t2-lb-node-label;
+        top: auto; left: calc(var(--safe-l) + 190px); bottom: var(--safe-b);
+        max-width: calc(var(--w) - var(--safe-l) - var(--safe-r) - 190px);
+      }
+      [data-format="vertical"] #t2-lb-node .node-svg, [data-format="square"] #t2-lb-node .node-svg { position-anchor: --t2-lb-node-label; left: var(--safe-l); top: calc(anchor(top) - 16px); }
+      [data-format="vertical"] #t2-lb-node .conn-svg, [data-format="square"] #t2-lb-node .conn-svg { position-anchor: --t2-lb-node-label; left: calc(var(--safe-l) + 128px); top: calc(anchor(top) + 42px); }
+      [data-format="vertical"] #t2-lb-node .local-glow, [data-format="square"] #t2-lb-node .local-glow { top: auto; left: calc(var(--safe-l) - 80px); bottom: calc(var(--safe-b) - 80px); }
+      [data-format="vertical"] #t2-lb-node [data-slot], [data-format="square"] #t2-lb-node [data-slot] { white-space: normal; }
     </style>
   </head>
   <body>
     <div id="t2-lb-node" data-composition-id="t2-lb-node" data-start="0" data-width="1920" data-height="1080">
 
       <div class="local-glow"></div>
+
+      <div class="label-group">
+        <div class="term-wrap">
+          <div class="term-text" data-slot="term">Embedding Layer</div>
+          <div class="status-badge">LIVE</div>
+        </div>
+        <div class="detail-wrap">
+          <div class="detail-text" data-slot="detail">Maps each token to a high-dimensional vector - the first step of model comprehension.</div>
+        </div>
+      </div>
 
       <!-- Node SVG: center at 60,60 in 120×120 viewBox -->
       <svg class="node-svg" viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg">
@@ -150,16 +170,6 @@
       <svg class="conn-svg" viewBox="0 0 50 2" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
         <line id="t2-lb-node-conn" class="conn-line" x1="0" y1="1" x2="50" y2="1" />
       </svg>
-
-      <div class="label-group">
-        <div class="term-wrap">
-          <div class="term-text" data-slot="term">Embedding Layer</div>
-          <div class="status-badge">LIVE</div>
-        </div>
-        <div class="detail-wrap">
-          <div class="detail-text" data-slot="detail">Maps each token to a high-dimensional vector - the first step of model comprehension.</div>
-        </div>
-      </div>
 
     </div>
 

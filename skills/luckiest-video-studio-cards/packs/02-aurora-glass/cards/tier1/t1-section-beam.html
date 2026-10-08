@@ -14,7 +14,7 @@
       html, body { margin: 0; }
 
       #t1-sec-beam {
-        position: absolute; inset: 0; width: 1920px; height: 1080px;
+        position: absolute; inset: 0; width: var(--w); height: var(--h);
         background: var(--canvas); color: var(--text);
         font-family: var(--font-display); overflow: hidden;
       }
@@ -76,18 +76,19 @@
 
       /* Content - centered; revealed by the beam sweep */
       #t1-sec-beam .content {
-        position: absolute; left: 0; right: 0; top: 50%;
+        position: absolute; left: var(--safe-l); right: var(--safe-r);
+        top: calc(var(--safe-t) + (var(--h) - var(--safe-t) - var(--safe-b)) / 2);
         transform: translateY(-54%);
         text-align: center; z-index: 6;
       }
       #t1-sec-beam .kicker {
         font-family: var(--font-display); font-style: italic; font-weight: var(--wt-semi);
-        font-size: 40px; letter-spacing: 0.12em; color: var(--white);
+        font-size: calc(40px * var(--type)); letter-spacing: 0.12em; color: var(--white);
         text-shadow: var(--textglow); margin-bottom: 24px;
       }
       #t1-sec-beam .plate {
         position: absolute; left: 50%; top: 76px; transform: translateX(-50%);
-        width: 1200px; height: 160px; border-radius: 50%;
+        width: min(1200px, 100%); height: 160px; border-radius: 50%;
         background: radial-gradient(60% 100% at 50% 50%, rgba(255,255,255,0.11), transparent 70%);
         filter: blur(18px); z-index: -1;
       }
@@ -110,6 +111,12 @@
         background-size: 200px 200px; mix-blend-mode: overlay; opacity: 0.10;
         pointer-events: none; z-index: 9;
       }
+
+      /* Vertical and square: the block centers on the safe box (top above) and the headline
+         drops its side padding so it wraps inside the narrower width. */
+      [data-format="vertical"] #t1-sec-beam .headline, [data-format="square"] #t1-sec-beam .headline { padding: 0; }
+      [data-format="vertical"] #t1-sec-beam .plate { height: 380px; }
+      [data-format="vertical"] #t1-sec-beam .headline, [data-format="square"] #t1-sec-beam .headline { text-wrap: balance; }
     </style>
   </head>
   <body>

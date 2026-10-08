@@ -12,7 +12,7 @@
     <style>
       html, body { margin: 0; background: transparent; }
       #t2-lb-brkt {
-        position: absolute; inset: 0; width: 1920px; height: 1080px;
+        position: absolute; inset: 0; width: var(--w); height: var(--h);
         background: transparent; font-family: var(--font-display);
       }
       #t2-lb-brkt .wrap { position: absolute; left: 150px; top: 355px; width: 820px; }
@@ -43,7 +43,7 @@
         display: inline-block; overflow: hidden;
         font-family: var(--font-display);
         font-weight: var(--wt-black);
-        font-size: 72px;
+        font-size: calc(72px * var(--type));
         letter-spacing: var(--track-tight);
         color: var(--ink);
         white-space: nowrap;
@@ -60,6 +60,13 @@
         font-size: var(--size-body); line-height: 1.4; color: var(--ink);
         background: rgba(239,233,220,0.92); padding: 10px 16px; display: inline-block;
       }
+
+      /* Vertical and square: sit at the bottom of the safe area, clear of the speaker's face. */
+      [data-format="vertical"] #t2-lb-brkt .wrap, [data-format="square"] #t2-lb-brkt .wrap {
+        top: auto; left: var(--safe-l); bottom: calc(var(--safe-b) + 24px);
+        width: auto; max-width: calc(var(--w) - var(--safe-l) - var(--safe-r));
+      }
+      [data-format="vertical"] #t2-lb-brkt [data-slot], [data-format="square"] #t2-lb-brkt [data-slot] { white-space: normal; }
     </style>
   </head>
   <body>

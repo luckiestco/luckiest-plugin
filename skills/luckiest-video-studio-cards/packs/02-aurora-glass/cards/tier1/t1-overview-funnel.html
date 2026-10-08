@@ -13,7 +13,7 @@
       html, body { margin: 0; }
 
       #t1-ov-funnel {
-        position: absolute; inset: 0; width: 1920px; height: 1080px;
+        position: absolute; inset: 0; width: var(--w); height: var(--h);
         background: var(--canvas); color: var(--text);
         font-family: var(--font-display); overflow: hidden;
       }
@@ -30,7 +30,7 @@
 
       /* Title */
       #t1-ov-funnel .title-row {
-        position: absolute; left: 0; right: 0; top: 72px; text-align: center; z-index: 4;
+        position: absolute; left: var(--safe-l); right: var(--safe-r); top: calc(var(--safe-t) + 18px); text-align: center; z-index: 4;
       }
       #t1-ov-funnel .title {
         font-family: var(--font-display); font-weight: var(--wt-bold);
@@ -45,7 +45,7 @@
       /* Funnel stack - centered, vertical */
       #t1-ov-funnel .funnel-stack {
         position: absolute;
-        left: 50%; top: 220px;
+        left: 50%; top: calc(var(--safe-t) + 166px);
         display: flex; flex-direction: column; align-items: center;
         gap: 0; z-index: 4;
       }
@@ -93,12 +93,12 @@
 
       .funnel-stage .stage-label {
         font-family: var(--font-display); font-weight: var(--wt-semi);
-        font-size: 32px; color: var(--white); letter-spacing: var(--track-snug);
+        font-size: calc(32px * var(--type)); color: var(--white); letter-spacing: var(--track-snug);
         line-height: 1.2; padding-left: 18px;
       }
       .funnel-stage .stage-pct {
         font-family: var(--font-mono); font-weight: 700;
-        font-size: 34px; color: var(--accent);
+        font-size: calc(34px * var(--type)); color: var(--accent);
         letter-spacing: 0.04em; text-shadow: var(--textglow-accent);
         flex-shrink: 0; margin-left: 20px;
       }
@@ -131,6 +131,20 @@
         background-size: 200px 200px; mix-blend-mode: overlay; opacity: 0.10;
         pointer-events: none; z-index: 7;
       }
+
+      /* Vertical and square: funnel centered in the safe box, narrower stages in vertical, taller bars. */
+      [data-format="vertical"] #t1-ov-funnel .title-row, [data-format="square"] #t1-ov-funnel .title-row { top: var(--safe-t); }
+      [data-format="vertical"] #t1-ov-funnel .title { font-size: calc(64px * var(--type)); }
+      [data-format="square"] #t1-ov-funnel .title { font-size: 64px; }
+      [data-format="vertical"] #t1-ov-funnel .funnel-stack { left: calc(var(--safe-l) + (var(--w) - var(--safe-l) - var(--safe-r)) / 2); top: calc(var(--safe-t) + 260px); }
+      [data-format="square"] #t1-ov-funnel .funnel-stack { top: calc(var(--safe-t) + 150px); }
+      [data-format="vertical"] #t1-ov-funnel #fs1 { width: 767px; }
+      [data-format="vertical"] #t1-ov-funnel #fs2 { width: 640px; }
+      [data-format="vertical"] #t1-ov-funnel #fs3 { width: 513px; }
+      [data-format="vertical"] #t1-ov-funnel #fs4 { width: 386px; }
+      [data-format="vertical"] #t1-ov-funnel .funnel-stage .stage-glass { padding: 40px 32px; }
+      [data-format="square"] #t1-ov-funnel .funnel-stage .stage-glass { padding: 38px 36px; }
+      [data-format="vertical"] #t1-ov-funnel .funnel-conn, [data-format="square"] #t1-ov-funnel .funnel-conn { height: 30px; }
     </style>
   </head>
   <body>

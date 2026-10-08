@@ -15,7 +15,7 @@
       html, body { margin: 0; background: transparent; }
 
       #t2-lb-mtr {
-        position: absolute; inset: 0; width: 1920px; height: 1080px;
+        position: absolute; inset: 0; width: var(--w); height: var(--h);
         background: transparent; overflow: hidden;
         font-family: var(--font-display);
       }
@@ -23,7 +23,7 @@
       /* Localized ambient glow - right upper area */
       #t2-lb-mtr .local-glow {
         position: absolute;
-        right: 80px; top: 310px;
+        right: calc(var(--safe-r) - 16px); top: calc(var(--safe-t) + 256px);
         width: 500px; height: 300px;
         border-radius: 50%;
         background: radial-gradient(ellipse at 55% 45%,
@@ -37,7 +37,7 @@
       /* The chip - anchored right, upper-mid */
       #t2-lb-mtr .chip {
         position: absolute;
-        right: 120px; top: 340px;
+        right: calc(var(--safe-r) + 24px); top: calc(var(--safe-t) + 286px);
         width: 390px;
         padding: 20px 24px 18px;
         background: var(--glass-bg-dark);
@@ -83,7 +83,7 @@
       #t2-lb-mtr .term {
         font-family: var(--font-display);
         font-weight: var(--wt-bold);
-        font-size: 26px;
+        font-size: calc(26px * var(--type));
         letter-spacing: var(--track-snug);
         color: var(--white);
         text-shadow: var(--textglow);
@@ -125,7 +125,7 @@
       #t2-lb-mtr .pct-label {
         font-family: var(--font-mono);
         font-weight: var(--wt-bold);
-        font-size: 20px;
+        font-size: calc(20px * var(--type));
         color: var(--accent);
         text-shadow: var(--textglow-accent);
         letter-spacing: 0.06em;
@@ -133,7 +133,7 @@
 
       #t2-lb-mtr .pct-of {
         font-family: var(--font-mono);
-        font-size: 16px;
+        font-size: calc(16px * var(--type));
         color: var(--text-faint);
         letter-spacing: 0.06em;
       }
@@ -149,10 +149,19 @@
       #t2-lb-mtr .detail {
         font-family: var(--font-body);
         font-weight: var(--wt-reg);
-        font-size: 19px;
+        font-size: calc(19px * var(--type));
         line-height: 1.45;
         color: var(--text-dim);
       }
+      /* Vertical and square: the card drops to the bottom of the safe area, left aligned, its glow following. */
+      [data-format="vertical"] #t2-lb-mtr .chip, [data-format="square"] #t2-lb-mtr .chip {
+        top: auto; right: auto; left: var(--safe-l); bottom: var(--safe-b);
+        max-width: calc(var(--w) - var(--safe-l) - var(--safe-r));
+      }
+      [data-format="vertical"] #t2-lb-mtr .local-glow, [data-format="square"] #t2-lb-mtr .local-glow {
+        top: auto; right: auto; left: calc(var(--safe-l) - 55px); bottom: calc(var(--safe-b) - 40px);
+      }
+      [data-format="vertical"] #t2-lb-mtr [data-slot], [data-format="square"] #t2-lb-mtr [data-slot] { white-space: normal; }
     </style>
   </head>
   <body>

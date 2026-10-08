@@ -13,7 +13,7 @@
       html, body { margin: 0; }
 
       #t1-ov-check {
-        position: absolute; inset: 0; width: 1920px; height: 1080px;
+        position: absolute; inset: 0; width: var(--w); height: var(--h);
         background: var(--canvas); color: var(--text);
         font-family: var(--font-body); overflow: hidden;
       }
@@ -32,7 +32,7 @@
       #t1-ov-check .layout {
         position: absolute; inset: 0; z-index: 3;
         display: flex; flex-direction: column;
-        padding: 90px var(--pad) 80px;
+        padding: calc(var(--safe-t) + 36px) var(--safe-r) calc(var(--safe-b) + 26px) var(--safe-l);
       }
 
       /* Title */
@@ -93,7 +93,7 @@
       /* Row text */
       #t1-ov-check .row-text {
         font-family: var(--font-display); font-weight: var(--wt-semi);
-        font-size: 36px; color: var(--white);
+        font-size: calc(36px * var(--type)); color: var(--white);
         letter-spacing: var(--track-snug); line-height: 1.2;
       }
 
@@ -106,6 +106,14 @@
         background-size: 200px 200px; mix-blend-mode: overlay; opacity: 0.10;
         pointer-events: none; z-index: 7;
       }
+
+      /* Vertical and square: title and rows centered as one block, rows tighter so items wrap inside the box. */
+      [data-format="vertical"] #t1-ov-check .layout, [data-format="square"] #t1-ov-check .layout { justify-content: center; }
+      [data-format="vertical"] #t1-ov-check .rows, [data-format="square"] #t1-ov-check .rows { flex: none; gap: 20px; }
+      [data-format="vertical"] #t1-ov-check .card-title { padding-left: 6px; margin-bottom: 44px; }
+      [data-format="square"] #t1-ov-check .card-title { margin-bottom: 44px; font-size: 46px; }
+      [data-format="vertical"] #t1-ov-check .row, [data-format="square"] #t1-ov-check .row { padding: 26px 32px; gap: 26px; }
+      [data-format="vertical"] #t1-ov-check .check-wrap, [data-format="square"] #t1-ov-check .check-wrap { width: 60px; height: 60px; }
     </style>
   </head>
   <body>

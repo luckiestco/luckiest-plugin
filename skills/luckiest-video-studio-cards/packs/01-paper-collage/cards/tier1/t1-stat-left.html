@@ -13,7 +13,7 @@
     <style>
       html, body { margin: 0; }
       #t1-stat-left {
-        position: absolute; inset: 0; width: 1920px; height: 1080px;
+        position: absolute; inset: 0; width: var(--w); height: var(--h);
         background: var(--paper); color: var(--ink);
         font-family: var(--font-display); overflow: hidden;
       }
@@ -32,44 +32,61 @@
         background: radial-gradient(120% 120% at 30% 60%, transparent 52%, rgba(23,19,14,0.18) 100%);
       }
       #t1-stat-left .kicker {
-        position: absolute; left: 120px; top: 150px; z-index: 4;
+        position: absolute; left: calc(var(--safe-l) + 24px); top: calc(var(--safe-t) + 96px); z-index: 4;
         font-family: var(--font-label); font-weight: var(--wt-bold);
         font-size: var(--size-label); letter-spacing: var(--track-wide);
         text-transform: uppercase; color: var(--red);
       }
       #t1-stat-left .numwrap {
-        position: absolute; left: -40px; bottom: -120px; z-index: 2;
+        position: absolute; left: var(--safe-l); bottom: var(--safe-b); z-index: 2;
         display: flex; align-items: flex-end;
       }
       #t1-stat-left .stat {
-        font-weight: var(--wt-black); font-size: 760px; line-height: 0.74;
+        font-weight: var(--wt-black); font-size: calc(620px * var(--type)); line-height: 0.74;
         letter-spacing: -0.05em; color: var(--ink); font-variant-numeric: tabular-nums;
       }
       #t1-stat-left .unit {
-        position: relative; font-weight: var(--wt-black); font-size: 200px; line-height: 1;
-        margin: 0 0 120px 8px; color: var(--ink);
+        position: relative; font-weight: var(--wt-black); font-size: calc(200px * var(--type)); line-height: 1;
+        margin: 0 0 0 8px; color: var(--ink);
       }
       #t1-stat-left .unit .slab {
         position: absolute; left: -6px; right: -10px; bottom: 22px; height: 60px;
         background: var(--yellow); z-index: -1; transform-origin: left center;
       }
       #t1-stat-left .label {
-        position: absolute; right: 120px; top: 50%; transform: translateY(-50%);
+        position: absolute; right: calc(var(--safe-r) + 24px); top: 50%; transform: translateY(-50%);
         width: 620px; z-index: 4; text-align: left;
-        font-weight: var(--wt-thin); font-size: 64px; line-height: 1.08;
+        font-weight: var(--wt-thin); font-size: calc(64px * var(--type)); line-height: 1.08;
         letter-spacing: var(--track-tight); color: var(--ink);
       }
       #t1-stat-left .label em { font-style: italic; font-weight: var(--wt-black); }
       #t1-stat-left .rule {
-        position: absolute; right: 120px; top: calc(50% - 150px); width: 620px; height: 5px;
+        position: absolute; right: calc(var(--safe-r) + 24px); top: calc(50% - 150px); width: 620px; height: 5px;
         background: var(--ink); transform-origin: right center; z-index: 4;
       }
       #t1-stat-left .source {
-        position: absolute; right: 120px; bottom: 96px; z-index: 4; text-align: right;
+        position: absolute; right: calc(var(--safe-r) + 24px); bottom: calc(var(--safe-b) + 42px); z-index: 4; text-align: right;
         font-family: var(--font-label); font-weight: var(--wt-bold);
         font-size: var(--size-tiny); letter-spacing: var(--track-wide);
         text-transform: uppercase; color: var(--muted);
       }
+
+      /* Vertical and square: kicker, numeral with the unit under it, rule, label, source,
+         stacked down the safe area. */
+      [data-format="vertical"] #t1-stat-left .numwrap, [data-format="square"] #t1-stat-left .numwrap {
+        bottom: auto; top: calc(var(--safe-t) + 70px); flex-direction: column; align-items: flex-start;
+      }
+      [data-format="vertical"] #t1-stat-left .kicker, [data-format="square"] #t1-stat-left .kicker { left: var(--safe-l); top: var(--safe-t); }
+      [data-format="vertical"] #t1-stat-left .stat { font-size: calc(500px * var(--type)); }
+      [data-format="square"] #t1-stat-left .stat { font-size: 380px; }
+      [data-format="vertical"] #t1-stat-left .unit, [data-format="square"] #t1-stat-left .unit { font-size: calc(96px * var(--type)); margin: 24px 0 0 0; }
+      [data-format="vertical"] #t1-stat-left .label, [data-format="square"] #t1-stat-left .label {
+        left: var(--safe-l); right: var(--safe-r); width: auto; top: auto; bottom: calc(var(--safe-b) + 70px);
+        transform: none; border-top: 5px solid var(--ink); padding-top: 28px;
+      }
+      /* The rule rides on the label as its top border here, so it never lands on the unit. */
+      [data-format="vertical"] #t1-stat-left .rule, [data-format="square"] #t1-stat-left .rule { display: none; }
+      [data-format="vertical"] #t1-stat-left .source, [data-format="square"] #t1-stat-left .source { right: auto; left: var(--safe-l); bottom: var(--safe-b); text-align: left; }
     </style>
   </head>
   <body>

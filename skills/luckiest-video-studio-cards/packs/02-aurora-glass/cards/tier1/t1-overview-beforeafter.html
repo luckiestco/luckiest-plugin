@@ -15,7 +15,7 @@
       html, body { margin: 0; }
 
       #t1-ov-baft {
-        position: absolute; inset: 0; width: 1920px; height: 1080px;
+        position: absolute; inset: 0; width: var(--w); height: var(--h);
         background: var(--canvas); color: var(--text);
         font-family: var(--font-display); overflow: hidden;
       }
@@ -38,13 +38,13 @@
 
       /* Title */
       #t1-ov-baft .title-row {
-        position: absolute; left: 0; right: 0; top: 88px; text-align: center; z-index: 4;
+        position: absolute; left: var(--safe-l); right: var(--safe-r); top: calc(var(--safe-t) + 34px); text-align: center; z-index: 4;
       }
       #t1-ov-baft .title {
         font-family: var(--font-display); font-weight: var(--wt-bold);
         font-size: var(--size-title); letter-spacing: var(--track-snug); line-height: 1.06;
         color: var(--white); text-shadow: var(--textglow);
-        max-width: 1400px; margin: 0 auto;
+        max-width: none; margin: 0 auto;
       }
       #t1-ov-baft .title em {
         font-style: normal; color: var(--accent); text-shadow: var(--textglow-accent);
@@ -52,7 +52,7 @@
 
       /* Two-card layout + divider wrapper */
       #t1-ov-baft .layout {
-        position: absolute; left: 100px; right: 100px; top: 248px; bottom: 72px;
+        position: absolute; left: calc(var(--safe-l) + 4px); right: calc(var(--safe-r) + 4px); top: calc(var(--safe-t) + 194px); bottom: calc(var(--safe-b) + 18px);
         display: flex; align-items: stretch; gap: 0; z-index: 4;
       }
 
@@ -115,7 +115,7 @@
       /* Card heading */
       #t1-ov-baft .card-heading {
         font-family: var(--font-display); font-weight: var(--wt-black);
-        font-size: 56px; letter-spacing: var(--track-snug); line-height: 1.14;
+        font-size: calc(56px * var(--type)); letter-spacing: var(--track-snug); line-height: 1.14;
         margin-bottom: 32px;
       }
       #t1-ov-baft #baft-before .card-heading {
@@ -150,7 +150,7 @@
         background: rgba(var(--accent-rgb), 0.07);
         box-shadow: 0 0 20px rgba(var(--accent-rgb), 0.28);
         display: flex; align-items: center; justify-content: center;
-        font-family: var(--font-mono); font-size: 20px; font-weight: var(--wt-bold);
+        font-family: var(--font-mono); font-size: calc(20px * var(--type)); font-weight: var(--wt-bold);
         letter-spacing: 0.06em; color: var(--accent);
         text-shadow: 0 0 10px rgba(var(--accent-rgb), 0.55);
         margin: 12px 0;
@@ -165,6 +165,30 @@
         background-size: 200px 200px; mix-blend-mode: overlay; opacity: 0.10;
         pointer-events: none; z-index: 7;
       }
+
+      /* Vertical and square: title on top, Before stacked over After, VS divider turns horizontal. */
+      [data-format="vertical"] #t1-ov-baft .title-row, [data-format="square"] #t1-ov-baft .title-row { top: var(--safe-t); }
+      [data-format="vertical"] #t1-ov-baft .title { font-size: calc(64px * var(--type)); }
+      [data-format="square"] #t1-ov-baft .title { font-size: 64px; }
+      [data-format="vertical"] #t1-ov-baft .layout, [data-format="square"] #t1-ov-baft .layout {
+        left: var(--safe-l); right: var(--safe-r); top: calc(var(--safe-t) + 190px); bottom: var(--safe-b);
+        flex-direction: column;
+      }
+      [data-format="square"] #t1-ov-baft .layout { top: calc(var(--safe-t) + 160px); }
+      [data-format="vertical"] #t1-ov-baft .card, [data-format="square"] #t1-ov-baft .card { padding: 34px 40px 30px; }
+      [data-format="vertical"] #t1-ov-baft #baft-before, [data-format="square"] #t1-ov-baft #baft-before { border-radius: var(--radius-lg) var(--radius-lg) 0 0; }
+      [data-format="vertical"] #t1-ov-baft #baft-after, [data-format="square"] #t1-ov-baft #baft-after { border-radius: 0 0 var(--radius-lg) var(--radius-lg); }
+      [data-format="vertical"] #t1-ov-baft .col-label, [data-format="square"] #t1-ov-baft .col-label { margin-bottom: 16px; }
+      [data-format="vertical"] #t1-ov-baft .card-heading { font-size: calc(40px * var(--type)); margin-bottom: 16px; }
+      [data-format="square"] #t1-ov-baft .card-heading { font-size: 44px; margin-bottom: 16px; }
+      [data-format="vertical"] #t1-ov-baft .card-body { font-size: calc(24px * var(--type)); line-height: 1.45; }
+      [data-format="square"] #t1-ov-baft .card-body { font-size: 28px; line-height: 1.45; }
+      [data-format="vertical"] #t1-ov-baft .divider, [data-format="square"] #t1-ov-baft .divider { width: auto; height: 64px; flex-direction: row; }
+      [data-format="vertical"] #t1-ov-baft .divider-line, [data-format="square"] #t1-ov-baft .divider-line {
+        width: auto; height: 1.5px;
+        background: linear-gradient(to right, transparent 0%, rgba(var(--accent-rgb), 0.30) 30%, rgba(var(--accent-rgb), 0.30) 70%, transparent 100%);
+      }
+      [data-format="vertical"] #t1-ov-baft .vs-pill, [data-format="square"] #t1-ov-baft .vs-pill { margin: 0 12px; }
     </style>
   </head>
   <body>

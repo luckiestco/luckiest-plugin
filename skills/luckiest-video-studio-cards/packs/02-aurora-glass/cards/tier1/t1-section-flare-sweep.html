@@ -15,7 +15,7 @@
       html, body { margin: 0; }
 
       #t1-sec-fsweep {
-        position: absolute; inset: 0; width: 1920px; height: 1080px;
+        position: absolute; inset: 0; width: var(--w); height: var(--h);
         background: var(--canvas); color: var(--text);
         font-family: var(--font-display); overflow: hidden;
       }
@@ -74,7 +74,8 @@
 
       /* ── Anamorphic horizontal streak ── */
       #t1-sec-fsweep .anamorphic {
-        position: absolute; left: 0; right: 0; top: 526px;
+        position: absolute; left: 0; right: 0;
+        top: calc(var(--safe-t) + (var(--h) - var(--safe-t) - var(--safe-b)) / 2 - 14px);
         height: 4px;
         background: linear-gradient(90deg,
           transparent 0%,
@@ -91,7 +92,8 @@
       }
       /* Diffuse glow bar */
       #t1-sec-fsweep .anamorphic-glow {
-        position: absolute; left: 0; right: 0; top: 510px;
+        position: absolute; left: 0; right: 0;
+        top: calc(var(--safe-t) + (var(--h) - var(--safe-t) - var(--safe-b)) / 2 - 30px);
         height: 36px;
         background: radial-gradient(100% 100% at 50% 50%,
           rgba(var(--accent-rgb), 0.28) 0%, transparent 70%);
@@ -101,12 +103,14 @@
 
       /* Content - centered */
       #t1-sec-fsweep .content {
-        position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%);
-        width: 1440px; text-align: center; z-index: 6;
+        position: absolute; transform: translate(-50%, -50%);
+        left: calc(var(--safe-l) + (var(--w) - var(--safe-l) - var(--safe-r)) / 2);
+        top: calc(var(--safe-t) + (var(--h) - var(--safe-t) - var(--safe-b)) / 2);
+        width: min(1440px, calc(var(--w) - var(--safe-l) - var(--safe-r))); text-align: center; z-index: 6;
       }
       #t1-sec-fsweep .kicker {
         font-family: var(--font-display); font-style: italic; font-weight: var(--wt-semi);
-        font-size: 38px; letter-spacing: 0.14em;
+        font-size: calc(38px * var(--type)); letter-spacing: 0.14em;
         color: var(--white); text-shadow: var(--textglow);
         margin-bottom: 30px;
       }
@@ -128,6 +132,10 @@
         background-size: 200px 200px; mix-blend-mode: overlay; opacity: 0.10;
         pointer-events: none; z-index: 9;
       }
+
+      /* Vertical and square: the title and the anamorphic streak center on the safe box
+         (top/left above); the headline wraps inside the safe width with balanced lines. */
+      [data-format="vertical"] #t1-sec-fsweep .headline, [data-format="square"] #t1-sec-fsweep .headline { text-wrap: balance; }
     </style>
   </head>
   <body>

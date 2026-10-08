@@ -13,7 +13,7 @@
     <style>
       html, body { margin: 0; }
       #t1-stat-photo {
-        position: absolute; inset: 0; width: 1920px; height: 1080px;
+        position: absolute; inset: 0; width: var(--w); height: var(--h);
         background: var(--ink); color: var(--paper);
         font-family: var(--font-display); overflow: hidden;
       }
@@ -33,20 +33,20 @@
         background-size: 180px 180px; mix-blend-mode: overlay; opacity: 0.5; pointer-events: none; z-index: 6;
       }
       #t1-stat-photo .kicker {
-        position: absolute; left: 130px; top: 150px; z-index: 4;
+        position: absolute; left: calc(var(--safe-l) + 34px); top: calc(var(--safe-t) + 96px); z-index: 4;
         font-family: var(--font-label); font-weight: var(--wt-bold);
         font-size: var(--size-label); letter-spacing: var(--track-wide);
         text-transform: uppercase; color: var(--yellow);
       }
       #t1-stat-photo .stat {
-        position: absolute; left: 120px; top: 38%; transform: translateY(-50%); z-index: 4;
-        font-weight: var(--wt-black); font-size: 480px; line-height: 0.8;
+        position: absolute; left: calc(var(--safe-l) + 24px); top: 38%; transform: translateY(-50%); z-index: 4;
+        font-weight: var(--wt-black); font-size: calc(480px * var(--type)); line-height: 0.8;
         letter-spacing: -0.05em; color: var(--paper); font-variant-numeric: tabular-nums;
         text-shadow: 0 14px 40px rgba(0,0,0,0.45);
       }
       #t1-stat-photo .label {
-        position: absolute; left: 130px; right: 130px; bottom: 170px; z-index: 4;
-        font-weight: var(--wt-thin); font-size: 70px; line-height: 1.05;
+        position: absolute; left: calc(var(--safe-l) + 34px); right: calc(var(--safe-r) + 34px); bottom: calc(var(--safe-b) + 116px); z-index: 4;
+        font-weight: var(--wt-thin); font-size: calc(70px * var(--type)); line-height: 1.05;
         letter-spacing: var(--track-tight); color: var(--paper);
       }
       #t1-stat-photo .label em {
@@ -55,11 +55,22 @@
         box-decoration-break: clone; -webkit-box-decoration-break: clone;
       }
       #t1-stat-photo .source {
-        position: absolute; left: 130px; bottom: 96px; z-index: 4;
+        position: absolute; left: calc(var(--safe-l) + 34px); bottom: calc(var(--safe-b) + 42px); z-index: 4;
         font-family: var(--font-label); font-weight: var(--wt-bold);
         font-size: var(--size-tiny); letter-spacing: var(--track-wide);
         text-transform: uppercase; color: rgba(239,233,220,0.7);
       }
+
+      /* Vertical and square: kicker, number sized to the safe width, label and source stacked at the
+         safe bottom; the scrim darkens the safe area instead of the frame bottom. */
+      [data-format="vertical"] #t1-stat-photo .scrim {
+        background: linear-gradient(180deg, rgba(23,19,14,0.30) 0%, rgba(23,19,14,0.10) 25%, rgba(23,19,14,0.74) 62%, rgba(23,19,14,0.6) 100%);
+      }
+      [data-format="vertical"] #t1-stat-photo .kicker, [data-format="square"] #t1-stat-photo .kicker { left: var(--safe-l); top: var(--safe-t); }
+      [data-format="vertical"] #t1-stat-photo .stat { left: var(--safe-l); top: calc(var(--safe-t) + 250px); font-size: calc(270px * var(--type)); }
+      [data-format="square"] #t1-stat-photo .stat { left: var(--safe-l); top: calc(var(--safe-t) + 260px); font-size: 380px; }
+      [data-format="vertical"] #t1-stat-photo .label, [data-format="square"] #t1-stat-photo .label { left: var(--safe-l); right: var(--safe-r); bottom: calc(var(--safe-b) + 70px); }
+      [data-format="vertical"] #t1-stat-photo .source, [data-format="square"] #t1-stat-photo .source { left: var(--safe-l); bottom: var(--safe-b); }
     </style>
   </head>
   <body>

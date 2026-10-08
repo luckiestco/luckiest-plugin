@@ -4,6 +4,10 @@ This skill is adapted from the "motion-os" skill and player in Motion OS
 (https://github.com/jasonlee-breadcrumb/motion-os) by Jason Lee, used under the
 MIT License. The license text is kept in `LICENSE-motion-os` and repeated below.
 
+The player was copied from upstream commit `15dc59eb` (2026-10-04). That commit is
+pinned in `packages/luckiest-skills/upstreams.json`, so the weekly upstream watch
+opens an issue when Motion OS changes.
+
 ## What this edition uses
 
 - `editor/index.html` and `editor/serve.mjs`: the Motion OS player and its local

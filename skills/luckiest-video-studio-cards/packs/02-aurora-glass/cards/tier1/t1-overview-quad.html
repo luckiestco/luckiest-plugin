@@ -15,7 +15,7 @@
       html, body { margin: 0; }
 
       #t1-ov-quad {
-        position: absolute; inset: 0; width: 1920px; height: 1080px;
+        position: absolute; inset: 0; width: var(--w); height: var(--h);
         background: var(--canvas); color: var(--text);
         font-family: var(--font-display); overflow: hidden;
       }
@@ -32,7 +32,7 @@
 
       /* Title */
       #t1-ov-quad .title-row {
-        position: absolute; left: 0; right: 0; top: 88px; text-align: center; z-index: 4;
+        position: absolute; left: var(--safe-l); right: var(--safe-r); top: calc(var(--safe-t) + 34px); text-align: center; z-index: 4;
       }
       #t1-ov-quad .title {
         font-family: var(--font-display); font-weight: var(--wt-bold);
@@ -46,7 +46,7 @@
 
       /* 2x2 grid */
       #t1-ov-quad .grid-wrap {
-        position: absolute; left: 240px; right: 240px; top: 248px; bottom: 88px;
+        position: absolute; left: 240px; right: 240px; top: 248px; bottom: calc(var(--safe-b) + 34px);
         display: grid;
         grid-template-columns: 1fr 1fr;
         grid-template-rows: 1fr 1fr;
@@ -88,7 +88,7 @@
       /* Label */
       #t1-ov-quad .tile-label {
         font-family: var(--font-display); font-weight: var(--wt-semi);
-        font-size: 38px; letter-spacing: var(--track-snug);
+        font-size: calc(38px * var(--type)); letter-spacing: var(--track-snug);
         color: var(--white); text-shadow: var(--textglow);
         text-align: center; padding: 0 24px;
       }
@@ -109,7 +109,7 @@
       /* Large glowing ? */
       #t1-ov-quad .q-mark {
         font-family: var(--font-display); font-weight: var(--wt-black);
-        font-size: 52px; color: var(--accent);
+        font-size: calc(52px * var(--type)); color: var(--accent);
         text-shadow: var(--textglow-accent);
         line-height: 1;
       }
@@ -123,6 +123,14 @@
         background-size: 200px 200px; mix-blend-mode: overlay; opacity: 0.10;
         pointer-events: none; z-index: 7;
       }
+
+      /* Vertical and square: the 2x2 grid fills the safe box under a smaller title. */
+      [data-format="vertical"] #t1-ov-quad .title-row, [data-format="square"] #t1-ov-quad .title-row { top: var(--safe-t); }
+      [data-format="vertical"] #t1-ov-quad .title { font-size: calc(64px * var(--type)); }
+      [data-format="square"] #t1-ov-quad .title { font-size: 64px; }
+      [data-format="vertical"] #t1-ov-quad .grid-wrap, [data-format="square"] #t1-ov-quad .grid-wrap { left: var(--safe-l); right: var(--safe-r); bottom: var(--safe-b); gap: 24px; }
+      [data-format="vertical"] #t1-ov-quad .grid-wrap { top: 480px; }
+      [data-format="square"] #t1-ov-quad .grid-wrap { top: 180px; }
     </style>
   </head>
   <body>

@@ -15,7 +15,7 @@
       html, body { margin: 0; background: transparent; }
 
       #t2-lt-live {
-        position: absolute; inset: 0; width: 1920px; height: 1080px;
+        position: absolute; inset: 0; width: var(--w); height: var(--h);
         background: transparent; overflow: hidden;
         font-family: var(--font-display);
       }
@@ -23,7 +23,7 @@
       /* Localized warm bloom (LIVE uses alert red accent glow, not blue) */
       #t2-lt-live .local-bloom {
         position: absolute;
-        left: 50px; bottom: 80px;
+        left: calc(var(--safe-l) - 30px); bottom: calc(var(--safe-b) + 26px);
         width: 600px; height: 250px;
         border-radius: 50%;
         background: radial-gradient(ellipse at 38% 85%,
@@ -38,7 +38,7 @@
       /* Outer card */
       #t2-lt-live .card {
         position: absolute;
-        left: 80px; bottom: 108px;
+        left: var(--safe-l); bottom: calc(var(--safe-b) + 54px);
         padding: 22px 38px 22px 30px;
         min-width: 480px;
         background: var(--glass-bg-dark);
@@ -114,7 +114,7 @@
       #t2-lt-live .live-label {
         font-family: var(--font-mono);
         font-weight: var(--wt-bold);
-        font-size: 18px;
+        font-size: calc(18px * var(--type));
         letter-spacing: 0.20em;
         text-transform: uppercase;
         color: var(--alert);
@@ -126,7 +126,7 @@
       #t2-lt-live .name {
         font-family: var(--font-display);
         font-weight: var(--wt-bold);
-        font-size: 38px;
+        font-size: calc(38px * var(--type));
         letter-spacing: var(--track-snug);
         color: var(--white);
         text-shadow: var(--textglow);
@@ -137,11 +137,17 @@
       #t2-lt-live .role {
         font-family: var(--font-body);
         font-weight: var(--wt-med);
-        font-size: 22px;
+        font-size: calc(22px * var(--type));
         letter-spacing: 0.01em;
         color: var(--text-dim);
         line-height: 1.3;
       }
+      /* Vertical and square: card sits at the bottom of the safe area, bloom follows, slots wrap. */
+      [data-format="vertical"] #t2-lt-live .card, [data-format="square"] #t2-lt-live .card {
+        bottom: var(--safe-b); max-width: calc(var(--w) - var(--safe-l) - var(--safe-r));
+      }
+      [data-format="vertical"] #t2-lt-live .local-bloom, [data-format="square"] #t2-lt-live .local-bloom { bottom: calc(var(--safe-b) - 28px); }
+      [data-format="vertical"] #t2-lt-live [data-slot], [data-format="square"] #t2-lt-live [data-slot] { white-space: normal; }
     </style>
   </head>
   <body>

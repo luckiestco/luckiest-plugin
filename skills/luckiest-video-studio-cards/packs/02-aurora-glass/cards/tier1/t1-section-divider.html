@@ -14,7 +14,7 @@
       html, body { margin: 0; }
 
       #t1-sec-div {
-        position: absolute; inset: 0; width: 1920px; height: 1080px;
+        position: absolute; inset: 0; width: var(--w); height: var(--h);
         background: var(--canvas); color: var(--text);
         font-family: var(--font-display); overflow: hidden;
       }
@@ -35,8 +35,8 @@
 
       /* Content - left-anchored, vertically centred */
       #t1-sec-div .content {
-        position: absolute; left: var(--pad); right: var(--pad);
-        top: 50%; transform: translateY(-54%);
+        position: absolute; left: var(--safe-l); right: var(--safe-r);
+        top: calc(var(--safe-t) + (var(--h) - var(--safe-t) - var(--safe-b)) / 2); transform: translateY(-54%);
         z-index: 4;
       }
 
@@ -92,6 +92,7 @@
           0 0 60px rgba(var(--accent-rgb), 0.15);
         border-radius: 2px;
         transform-origin: left center;
+        max-width: 100%;
       }
 
       /* Secondary thin rule beneath - slightly shorter, faint */
@@ -106,6 +107,7 @@
         );
         border-radius: 1px;
         transform-origin: left center;
+        max-width: 100%;
       }
 
       /* Vignette + grain */
@@ -118,6 +120,11 @@
         background-size: 200px 200px; mix-blend-mode: overlay; opacity: 0.10;
         pointer-events: none; z-index: 7;
       }
+
+      /* Vertical and square: the left-aligned block centers on the safe box (top above); the
+         display headline steps down so its longest word fits, and the rules cap at the safe width. */
+      [data-format="vertical"] #t1-sec-div .headline { font-size: calc(80px * var(--type)); text-wrap: balance; }
+      [data-format="square"] #t1-sec-div .headline { font-size: 110px; text-wrap: balance; }
     </style>
   </head>
   <body>

@@ -13,7 +13,7 @@
       html, body { margin: 0; background: transparent; }
 
       #t2-lb-fact {
-        position: absolute; inset: 0; width: 1920px; height: 1080px;
+        position: absolute; inset: 0; width: var(--w); height: var(--h);
         background: transparent; overflow: hidden;
       }
 
@@ -31,7 +31,7 @@
 
       /* Glass card anchored right */
       #t2-lb-fact .card {
-        position: absolute; right: 80px; top: 320px;
+        position: absolute; right: var(--safe-r); top: calc(var(--safe-t) + 266px);
         width: 520px;
         background: var(--glass-bg-dark);
         backdrop-filter: var(--glass-blur);
@@ -70,7 +70,7 @@
 
       #t2-lb-fact .fact-tag span {
         font-family: var(--font-body); font-weight: var(--wt-bold);
-        font-size: 13px; letter-spacing: var(--track-wide);
+        font-size: calc(13px * var(--type)); letter-spacing: var(--track-wide);
         text-transform: uppercase;
         color: var(--accent); text-shadow: var(--textglow-accent);
       }
@@ -78,7 +78,7 @@
       /* Term - main statement */
       #t2-lb-fact .term {
         font-family: var(--font-display); font-weight: var(--wt-black);
-        font-size: 36px; letter-spacing: var(--track-tight);
+        font-size: calc(36px * var(--type)); letter-spacing: var(--track-tight);
         color: var(--white); text-shadow: var(--textglow);
         line-height: 1.2; margin-bottom: 14px;
       }
@@ -94,9 +94,18 @@
       /* Detail body */
       #t2-lb-fact .detail {
         font-family: var(--font-body); font-weight: var(--wt-reg);
-        font-size: 25px; line-height: 1.52;
+        font-size: calc(25px * var(--type)); line-height: 1.52;
         color: var(--text-dim);
       }
+      /* Vertical and square: card moves to the bottom-left of the safe area, glow follows, slots wrap. */
+      [data-format="vertical"] #t2-lb-fact .card, [data-format="square"] #t2-lb-fact .card {
+        top: auto; right: auto; left: var(--safe-l); bottom: var(--safe-b);
+        max-width: calc(var(--w) - var(--safe-l) - var(--safe-r));
+      }
+      [data-format="vertical"] #t2-lb-fact .local-glow, [data-format="square"] #t2-lb-fact .local-glow {
+        top: auto; right: auto; left: calc(var(--safe-l) - 40px); bottom: calc(var(--safe-b) - 40px);
+      }
+      [data-format="vertical"] #t2-lb-fact [data-slot], [data-format="square"] #t2-lb-fact [data-slot] { white-space: normal; }
     </style>
   </head>
   <body>

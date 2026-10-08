@@ -15,7 +15,7 @@
       html, body { margin: 0; }
 
       #t1-sec-flare {
-        position: absolute; inset: 0; width: 1920px; height: 1080px;
+        position: absolute; inset: 0; width: var(--w); height: var(--h);
         background: var(--canvas); color: var(--text);
         font-family: var(--font-display); overflow: hidden;
       }
@@ -37,7 +37,7 @@
       /* Flare layer lives between grid (z:1) and content (z:4) */
       #t1-sec-flare .flare-layer {
         position: absolute; left: 0; right: 0; z-index: 2;
-        top: calc(50% + 30px); /* sits just below headline vertical center */
+        top: calc(var(--safe-t) + (var(--h) - var(--safe-t) - var(--safe-b)) / 2 + 30px); /* sits just below headline vertical center */
         height: 160px;
         transform: translateY(-50%);
         pointer-events: none;
@@ -113,7 +113,7 @@
 
       /* ── Content ────────────────────────────────────────────────────────── */
       #t1-sec-flare .content {
-        position: absolute; left: 0; right: 0; top: 0; bottom: 0;
+        position: absolute; left: var(--safe-l); right: var(--safe-r); top: var(--safe-t); bottom: var(--safe-b);
         display: flex; flex-direction: column;
         align-items: center; justify-content: center;
         z-index: 4;
@@ -144,6 +144,13 @@
         background-size: 200px 200px; mix-blend-mode: overlay; opacity: 0.10;
         pointer-events: none; z-index: 7;
       }
+
+      /* Vertical and square: the title centers on the safe box (insets above) with the flare
+         streak just under its middle; the headline drops its side padding and balances lines. */
+      [data-format="vertical"] #t1-sec-flare .headline, [data-format="square"] #t1-sec-flare .headline { padding: 0; text-wrap: balance; }
+      /* the wrapped headline is taller here, so the streak drops under its last line */
+      [data-format="vertical"] #t1-sec-flare .flare-layer { top: calc(var(--safe-t) + (var(--h) - var(--safe-t) - var(--safe-b)) / 2 + 330px); }
+      [data-format="square"] #t1-sec-flare .flare-layer { top: calc(var(--safe-t) + (var(--h) - var(--safe-t) - var(--safe-b)) / 2 + 175px); }
     </style>
   </head>
   <body>

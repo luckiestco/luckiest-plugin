@@ -13,7 +13,7 @@
       html, body { margin: 0; background: transparent; }
 
       #t2-lb-meas {
-        position: absolute; inset: 0; width: 1920px; height: 1080px;
+        position: absolute; inset: 0; width: var(--w); height: var(--h);
         background: transparent; overflow: hidden;
       }
 
@@ -31,7 +31,7 @@
 
       /* Wrapper anchored left */
       #t2-lb-meas .wrapper {
-        position: absolute; left: 120px; top: 450px;
+        position: absolute; left: calc(var(--safe-l) + 24px); top: calc(var(--safe-t) + 396px);
         display: flex; flex-direction: column; align-items: flex-start; gap: 18px;
       }
 
@@ -49,7 +49,7 @@
       #t2-lb-meas .meas-value {
         position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%);
         font-family: var(--font-mono); font-weight: var(--wt-bold);
-        font-size: 30px; letter-spacing: 0.04em;
+        font-size: calc(30px * var(--type)); letter-spacing: 0.04em;
         color: var(--white); text-shadow: var(--textglow);
         padding: 4px 14px;
         background: var(--glass-bg-dark);
@@ -82,15 +82,24 @@
 
       #t2-lb-meas .term {
         font-family: var(--font-display); font-weight: var(--wt-bold);
-        font-size: 26px; letter-spacing: var(--track-snug);
+        font-size: calc(26px * var(--type)); letter-spacing: var(--track-snug);
         color: var(--white); text-shadow: var(--textglow);
         margin-bottom: 4px;
       }
 
       #t2-lb-meas .detail {
         font-family: var(--font-body); font-weight: var(--wt-reg);
-        font-size: 20px; line-height: 1.45; color: var(--text-dim);
+        font-size: calc(20px * var(--type)); line-height: 1.45; color: var(--text-dim);
       }
+      /* Vertical and square: card moves to the bottom-left of the safe area, glow follows, slots wrap. */
+      [data-format="vertical"] #t2-lb-meas .wrapper, [data-format="square"] #t2-lb-meas .wrapper {
+        top: auto; right: auto; left: var(--safe-l); bottom: var(--safe-b);
+        max-width: calc(var(--w) - var(--safe-l) - var(--safe-r));
+      }
+      [data-format="vertical"] #t2-lb-meas .local-glow, [data-format="square"] #t2-lb-meas .local-glow {
+        top: auto; right: auto; left: calc(var(--safe-l) - 40px); bottom: calc(var(--safe-b) - 40px);
+      }
+      [data-format="vertical"] #t2-lb-meas [data-slot], [data-format="square"] #t2-lb-meas [data-slot] { white-space: normal; }
     </style>
   </head>
   <body>

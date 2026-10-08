@@ -14,7 +14,7 @@
       html, body { margin: 0; }
 
       #t1-ov-tri {
-        position: absolute; inset: 0; width: 1920px; height: 1080px;
+        position: absolute; inset: 0; width: var(--w); height: var(--h);
         background: var(--canvas); color: var(--text);
         font-family: var(--font-display); overflow: hidden;
       }
@@ -33,7 +33,7 @@
 
       /* Title row at top */
       #t1-ov-tri .title-row {
-        position: absolute; left: 0; right: 0; top: 90px; text-align: center; z-index: 4;
+        position: absolute; left: var(--safe-l); right: var(--safe-r); top: calc(var(--safe-t) + 36px); text-align: center; z-index: 4;
       }
       #t1-ov-tri .title {
         font-family: var(--font-display); font-weight: var(--wt-bold);
@@ -47,7 +47,7 @@
 
       /* Three-column card layout */
       #t1-ov-tri .cards {
-        position: absolute; left: 96px; right: 96px; top: 240px; bottom: 80px;
+        position: absolute; left: var(--safe-l); right: var(--safe-r); top: 240px; bottom: calc(var(--safe-b) + 26px);
         display: flex; gap: 40px; align-items: stretch; z-index: 4;
       }
 
@@ -94,7 +94,7 @@
       /* Card heading */
       #t1-ov-tri .card-heading {
         font-family: var(--font-display); font-weight: var(--wt-bold);
-        font-size: 42px; letter-spacing: var(--track-snug); line-height: 1.15;
+        font-size: calc(42px * var(--type)); letter-spacing: var(--track-snug); line-height: 1.15;
         color: var(--white); text-shadow: var(--textglow);
         margin-bottom: 20px;
       }
@@ -121,6 +121,24 @@
         background-size: 200px 200px; mix-blend-mode: overlay; opacity: 0.10;
         pointer-events: none; z-index: 7;
       }
+
+      /* Vertical and square: the three cards stack as rows - icon left, heading and body right. */
+      [data-format="vertical"] #t1-ov-tri .title-row, [data-format="square"] #t1-ov-tri .title-row { top: var(--safe-t); }
+      [data-format="vertical"] #t1-ov-tri .title { font-size: calc(60px * var(--type)); }
+      [data-format="square"] #t1-ov-tri .title { font-size: 60px; }
+      [data-format="vertical"] #t1-ov-tri .cards, [data-format="square"] #t1-ov-tri .cards { bottom: var(--safe-b); flex-direction: column; gap: 18px; }
+      [data-format="vertical"] #t1-ov-tri .cards { top: 470px; }
+      [data-format="square"] #t1-ov-tri .cards { top: 180px; }
+      [data-format="vertical"] #t1-ov-tri .card, [data-format="square"] #t1-ov-tri .card {
+        display: grid; grid-template-columns: 72px 1fr; column-gap: 28px; align-content: center;
+        padding: 28px 36px 28px 28px;
+      }
+      [data-format="vertical"] #t1-ov-tri .icon-box, [data-format="square"] #t1-ov-tri .icon-box { grid-column: 1; grid-row: 1 / span 2; width: 72px; height: 72px; margin-bottom: 0; }
+      [data-format="vertical"] #t1-ov-tri .card-heading, [data-format="square"] #t1-ov-tri .card-heading { grid-column: 2; margin-bottom: 10px; }
+      [data-format="vertical"] #t1-ov-tri .card-body, [data-format="square"] #t1-ov-tri .card-body { grid-column: 2; }
+      [data-format="vertical"] #t1-ov-tri .card-heading { font-size: calc(38px * var(--type)); }
+      [data-format="vertical"] #t1-ov-tri .card-body { font-size: calc(24px * var(--type)); line-height: 1.45; }
+      [data-format="square"] #t1-ov-tri .card-body { font-size: 30px; line-height: 1.45; }
     </style>
   </head>
   <body>

@@ -15,7 +15,9 @@
       html, body { margin: 0; background: transparent; }
 
       #t2-lt-ubar {
-        position: absolute; inset: 0; width: 1920px; height: 1080px;
+        position: absolute; inset: 0; width: var(--w); height: var(--h);
+        /* the lower-third group's anchor: left / bottom of the main card */
+        --lt-x: var(--safe-l); --lt-y: calc(var(--safe-b) + 94px);
         background: transparent; overflow: hidden;
         font-family: var(--font-display);
       }
@@ -23,7 +25,7 @@
       /* Very soft bloom - just a warmth under the text, no hard edge */
       #t2-lt-ubar .local-bloom {
         position: absolute;
-        left: 60px; bottom: 100px;
+        left: calc(var(--lt-x) - 28px); bottom: calc(var(--lt-y) - 48px);
         width: 640px; height: 200px;
         border-radius: 50%;
         background: radial-gradient(ellipse at 30% 80%,
@@ -38,14 +40,14 @@
       /* Text block - no card, just text on dark */
       #t2-lt-ubar .text-block {
         position: absolute;
-        left: 88px; bottom: 148px;
+        left: var(--lt-x); bottom: var(--lt-y);
         z-index: 2;
       }
 
       #t2-lt-ubar .name {
         font-family: var(--font-display);
         font-weight: var(--wt-black);
-        font-size: 52px;
+        font-size: calc(52px * var(--type));
         letter-spacing: var(--track-tight);
         color: var(--white);
         text-shadow: var(--textglow);
@@ -96,7 +98,7 @@
       #t2-lt-ubar .role {
         font-family: var(--font-body);
         font-weight: var(--wt-med);
-        font-size: 23px;
+        font-size: calc(23px * var(--type));
         letter-spacing: 0.01em;
         color: var(--text-dim);
         margin-top: 12px;
@@ -115,6 +117,12 @@
         vertical-align: middle;
         position: relative; top: -1px;
       }
+      /* Vertical and square: the group sits at the bottom-left of the safe area and slots wrap. */
+      [data-format="vertical"] #t2-lt-ubar, [data-format="square"] #t2-lt-ubar { --lt-y: var(--safe-b); }
+      [data-format="vertical"] #t2-lt-ubar .text-block, [data-format="square"] #t2-lt-ubar .text-block {
+        top: auto; width: auto; max-width: calc(var(--w) - var(--safe-l) - var(--safe-r));
+      }
+      [data-format="vertical"] #t2-lt-ubar [data-slot], [data-format="square"] #t2-lt-ubar [data-slot] { white-space: normal; }
     </style>
   </head>
   <body>

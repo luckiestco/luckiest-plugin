@@ -15,7 +15,7 @@
       html, body { margin: 0; background: transparent; }
 
       #t2-lb-brace {
-        position: absolute; inset: 0; width: 1920px; height: 1080px;
+        position: absolute; inset: 0; width: var(--w); height: var(--h);
         background: transparent; overflow: hidden;
         font-family: var(--font-display);
       }
@@ -37,7 +37,7 @@
       /* Outer layout: brace column + content column */
       #t2-lb-brace .annotation {
         position: absolute;
-        left: 80px; top: 368px;
+        left: var(--safe-l); top: calc(var(--safe-t) + 314px);
         display: flex;
         flex-direction: row;
         align-items: stretch;
@@ -74,7 +74,7 @@
       #t2-lb-brace .term {
         font-family: var(--font-display);
         font-weight: var(--wt-bold);
-        font-size: 36px;
+        font-size: calc(36px * var(--type));
         letter-spacing: var(--track-snug);
         color: var(--white);
         text-shadow: var(--textglow);
@@ -105,7 +105,7 @@
       #t2-lb-brace .detail {
         font-family: var(--font-body);
         font-weight: var(--wt-reg);
-        font-size: 20px;
+        font-size: calc(20px * var(--type));
         line-height: 1.50;
         color: var(--text-dim);
       }
@@ -121,6 +121,15 @@
         box-shadow: var(--glow-accent), 0 0 20px rgba(var(--accent-rgb), 0.55);
         transform: translate(-50%, -50%);
       }
+      /* Vertical and square: card moves to the bottom-left of the safe area, glow follows, slots wrap. */
+      [data-format="vertical"] #t2-lb-brace .annotation, [data-format="square"] #t2-lb-brace .annotation {
+        top: auto; right: auto; left: var(--safe-l); bottom: var(--safe-b);
+        max-width: calc(var(--w) - var(--safe-l) - var(--safe-r));
+      }
+      [data-format="vertical"] #t2-lb-brace .local-glow, [data-format="square"] #t2-lb-brace .local-glow {
+        top: auto; right: auto; left: calc(var(--safe-l) - 40px); bottom: calc(var(--safe-b) - 40px);
+      }
+      [data-format="vertical"] #t2-lb-brace [data-slot], [data-format="square"] #t2-lb-brace [data-slot] { white-space: normal; }
     </style>
   </head>
   <body>

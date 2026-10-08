@@ -14,7 +14,7 @@
     <style>
       html, body { margin: 0; }
       #t1-stat-pie {
-        position: absolute; inset: 0; width: 1920px; height: 1080px;
+        position: absolute; inset: 0; width: var(--w); height: var(--h);
         background: var(--paper); color: var(--ink);
         font-family: var(--font-display); overflow: hidden;
       }
@@ -33,14 +33,14 @@
         background: radial-gradient(120% 120% at 40% 50%, transparent 52%, rgba(23,19,14,0.2) 100%);
       }
       #t1-stat-pie .kicker {
-        position: absolute; left: 130px; top: 100px;
+        position: absolute; left: calc(var(--safe-l) + 34px); top: calc(var(--safe-t) + 46px);
         font-family: var(--font-label); font-weight: var(--wt-bold);
         font-size: var(--size-label); letter-spacing: var(--track-wide);
         text-transform: uppercase; color: var(--red);
       }
       /* pie lives in the left half */
       #t1-stat-pie .pie-area {
-        position: absolute; left: 150px; top: 50%; transform: translateY(-50%);
+        position: absolute; left: calc(var(--safe-l) + 54px); top: 50%; transform: translateY(-50%);
         width: 560px; height: 560px;
       }
       /* main pie disc */
@@ -65,21 +65,21 @@
       }
       /* right panel - big stat + label */
       #t1-stat-pie .right {
-        position: absolute; left: 800px; right: 130px; top: 50%; transform: translateY(-50%);
+        position: absolute; left: calc(var(--safe-l) + 704px); right: calc(var(--safe-r) + 34px); top: 50%; transform: translateY(-50%);
       }
       #t1-stat-pie .stat {
-        font-weight: var(--wt-black); font-size: 340px; line-height: 0.88;
+        font-weight: var(--wt-black); font-size: calc(340px * var(--type)); line-height: 0.88;
         letter-spacing: -0.06em; font-variant-numeric: tabular-nums; color: var(--ink);
         display: block;
       }
       #t1-stat-pie .label {
         margin-top: 32px;
-        font-weight: var(--wt-thin); font-size: 58px; line-height: 1.06;
+        font-weight: var(--wt-thin); font-size: calc(58px * var(--type)); line-height: 1.06;
         letter-spacing: var(--track-tight); color: var(--ink);
       }
       #t1-stat-pie .label em { font-style: italic; font-weight: var(--wt-black); }
       #t1-stat-pie .source {
-        position: absolute; left: 130px; bottom: 88px;
+        position: absolute; left: calc(var(--safe-l) + 34px); bottom: calc(var(--safe-b) + 34px);
         font-family: var(--font-label); font-weight: var(--wt-bold);
         font-size: var(--size-tiny); letter-spacing: var(--track-wide);
         text-transform: uppercase; color: var(--muted);
@@ -87,9 +87,26 @@
       /* "the rest" label on the dark wedge */
       #t1-stat-pie .rest-label {
         position: absolute; font-family: var(--font-label); font-weight: var(--wt-bold);
-        font-size: 22px; letter-spacing: var(--track-wide); text-transform: uppercase;
+        font-size: calc(22px * var(--type)); letter-spacing: var(--track-wide); text-transform: uppercase;
         color: var(--paper); opacity: 0.72;
       }
+
+      /* Vertical: pie (drawn at 560px by the script, shown at 80%) centered on top, number and label
+         under it. Square: pie and number side by side as in landscape, pie at 75%. The timeline never
+         tweens .pie-area or .right, so their transforms are free to change. */
+      [data-format="vertical"] #t1-stat-pie, [data-format="square"] #t1-stat-pie {
+        --cx: calc(var(--safe-l) + (var(--w) - var(--safe-l) - var(--safe-r)) / 2);
+      }
+      [data-format="vertical"] #t1-stat-pie .kicker, [data-format="square"] #t1-stat-pie .kicker { left: var(--safe-l); top: var(--safe-t); }
+      [data-format="vertical"] #t1-stat-pie .pie-area { left: calc(var(--cx) - 280px); top: calc(var(--safe-t) + 50px); transform: scale(0.8); transform-origin: 50% 0; }
+      [data-format="vertical"] #t1-stat-pie .right { left: var(--safe-l); right: var(--safe-r); top: calc(var(--safe-t) + 530px); transform: none; }
+      [data-format="vertical"] #t1-stat-pie .stat { font-size: calc(200px * var(--type)); }
+      [data-format="vertical"] #t1-stat-pie .label { margin-top: 24px; font-size: calc(52px * var(--type)); }
+      [data-format="square"] #t1-stat-pie .pie-area { left: var(--safe-l); transform: translateY(-50%) scale(0.75); transform-origin: 0 50%; }
+      [data-format="square"] #t1-stat-pie .right { left: calc(var(--safe-l) + 460px); right: var(--safe-r); }
+      [data-format="square"] #t1-stat-pie .stat { font-size: 210px; }
+      [data-format="square"] #t1-stat-pie .label { font-size: 48px; }
+      [data-format="vertical"] #t1-stat-pie .source, [data-format="square"] #t1-stat-pie .source { left: var(--safe-l); bottom: var(--safe-b); }
     </style>
   </head>
   <body>

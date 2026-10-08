@@ -13,7 +13,7 @@
     <style>
       html, body { margin: 0; }
       #t1-ov-check {
-        position: absolute; inset: 0; width: 1920px; height: 1080px;
+        position: absolute; inset: 0; width: var(--w); height: var(--h);
         background: var(--paper); color: var(--ink);
         font-family: var(--font-display); overflow: hidden;
       }
@@ -35,7 +35,7 @@
 
       /* marker title */
       #t1-ov-check .title {
-        position: absolute; top: 80px; left: 50%; transform: translateX(-50%) skewX(var(--marker-skew));
+        position: absolute; top: calc(var(--safe-t) + 26px); left: 50%; transform: translateX(-50%) skewX(var(--marker-skew));
         background: var(--yellow); padding: 8px 32px; z-index: 3;
         font-weight: var(--wt-black); font-size: var(--size-title);
         letter-spacing: var(--track-tight); text-transform: uppercase; white-space: nowrap;
@@ -43,7 +43,7 @@
 
       /* checklist */
       #t1-ov-check .list {
-        position: absolute; top: 230px; left: 50%; transform: translateX(-50%);
+        position: absolute; top: calc(var(--safe-t) + 176px); left: 50%; transform: translateX(-50%);
         width: 1300px; display: flex; flex-direction: column; gap: 0; z-index: 3;
       }
       #t1-ov-check .item {
@@ -63,7 +63,7 @@
       #t1-ov-check .check {
         position: absolute; inset: 0; display: flex; align-items: center; justify-content: center;
         font-family: var(--font-label); font-weight: var(--wt-black);
-        font-size: 52px; color: var(--ink); line-height: 1;
+        font-size: calc(52px * var(--type)); color: var(--ink); line-height: 1;
         transform: scale(0); opacity: 0;
       }
       /* yellow fill behind the check */
@@ -74,16 +74,37 @@
       }
 
       #t1-ov-check .label {
-        flex: 1; font-weight: var(--wt-black); font-size: 52px;
+        flex: 1; font-weight: var(--wt-black); font-size: calc(52px * var(--type));
         letter-spacing: var(--track-tight); line-height: 1.05; color: var(--ink);
       }
 
       #t1-ov-check .source {
-        position: absolute; left: 130px; bottom: 88px;
+        position: absolute; left: calc(var(--safe-l) + 34px); bottom: calc(var(--safe-b) + 34px);
         font-family: var(--font-label); font-weight: var(--wt-bold);
         font-size: var(--size-tiny); letter-spacing: var(--track-wide);
         text-transform: uppercase; color: var(--muted); z-index: 3;
       }
+
+      /* Vertical and square: title centred on the safe box, list spans the safe width with smaller
+         wrapping labels, source at the bottom left of the safe area. */
+      [data-format="vertical"] #t1-ov-check .title, [data-format="square"] #t1-ov-check .title {
+        top: var(--safe-t); left: calc(var(--safe-l) + (var(--w) - var(--safe-l) - var(--safe-r)) / 2);
+        width: max-content; max-width: calc(var(--w) - var(--safe-l) - var(--safe-r) - 64px);
+        white-space: normal; text-align: center;
+      }
+      [data-format="vertical"] #t1-ov-check .title { font-size: calc(64px * var(--type)); }
+      [data-format="vertical"] #t1-ov-check .list, [data-format="square"] #t1-ov-check .list {
+        left: var(--safe-l); right: var(--safe-r); width: auto; transform: none;
+      }
+      [data-format="vertical"] #t1-ov-check .list { top: calc(var(--safe-t) + 150px); }
+      [data-format="square"] #t1-ov-check .list { top: calc(var(--safe-t) + 150px); }
+      [data-format="vertical"] #t1-ov-check .item, [data-format="square"] #t1-ov-check .item { gap: 32px; padding: 26px 0; }
+      [data-format="vertical"] #t1-ov-check .box, [data-format="square"] #t1-ov-check .box { flex-basis: 60px; width: 60px; height: 60px; }
+      [data-format="vertical"] #t1-ov-check .check { font-size: calc(40px * var(--type)); }
+      [data-format="square"] #t1-ov-check .check { font-size: 44px; }
+      [data-format="vertical"] #t1-ov-check .label { font-size: calc(42px * var(--type)); }
+      [data-format="square"] #t1-ov-check .label { font-size: 44px; }
+      [data-format="vertical"] #t1-ov-check .source, [data-format="square"] #t1-ov-check .source { left: var(--safe-l); bottom: var(--safe-b); }
     </style>
   </head>
   <body>

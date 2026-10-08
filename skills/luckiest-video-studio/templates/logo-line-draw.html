@@ -2,15 +2,22 @@
 <html lang="en" data-resolution="landscape">
 <head>
 <!-- line-draw logo recipe (luckiest-video-studio). Traces every path of the mark in its own color, fills, holds.
-     Fill {{paper}} and {{ink}} from brand.json, {{caption}} from the scene, paste the SVG, keep duration in sync with storyboard.json. --><meta charset="UTF-8" />
+     Fill {{paper}} and {{ink}} from brand.json, {{caption}} from the scene, paste the SVG, keep duration in sync with storyboard.json.
+     Sized with --u and the safe tokens, so it renders landscape, vertical, and square from this one file. --><meta charset="UTF-8" />
 <script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
 <style>
+/* Master size defaults. render-scenes.mjs appends the real --w, --h, --u and safe tokens for each format. */
+:root{--w:1920px;--h:1080px;--u:10.8px;--safe-t:54px;--safe-b:54px;--safe-l:96px;--safe-r:96px}
 *{margin:0;padding:0;box-sizing:border-box}
-html,body{width:1920px;height:1080px;overflow:hidden;background:{{paper}}}
-#root{width:100%;height:100%;display:grid;place-items:center}
-.stage{width:520px;height:560px;display:grid;place-items:center}
+html,body{width:var(--w);height:var(--h);overflow:hidden;background:{{paper}}}
+#root{width:100%;height:100%}
+/* Centered in the safe area, not the frame: the vertical safe area sits high to clear the platform UI. */
+.stage{position:absolute;inset:var(--safe-t) var(--safe-r) var(--safe-b) var(--safe-l);margin:auto;width:calc(var(--u)*48);height:calc(var(--u)*52);display:grid;place-items:center}
 .mark{width:100%;height:100%;overflow:visible}
-.cap{position:absolute;bottom:110px;width:100%;text-align:center;font:500 28px/1 Inter,system-ui,sans-serif;letter-spacing:.32em;color:{{ink}};opacity:0}
+.cap{position:absolute;left:var(--safe-l);right:var(--safe-r);bottom:calc(var(--safe-b) + var(--u)*5);text-align:center;font:500 calc(var(--u)*2.6)/1.3 Inter,system-ui,sans-serif;letter-spacing:.32em;color:{{ink}};opacity:0}
+/* Phones show the whole frame smaller: a bigger mark and 25% larger caption. */
+[data-format=vertical] .stage{width:calc(var(--u)*56);height:calc(var(--u)*60)}
+[data-format=vertical] .cap{font-size:calc(var(--u)*3.2)}
 </style></head>
 <body>
 <div id="root" data-composition-id="main" data-start="0" data-duration="6" data-width="1920" data-height="1080">

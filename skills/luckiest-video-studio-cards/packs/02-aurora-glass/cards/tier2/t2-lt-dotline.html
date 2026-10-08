@@ -15,7 +15,7 @@
       html, body { margin: 0; background: transparent; }
 
       #t2-lt-dotl {
-        position: absolute; inset: 0; width: 1920px; height: 1080px;
+        position: absolute; inset: 0; width: var(--w); height: var(--h);
         background: transparent; overflow: hidden;
         font-family: var(--font-display);
       }
@@ -23,7 +23,7 @@
       /* Localized glow centered on the dotline assembly */
       #t2-lt-dotl .local-bloom {
         position: absolute;
-        left: 40px; bottom: 105px;
+        left: calc(var(--safe-l) - 40px); bottom: calc(var(--safe-b) + 51px);
         width: 680px; height: 190px;
         border-radius: 50%;
         background: radial-gradient(ellipse at 42% 75%,
@@ -38,7 +38,7 @@
       /* The whole assembly - anchored lower-left */
       #t2-lt-dotl .assembly {
         position: absolute;
-        left: 80px; bottom: 148px;
+        left: var(--safe-l); bottom: calc(var(--safe-b) + 94px);
         display: flex;
         align-items: center;
         gap: 0;
@@ -87,7 +87,7 @@
       #t2-lt-dotl .name {
         font-family: var(--font-display);
         font-weight: var(--wt-bold);
-        font-size: 38px;
+        font-size: calc(38px * var(--type));
         letter-spacing: var(--track-snug);
         color: var(--white);
         text-shadow: var(--textglow);
@@ -105,7 +105,7 @@
       #t2-lt-dotl .role {
         font-family: var(--font-body);
         font-weight: var(--wt-med);
-        font-size: 22px;
+        font-size: calc(22px * var(--type));
         letter-spacing: 0.01em;
         color: var(--text-dim);
         line-height: 1.2;
@@ -117,6 +117,12 @@
         border: var(--stroke) solid var(--glass-border);
         border-top: none;
       }
+      /* Vertical and square: card sits at the bottom of the safe area, bloom follows, slots wrap. */
+      [data-format="vertical"] #t2-lt-dotl .assembly, [data-format="square"] #t2-lt-dotl .assembly {
+        bottom: var(--safe-b); max-width: calc(var(--w) - var(--safe-l) - var(--safe-r));
+      }
+      [data-format="vertical"] #t2-lt-dotl .local-bloom, [data-format="square"] #t2-lt-dotl .local-bloom { bottom: calc(var(--safe-b) - 43px); }
+      [data-format="vertical"] #t2-lt-dotl [data-slot], [data-format="square"] #t2-lt-dotl [data-slot] { white-space: normal; }
     </style>
   </head>
   <body>
