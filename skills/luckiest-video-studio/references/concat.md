@@ -1,9 +1,10 @@
-# Editing in Concat (`--editor concat`, the default)
+# Editing in Concat (`--editor concat`)
 
 Concat (`jub0t/Concat`, AGPL-3.0) is a free, local video editor for macOS,
 Windows, Linux, and Android, with a scriptable API. Exports have no watermark, it
 needs no account, and the agent can build and export a project without anyone
-clicking. That is why it is the default editor. Use OpenScreen
+clicking. Use it when the user wants a timeline. The review player
+(`luckiest-video-studio-review`) is the default for reviewing a run. Use OpenScreen
 ([openscreen.md](openscreen.md)) for recorded product demos with cursor zoom, and
 Diffusion Studio ([diffusion.md](diffusion.md)) when line-draw logo scenes need to
 stay native and editable.

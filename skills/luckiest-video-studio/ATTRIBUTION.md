@@ -11,6 +11,7 @@ projects. Upstream license texts are kept beside this file.
 | **Kenney** sound effects (`kenney.nl`) | CC0 | `assets/sfx/` | Public domain, credit given here |
 | **skills** by Emil Kowalski (`emilkowalski/skills`) | MIT | Motion and taste rules, the review posture, and the motion vocabulary, rewritten for video in the `luckiest-video-studio-motion` sub-skill | `luckiest-video-studio-motion/LICENSE-emil` |
 | **HyperFrames student kit** by Nate Herk and contributors (`hyperframes-student-kit`) | MIT for the original kit; the Student Kit Use Permission for its pipeline skills, style library, templates, and editing tools | Rewritten rules and ported scripts in the `luckiest-video-studio-cuts`, `-talk`, and `-reel` sub-skills | `LICENSE-student-kit`, `LICENSE-student-kit-pipeline` |
+| **Motion OS** by Jason Lee (`jasonlee-breadcrumb/motion-os`) | MIT | The review player in the `luckiest-video-studio-review` sub-skill (`editor/index.html`, `editor/serve.mjs`) and the `reel.json` format; see that sub-skill's `ATTRIBUTION.md` | `luckiest-video-studio-review/LICENSE-motion-os` |
 
 Used at runtime, not bundled:
 
@@ -23,7 +24,7 @@ Used at runtime, not bundled:
   licensed rendering engine. Optional editor for `--editor diffusion`. Installed by
   the user; this edition writes a project for it and calls its bundled CLI, and
   copies none of its code.
-- **Concat** (`jub0t/Concat`), AGPL-3.0-or-later. Default editor for
+- **Concat** (`jub0t/Concat`), AGPL-3.0-or-later. Optional editor for
   `--editor concat`. Installed by the user; this edition sends JSON requests to its
   `concat-cli` and copies none of its code, so the AGPL does not extend to this
   skill.

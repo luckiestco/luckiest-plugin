@@ -1,5 +1,13 @@
 # Changelog — luckiest-brandkit
 
+## 1.5.0 — 2026-10-07
+- New sub-skill `luckiest-brandkit-sizing` for real logo size and placement on
+  apparel, hats, bags, stationery, and signage.
+- Step 2: every merch, stationery, and signage shot states the logo's placement
+  and real size in its COMPOSITION line.
+- Step 7: QA checks the logo's size against the product and fixes it by
+  regenerating or compositing at the planned height.
+
 ## 1.4.0 — 2026-10-06
 - Raws are generated at the image tool's smallest, fastest setting (for example
   1K) so the first pass is quick. The size is locked in `prompts.md`.

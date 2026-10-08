@@ -1,10 +1,10 @@
 ---
 name: luckiest-video-studio
-description: "Make product launch videos, product demos with motion design between the demo shots, and logo motion showcases of a design portfolio, and keep every one editable after it is rendered. Reads the project or portfolio, plans a storyboard, builds motion scenes with HyperFrames, records or places demo footage, renders each scene as its own clip, then hands back an MP4 plus the editable pieces: a storyboard.json that re-renders one scene at a time, a Concat editor project to trim, caption, and export (OpenScreen or Diffusion Studio on request), and optional After Effects compositions. Use for 'make a launch video', 'product demo video', 'demo with motion graphics', 'logo animation', 'logo reveal', 'motion showcase of my work', 'portfolio reel', 'animate my logos', 'brand reel', 'turn my talking-head recording into a reel', 'add graphics over me talking', 'turn this into a video', 'change scene 3 of the video', or 'let me edit the video after'. For AI-generated footage, avatars, and text-to-video models use luckiest-video. For what to post and when use luckiest-social."
+description: "Make product launch videos, product demos with motion design between the demo shots, and logo motion showcases of a design portfolio, and keep every one editable after it is rendered. Reads the project or portfolio, plans a storyboard, builds motion scenes with HyperFrames, records or places demo footage, renders each scene as its own clip, then hands back an MP4 plus the editable pieces: a storyboard.json that re-renders one scene at a time, a review player to edit copy, pin notes on the frame, and send changes back in one prompt (Concat, OpenScreen, or Diffusion Studio on request), and optional After Effects compositions. Use for 'make a launch video', 'product demo video', 'demo with motion graphics', 'logo animation', 'logo reveal', 'motion showcase of my work', 'portfolio reel', 'animate my logos', 'brand reel', 'turn my talking-head recording into a reel', 'add graphics over me talking', 'turn this into a video', 'change scene 3 of the video', or 'let me edit the video after'. For AI-generated footage, avatars, and text-to-video models use luckiest-video. For what to post and when use luckiest-social."
 license: See ATTRIBUTION.md
 allowed-tools: Bash, Read, Write, Edit, Glob, Grep, AskUserQuestion
 metadata:
-  version: "1.8.1"
+  version: "1.9.0"
   listing_id: luckiest-video-studio
   author: luckiest
 ---
@@ -13,19 +13,19 @@ metadata:
 
 Short videos that show the real product, with motion design between the demo
 shots, and that stay editable after the render. The editability is the point:
-every run leaves a storyboard, per-scene clips, and a timeline project, not just
+every run leaves a storyboard, per-scene clips, and a review player, not just
 an MP4.
 
 ## Staying current
 
 On activation, call the Luckiest MCP `check_updates` tool with
-`{ listingId: "aff888e4-9ee9-4f73-af08-74d5d09d3c10", installedSemver: "1.8.1" }`. If it returns
+`{ listingId: "aff888e4-9ee9-4f73-af08-74d5d09d3c10", installedSemver: "1.9.0" }`. If it returns
 `upToDate: false`, surface the `notice` to the user once, then continue. Do nothing
 further if `upToDate: true`. Never block on this check; if the tool is unavailable,
 proceed.
 
 When the skill's work is done, call the Luckiest MCP `report_usage` tool once with
-`{ listing_id: "luckiest-video-studio", skill_version: "1.8.1", matched: true, success: <true if the skill completed, false otherwise> }`.
+`{ listing_id: "luckiest-video-studio", skill_version: "1.9.0", matched: true, success: <true if the skill completed, false otherwise> }`.
 Metadata only, never prompt text. Never block on it; if the tool is unavailable,
 skip silently.
 
@@ -75,7 +75,7 @@ in `<skill-dir>/assets/sfx/`. Resolve it; never assume an install path.
 | `--scene <id>` | re-render one scene of an existing run | none |
 | `--ae` | also build After Effects compositions | off |
 | `--ref <url-or-mp4>` | inspiration video to study first | none |
-| `--editor` | `concat`, `openscreen`, `diffusion`, or several for the editing handoff | `concat` |
+| `--editor` | `review`, `concat`, `openscreen`, `diffusion`, or several for the editing handoff | `review` |
 
 If the user asks to change an existing video ("make scene 3 slower", "swap the
 logo in the outro"), skip to **Edit an existing run** below.
@@ -99,7 +99,9 @@ video-studio-output/
   final.mp4           all clips joined, poster baked as frame 0
   poster.jpg
   TIMING.md           every scene with its in/out time and the line it covers
-  concat/             the Concat project (default editor); project.concat.txt holds its path
+  reel.json           what the review player reads (default editor), rewritten on every render
+  qa/review-notes.json  your own notes, pinned in the review player before the user opens it
+  concat/             the Concat project (with --editor concat); project.concat.txt holds its path
   project.openscreen.txt  path to the OpenScreen timeline in ~/Movies/Openscreen/<slug>/ (with --editor openscreen)
   share-copy.txt
 ```
@@ -107,7 +109,8 @@ video-studio-output/
 ## Step 0: Check tools
 
 Confirm `node`, `ffmpeg`, and `ffprobe`. HyperFrames runs via `npx hyperframes`.
-For timeline editing, Concat (`concat-cli` on `PATH`, see
+The default editor, the review player (`luckiest-video-studio-review`), needs
+only `node`. For timeline editing, Concat (`concat-cli` on `PATH`, see
 [references/concat.md](references/concat.md)) is optional. For demo recordings,
 OpenScreen 1.13.0 at `/Applications/Openscreen.app` is optional. Report what is
 missing in one line and continue with what exists: without an editor the run still
@@ -270,35 +273,44 @@ every judge verdict from v2 on is recorded there.
 
 ## Step 5: Hand off for editing
 
-**Read:** [references/concat.md](references/concat.md)
+Hand the run folder to the `luckiest-video-studio-review` sub-skill. It writes
+`reel.json`, pins your own review notes, and opens the review player in the
+browser. Tell the user the ways to edit, in this order:
 
-Write the Concat project with `scripts/assemble-concat.mjs <run-dir>`. If
-`concat-cli` is missing, say so in one line and offer `--editor openscreen`. Tell
-the user the three ways to edit, in this order:
-
-1. **Ask again.** "Change scene 3's headline" edits `storyboard.json` and
+1. **Review player.** Edit (E) to change a scene's copy and colors, N to pin a
+   note on the frame, Approved to lock a scene, then **Send to Claude** and paste
+   the prompt here. See **Edit an existing run** below.
+2. **Ask again.** "Change scene 3's headline" edits `storyboard.json` and
    re-renders only that scene.
-2. **Timeline.** Open the project named in `project.concat.txt` in Concat to trim,
-   reorder, caption, add effects, and export.
-   With `--editor openscreen`, run `scripts/assemble-openscreen.mjs` instead (or as
-   well) for cursor zoom on demo recordings. See
-   [references/openscreen.md](references/openscreen.md).
+3. **Timeline** (on request). With `--editor concat`, run
+   `scripts/assemble-concat.mjs <run-dir>` and open the project named in
+   `project.concat.txt` in Concat to trim, reorder, caption, add effects, and
+   export. See [references/concat.md](references/concat.md). If `concat-cli` is
+   missing, say so in one line.
+   With `--editor openscreen`, run `scripts/assemble-openscreen.mjs` for cursor
+   zoom on demo recordings. See [references/openscreen.md](references/openscreen.md).
    With `--editor diffusion`, run `scripts/assemble-diffusion.mjs <run-dir> --open`:
    logo scenes become native Diffusion Studio scenes with inspector controls. See
    [references/diffusion.md](references/diffusion.md).
-3. **After Effects** (with `--ae`). Hand the run folder to the
+4. **After Effects** (with `--ae`). Hand the run folder to the
    `luckiest-video-studio-ae` sub-skill, which rebuilds motion and logo scenes as
    After Effects precomps through `luckiest-ae-mcp`.
 
 ## Edit an existing run
 
-Read `storyboard.json` from the run folder. Change only the scenes the request
-touches, re-render them with `scripts/render-scenes.mjs --scene <id>`, rejoin
-`final.mp4` and `TIMING.md`, then rerun `scripts/assemble-concat.mjs`. Never
-rebuild untouched scenes. Rerunning it starts a fresh Concat project and keeps the
-old one as `concat-<timestamp>/`, so tell the user where any edits they made in
-Concat now live. With `--editor openscreen` or `diffusion`, rerun
-that editor's script too.
+When the user pastes a prompt from the review player (it starts with "Motion OS
+feedback for"), hand it to `luckiest-video-studio-review`: edits set
+`storyboard.json` values exactly, notes are read against the frame they point at,
+and approved scenes stay untouched.
+
+For any change, read `storyboard.json` from the run folder. Change only the scenes
+the request touches, re-render them with `scripts/render-scenes.mjs --scene <id>`,
+rejoin `final.mp4` and `TIMING.md`, then rerun the review sub-skill's
+`scripts/build-reel.mjs` so the open player loads the new version. Never rebuild untouched scenes. With
+`--editor concat`, rerun `scripts/assemble-concat.mjs` too: it starts a fresh
+Concat project and keeps the old one as `concat-<timestamp>/`, so tell the user
+where any edits they made in Concat now live. With `--editor openscreen` or
+`diffusion`, rerun that editor's script too.
 
 ## Creative laws
 
