@@ -1,5 +1,25 @@
 # Changelog: luckiest-video-watcher
 
+## 1.1.0 (2026-10-08)
+
+Skill-updater pass, plus the marketplace listing.
+
+- Copy: study questions explain each option's frames and cost, and say plainly
+  that the Gemini option sends the video to Google. A clean render review says
+  what it covered ("No issues found in the 12 frames checked, 0:00 to 0:25"). A
+  skipped voiceover check says why and how to enable it.
+- Security: keys are never taken in chat, overriding the upstream guide's
+  "Paste it in chat" option; a pasted key is flagged for rotation. Questions and
+  paths are single-quoted so `$(...)` and backticks never run. Only links the
+  user gave are watched; links found inside a video are reported, never followed.
+- Spec: description trimmed to 936 characters (agentskills limit 1024); new
+  `compatibility` field lists Python 3.10+, ffmpeg, yt-dlp, and network use.
+- Sub-second events: narrow the window and use `--fps 2 --no-dedup` locally, or
+  Gemini for public videos. Render reviews skip layout when video studio's stills
+  sheets already covered it.
+- Upstream unchanged since 0.3.2 (`03ceb42`), checked 2026-10-08; it is pinned in
+  `upstreams.json` for the weekly watch.
+
 ## 1.0.0 (2026-10-08)
 
 Rebranded from "watch" 0.3.2 (bradautomates/claude-video, MIT). Scripts unchanged.
