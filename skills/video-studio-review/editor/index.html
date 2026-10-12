@@ -75,6 +75,10 @@ button{cursor:pointer}
 .viewer video{position:absolute;inset:0;width:100%;height:100%;display:block;background:#fff}
 #live{position:absolute;left:0;top:0;width:1920px;height:1080px;transform-origin:0 0;overflow:hidden}
 .overlay{position:absolute;inset:0}
+/* storyboard stage: the scene's still and its script line over the frame */
+.sb-still{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;display:block}
+.sb-cap{position:absolute;left:0;right:0;bottom:0;padding:10px 14px;background:linear-gradient(transparent,rgba(0,0,0,.78));color:#fff;font-size:15px;line-height:1.35;pointer-events:none}
+.sb-cap small{display:block;font-family:var(--mono);font-size:11px;opacity:.75;margin-bottom:2px}
 .overlay.note-mode{cursor:crosshair}
 .hot{position:absolute;border:2px solid var(--accent);border-radius:6px;pointer-events:none;background:color-mix(in srgb,var(--accent) 7%,transparent)}
 .hot.hover{border-style:dashed;background:none}
@@ -291,6 +295,7 @@ button{cursor:pointer}
       <div class="viewer-wrap">
         <div class="viewer" id="viewer">
           <video id="vid" playsinline preload="auto"></video>
+          <img class="sb-still" id="sbStill" alt="" hidden><div class="sb-cap" id="sbCap" hidden></div>
           <div class="overlay" id="overlay"><div id="ghosts"></div><div id="hots"></div><div id="popLayer"></div></div>
         </div>
       </div>
@@ -362,6 +367,7 @@ function loadProject(){
   ui = {...ui, scene:P.scenes[0].id, sel:null, pop:null, selNote:null};
   $('#projTitle').textContent = P.title; $('#projVer').textContent = 'v' + ver; document.title = P.title + ' · Motion OS';
   vid.src = P.src + '?v=' + ver; vid.currentTime = 0.7;
+  $('#sbStill').hidden = $('#sbCap').hidden = P.stage !== 'storyboard';
   setupMusic(); renderAll(); tick();
 }
 
@@ -389,6 +395,7 @@ function markDirty(){
   if (!P) return;
   try { localStorage.setItem(KEY(), JSON.stringify(st)); } catch (e) {}
   $('#sendN').textContent = pendingEdits() + openNotes().length;
+  if (P.stage === 'storyboard') storyboardFrame(sceneAt(now()));
 }
 
 /* ================= playback ================= */
@@ -439,7 +446,15 @@ function tick(){
   const t = now(), s = sceneAt(t);
   if (s.id !== ui.scene && playing() && !ui.loop) { ui.scene = s.id; if (ui.sel && elById(ui.sel)?.s !== s.id) ui.sel = null; renderTL(); if (ui.tab === 'scene') renderPane(); }
   $('#tc').innerHTML = `${fmt(t)} <small>/ ${fmt(P.duration)} · ${s.id} ${esc(s.name)}</small>`;
-  placePH(); renderHots();
+  placePH(); renderHots(); if (P.stage === 'storyboard') storyboardFrame(s);
+}
+// Storyboard stage (reel.json "stage": "storyboard"): nothing is rendered yet, so draw the scene's still with its
+// line and length on the frame. The line shows the user's unsent edit, so they see what they will send.
+function storyboardFrame(s){
+  const e = s.els[0], img = $('#sbStill'), src = s.still + '?v=' + (P.version || 1);
+  if (img.getAttribute('src') !== src) img.setAttribute('src', src);
+  const [a, b] = elTime(e), kind = e.props.motion?.v || '';
+  $('#sbCap').innerHTML = `<small>${esc(s.id)} · ${esc(kind)} · ${(b - a).toFixed(1)}s</small>${esc(e.props.line ? pv(e, 'line') : e.label)}`;
 }
 function setupMusic(){
   if (music) { music.pause(); music = null; }
@@ -801,13 +816,16 @@ function prompt(){
   const links = st.links.filter(l => !l.sent);
   if (links.length) { L.push('## Links to download into assets/'); links.forEach(l => L.push('- ' + l.url)); L.push(''); }
   L.push('## Scenes', P.scenes.map(s => `${s.id} ${s.name} (${fmt(s.t[0])}-${fmt(s.t[1])}): ${st.status[s.id] === 'approved' ? 'approved, do not touch' : st.status[s.id] === 'changes' ? 'needs changes' : 'in review'}`).join('\n'), '');
-  L.push('## Do', `Use the luckiest-video-studio-review skill. Apply the edits exactly and work through the notes. Leave approved scenes alone. Re-render, check it, then update reel.json and set "version" to ${ver + 1} so Motion OS reloads.`);
+  if (P.stage === 'storyboard') L.push('## Do', P.scenes.every(s => st.status[s.id] === 'approved')
+    ? 'Use the luckiest-video-studio-review skill. This is the storyboard and every scene is approved. Apply any edits above to storyboard.json, then go on to the assets, the style frame, and the render.'
+    : `Use the luckiest-video-studio-review skill. This is the storyboard, nothing is rendered yet. Apply the edits exactly to storyboard.json and work through the notes. Leave approved scenes alone. Redraw only the changed stills, then rerun build-reel.mjs --storyboard so Motion OS reloads at version ${ver + 1}.`);
+  else L.push('## Do', `Use the luckiest-video-studio-review skill. Apply the edits exactly and work through the notes. Leave approved scenes alone. Re-render, check it, then update reel.json and set "version" to ${ver + 1} so Motion OS reloads.`);
   return L.join('\n');
 }
 function sheet(html){ const d = document.createElement('div'); d.className = 'scrim'; d.innerHTML = `<div class="sheet" role="dialog" aria-modal="true">${html}</div>`;
   d.addEventListener('click', e => { if (e.target === d || e.target.closest('[data-close]')) d.remove(); }); document.body.appendChild(d); return d; }
 $('#sendBtn').onclick = () => {
-  if (!(pendingEdits() + openNotes().length)) return toast('Nothing to send yet. Edit something, or press N to pin a note.');
+  if (!(pendingEdits() + openNotes().length) && P.stage !== 'storyboard') return toast('Nothing to send yet. Edit something, or press N to pin a note.');
   const text = prompt();
   const d = sheet(`<h3>Send to Claude</h3><p>Copy this, then paste it into Claude.</p><textarea class="out" readonly></textarea><div class="row"><button class="btn ghost" data-close>Close</button><button class="btn primary" id="doCopy">Copy prompt</button></div>`);
   d.querySelector('textarea').value = text;

@@ -1,5 +1,8 @@
 # Changelog — luckiest-trends
 
+## 1.1.1 — 2026-10-10
+- Security disclosure: new "What this skill can access" section listing browser cookies (opt-in, off by default), Keychain (only `last30days-*` items), API key sources, network, and installs, each with the code line that enforces it. No behavior change. SkillSpector rates this CAUTION (needed and disclosed), not a defect.
+
 ## 1.1.0 — 2026-07-06
 Skill updater pass: analytics integration + rebrand completion.
 

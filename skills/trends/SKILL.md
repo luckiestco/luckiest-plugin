@@ -1,13 +1,13 @@
 ---
 name: trends
-version: "1.1.0"
+version: "1.1.1"
 description: "Research what people actually say about any topic over a time window you choose. Pulls posts and engagement from Reddit, X, YouTube, TikTok, Hacker News, Polymarket, GitHub, and the web, then synthesizes the community voice. Use for /luckiest-trends, 'trends for X', 'what are people saying about X', 'last N days of X', 'weekly/quarterly roundup of X'. Set the window with --days N (default 30)."
 argument-hint: "luckiest-trends nvidia earnings reaction | luckiest-trends AI video tools --days 7 | luckiest-trends what users want in react --days 90"
 allowed-tools: Bash, Read, Write, AskUserQuestion, WebSearch
 license: See ATTRIBUTION.md
 user-invocable: true
 metadata:
-  version: "1.1.0"
+  version: "1.1.1"
   listing_id: luckiest-trends
   author: luckiest
   openclaw:
@@ -62,10 +62,20 @@ Research any topic across Reddit, X, YouTube, TikTok, Hacker News, Polymarket, G
 ## Staying current
 
 On activation, call the Luckiest MCP `check_updates` tool with
-`{ listingId: "a357362c-cb53-4bba-86e2-5024dbbece9e", installedSemver: "1.1.0" }`.
+`{ listingId: "a357362c-cb53-4bba-86e2-5024dbbece9e", installedSemver: "1.1.1" }`.
 If it returns `upToDate: false`, surface the `notice` to the user once, then continue. Do nothing further if `upToDate: true`. Never block research on this check — if the tool is unavailable, proceed.
 
-When the skill's work is done, call the Luckiest MCP report_usage tool once with { listing_id: "luckiest-trends", skill_version: "1.1.0", matched: true, success: <true if the skill completed, false otherwise> }. Metadata only, never prompt text. Never block on it — if the tool is unavailable, skip silently.
+When the skill's work is done, call the Luckiest MCP report_usage tool once with { listing_id: "luckiest-trends", skill_version: "1.1.1", matched: true, success: <true if the skill completed, false otherwise> }. Metadata only, never prompt text. Never block on it — if the tool is unavailable, skip silently.
+
+## What this skill can access
+
+Tell the user this before first-run setup, and whenever they ask what the skill touches.
+
+- **Browser cookies (X login only): off unless the user opts in.** With `FROM_BROWSER` unset, no browser is read (`scripts/lib/env.py:568`). Setup reads cookies only when run with `--allow-browser-cookies`, after the user says yes (`scripts/last30days.py:877`). Cookies are read live and never written to disk. Turn off any time with `FROM_BROWSER=off` or `--no-browser-cookies`. Unattended watchlist runs always pass `--no-browser-cookies` (`scripts/watchlist.py:191`).
+- **macOS Keychain: only this skill's own items.** It looks up entries named `last30days-<KEY>` that the user stored with `scripts/setup-keychain.sh`, plus any aliases the user lists in `LAST30DAYS_KEYCHAIN_ALIASES`. It never lists or reads other Keychain items.
+- **API keys:** read from `~/.config/last30days/.env`, the process environment, or the Keychain items above. Never ask for a key in chat.
+- **Network:** search requests to the sources listed in the description, plus the APIs whose keys the user configured.
+- **Installs:** `yt-dlp` and the Digg CLI, only after the user agrees in the setup wizard.
 
 ## Time window (--days N)
 

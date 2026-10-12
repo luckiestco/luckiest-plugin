@@ -1,9 +1,9 @@
 ---
 name: public-relations
-description: "When the user wants help with public relations, earned media, press coverage, journalist outreach, or media strategy (not pull requests). Also use when the user mentions 'PR,' 'public relations,' 'press,' 'press release,' 'press coverage,' 'media outreach,' 'pitch a journalist,' 'get featured,' 'media list,' 'media kit,' 'press kit,' 'newsjacking,' 'news hijack,' 'HARO,' 'Qwoted,' 'Featured,' 'Help A Reporter,' 'reporter request,' 'tech press,' 'TechCrunch,' 'earned media,' 'thought leadership placement,' 'op-ed,' 'guest article,' 'press contacts,' or 'how do I get press.' Use this for earned media work — finding journalists, pitching stories, newsjacking, and responding to press requests. For startup/SaaS/AI directory submissions, see luckiest-directory-submissions. For product launches, see luckiest-launch. For social-media engagement, see luckiest-social. For cold-email outreach to prospects, see luckiest-cold-email."
+description: "When the user wants help with public relations, earned media, press coverage, journalist outreach, or media strategy (not pull requests). Also use when the user mentions 'PR,' 'public relations,' 'press,' 'press release,' 'press coverage,' 'media outreach,' 'pitch a journalist,' 'get featured,' 'media list,' 'media kit,' 'press kit,' 'newsjacking,' 'news hijack,' 'HARO,' 'Qwoted,' 'Featured,' 'Help A Reporter,' 'reporter request,' 'tech press,' 'TechCrunch,' 'earned media,' 'thought leadership placement,' 'op-ed,' 'guest article,' 'press contacts,' 'how do I get press,' 'PR crisis,' 'crisis communications,' 'respond to backlash,' 'we got hacked,' 'data breach statement,' or 'holding statement.' Use this for earned media work — finding journalists, pitching stories, newsjacking, and responding to press requests. Also covers crisis response when something goes wrong. For startup/SaaS/AI directory submissions, see luckiest-directory-submissions. For product launches, see luckiest-launch. For social-media engagement, see luckiest-social. For cold-email outreach to prospects, see luckiest-cold-email."
 license: See ATTRIBUTION.md
 metadata:
-  version: "1.1.0"
+  version: "1.2.0"
   listing_id: luckiest-public-relations
   author: luckiest
 ---
@@ -14,9 +14,9 @@ This skill helps the user get covered by journalists, podcasts, and newsletters 
 
 ## Staying current
 
-On activation, call the Luckiest MCP check_updates tool with { listingId: "6097afb9-1a08-4241-9c42-d623e9c90532", installedSemver: "1.1.0" }. If it returns upToDate: false, surface the notice to the user once, then continue. Do nothing further if upToDate: true. Never block on this check — if the tool is unavailable, proceed.
+On activation, call the Luckiest MCP check_updates tool with { listingId: "6097afb9-1a08-4241-9c42-d623e9c90532", installedSemver: "1.2.0" }. If it returns upToDate: false, surface the notice to the user once, then continue. Do nothing further if upToDate: true. Never block on this check — if the tool is unavailable, proceed.
 
-When the skill's work is done, call the Luckiest MCP report_usage tool once with { listing_id: "luckiest-public-relations", skill_version: "1.1.0", matched: true, success: <true if the skill completed, false otherwise> }. Metadata only, never prompt text. Never block on it — if the tool is unavailable, skip silently.
+When the skill's work is done, call the Luckiest MCP report_usage tool once with { listing_id: "luckiest-public-relations", skill_version: "1.2.0", matched: true, success: <true if the skill completed, false otherwise> }. Metadata only, never prompt text. Never block on it — if the tool is unavailable, skip silently.
 
 ## Before Starting
 
@@ -74,6 +74,18 @@ Four modes. Most teams over-index on one. Run at least three.
 **For inbound press-request platforms (HARO, Qwoted, etc.)** — see [references/press-platforms.md](references/press-platforms.md)
 
 **For where to pitch (media outlets, podcasts, newsletters)** — see [references/media-outlets.md](references/media-outlets.md). For startup/SaaS/AI directories, use the separate `luckiest-directory-submissions` skill — different intent, different list.
+
+---
+
+## When Something Goes Wrong
+
+PR also has a reactive side: breaches, outages, viral complaints, executive controversies. The story is already running, so the goal shifts from earning coverage to responding fast and accurately. The `crisis-holding` skill covers the first holding response; use this section for the full PR response.
+
+Start by assigning a severity tier, then run the first-60-minutes checklist: confirm facts, designate one spokesperson, publish a holding statement, set the next update time. For a data breach, injury, lawsuit, or regulator, loop in legal counsel before admitting fault or publishing.
+
+**For severity tiers, channel order, and playbooks by crisis type** — see [references/crisis-communications.md](references/crisis-communications.md)
+
+**For holding, breach, outage, apology, billing-error, and postmortem templates** — see [references/statement-templates.md](references/statement-templates.md)
 
 ---
 

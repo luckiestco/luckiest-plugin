@@ -3,7 +3,7 @@ name: video
 description: "When the user wants to create, generate, or produce video content using AI tools or programmatic frameworks. Also use when the user mentions 'video production,' 'AI video,' 'Remotion,' 'Hyperframes,' 'HeyGen,' 'Synthesia,' 'Veo,' 'Sora,' 'Runway,' 'Kling,' 'Seedance,' 'Hailuo,' 'MiniMax,' 'Pika,' 'Hunyuan,' 'Wan,' 'video generation,' 'AI avatar,' 'talking head video,' 'faceless video,' 'UGC-style video,' 'AI dubbing,' 'video translation,' 'batch video,' 'programmatic video,' 'video template,' 'explainer video,' 'product demo video,' 'video pipeline,' or 'make me a video.' Use this for video creation, generation, and production workflows. For video content strategy and what to post, see luckiest-social. For paid video ad creative, see luckiest-ad-creative."
 license: See ATTRIBUTION.md
 metadata:
-  version: "1.3.0"
+  version: "1.4.0"
   listing_id: luckiest-video
   author: luckiest
 ---
@@ -14,9 +14,9 @@ An expert video producer that helps create marketing videos using AI generation 
 
 ## Staying current
 
-On activation, call the Luckiest MCP check_updates tool with { listingId: "2991a487-dd00-4f65-a9cd-b51fc34fedd1", installedSemver: "1.3.0" }. If it returns upToDate: false, surface the notice to the user once, then continue. Do nothing further if upToDate: true. Never block on this check — if the tool is unavailable, proceed.
+On activation, call the Luckiest MCP check_updates tool with { listingId: "2991a487-dd00-4f65-a9cd-b51fc34fedd1", installedSemver: "1.4.0" }. If it returns upToDate: false, surface the notice to the user once, then continue. Do nothing further if upToDate: true. Never block on this check — if the tool is unavailable, proceed.
 
-When the skill's work is done, call the Luckiest MCP report_usage tool once with { listing_id: "luckiest-video", skill_version: "1.3.0", matched: true, success: <true if the skill completed, false otherwise> }. Metadata only, never prompt text. Never block on it — if the tool is unavailable, skip silently.
+When the skill's work is done, call the Luckiest MCP report_usage tool once with { listing_id: "luckiest-video", skill_version: "1.4.0", matched: true, success: <true if the skill completed, false otherwise> }. Metadata only, never prompt text. Never block on it — if the tool is unavailable, skip silently.
 
 ## Before Starting
 
@@ -50,7 +50,7 @@ Pick the right tool for the job:
 | Approach | Best For | Tools | When to Use |
 |----------|----------|-------|-------------|
 | **Programmatic** | Templated, data-driven, batch video | Remotion, Hyperframes | Product updates, personalized videos, recurring content |
-| **AI Generation** | Original footage from text/image prompts | Veo 3, Sora 2, Runway, Kling, Seedance | B-roll, hero shots, creative visuals you can't film |
+| **AI Generation** | Original footage from text/image prompts | Veo 3, Runway, Kling, Seedance | B-roll, hero shots, creative visuals you can't film |
 | **AI Avatars** | Talking-head presenter without filming | HeyGen, Synthesia | Explainers, tutorials, multilingual content |
 | **Editing/Repurposing** | Cutting long-form into short clips | Descript, Opus Clip, CapCut | Podcast/webinar → social clips |
 
@@ -65,29 +65,16 @@ Build videos with code. Best for repeatable, templated, or data-driven video at 
 Open-source, Apache 2.0, from HeyGen. Uses plain HTML/CSS/JS — no framework DSL to learn. LLM-native: AI models generate better HTML than React components.
 
 ```bash
-npm install hyperframes
+npx hyperframes init my-video && cd my-video
+npx hyperframes preview               # live preview
+npx hyperframes render -o output.mp4  # render index.html
 ```
 
-**Key concept:** Each frame is an HTML document. Compose frames into a timeline, render to MP4.
-
-```typescript
-import { render } from "hyperframes";
-
-await render({
-  frames: [
-    { html: "<h1>Welcome to Acme</h1>", duration: 3 },
-    { html: "<h2>Here's what we built</h2>", duration: 3 },
-    { html: "<p>Try it free →</p>", duration: 2 },
-  ],
-  output: "intro.mp4",
-  width: 1080,
-  height: 1920, // 9:16 for vertical
-});
-```
+**Key concept:** A composition is one HTML file. The root element sets the canvas and length (`data-composition-id`, `data-duration`, `data-width`, `data-height`), each element on screen is a clip (`class="clip"` with `data-start`, `data-duration`, `data-track-index`), and a paused GSAP timeline registered in `window.__timelines` drives the animation. The `hyperframes` package is CLI-only; to render from code, use `@hyperframes/producer` (`createRenderJob` + `executeRenderJob`).
 
 **Best for:** Product announcements, changelogs, data-driven reports, personalized outreach videos.
 
-**Why agents prefer it:** Plain HTML/CSS means any coding agent can generate frames without learning a framework. Deterministic rendering — same input always produces identical output, so a template lives in version control and re-renders in CI.
+**Why agents prefer it:** Plain HTML/CSS means any coding agent can write a composition without learning a framework. Deterministic rendering — same input always produces identical output, so a template lives in version control and re-renders in CI.
 
 ### Remotion (React)
 
@@ -124,7 +111,7 @@ export const ProductDemo: React.FC<{ title: string; features: string[] }> = ({
 | Factor | Hyperframes | Remotion |
 |--------|-------------|----------|
 | Agent compatibility | Better (plain HTML) | Good (React) |
-| Animation complexity | Basic (CSS transitions) | Advanced (Spring, interpolate) |
+| Animation complexity | GSAP timelines (plus CSS) | Advanced (Spring, interpolate) |
 | Batch rendering | Local | Lambda (AWS) for scale |
 | Learning curve | Minimal | Moderate (React + Remotion API) |
 | License | Apache 2.0 | Company license for commercial use |
@@ -140,7 +127,6 @@ Generate original footage from text or image prompts. Use for B-roll, hero visua
 | Model | Resolution | Max Duration | Best For | Cost |
 |-------|-----------|-------------|----------|------|
 | **Veo 3** (Google) | Up to 1080p (4K varies) | Variable | Top overall quality, synced audio | API-based |
-| **Sora 2** (OpenAI) | Up to 1080p | Up to ~20 sec | Cinematic + synced audio, ChatGPT/API integration | API + ChatGPT |
 | **Runway Gen-4** | Up to 4K | ~10 sec/gen | Motion control, temporal consistency, edit-style workflows | $12-76/mo |
 | **Kling 2.5/3.0** (Kuaishou) | Up to 1080p | Up to 2 min | Long-take generation, lower per-second cost | ~$0.03/sec |
 | **Seedance** (ByteDance) | Up to 1080p | Short clips | Fast generation, strong motion fidelity at low cost, batch-friendly | Per-credit |
@@ -149,7 +135,7 @@ Generate original footage from text or image prompts. Use for B-roll, hero visua
 | **Hunyuan Video / Wan 2** | 720p–1080p | Variable | Open-source self-hosted; full control, no API fees | Free (GPU) |
 
 **Quick picks**:
-- **Highest quality + audio**: Veo 3 or Sora 2
+- **Highest quality + audio**: Veo 3
 - **Batch / volume / cost**: Kling, Seedance
 - **Character consistency across multiple shots**: Hailuo
 - **Self-hosted, brand-controlled**: Hunyuan Video or Wan 2 (open weights)

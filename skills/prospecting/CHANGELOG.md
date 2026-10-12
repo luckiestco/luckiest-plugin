@@ -1,5 +1,12 @@
 # Changelog — luckiest-prospecting
 
+## 1.2.0 — 2026-10-08
+Upstream sync with coreyhaines31/marketingskills dda3841 (issue #112).
+
+- Fixed saas-prospecting.md common mistake 4 wording to "Targeting Pre-Seed/Seed".
+- Skipped: upstream link repoints, demand-signals.md note (file absent), version bump.
+
+
 ## 1.1.0 — 2026-07-06
 Skill updater pass: analytics integration.
 

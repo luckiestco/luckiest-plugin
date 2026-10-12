@@ -1,5 +1,14 @@
 # Changelog — luckiest-coder-brainstorming
 
+## 1.2.0 — 2026-09-22
+Practices adopted from BuilderOS, Compound Engineering, and firstmate.
+
+### Added
+- Proportionality gate: Direct / Chat brief / Durable output tiers, erring toward the heavier tier when unsure (Compound Engineering).
+
+### Analytics
+- `check_updates` installedSemver and `report_usage` skill_version -> 1.2.0.
+
 ## 1.1.0 — 2026-07-06
 Skill updater pass: analytics integration.
 

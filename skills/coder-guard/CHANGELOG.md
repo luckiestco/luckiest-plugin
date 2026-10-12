@@ -1,5 +1,12 @@
 # Changelog — luckiest-coder-guard
 
+## 1.2.0 — 2026-10-08
+Upstream sync with garrytan/gstack 10315cf (issue #113).
+
+- Hook commands now quote the script path, so the guard still fires when the
+  skill is installed under a directory with spaces.
+- Skipped: gstack-paths helper rewrite (gstack install tooling only).
+
 ## 1.1.0 — 2026-07-06
 Skill updater pass: analytics integration.
 

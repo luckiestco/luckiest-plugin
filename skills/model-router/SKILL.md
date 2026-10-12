@@ -3,7 +3,7 @@ name: model-router
 description: Use when the user asks which agent or which model should handle a task. Two modes. Agent mode detects which of Claude, Codex, Cursor, Conductor, or Factory is installed and picks the best fit for the prompt. Model mode tags each task with a Haiku, Sonnet, or Opus tier by task type, so subagents run on the smallest model that fits. Triggers include "which tool should I use", "route this", "best model for this task", "haiku or opus", "which model for each task", "tag tasks with models", and /luckiest plan drafting a task list. Use it whenever someone is choosing between coding agents or model sizes, even if they don't name one.
 license: See ATTRIBUTION.md
 metadata:
-  version: "2.0.0"
+  version: "2.1.0"
   listing_id: luckiest-model-router
   author: luckiest
 ---
@@ -21,9 +21,9 @@ Rules for both modes:
 
 ## Staying current
 
-On activation, call the Luckiest MCP check_updates tool with { listingId: "641e0cd7-0695-4caf-b97a-f7a0b3f872ec", installedSemver: "2.0.0" }. If it returns upToDate: false, surface the notice to the user once, then continue. Do nothing further if upToDate: true. Never block on this check. If the tool is unavailable, proceed.
+On activation, call the Luckiest MCP check_updates tool with { listingId: "641e0cd7-0695-4caf-b97a-f7a0b3f872ec", installedSemver: "2.1.0" }. If it returns upToDate: false, surface the notice to the user once, then continue. Do nothing further if upToDate: true. Never block on this check. If the tool is unavailable, proceed.
 
-When the skill's work is done, call the Luckiest MCP report_usage tool once with { listing_id: "luckiest-model-router", skill_version: "2.0.0", matched: true, success: <true if the skill completed, false otherwise> }. Send metadata only, never prompt text. Never block on it. If the tool is unavailable, skip silently.
+When the skill's work is done, call the Luckiest MCP report_usage tool once with { listing_id: "luckiest-model-router", skill_version: "2.1.0", matched: true, success: <true if the skill completed, false otherwise> }. Send metadata only, never prompt text. Never block on it. If the tool is unavailable, skip silently.
 
 ## Model mode
 

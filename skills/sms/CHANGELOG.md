@@ -1,5 +1,13 @@
 # Changelog — luckiest-sms
 
+## 1.2.0 — 2026-10-08
+Upstream sync with coreyhaines31/marketingskills dda3841 (issue #112).
+
+- Added a WhatsApp section and WhatsApp triggers to the description.
+- Added references/whatsapp.md (24-hour window, templates, pricing, click-to-WhatsApp, playbooks).
+- Skipped: upstream tool-table links, evals, version bump.
+
+
 ## 1.1.0 — 2026-07-06
 Skill updater pass: analytics integration.
 

@@ -1,0 +1,264 @@
+<!doctype html>
+<html lang="en" data-resolution="landscape" data-look="default"><!-- data-look="papercut": handmade torn-paper stop-motion look -->
+<head>
+<!-- showreel recipe (luckiest-video-studio-showreel), Luckiest edition.
+     One motif: the coral dot (the i-dot of the wordmark, the period of every headline).
+     Chain: orb > mosaic center tile > i-dot > hero period > coral field > photo circle > i-dot.
+     Every time is B(n) beats at 120 BPM. Built by build.py from this source (injects the wordmark SVG). -->
+<meta charset="UTF-8" />
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
+<style>
+@font-face{font-family:'DM Serif Display';font-style:normal;font-weight:400;font-display:block;src:url(assets/fonts/DMSerifDisplay-normal-400.woff2) format('woff2')}
+@font-face{font-family:'DM Serif Display';font-style:italic;font-weight:400;font-display:block;src:url(assets/fonts/DMSerifDisplay-italic-400.woff2) format('woff2')}
+@font-face{font-family:'Inter';font-style:normal;font-weight:400 600;font-display:block;src:url(assets/fonts/Inter-normal-500.woff2) format('woff2')}
+:root{--paper:#FFFFFF;--ink:#0A0A0A;--muted:#737373;--c1:#FF532C;--c2:#FF3D59;--edge:#E5E5E5;
+  --coral:linear-gradient(90deg,#FF532C,#FF3D59)}
+*{margin:0;padding:0;box-sizing:border-box}
+html,body{width:1920px;height:1080px;overflow:hidden;background:var(--paper)}
+#root{position:relative;width:100%;height:100%;overflow:hidden;background:var(--paper);font-family:Inter,system-ui,sans-serif;color:var(--ink)}
+.layer{position:absolute;inset:0}
+.serif{font-family:'DM Serif Display',serif;font-weight:400}
+.caps{font:600 18px/1 Inter,sans-serif;letter-spacing:.22em;text-transform:uppercase;color:var(--muted)}
+
+/* A: orb */
+#orb{position:absolute;left:850px;top:430px;width:220px;height:220px;border-radius:50%;
+  background:radial-gradient(circle at 34% 28%,#fff 0 5%,#FFB0A0 11%,#FF6A4A 28%,#FF3D59 62%,#C9203D 100%);
+  box-shadow:0 0 90px 10px rgba(255,61,89,.35),inset -14px -18px 40px rgba(120,0,30,.35)}
+#orb svg{position:absolute;left:55px;top:55px;width:110px;height:110px}
+#halo{position:absolute;left:660px;top:240px;width:600px;height:600px;border-radius:50%;
+  background:radial-gradient(circle,rgba(255,61,89,.16) 1.5px,transparent 2px) 0 0/18px 18px;
+  -webkit-mask:radial-gradient(circle,#000 30%,transparent 70%);mask:radial-gradient(circle,#000 30%,transparent 70%)}
+
+/* B: mosaic, guides, wordmark */
+#mosaic i{position:absolute;width:120px;height:120px}
+#ctile{position:absolute;left:840px;top:420px;width:240px;height:240px;background:var(--paper);display:grid;place-items:center}
+#ctile svg{width:130px;height:130px}
+.guide{position:absolute;background:repeating-linear-gradient(90deg,var(--c2) 0 10px,transparent 10px 20px);height:2px;opacity:.55;transform-origin:left center}
+.guide.v{width:2px;height:auto;background:repeating-linear-gradient(180deg,var(--c2) 0 10px,transparent 10px 20px);transform-origin:center top}
+.node{position:absolute;width:12px;height:12px;margin:-5px 0 0 -5px;background:var(--c2);opacity:.8}
+#wm{position:absolute;left:410px;top:445px;width:1100px;height:190px;transform-origin:50% 50%}
+#wm svg{position:absolute;inset:0;width:100%;height:100%;overflow:visible}
+#wmOutline path{fill:none;stroke:var(--c2);stroke-width:.35;stroke-dasharray:1.1 .9}
+#wmFill path{fill:var(--ink)}
+#idot{position:absolute;width:44px;height:44px;margin:-22px 0 0 -22px;border-radius:50%;background:var(--coral)}
+
+/* C: dive */
+#stage{position:absolute;inset:0;perspective:1900px;perspective-origin:50% 40%}
+#plane{position:absolute;left:160px;top:80px;width:1600px;height:920px;transform-style:preserve-3d;transform-origin:50% 50%;
+  background:#fff;box-shadow:0 60px 120px rgba(10,10,10,.18),0 0 0 1px rgba(10,10,10,.06)}
+#plane img{position:absolute;inset:0;width:100%;height:100%}
+#plane .thick{position:absolute;left:0;right:0;bottom:-18px;height:18px;background:linear-gradient(#ececec,#d6d6d6);transform-origin:top;transform:rotateX(-90deg)}
+#fog{position:absolute;left:0;right:0;top:0;height:420px;background:linear-gradient(var(--paper) 10%,rgba(255,255,255,0))}
+#burst{position:absolute;left:1098.6px;top:724px;width:20px;height:20px;margin:-10px 0 0 -10px;border-radius:50%;background:var(--coral)}
+
+/* D: coral field and slabs */
+#field{background:linear-gradient(120deg,#FF532C,#FF3D59)}
+.slab{position:absolute;transform-style:preserve-3d}
+.slab .face{position:absolute;inset:0;background:#fff;border-radius:3px;padding:34px 40px;display:flex;flex-direction:column;justify-content:space-between;
+  box-shadow:inset 0 0 0 1px rgba(10,10,10,.05)}
+.slab .edge{position:absolute;inset:0;border-radius:3px;background:#C9C9C9;transform:translateZ(-16px)}
+.slab .shade{position:absolute;left:6%;right:6%;bottom:-40px;height:50px;border-radius:50%;background:rgba(90,0,20,.35);filter:blur(22px);transform:translateZ(-40px)}
+.stat .num{font-size:150px;line-height:.9;letter-spacing:-.02em}
+.chip .face{justify-content:center;align-items:center;padding:0}
+.chip .num{font-size:66px;line-height:1}
+.slab .caps{font-size:22px}
+#dropLabel{font-size:26px}
+#url{font-size:24px;letter-spacing:.32em}
+
+/* E: people + line, F: lockup */
+#pc{position:absolute;left:260px;top:240px;width:600px;height:600px;border-radius:50%;overflow:hidden;background:var(--coral)}
+#pc img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:0}
+#line{position:absolute;left:980px;top:270px;font-size:150px;line-height:1.02;letter-spacing:-.015em}
+#line .row{overflow:hidden;padding-bottom:14px}
+#line .w{display:inline-block}
+#line em{font-style:italic}
+#line .dot{display:inline-block;width:.2em;height:.2em;border-radius:50%;background:var(--coral);margin-left:.03em}
+#url{position:absolute;left:0;right:0;top:690px;text-align:center}
+
+/* Paper-cut look: torn edges, fibre grain, hard shadows, white slivers, warm paper.
+   Same technique as the cards pack 01-paper-collage. Fixed seeds keep renders identical. */
+#grain{display:none;position:absolute;inset:0;pointer-events:none;z-index:50;mix-blend-mode:multiply;opacity:.35;
+  background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' seed='7' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")}
+[data-look=papercut]{--paper:#efe9dc;--ink:#17130e}
+[data-look=papercut] #grain{display:block}
+[data-look=papercut] #orb{background:var(--c2);box-shadow:none}
+[data-look=papercut] :is(#orb,#ctile,#mosaic i,.slab .face,#plane img,#pc,#idot,#ldot){filter:url(#torn) drop-shadow(5px 7px 0 rgba(23,19,14,.3))}
+[data-look=papercut] #mosaic i{width:112px;height:112px;margin:4px}
+[data-look=papercut] .slab .shade{display:none}
+[data-look=papercut] #plane{box-shadow:10px 14px 0 rgba(23,19,14,.25)}
+</style></head>
+<body>
+<svg width="0" height="0" style="position:absolute"><filter id="torn" x="-5%" y="-5%" width="110%" height="110%">
+  <feTurbulence type="fractalNoise" baseFrequency="0.06" numOctaves="3" seed="11"/>
+  <feDisplacementMap in="SourceGraphic" scale="7" xChannelSelector="R" yChannelSelector="G"/></filter></svg>
+<div id="root" data-composition-id="main" data-start="0" data-duration="15" data-width="1920" data-height="1080">
+  <div id="sA" class="layer clip" data-start="0" data-duration="15" data-track-index="1"><div id="halo"></div><div id="orb">%%MARK_WHITE%%</div></div>
+  <div id="sB" class="layer clip" data-start="0" data-duration="15" data-track-index="2">
+    <div id="mosaic" class="layer"></div>
+    <div id="guides" class="layer">
+      <i class="guide" style="left:300px;top:445px;width:1320px"></i><i class="guide" style="left:300px;top:635px;width:1320px"></i>
+      <i class="guide v" style="left:410px;top:330px;height:420px"></i><i class="guide v" style="left:1510px;top:330px;height:420px"></i>
+      <i class="node" style="left:410px;top:445px"></i><i class="node" style="left:1510px;top:445px"></i>
+      <i class="node" style="left:410px;top:635px"></i><i class="node" style="left:1510px;top:635px"></i>
+    </div>
+    <div id="ctile">%%MARK_INK%%</div>
+    <div id="wm"><svg id="wmOutline" viewBox="0 0 191.5 33">%%WM_PATHS%%</svg><svg id="wmFill" viewBox="0 0 191.5 33">%%WM_PATHS%%</svg></div>
+  </div>
+  <div id="sC" class="layer clip" data-start="0" data-duration="15" data-track-index="3">
+    <div id="stage"><div id="plane"><img src="assets/ui/hero.png" alt=""><i class="thick"></i></div></div>
+    <div id="fog"></div>
+  </div>
+  <div id="sD" class="layer clip" data-start="0" data-duration="15" data-track-index="4">
+    <div id="field" class="layer"></div>
+    <div class="layer" style="perspective:1700px">
+      <div id="s1" class="slab stat" style="left:250px;top:230px;width:640px;height:330px"><i class="shade"></i><i class="edge"></i>
+        <div class="face"><div class="caps">Saved by startups</div><div class="num serif">$<span id="n1">0</span>k</div></div></div>
+      <div id="s2" class="slab stat" style="left:1010px;top:500px;width:640px;height:330px"><i class="shade"></i><i class="edge"></i>
+        <div class="face"><div class="caps">Trademark-screened</div><div class="num serif"><span id="n2">0</span>+</div></div></div>
+      <div id="chips"></div>
+    </div>
+    <div class="caps" id="dropLabel" style="position:absolute;left:0;right:0;top:150px;text-align:center;color:#fff;opacity:.9">This week's drop</div>
+  </div>
+  <div id="sE" class="layer clip" data-start="0" data-duration="15" data-track-index="5">
+    <div id="pc"><img src="assets/broll/b1.jpg"><img src="assets/broll/b2.jpg"><img src="assets/broll/b3.jpg"><img src="assets/broll/b4.jpg"><img src="assets/broll/b5.jpg"><img src="assets/broll/b6.jpg"></div>
+    <div id="line" class="serif">
+      <div class="row"><span class="w">Rent it.</span></div>
+      <div class="row"><span class="w">Build it.</span></div>
+      <div class="row"><span class="w"><em>Launch it</em><i class="dot" id="ldot"></i></span></div>
+    </div>
+  </div>
+  <div id="sF" class="layer clip" data-start="0" data-duration="15" data-track-index="6">
+    <div id="url" class="caps" style="color:var(--ink)">luckiest.co</div>
+  </div>
+  <div id="sG" class="layer clip" data-start="0" data-duration="15" data-track-index="7"><i id="idot"></i><i id="burst"></i></div>
+  <i id="grain"></i>
+  <audio id="master" data-start="0" data-duration="15" data-track-index="9" data-volume="1" src="assets/reel-master.wav"></audio>
+</div>
+<script>
+const DUR=15, PERIOD=0.5, B=(n)=>n*PERIOD;
+const h=(n)=>{const x=Math.sin(n*127.1+311.7)*43758.5453;return x-Math.floor(x)}; // seeded, never Math.random()
+const $=(s)=>document.querySelector(s), $$=(s)=>[...document.querySelectorAll(s)];
+const tl=gsap.timeline({paused:true});
+
+// Layout, built once.
+const mosaic=$("#mosaic"), tiles=[];
+for(let y=0;y<9;y++)for(let x=0;x<16;x++){
+  const i=document.createElement("i"); i.style.left=x*120+"px"; i.style.top=y*120+"px";
+  const d=Math.hypot(x-7.5,y-4), k=h(x*31+y*7);
+  i.style.background=(x+y)%2?"#FF3D59":(k>.5?"#FF532C":"#FF7C8E");
+  mosaic.appendChild(i); tiles.push({i,d});
+}
+const chips=$("#chips"), DOMAINS=["Quota.io","Puffy.net","Tryasap.com","Playbook.cc"];
+DOMAINS.forEach((n,k)=>{const c=document.createElement("div");c.className="slab chip";c.id="c"+k;
+  Object.assign(c.style,{left:(110+k*435)+"px",top:"460px",width:"410px",height:"160px"});
+  c.innerHTML=`<i class="shade"></i><i class="edge"></i><div class="face"><div class="num serif">${n}</div></div>`;chips.appendChild(c)});
+// i-dot of the wordmark on screen: viewBox (120.8,4.0) r3.8 at scale 1100/191.5.
+const S=1100/191.5, IDOT={x:410+120.8*S, y:445+4.0*S, d:3.8*2*S};
+
+// Initial state.
+gsap.set(["#sB","#sC","#sD","#sE","#sF"],{opacity:0});
+gsap.set("#orb",{scale:.8}); gsap.set("#halo",{scale:.6,opacity:0});
+gsap.set(tiles.map(t=>t.i),{scale:0}); gsap.set("#ctile",{scale:0}); gsap.set("#guides",{opacity:0});
+gsap.set(".guide",{scaleX:0}); gsap.set(".guide.v",{scaleX:1,scaleY:0}); gsap.set(".node",{scale:0});
+gsap.set("#wmOutline",{clipPath:"inset(0 100% 0 0)"}); gsap.set("#wmFill",{clipPath:"inset(0 100% 0 0)"});
+gsap.set("#idot",{left:960,top:540,scale:0}); gsap.set("#burst",{scale:0});
+
+// A. Mark born: the orb breathes on each build beat, squashes, bursts on the drop (beat 4 = 2.0s).
+tl.to("#halo",{opacity:1,scale:1,duration:B(3),ease:"power2.out"},0);
+for(let k=0;k<4;k++){
+  tl.to("#orb",{scale:.88+k*.1,duration:.08,ease:"power2.out"},B(k));
+  tl.to("#orb",{scale:.84+k*.1,duration:B(1)-.1,ease:"sine.inOut"},B(k)+.08);
+}
+tl.to("#orb",{scaleX:1.22,scaleY:.82,duration:B(.5),ease:"power2.in"},B(3.5));
+// beat-locked: 2.00s drop. Orb becomes the center tile, the mosaic bursts outward.
+tl.set("#sB",{opacity:1},B(4));
+tl.to("#orb",{scale:0,duration:.12,ease:"power2.in"},B(4));
+tl.to("#halo",{scale:2.4,opacity:0,duration:B(1),ease:"expo.out"},B(4));
+tl.fromTo("#ctile",{scale:.9},{scale:1,duration:B(.5),ease:"back.out(2)"},B(4));
+tiles.forEach(t=>tl.to(t.i,{scale:1,duration:.32,ease:"expo.out"},B(4)+t.d*.022));
+// B. Tiles flip away from the edges in; the center tile flies to the i-dot and becomes it.
+tiles.forEach(t=>tl.to(t.i,{scale:0,rotate:90,duration:.3,ease:"power3.in"},B(5.5)+(9-t.d)*.06));
+tl.set("#guides",{opacity:1},B(6));
+tl.to(".guide",{scaleX:1,duration:B(1),ease:"expo.out",stagger:.05},B(6));
+tl.to(".guide.v",{scaleY:1,duration:B(1),ease:"expo.out",stagger:.05},B(6.1));
+tl.to(".node",{scale:1,duration:.25,ease:"back.out(3)",stagger:.04},B(6.5));
+tl.to("#ctile",{scale:.18,x:IDOT.x-960,y:IDOT.y-540,borderRadius:"50%",backgroundColor:"#FF3D59",duration:B(1),ease:"power3.inOut"},B(6));
+tl.to("#ctile svg",{opacity:0,duration:.15},B(6));
+tl.set("#ctile",{opacity:0},B(7)); tl.set("#idot",{left:IDOT.x,top:IDOT.y,scale:IDOT.d/44},B(7));
+tl.to("#wmOutline",{clipPath:"inset(0 0% 0 0)",duration:B(1.2),ease:"power2.inOut"},B(6.5));
+tl.to("#wmFill",{clipPath:"inset(0 0% 0 0)",duration:B(1),ease:"power3.inOut"},B(7.25));
+tl.to(["#guides","#wmOutline"],{opacity:0,duration:B(1),ease:"power1.out"},B(8));
+tl.to("#idot",{scaleX:IDOT.d/44*1.35,scaleY:IDOT.d/44*.7,duration:.07,yoyo:true,repeat:1,ease:"none"},B(8)); // beat-locked 4.0s
+
+// C. Dive: wordmark tips back into the page, the real hero rises under it, rack focus, push to the period, pull back flat.
+gsap.set("#plane",{rotateX:62,rotateZ:-20,z:-300,x:420,y:900,filter:"blur(10px)"});
+tl.set("#sC",{opacity:1},B(8.5));
+tl.to("#wm",{transformPerspective:1600,rotateX:62,rotateZ:-20,y:-330,scale:.55,duration:B(2),ease:"power3.in"},B(8.5));
+tl.to("#idot",{x:-80,y:-360,scale:.4,duration:B(2),ease:"power3.in"},B(8.5));
+tl.set(["#sB","#idot"],{opacity:0},B(10.5));
+tl.to("#plane",{y:120,x:520,z:-120,duration:B(2.5),ease:"power3.out"},B(8.5));
+tl.to("#plane",{filter:"blur(0px)",duration:B(1.5),ease:"power2.out"},B(9.5)); // rack focus
+tl.to("#plane",{x:-90,y:20,z:180,rotateX:48,rotateZ:-14,duration:B(3),ease:"power2.inOut"},B(11));
+tl.to("#plane",{rotateX:0,rotateZ:0,x:0,y:0,z:0,duration:B(2),ease:"expo.inOut"},B(13.75)); // close to wide
+tl.to("#fog",{opacity:0,duration:B(2),ease:"power2.inOut"},B(13.75));
+// beat-locked 8.00s: the headline period swells into the coral field (motif wipe).
+tl.set("#burst",{opacity:1,scale:1},B(15.5));
+tl.to("#burst",{scale:260,duration:B(.75),ease:"expo.in"},B(15.5));
+tl.set("#sD",{opacity:1},B(16)); tl.set(["#sC","#burst"],{opacity:0},B(16));
+
+// D. Exploded data on the coral field: real numbers from luckiest.co (captured 2026-09-30).
+const slabIn=(id,b,rot)=>tl.fromTo(id,{y:700,rotateX:55,rotateY:rot[0],rotateZ:rot[1]},{y:0,rotateX:16,rotateY:rot[0]*.5,rotateZ:rot[1]*.5,duration:B(1.5),ease:"expo.out"},B(b));
+slabIn("#s1",16.25,[-26,6]); slabIn("#s2",17,[22,-5]);
+const cnt={a:0,b:0};
+tl.to(cnt,{a:450,duration:B(2),ease:"power3.out",onUpdate:()=>{$("#n1").textContent=Math.round(cnt.a)}},B(16.5)); // beat-grid
+tl.to(cnt,{b:400,duration:B(2),ease:"power3.out",onUpdate:()=>{$("#n2").textContent=Math.round(cnt.b)}},B(17.25));
+tl.to(["#s1","#s2"],{y:-1100,rotateX:-30,duration:B(1.5),ease:"power3.in",stagger:.08},B(19));
+gsap.set("#dropLabel",{y:30,opacity:0});
+tl.to("#dropLabel",{y:0,opacity:.9,duration:B(1),ease:"expo.out"},B(19.5));
+DOMAINS.forEach((_,k)=>tl.fromTo("#c"+k,{y:800,rotateX:70,rotateZ:-8},{y:0,rotateX:22,rotateZ:-3,duration:B(1.25),ease:"expo.out"},B(19.5+k*.5))); // beat-grid 9.75..11.25
+// E. The field closes into a circle: people inside the motif.
+tl.to(["#chips","#dropLabel"],{y:-160,duration:B(1.5),ease:"power2.in"},B(22));
+tl.fromTo("#sD",{clipPath:"circle(2100px at 560px 540px)"},{clipPath:"circle(300px at 560px 540px)",duration:B(1),ease:"expo.inOut"},B(22.5)-0.067);
+tl.set("#sE",{opacity:1},B(23.5)); tl.set("#sD",{opacity:0},B(23.5));
+const imgs=$$("#pc img");
+imgs.forEach((im,k)=>{tl.set(im,{opacity:1},B(23.5+k*.5)); tl.fromTo(im,{scale:1.18},{scale:1,duration:B(1),ease:"power2.out"},B(23.5+k*.5))});
+gsap.set("#line .w",{yPercent:110});
+$$("#line .w").forEach((w,k)=>tl.to(w,{yPercent:0,duration:B(1),ease:"expo.out"},B(23.5+k))); // beat-grid 11.75/12.25/12.75
+gsap.set("#ldot",{y:-300,opacity:0});
+tl.to("#ldot",{y:0,opacity:1,duration:B(.5),ease:"power2.in"},B(25.75));
+tl.to("#ldot",{scaleX:1.4,scaleY:.7,duration:.07,yoyo:true,repeat:1,ease:"none",transformOrigin:"50% 100%"},B(26.25));
+
+// F. Bookend: the line exits, the people circle shrinks into the wordmark's i-dot on the final hit (14.0s).
+tl.to("#line",{x:1100,duration:B(1),ease:"power3.in"},B(26.5)); tl.set("#line",{opacity:0},B(27.5));
+tl.set("#sB",{opacity:1},B(27)); tl.set(["#tiles"],{},B(27));
+tl.set("#wm",{rotateX:0,rotateZ:0,y:0,scale:1},B(27)); tl.set("#wmOutline",{opacity:0},B(27));
+tl.fromTo("#wmFill",{clipPath:"inset(0 100% 0 0)"},{clipPath:"inset(0 0% 0 0)",duration:B(1),ease:"power3.out"},B(27));
+tl.to("#pc",{x:IDOT.x-560,y:IDOT.y-540,scale:IDOT.d/600,duration:B(1),ease:"power3.in"},B(27));
+tl.to(imgs,{opacity:0,duration:.12},B(27.75));
+tl.set("#pc",{opacity:0},B(28)); tl.set("#idot",{opacity:1,x:0,y:0,left:IDOT.x,top:IDOT.y,scale:IDOT.d/44},B(28));
+tl.to("#idot",{scaleX:IDOT.d/44*1.4,scaleY:IDOT.d/44*.68,duration:.08,yoyo:true,repeat:1,ease:"none"},B(28)); // beat-locked 14.0s final hit
+tl.set("#sF",{opacity:1},B(28.25));
+tl.fromTo("#url",{y:24,opacity:0},{y:0,opacity:1,duration:B(1),ease:"expo.out"},B(28.25));
+
+tl.to({},{duration:DUR},0);
+// Paper-cut look: shoot on twos. A stepped tween drives the master's time, so every frame
+// holds for 1/12 s, and each piece sits a seeded fraction of a degree off level.
+let out=tl;
+if(document.documentElement.dataset.look==="papercut"){
+  $$("#mosaic i,.slab,#ctile,#pc,#line .w").forEach((el,k)=>{el.style.rotate=((h(k+50)-.5)*2.4).toFixed(2)+"deg";el.style.translate=`${((h(k+90)-.5)*6).toFixed(1)}px ${((h(k+130)-.5)*6).toFixed(1)}px`});
+  out=gsap.timeline({paused:true}).to(tl,{time:DUR,duration:DUR,ease:`steps(${DUR*12})`},0);
+}
+window.__timelines=window.__timelines||{}; window.__timelines["main"]=out; out.seek(0);
+// Browser preview: in any window that is not exactly 1920x1080, scale the frame to fit, letterboxed
+// and centered. At the render size this is a no-op, so renders are untouched.
+// Add #play to the URL to also loop playback (the renderer never sets the hash).
+const root=$("#root"), fit=()=>{
+  if(innerWidth===1920&&innerHeight===1080){root.style.transform="";return}
+  const k=Math.min(innerWidth/1920,innerHeight/1080);
+  for(const el of [document.documentElement,document.body]) Object.assign(el.style,{width:"100vw",height:"100vh",background:"#000"});
+  Object.assign(root.style,{position:"absolute",width:"1920px",height:"1080px",transformOrigin:"0 0",
+    transform:`translate(${(innerWidth-1920*k)/2}px,${(innerHeight-1080*k)/2}px) scale(${k})`})};
+fit(); addEventListener("resize",fit);
+if(location.hash==="#play"){out.eventCallback("onComplete",()=>out.restart()); out.play(0)}
+</script>
+</body></html>

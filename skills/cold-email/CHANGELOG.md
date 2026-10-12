@@ -1,5 +1,12 @@
 # Changelog — luckiest-cold-email
 
+## 1.2.0 — 2026-10-08
+Upstream sync with coreyhaines31/marketingskills dda3841 (issue #112).
+
+- Added an AI-tells list to the avoid list (contrast reveals, negation lists, self-answered questions, stock phrases, em dashes) and to the human-sounding gut-check; description now mentions it.
+- Replaced em dashes in prose and example emails in SKILL.md, frameworks.md, follow-up-sequences.md, and personalization.md.
+- Skipped: evals and upstream version line.
+
 ## 1.1.0 — 2026-07-06
 Skill updater pass: analytics integration.
 

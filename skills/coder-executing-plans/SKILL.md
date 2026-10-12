@@ -3,7 +3,7 @@ name: coder-executing-plans
 description: Use when you have a written implementation plan and need to execute it task-by-task in this session with review checkpoints. Trigger phrases include "execute this plan", "run the plan", "implement this plan", "work through the plan", or "/luckiest-coder-executing-plans". Loads the plan, reviews it critically, executes each task with verifications, and stops to ask rather than guess when blocked.
 license: See ATTRIBUTION.md
 metadata:
-  version: "1.1.0"
+  version: "1.2.0"
   listing_id: luckiest-coder-executing-plans
   author: luckiest
 ---
@@ -27,6 +27,8 @@ Load plan, review critically, execute all tasks, report when complete.
 4. If no concerns: Create todos for the plan items and proceed
 
 ### Step 2: Execute Tasks
+
+Always take the first unchecked task. Tasks are ordered on purpose; never skip ahead. After each task, update the plan's `**Status:** X/N tasks complete` line and tick its checkboxes.
 
 For each task:
 1. Mark as in_progress
@@ -77,7 +79,7 @@ After all tasks complete and verified:
 ## Staying current
 
 On activation, call the Luckiest MCP `check_updates` tool with
-`{ listingId: "1a5e6d68-f1e2-4c4b-99dc-2de5b829660b", installedSemver: "1.1.0" }`.
+`{ listingId: "1a5e6d68-f1e2-4c4b-99dc-2de5b829660b", installedSemver: "1.2.0" }`.
 If it returns `upToDate: false`, surface the `notice` to the user. Do nothing if `upToDate: true`.
 
-When the skill's work is done, call the Luckiest MCP report_usage tool once with { listing_id: "luckiest-coder-executing-plans", skill_version: "1.1.0", matched: true, success: <true if the skill completed, false otherwise> }. Metadata only, never prompt text. Never block on it — if the tool is unavailable, skip silently.
+When the skill's work is done, call the Luckiest MCP report_usage tool once with { listing_id: "luckiest-coder-executing-plans", skill_version: "1.2.0", matched: true, success: <true if the skill completed, false otherwise> }. Metadata only, never prompt text. Never block on it — if the tool is unavailable, skip silently.

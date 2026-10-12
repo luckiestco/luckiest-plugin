@@ -60,3 +60,18 @@ test("rerunning bumps the version so an open player reloads", () => {
   assert.equal(buildReel(sb, "/r").version, 1);
   assert.equal(buildReel(sb, "/r", 4).version, 5);
 });
+
+test("storyboard mode plays the animatic and makes each line and ai prompt editable", () => {
+  const withAi = { ...sb, scenes: [...sb.scenes, { id: "city", kind: "ai", duration: 4, line: "The city wakes up", prompt: "Aerial dawn over a city", still: "storyboard/city-sketch.png" }] };
+  const reel = buildReel(withAi, "/r", 0, 0, [], true);
+  assert.equal(reel.src, "storyboard/animatic.mp4");
+  assert.equal(reel.stage, "storyboard");
+  const city = reel.scenes[3].els[0];
+  assert.deepEqual([city.props.line.v, city.props.prompt.v], ["The city wakes up", "Aerial dawn over a city"]);
+  assert.equal(city.src, "storyboard.json scenes[3] · storyboard/city-sketch.png");
+  assert.equal(reel.scenes[0].els[0].src, "storyboard.json scenes[0] · storyboard/hook.png");
+  assert.ok(reel.assets.some((a) => a.id === "storyboard/hook.png" && a.type === "image"));
+  const rendered = buildReel(sb, "/r");
+  assert.equal(rendered.stage, undefined);
+  assert.equal(rendered.scenes[0].els[0].props.line, undefined);
+});

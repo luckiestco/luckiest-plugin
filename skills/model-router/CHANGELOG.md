@@ -1,5 +1,14 @@
 # Changelog — luckiest-model-router
 
+## 2.1.0 — 2026-10-08
+Upstream sync with weave-os/router 834d6bb (issue #114).
+
+- Model mode: infra and logic signals (deploy, kubernetes, terraform, algorithm,
+  concurrency, state machine, parser) now upshift a task one tier, following
+  Weave's task-domain rule that only logic and infra earn a quality correction.
+- Skipped: Qwen escalation and task-domain classifier services, serving cohorts,
+  subscription routing, pricing tables, statusline installer (proxy-only code).
+
 ## 2.0.0 — 2026-09-25
 Adds model mode: a per-task model tier (Haiku, Sonnet or Opus) with rules derived from Weave Router (Apache 2.0).
 

@@ -3,7 +3,7 @@ name: coder-writing-plans
 description: Use when you have a spec or requirements for a multi-step coding task and need a detailed implementation plan before touching code. Trigger phrases include "write a plan", "plan this feature", "break this into tasks", "create an implementation plan", "turn this spec into steps", or "/luckiest-coder-writing-plans". Produces a bite-sized, TDD-structured, fully-specified plan an engineer with zero codebase context can execute task-by-task.
 license: See ATTRIBUTION.md
 metadata:
-  version: "1.1.0"
+  version: "1.2.0"
   listing_id: luckiest-coder-writing-plans
   author: luckiest
 ---
@@ -70,6 +70,8 @@ independently testable deliverable.
 **Architecture:** [2-3 sentences about approach]
 
 **Tech Stack:** [Key technologies/libraries]
+
+**Status:** 0/N tasks complete
 
 ## Global Constraints
 
@@ -185,7 +187,7 @@ After saving the plan, you may offer: "Want to share this plan with your tribe v
 ## Staying current
 
 On activation, call the Luckiest MCP `check_updates` tool with
-`{ listingId: "6d9ecc50-d84a-44ef-b6d6-6425affe0fca", installedSemver: "1.1.0" }`.
+`{ listingId: "6d9ecc50-d84a-44ef-b6d6-6425affe0fca", installedSemver: "1.2.0" }`.
 If it returns `upToDate: false`, surface the `notice` to the user. Do nothing if `upToDate: true`.
 
-When the skill's work is done, call the Luckiest MCP report_usage tool once with { listing_id: "luckiest-coder-writing-plans", skill_version: "1.1.0", matched: true, success: <true if the skill completed, false otherwise> }. Metadata only, never prompt text. Never block on it — if the tool is unavailable, skip silently.
+When the skill's work is done, call the Luckiest MCP report_usage tool once with { listing_id: "luckiest-coder-writing-plans", skill_version: "1.2.0", matched: true, success: <true if the skill completed, false otherwise> }. Metadata only, never prompt text. Never block on it — if the tool is unavailable, skip silently.

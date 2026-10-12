@@ -1,5 +1,16 @@
 # Changelog: luckiest-video-studio-review
 
+## 1.1.0 (2026-10-10)
+- `build-reel.mjs --storyboard`: review the storyboard before any render. Joins
+  each scene's still (`scenes[].still`, default `storyboard/<id>.png`) into
+  `storyboard/animatic.mp4` and writes `reel.json` with `"stage": "storyboard"`.
+  Each scene's `line` (and `prompt` for `ai` scenes) is an editable field.
+  No `final.mp4` needed. Without the flag, nothing changes.
+- Player: in the storyboard stage it draws the scene's still with its line and
+  length over the frame, Send to Claude works with no edits, and the Do line
+  says it is the storyboard. Render prompts are unchanged.
+- `apply-feedback.md`: a storyboard stage section.
+
 ## 1.0.0 (2026-10-07)
 Built from Motion OS (`jasonlee-breadcrumb/motion-os`, MIT) as the review player
 sub-skill of luckiest-video-studio. Replaces the default Concat handoff and the

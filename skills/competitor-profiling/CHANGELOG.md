@@ -1,5 +1,13 @@
 # Changelog — luckiest-competitor-profiling
 
+## 1.2.0 — 2026-10-08
+Upstream sync with coreyhaines31/marketingskills dda3841 (issue #112).
+
+- Core Principle 1 now separates Observed, Inferred, and Implication; added 'not observed is not absent' and 'never state motive'; a single scrape cannot prove 'unchanged'; 'where we're strong' needs evidence or a hypothesis label.
+- Added Tool Stack Selection, a WebFetch fallback for Phase 1, an alternative-SEO-source fallback for Phase 2, and a marketing-plan related skill.
+- tool-reference.md: folded firecrawl_extract into scrape JSON mode and added the Alternative Stack section (WebFetch paths, Ubersuggest mapping, execution orders, error table).
+- Skipped: evals.
+
 ## 1.1.0 — 2026-07-06
 Skill updater pass: analytics integration.
 

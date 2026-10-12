@@ -34,6 +34,7 @@ const ids = new Set();
 for (const s of sb.scenes) {
   if (ids.has(s.id)) fail(`duplicate scene id "${s.id}"`);
   ids.add(s.id);
+  if (s.kind === "ai") fail(`scene ${s.id}: "ai" scene has no clip yet. Generate it, then set kind "demo" and source to the clip`);
   if (!["motion", "logo", "demo"].includes(s.kind)) fail(`scene ${s.id}: unknown kind "${s.kind}"`);
   if (!(s.duration > 0)) fail(`scene ${s.id}: duration must be > 0`);
 }

@@ -1,10 +1,10 @@
 ---
 name: video-studio
-description: "Make product launch videos, product demos with motion design between the demo shots, and logo motion showcases of a design portfolio, and keep every one editable after it is rendered. Reads the project or portfolio, plans a storyboard, builds motion scenes with HyperFrames, records or places demo footage, renders each scene as its own clip, then hands back an MP4 plus the editable pieces: a storyboard.json that re-renders one scene at a time, a review player to edit copy, pin notes on the frame, and send changes back in one prompt (Concat, OpenScreen, or Diffusion Studio on request), and optional After Effects compositions. Use for 'make a launch video', 'product demo video', 'demo with motion graphics', 'logo animation', 'logo reveal', 'motion showcase of my work', 'portfolio reel', 'animate my logos', 'brand reel', 'turn my talking-head recording into a reel', 'add graphics over me talking', 'turn this into a video', 'change scene 3 of the video', or 'let me edit the video after'. For AI-generated footage, avatars, and text-to-video models use luckiest-video. For what to post and when use luckiest-social."
+description: "Make product launch videos, product demos with motion design between the demo shots, and logo motion showcases of a design portfolio, and keep every one editable after it is rendered. Starts with a short context interview, plans a scripted storyboard the user approves scene by scene in a review player before anything renders, builds motion scenes with HyperFrames, records or places demo footage, renders each scene as its own clip, then hands back an MP4 plus the editable pieces: a storyboard.json that re-renders one scene at a time, a review player to edit copy, pin notes on the frame, and send changes back in one prompt (Concat, OpenScreen, or Diffusion Studio on request), and optional After Effects compositions. Use for 'make a launch video', 'product demo video', 'demo with motion graphics', 'logo animation', 'logo reveal', 'motion showcase of my work', 'portfolio reel', 'animate my logos', 'brand reel', 'turn my talking-head recording into a reel', 'add graphics over me talking', 'turn this into a video', 'change scene 3 of the video', or 'let me edit the video after'. For AI-generated footage, avatars, and text-to-video models use luckiest-video. For what to post and when use luckiest-social."
 license: See ATTRIBUTION.md
 allowed-tools: Bash, Read, Write, Edit, Glob, Grep, AskUserQuestion
 metadata:
-  version: "1.13.0"
+  version: "1.14.1"
   listing_id: luckiest-video-studio
   author: luckiest
 ---
@@ -19,13 +19,13 @@ an MP4.
 ## Staying current
 
 On activation, call the Luckiest MCP `check_updates` tool with
-`{ listingId: "aff888e4-9ee9-4f73-af08-74d5d09d3c10", installedSemver: "1.13.0" }`. If it returns
+`{ listingId: "aff888e4-9ee9-4f73-af08-74d5d09d3c10", installedSemver: "1.14.1" }`. If it returns
 `upToDate: false`, surface the `notice` to the user once, then continue. Do nothing
 further if `upToDate: true`. Never block on this check; if the tool is unavailable,
 proceed.
 
 When the skill's work is done, call the Luckiest MCP `report_usage` tool once with
-`{ listing_id: "luckiest-video-studio", skill_version: "1.13.0", matched: true, success: <true if the skill completed, false otherwise> }`.
+`{ listing_id: "luckiest-video-studio", skill_version: "1.14.1", matched: true, success: <true if the skill completed, false otherwise> }`.
 Metadata only, never prompt text. Never block on it; if the tool is unavailable,
 skip silently.
 
@@ -78,6 +78,7 @@ in `<skill-dir>/assets/sfx/`. Resolve it; never assume an install path.
 | `--ae` | also build After Effects compositions | off |
 | `--ref <url-or-mp4>` | inspiration video to study first | none |
 | `--editor` | `review`, `concat`, `openscreen`, `diffusion`, or several for the editing handoff | `review` |
+| `--yes` | flag: no questions. Infer the brief, take the default at every approval, never spend credits | off |
 
 If the user asks to change an existing video ("make scene 3 slower", "swap the
 logo in the outro"), skip to **Edit an existing run** below.
@@ -89,10 +90,12 @@ one already exists. One timestamp per run for every path:
 
 ```
 video-studio-output/
+  brief.md            the context interview answers (who, message, where, why, type)
   plan.md             angle, rubric answers, storyboard in prose
   storyboard.json     the source of truth for scenes (see references/storyboard.md)
   assets/             every approved asset the scenes show
-  storyboard/         board.html, board.png, style-frame.png (Step 2b approvals)
+  storyboard/         <id>.png hold-frame stills and animatic.mp4 (Step 2 review),
+                      board.html, board.png, style-frame.png (Step 2b approvals)
   composition/        one HyperFrames sub-composition per motion scene
   demo/               screen recordings for demo scenes
   footage/            talking-head source, cut lists, clean.mp4 and clean.json (cuts sub-skill)
@@ -117,6 +120,22 @@ only `node`. For timeline editing, Concat (`concat-cli` on `PATH`, see
 OpenScreen 1.13.0 at `/Applications/Openscreen.app` is optional. Report what is
 missing in one line and continue with what exists: without an editor the run still
 produces `final.mp4` and `storyboard.json`.
+
+## Step 0b: Context interview
+
+**Read:** [references/interview.md](references/interview.md)
+
+Before anything else on a new run, find out who the video is for, the one
+message, where it will be posted (platform, format, length), why now (the call to
+action), and the type: HyperFrames motion graphics, AI-generated video, or a mix.
+Also references, must-show assets, and voice. Infer what the request and the repo
+already answer and say so in one line, then ask the rest with AskUserQuestion: at
+most 4 questions per call, at most 2 calls. Write the answers to `brief.md`. With
+`--yes`, ask nothing: infer the brief, write it, and show it.
+
+Skip this step when editing an existing run.
+
+**Gate:** `brief.md` exists and every field has a value, asked or marked inferred.
 
 ## Step 1: Inspect
 
@@ -147,26 +166,60 @@ against. Talking-head work runs in `demo` mode.
 **Gate:** you can answer the planning rubric, and every asset you plan to show
 exists on disk.
 
-## Step 2: Plan and storyboard
+## Step 2: Plan, script, and storyboard review
 
 **Read:** [references/step-2-plan.md](references/step-2-plan.md) and
 [references/storyboard.md](references/storyboard.md)
 
-When the video carries narration (`--voice`, or the user will record a
-voiceover) and runs 30 seconds or longer, hand the script to the
-`luckiest-video-studio-script` sub-skill first. Its approved `script.md` has one
-line per scene with estimated seconds; copy each into `scenes[].line` and its
-`duration`.
+Hand `brief.md` and the request to the `luckiest-video-studio-director`
+sub-skill for the creative intent, angle, hook, energy map, and shot list. It
+reads the brief instead of guessing. Then hand it to
+`luckiest-video-studio-art-director` for `art-direction.json` (tone cell,
+palette, faces, motion language). Every scene obeys that file.
 
-Before writing the plan, hand the request to the `luckiest-video-studio-director`
-sub-skill for the creative intent, angle, hook, energy map, and shot list, then to
-`luckiest-video-studio-art-director` for `art-direction.json` (tone cell, palette,
-faces, motion language). Every scene obeys that file.
+When the video carries narration (the brief says voice, `--voice`, or the user
+will record) and runs 30 seconds or longer, hand the script to the
+`luckiest-video-studio-script` sub-skill. Its `script.md` has one line per scene
+with estimated seconds; copy each into `scenes[].line` and its `duration`.
+Otherwise the director writes each scene's on-screen line.
 
-Write `plan.md`, then `storyboard.json` with one entry per scene. Each scene is
-`motion` (built in HyperFrames), `demo` (screen recording or supplied footage), or
-`logo` (a recipe from [references/logo-recipes.md](references/logo-recipes.md)).
-Show the scene table to the user and wait for approval before building.
+Write `plan.md`, then `storyboard.json` with one entry per scene: its `line`,
+`duration`, and `kind`:
+
+| Kind | Built with |
+|---|---|
+| `motion` | HyperFrames |
+| `demo` | a screen recording or supplied footage |
+| `logo` | a recipe from [references/logo-recipes.md](references/logo-recipes.md) |
+| `ai` | AI video generation, prompts from `luckiest-video-studio-recreate` |
+
+For every `ai` scene, run `luckiest-video-studio-recreate --prompts-only` and
+copy its prompt into `scenes[].prompt`. Generate nothing paid at this stage.
+
+Draw one hold-frame still per scene into `storyboard/<id>.png` as "Storyboard
+stills" in `step-2-plan.md` describes. A still is a static HTML frame captured
+with headless Chrome, a frame grab of demo footage, or the logo on the brand
+background. Never a generated image or clip.
+
+**Storyboard review.** Open the storyboard in the review player, scene by scene,
+before anything renders:
+
+```bash
+node <review-dir>/scripts/build-reel.mjs <output-dir> --storyboard
+node <review-dir>/editor/serve.mjs <output-dir>       # in the background
+```
+
+`<review-dir>` is the `luckiest-video-studio-review` folder beside this one. Each
+scene shows its still, line, and length. Tell the user in two lines: edit a line
+in the Script tab or the Scene tab, N pins a note, Approved locks a scene, then
+**Send to Claude** and paste the prompt here. Apply each prompt as that
+sub-skill's storyboard section says, redraw only the changed stills, rerun
+`build-reel.mjs --storyboard`, and repeat until the prompt says every scene is
+approved. If the review player is not installed or there is no browser, show the
+scene table with each still and ask "Approve this storyboard?" instead.
+
+With `--yes`, build the storyboard reel, print its path, and continue without
+waiting.
 
 These sub-skills plan and build their own scenes into the same `storyboard.json`:
 
@@ -175,6 +228,7 @@ These sub-skills plan and build their own scenes into the same `storyboard.json`
 | Lower thirds, takeovers, and captions over the cleaned speaker, as a 9:16 reel or a 16:9 explainer | `luckiest-video-studio-talk` | `motion` scenes that embed `footage/clean.mp4`, plus `demo` scenes for plain speaker stretches |
 | A beat-locked brand reel, alone or as the close of a launch or logo showcase | `luckiest-video-studio-reel` | one `logo` scene with `"recipe": "reel"` |
 | A ready-made stat, section, overview, lower third, or label card in the brand's colors | `luckiest-video-studio-cards` | `motion` scene (full-frame cards) or a track inside a talk scene (overlays) |
+| AI-generated shots | `luckiest-video-studio-recreate` (prompts now, generation in Step 3) | `ai` scene |
 
 If a sub-skill is not installed, say so in one line and build the scene with this
 skill's own steps.
@@ -183,14 +237,15 @@ Every motion beat names its purpose in one word (reveal, emphasis, bridge,
 explain, cause, rhythm, or delight) as `luckiest-video-studio-motion` describes. A
 beat without one holds still or cuts.
 
-**Gate:** the user approved the scene table, and scene durations sum to the mode's
-length.
+**Gate:** every scene is Approved in the storyboard review, and scene durations
+sum to the mode's length (or the length in `brief.md`).
 
 ## Step 2b: Assets and storyboard
 
 **Read:** [references/step-2b-storyboard.md](references/step-2b-storyboard.md)
 
-Collect every asset each scene will show into `assets/` and lay them out per scene
+Runs only after every scene is approved in the storyboard review. Collect every
+asset each scene will show into `assets/` and lay them out per scene
 in `storyboard/board.html` and `board.png`. Get the user's yes on each scene's
 assets, swapping and re-asking only for rejected scenes. Then build and render only
 the hook scene, show its hold frame as `storyboard/style-frame.png`, and get a yes
@@ -209,6 +264,15 @@ scene before both.
 sub-skill for easing, duration, origin, and transitions. Read the `luckiest-video-studio-composition` sub-skill for
 focal placement, grids, and white space at each scene's hold frame. Do not enter the `hyperframes` intent
 interview or its generic launch-video workflow; this skill owns the story.
+
+**AI scenes first.** For each `ai` scene, hand its prompt to
+`luckiest-video-studio-recreate` (or `luckiest-video`) for generation. That
+sub-skill shows the cost from `simulate_cost`; ask the user and wait for a yes
+before any generation call. Save each approved clip to `footage/<id>.mp4`, then
+set the scene's `kind` to `demo` and `source` to that file, keeping `prompt` so
+it can be regenerated. `render-scenes.mjs` refuses an `ai` scene that has no
+clip yet. With `--yes`, generate nothing: build each `ai` scene as a `motion`
+scene from its still and keep the prompts in `recreate/prompts.md`.
 
 Build each motion and logo scene as its own sub-composition. For demo scenes,
 record with OpenScreen (`openscreen record --window "<app>" --duration <s>`) or use

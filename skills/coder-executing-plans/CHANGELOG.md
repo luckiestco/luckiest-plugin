@@ -1,5 +1,14 @@
 # Changelog — luckiest-coder-executing-plans
 
+## 1.2.0 — 2026-09-22
+Practices adopted from BuilderOS, Compound Engineering, and firstmate.
+
+### Added
+- First-unchecked-task rule and status-line upkeep so a resumed session re-derives progress from the plan file (BuilderOS).
+
+### Analytics
+- `check_updates` installedSemver and `report_usage` skill_version -> 1.2.0.
+
 ## 1.1.0 — 2026-07-06
 Skill updater pass: analytics integration.
 

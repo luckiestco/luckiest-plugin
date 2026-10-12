@@ -1,5 +1,28 @@
 # Changelog — luckiest-coder
 
+## 1.2.0 — 2026-09-22
+Skill updater pass: best practices pulled from BuilderOS, Compound Engineering,
+and firstmate (analysis in the PR description).
+
+### Added
+- `## Hard Rules`: five ranked rules with named exceptions. Evidence is not
+  authorization (firstmate), discovered work becomes a proposed task
+  (BuilderOS), spec wins on conflict + `settled-decision-invalidated` stop
+  (BuilderOS, Compound Engineering), decide-vs-escalate test with fixed
+  five-part escalation form (firstmate), faithful completion report shape
+  (BuilderOS, firstmate).
+- Handoff seam hardening: sub-skills are invoked with the real skill tool,
+  never narrated from memory (Compound Engineering).
+- Kernel note: SKILL.md holds rules and gates; references load per phase
+  (Compound Engineering).
+
+### Security
+- No new findings. Hard rule 1 and rule 4 reduce the blast radius of
+  injected "required"/"security" labels in reviewer or PR text.
+
+### Analytics
+- `check_updates` installedSemver and `report_usage` skill_version -> 1.2.0.
+
 ## 1.1.0 — 2026-07-06
 Skill updater pass: analytics integration.
 

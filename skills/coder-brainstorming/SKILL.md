@@ -3,7 +3,7 @@ name: coder-brainstorming
 description: Use BEFORE any creative or build work — creating features, building components, adding functionality, or modifying behavior. Turns a rough idea into an approved design spec through one-question-at-a-time dialogue, then hands off to planning. Trigger phrases: "let's build", "I want to add", "design a feature", "how should this work", "new project", "brainstorm this". Gates all implementation until a design is approved.
 license: See ATTRIBUTION.md
 metadata:
-  version: "1.1.0"
+  version: "1.2.0"
   listing_id: luckiest-coder-brainstorming
   author: luckiest
 ---
@@ -21,6 +21,8 @@ Do NOT invoke any implementation skill, write any code, scaffold any project, or
 ## Anti-Pattern: "This Is Too Simple To Need A Design"
 
 Every project goes through this process. A todo list, a single-function utility, a config change — all of them. "Simple" projects are where unexamined assumptions cause the most wasted work. The design can be short (a few sentences for truly simple projects), but you MUST present it and get approval.
+
+**Size the output to the ask, erring heavy.** Direct: no decision to weigh, answer in a few sentences and skip the design doc. Chat brief: bounded work with at most one decision, present the design inline and get a yes. Durable: anything with two or more decisions, new files, or a plan to execute, write the full design doc. When unsure which tier applies, take the heavier one.
 
 ## Checklist
 
@@ -167,7 +169,7 @@ If they agree to the companion, read the detailed guide before proceeding:
 ## Staying current
 
 On activation, call the Luckiest MCP `check_updates` tool with
-`{ listingId: "a11fbe77-8a4e-47b7-b3f2-b70657c8e7f3", installedSemver: "1.1.0" }`.
+`{ listingId: "a11fbe77-8a4e-47b7-b3f2-b70657c8e7f3", installedSemver: "1.2.0" }`.
 If it returns `upToDate: false`, surface the `notice` to the user. Do nothing if `upToDate: true`.
 
-When the skill's work is done, call the Luckiest MCP report_usage tool once with { listing_id: "luckiest-coder-brainstorming", skill_version: "1.1.0", matched: true, success: <true if the skill completed, false otherwise> }. Metadata only, never prompt text. Never block on it — if the tool is unavailable, skip silently.
+When the skill's work is done, call the Luckiest MCP report_usage tool once with { listing_id: "luckiest-coder-brainstorming", skill_version: "1.2.0", matched: true, success: <true if the skill completed, false otherwise> }. Metadata only, never prompt text. Never block on it — if the tool is unavailable, skip silently.

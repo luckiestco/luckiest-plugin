@@ -1,9 +1,9 @@
 ---
 name: social
-description: "When the user wants help creating, scheduling, or optimizing social media content for LinkedIn, Twitter/X, Instagram, TikTok, Facebook, or other platforms, or wants to do social listening and engagement triage. Also use when the user mentions 'LinkedIn post,' 'Twitter thread,' 'social media,' 'content calendar,' 'social scheduling,' 'engagement,' 'viral content,' 'what should I post,' 'repurpose this content,' 'tweet ideas,' 'LinkedIn carousel,' 'social media strategy,' 'grow my following,' 'TikTok video,' 'Reels,' 'Shorts,' 'video script,' 'video hook,' 'short-form video,' 'create a reel,' 'social listening,' 'brand mentions,' 'competitor monitoring,' 'top posts to comment on,' or 'find people asking for.' Use this for social media content creation, repurposing, scheduling, short-form video scripting, and social listening. For broader content strategy, see luckiest-content-strategy. For paid ads, see luckiest-ad-creative. For earned media, see luckiest-public-relations."
+description: "When the user wants help creating, scheduling, or optimizing social media content for LinkedIn, Twitter/X, Instagram, TikTok, Facebook, or other platforms, or wants to do social listening and engagement triage. Also use when the user mentions 'LinkedIn post,' 'Twitter thread,' 'social media,' 'content calendar,' 'social scheduling,' 'engagement,' 'viral content,' 'what should I post,' 'repurpose this content,' 'tweet ideas,' 'LinkedIn carousel,' 'social media strategy,' 'grow my following,' 'TikTok video,' 'Reels,' 'Shorts,' 'video script,' 'video hook,' 'short-form video,' 'create a reel,' 'social listening,' 'brand mentions,' 'competitor monitoring,' 'top posts to comment on,' or 'find people asking for.' Use this for social media content creation, repurposing, scheduling, short-form video scripting, and social listening. Posts avoid AI tells like 'it's not X, it's Y' reveals and broetry. For broader content strategy, see luckiest-content-strategy. For paid ads, see luckiest-ad-creative. For earned media, see luckiest-public-relations."
 license: See ATTRIBUTION.md
 metadata:
-  version: "1.2.0"
+  version: "1.3.0"
   listing_id: luckiest-social
   author: luckiest
 ---
@@ -12,11 +12,13 @@ metadata:
 
 An expert social media strategist skill. The goal is to help create engaging content that builds audience, drives engagement, and supports business goals.
 
+Whatever the platform, storytelling and connecting with your audience come first. The better the user can share their story, the better their posts will perform. Platform tactics and algorithm mechanics amplify a good story and never replace one. Keep this at the center of every recommendation below.
+
 ## Staying current
 
-On activation, call the Luckiest MCP check_updates tool with { listingId: "e1b9c06a-7c04-4127-977c-9eb15cbac02f", installedSemver: "1.2.0" }. If it returns upToDate: false, surface the notice to the user once, then continue. Do nothing further if upToDate: true. Never block on this check — if the tool is unavailable, proceed.
+On activation, call the Luckiest MCP check_updates tool with { listingId: "e1b9c06a-7c04-4127-977c-9eb15cbac02f", installedSemver: "1.3.0" }. If it returns upToDate: false, surface the notice to the user once, then continue. Do nothing further if upToDate: true. Never block on this check — if the tool is unavailable, proceed.
 
-When the skill's work is done, call the Luckiest MCP report_usage tool once with { listing_id: "luckiest-social", skill_version: "1.2.0", matched: true, success: <true if the skill completed, false otherwise> }. Metadata only, never prompt text. Never block on it — if the tool is unavailable, skip silently.
+When the skill's work is done, call the Luckiest MCP report_usage tool once with { listing_id: "luckiest-social", skill_version: "1.3.0", matched: true, success: <true if the skill completed, false otherwise> }. Metadata only, never prompt text. Never block on it — if the tool is unavailable, skip silently.
 
 ## Human-in-the-loop guardrail
 
@@ -69,6 +71,8 @@ Gather this context (ask if not provided):
 
 **For hashtag limits and character counts**: See [references/platform-limits.md](references/platform-limits.md)
 
+**For X (Twitter) ranking mechanics**, the For You feed signals from xAI's open-sourced algorithm and the 10 posting rules they imply: See [references/x-algorithm.md](references/x-algorithm.md). Use it whenever the task involves posting on X.
+
 > Specs drift. Posting frequencies, character counts, and optimal video lengths change as platforms tune their algorithms. Treat the numbers in this skill as a starting baseline, not gospel — [references/platform-limits.md](references/platform-limits.md) is the source of truth, and when a limit is load-bearing for a deliverable, verify the current value before committing to it.
 
 ---
@@ -104,8 +108,8 @@ The first line determines whether anyone reads the rest.
 
 ### Curiosity Hooks
 - "I was wrong about [common belief]."
-- "The real reason [outcome] happens isn't what you think."
-- "[Impressive result] — and it only took [surprisingly short time]."
+- "[Outcome] usually comes down to [specific, surprising cause]."
+- "[Impressive result] in [surprisingly short time]."
 
 ### Story Hooks
 - "Last week, [unexpected thing] happened."
@@ -119,10 +123,30 @@ The first line determines whether anyone reads the rest.
 
 ### Contrarian Hooks
 - "Unpopular opinion: [bold statement]"
-- "[Common advice] is wrong. Here's why:"
+- "[Common advice] cost us [specific result]."
 - "I stopped [common practice] and [positive result]."
 
 **For post templates and more hooks**: See [references/post-templates.md](references/post-templates.md)
+
+### No AI Tells
+
+Readers scroll past posts that read as generated, and on LinkedIn they say so in the comments. A hook formula is a starting shape. Fill it with a specific fact, number, or story.
+
+Never write these:
+- **Contrast reveals**: "It's not X, it's Y." "Not because X. Because Y." State Y directly, with the reason.
+- **Negation lists**: "No X, no Y, no Z." Say what does happen. One plain absence ("No card required") is fine.
+- **Trailing pile-ons**: a full claim, then a comma and more restating clauses. End the sentence at the claim.
+- **Self-answered questions and colon reveals**: "The result? 3x faster." "The best part: it learns." FAQ questions and a question in the reader's own voice are fine.
+- **Stock phrases**: "Say goodbye to," "X, reimagined," "Unlock the power of," "Take it to the next level," "Here's the thing."
+- **Em dashes** in posts. Use a period or a line break.
+
+Social-specific tells:
+- **Broetry**: one short sentence per line, every line, for the whole post. Write paragraphs and break lines where a person would pause.
+- **Engagement bait**: "Agree?" "Thoughts?" "Let that sink in." "Read that again." End on the point, or a real question you want answered.
+- **Manufactured vulnerability**: "I'll be honest, I was terrified..." with no real story behind it.
+- **Emoji as bullets**: 🚀 ✅ 💡 leading every line.
+
+Keep fragments and lists of three to one per post.
 
 ---
 

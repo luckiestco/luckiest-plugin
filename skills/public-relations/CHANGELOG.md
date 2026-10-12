@@ -1,5 +1,15 @@
 # Changelog — luckiest-public-relations
 
+## 1.2.0 — 2026-10-08
+Upstream sync with coreyhaines31/marketingskills dda3841 (issue #112).
+
+- Added a "When Something Goes Wrong" section and crisis trigger phrases to the description.
+- Added references/crisis-communications.md (severity tiers, first 60 minutes, channel order, playbooks).
+- Added references/statement-templates.md (holding, breach, outage, apology, billing, postmortem).
+- Added an untrusted-data note to references/newsjacking.md.
+- Skipped: evals, version bump.
+
+
 ## 1.1.0 — 2026-07-06
 Skill updater pass: analytics integration.
 

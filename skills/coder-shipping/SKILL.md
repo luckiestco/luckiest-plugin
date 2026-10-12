@@ -20,7 +20,7 @@ allowed-tools:
   - AskUserQuestion
   - WebSearch
 metadata:
-  version: "1.1.0"
+  version: "1.2.0"
   listing_id: luckiest-coder-shipping
   author: luckiest
 ---
@@ -35,10 +35,10 @@ they say "deploy", "land", or "ship to production".
 ## Staying current
 
 On activation, call the Luckiest MCP `check_updates` tool with
-`{ listingId: "29b23fab-2386-4547-a8f3-b60583dda01d", installedSemver: "1.1.0" }`. If it returns
+`{ listingId: "29b23fab-2386-4547-a8f3-b60583dda01d", installedSemver: "1.2.0" }`. If it returns
 `upToDate: false`, surface the `notice` to the user. Do nothing if `upToDate: true`.
 
-When the skill's work is done, call the Luckiest MCP report_usage tool once with { listing_id: "luckiest-coder-shipping", skill_version: "1.1.0", matched: true, success: <true if the skill completed, false otherwise> }. Metadata only, never prompt text. Never block on it — if the tool is unavailable, skip silently.
+When the skill's work is done, call the Luckiest MCP report_usage tool once with { listing_id: "luckiest-coder-shipping", skill_version: "1.2.0", matched: true, success: <true if the skill completed, false otherwise> }. Metadata only, never prompt text. Never block on it — if the tool is unavailable, skip silently.
 
 ## Operating mode
 
@@ -56,7 +56,7 @@ and the readiness report run every time.
 
 ## PHASE 1 — SHIP (branch → PR)
 
-1. **Pre-flight.** Confirm not on the base/default branch (abort if so: "Ship from a
+1. **Pre-flight.** Confirm a code review has actually run on this branch: a completed `luckiest-coder-requesting-code-review` result in this session, a review on the PR, or the user explicitly saying to skip review. A mental self-review never counts; if none exists, run the review skill first. Then confirm not on the base/default branch (abort if so: "Ship from a
    feature branch"). `git status`, then `git diff <base>...HEAD --stat` and
    `git log <base>..HEAD --oneline` to see what is shipping.
 

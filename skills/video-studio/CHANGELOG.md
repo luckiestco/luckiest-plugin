@@ -1,5 +1,21 @@
 # Changelog — luckiest-video-studio
 
+## 1.14.1 — 2026-10-10
+- Security: `scripts/pyproject.toml` floors raised to the locked, advisory-free numpy 2.4.6 and scipy 1.17.1 (SkillSpector SC4). urllib3, pulled in through librosa's pooch download helper, constrained to 2.8.0 or later and relocked from 2.7.0, fixing GHSA-8988-9cw3-xx77, GHSA-gh4c-6fx4-qh6g and GHSA-vxq7-64xx-v4gw. OSV reports 0 of 31 locked packages vulnerable.
+
+## 1.14.0 — 2026-10-10
+- Step 0b, context interview: who, message, where, why now, and type (HyperFrames,
+  AI-generated, or a mix), plus references, must-show assets, and voice. At most
+  2 AskUserQuestion calls of 4. Answers go to `brief.md`
+  (`references/interview.md`).
+- Step 2 ends in a storyboard review: one still per scene in `storyboard/<id>.png`,
+  opened in the review player with `build-reel.mjs --storyboard` and approved
+  scene by scene. It replaces showing the scene table. Step 2b is unchanged.
+- New scene kind `ai` with `scenes[].prompt` (prompts from the recreate sub-skill,
+  nothing generated). Step 3 runs the cost check and asks before generating, then
+  the scene becomes `demo`. `render-scenes.mjs` refuses an `ai` scene with no clip.
+- `scenes[].still` in the schema. `--yes` infers the brief and never spends credits.
+
 ## 1.13.0 — 2026-10-08
 - Formats come last: iterate and approve the master 16:9, then add `formats`
   ("Other formats (last)" in `step-4-deliver.md`).

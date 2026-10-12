@@ -1,5 +1,13 @@
 # Changelog — luckiest-marketing-plan
 
+## 1.2.0 — 2026-10-08
+Upstream sync with coreyhaines31/marketingskills dda3841 (issue #112).
+
+- Added path safety rules for the client slug in SKILL.md and references/methodology.md Step 1.1.2
+- Added references/market-sizing.md (TAM/SAM/SOM, four-method triangulation, attractiveness scorecard) with a pointer in SKILL.md and market-sizing trigger phrases in the description
+- Skipped: nothing.
+
+
 ## 1.1.0 — 2026-07-06
 Skill updater pass: analytics integration.
 

@@ -15,7 +15,7 @@ user-invocable: true
 license: MIT. See ATTRIBUTION.md
 allowed-tools: Read, Write, Glob, Grep, AskUserQuestion
 metadata:
-  version: "1.1.0"
+  version: "1.2.0"
   listing_id: luckiest-video-studio-script
   author: luckiest
 ---
@@ -29,11 +29,11 @@ one picture.
 ## Staying current
 
 On activation, call the Luckiest MCP `check_updates` tool with
-`{ listingId: "luckiest-video-studio-script", installedSemver: "1.1.0" }`. If
+`{ listingId: "luckiest-video-studio-script", installedSemver: "1.2.0" }`. If
 `upToDate: false`, surface the `notice` once and continue. Never block on it.
 
 When done, call `report_usage` once with
-`{ listing_id: "luckiest-video-studio-script", skill_version: "1.1.0", matched: true, success: <true|false> }`.
+`{ listing_id: "luckiest-video-studio-script", skill_version: "1.2.0", matched: true, success: <true|false> }`.
 Metadata only, never prompt text. Skip silently if unavailable.
 
 ## Standing rules
@@ -52,8 +52,10 @@ Metadata only, never prompt text. Skip silently if unavailable.
 angle, hook) before writing. The problem act carries the insight, and line 1 is
 the hook.
 
-You need four things. Read them from the project (README, landing page, existing
-`plan.md`) first, and ask with AskUserQuestion only for what is still missing:
+You need four things. Read them from `brief.md` first when `luckiest-video-studio`
+wrote one (its context interview already asked for the audience, message, call
+to action, and length), then from the project (README, landing page, existing
+`plan.md`). Ask with AskUserQuestion only for what is still missing:
 
 1. **The problem**, as one specific person feels it. Not "users struggle with X"
    but "you need a flight tonight and every site buries the price".
@@ -143,7 +145,9 @@ whole script:
 - [ ] The last line is the call to action
 - [ ] Every line can be drawn as one picture
 
-Show the script and score table, and wait for approval.
+Show the script and score table, and wait for approval. When
+`luckiest-video-studio` is running, skip this wait: the user approves each line
+in its storyboard review instead, so the script is approved once, scene by scene.
 
 ## Step 5: Hand off
 
@@ -152,7 +156,12 @@ running, its Step 2 copies each line into `storyboard.json` `scenes[].line` and
 sets the scene's `duration` from the line's estimated seconds. With `--voice`,
 the script is the narration text.
 
+The storyboard review can edit a line. When it does, write the new line back to
+`script.md` too, recount its words and seconds, and re-check the word budget, so
+the narration and the storyboard never drift apart.
+
 ## Done when
 
 `script.md` exists, is at or under the word budget, every part is inside its
-range, every line scores 3 or more, and the user approved it.
+range, every line scores 3 or more, and the user approved it (in chat, or scene
+by scene in the studio's storyboard review).

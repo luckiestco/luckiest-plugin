@@ -1,5 +1,14 @@
 # Changelog — luckiest-ads
 
+## 1.2.0 — 2026-10-08
+Upstream sync with coreyhaines31/marketingskills dda3841 (issue #112).
+
+- Added references/reading-google-ads-data.md (withheld search terms, conversions vs all_conversions, small-sample table, break-even CVR, verified/inferred/stale) with a pointer in SKILL.md.
+- Added a search-terms-are-a-sample rule to the kill-vs-keep rules, and new description triggers.
+- Added Brand vs. non-brand section; optimize on non-brand ROAS, judge scaling headroom on blended ROAS.
+- Merged the two learning-phase mistakes into one bullet and merged the ab-testing/cro related-skills lines.
+- Skipped: audit-guardrails and creative-research edits (files not in this fork); registry link rewrites; evals.
+
 ## 1.1.0 — 2026-07-06
 Skill updater pass: analytics integration.
 
