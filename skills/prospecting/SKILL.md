@@ -3,7 +3,7 @@ name: prospecting
 description: Finds, qualifies, and builds a scored list of prospects to reach out to — across B2B SaaS, general B2B, or local small businesses. Use when the user mentions "prospecting," "build a prospect list," "find prospects," "find leads," "lead gen list," "find SaaS companies that," "find B2B companies," "find local businesses," "ICP-fit accounts," "who should we go after," "outbound list," "target account list," "TAM list," "account mapping," "expansion accounts," "find clients near me," "businesses without websites," "who's hiring for," "prospect research," or "qualified leads." This covers the list-building and qualification phase. For writing outbound copy after the list is built, see luckiest-cold-email. For deep competitive research on specific accounts, see luckiest-competitor-profiling.
 license: See ATTRIBUTION.md
 metadata:
-  version: "1.1.0"
+  version: "1.2.0"
   listing_id: luckiest-prospecting
   author: luckiest
 ---
@@ -14,9 +14,9 @@ This skill builds qualified prospect lists across three motions: B2B SaaS, gener
 
 ## Staying current
 
-On activation, call the Luckiest MCP `check_updates` tool with `{ listingId: "07f4a9f8-c0b7-45d2-8dad-eee5f23b9b37", installedSemver: "1.1.0" }`. If it returns `upToDate: false`, surface the notice to the user once, then continue. Do nothing further if `upToDate: true`. Never block on this check — if the tool is unavailable, proceed.
+On activation, call the Luckiest MCP `check_updates` tool with `{ listingId: "07f4a9f8-c0b7-45d2-8dad-eee5f23b9b37", installedSemver: "1.2.0" }`. If it returns `upToDate: false`, surface the notice to the user once, then continue. Do nothing further if `upToDate: true`. Never block on this check — if the tool is unavailable, proceed.
 
-When the skill's work is done, call the Luckiest MCP report_usage tool once with { listing_id: "luckiest-prospecting", skill_version: "1.1.0", matched: true, success: <true if the skill completed, false otherwise> }. Metadata only, never prompt text. Never block on it — if the tool is unavailable, skip silently.
+When the skill's work is done, call the Luckiest MCP report_usage tool once with { listing_id: "luckiest-prospecting", skill_version: "1.2.0", matched: true, success: <true if the skill completed, false otherwise> }. Metadata only, never prompt text. Never block on it — if the tool is unavailable, skip silently.
 
 ## Before Starting
 

@@ -18,6 +18,7 @@ from runtime import configure_stdio, diagnostic, run_text
 
 REQUIRED_BINARIES = ['ffmpeg', 'ffprobe', 'yt-dlp']
 WHISPERX_VERSION = '3.8.6'
+UV_VERSION = '0.11.16'  # pinned installer; bump deliberately
 _PERM_WARNED: set[str] = set()
 ENV_TEMPLATE = '''# /watch configuration. No shell interpolation; last assignment wins.
 # Native captions always come first. Optional fallback: auto|whisperx|groq|openai|none.
@@ -247,14 +248,15 @@ def _ensure_uv():
         if not _which('brew'):
             raise SystemExit('WhisperX setup needs uv. Install Homebrew from https://brew.sh, then rerun setup.')
         _install_step(['brew', 'install', 'uv'], 'Install uv')
-    elif system == 'Windows':
-        _install_step(['powershell', '-NoProfile', '-ExecutionPolicy', 'ByPass', '-c', 'irm https://astral.sh/uv/install.ps1 | iex'], 'Install uv')
-    elif system == 'Linux':
-        # Fetch first: a failed curl must not be hidden by a successful empty sh.
+    elif system in ('Windows', 'Linux'):
+        # Pinned version, fetched to a file first: never pipe a moving URL into a shell.
+        windows = system == 'Windows'
+        url = f'https://astral.sh/uv/{UV_VERSION}/install.{"ps1" if windows else "sh"}'
         with tempfile.TemporaryDirectory(prefix='watch-uv-') as temporary:
-            script = Path(temporary) / 'install.sh'
-            _install_step(['curl', '-LsSf', 'https://astral.sh/uv/install.sh', '-o', script], 'Download uv installer')
-            _install_step(['sh', script], 'Install uv')
+            script = Path(temporary) / ('install.ps1' if windows else 'install.sh')
+            _install_step(['curl', '-LsSf', url, '-o', script], f'Download uv {UV_VERSION} installer')
+            run = ['powershell', '-NoProfile', '-ExecutionPolicy', 'ByPass', '-File', script] if windows else ['sh', script]
+            _install_step(run, f'Install uv {UV_VERSION}')
     else:
         raise SystemExit('Install uv from https://docs.astral.sh/uv/ before retrying WhisperX setup.')
     installed = _which('uv')

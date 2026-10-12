@@ -1,5 +1,13 @@
 # Changelog — luckiest-competitors
 
+## 1.2.0 — 2026-10-08
+Upstream sync with coreyhaines31/marketingskills dda3841 (issue #112).
+
+- Added 'Never guess the competitor' rule and an Evidence Discipline principle (dated facts, not observed vs absent, no motives).
+- Added a Competitive Asset Audit procedure and Asset Audit Report output; new description triggers; battle cards pointed to sales-enablement.
+- content-architecture.md: added last_verified and sources provenance fields; templates.md: added a 'Not listed ... (as of)' row and the Not available caveat.
+- Skipped: evals.
+
 ## 1.1.0 — 2026-07-06
 Skill updater pass: analytics integration.
 

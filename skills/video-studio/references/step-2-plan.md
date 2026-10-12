@@ -1,6 +1,8 @@
 # Step 2: Write the video plan
 
-Write `<output-dir>/plan.md`. One focused page. This is the creative north star for the entire video.
+Write `<output-dir>/plan.md`. One focused page. Start from `brief.md` (the
+context interview): its audience, message, platform, length, call to action, and
+type are settled. Do not re-ask or change them; flag a conflict to the user instead. This is the creative north star for the entire video.
 
 The plan should specify what the video must communicate and what project material must be used. It should not prescribe low-level Hyperframes implementation details. Hyperframes will decide the concrete composition structure, animation mechanics, and render workflow from the brief in Step 3.
 
@@ -263,3 +265,25 @@ Match transitions to tone:
 | `cinematic` | Dramatic wipe, crossfade |
 | `app-store` | Slide, smooth wipe |
 
+## Storyboard stills
+
+Every scene gets one still, `storyboard/<id>.png` at the master size, before the
+storyboard review. The still shows the hold frame: what the viewer sees when the
+scene settles. Cheap and local only, never a generated image or clip.
+
+| Kind | Still |
+|---|---|
+| `motion`, `ai` | A static HTML frame, `storyboard/frames/<id>.html`: the brand background, the scene's main text in the brand fonts, and the real assets it will show, placed where the hold frame puts them. For `ai`, add a one-line caption of what the shot shows. |
+| `demo` | A frame grab of the footage at the hold point: `ffmpeg -ss <t> -i <file> -frames:v 1 storyboard/<id>.png`. No footage yet: an HTML frame naming what will be recorded. |
+| `logo` | The logo file centered on the brand background, as an HTML frame. |
+
+Capture each HTML frame with headless Chrome (no install):
+
+```bash
+"/Applications/Google Chrome.app/Contents/MacOS/Google Chrome" --headless=new --hide-scrollbars \
+  --window-size=<width>,<height> --screenshot=<abs-run-dir>/storyboard/<id>.png "file://<abs-run-dir>/storyboard/frames/<id>.html"
+```
+
+Look at each still before the review. A scene whose `still` field names another
+file uses that one instead. When a review edit changes a line or a layout,
+redraw only that scene's still.

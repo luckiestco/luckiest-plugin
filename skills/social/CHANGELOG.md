@@ -1,5 +1,16 @@
 # Changelog — luckiest-social
 
+## 1.3.0 — 2026-10-08
+Upstream sync with coreyhaines31/marketingskills dda3841 (issue #112).
+
+- Added a storytelling-first principle to SKILL.md and platforms.md.
+- Added a No AI Tells subsection and replaced three generic hooks with specific ones.
+- Added references/x-algorithm.md and rewrote the X format and algorithm tips in platforms.md.
+- Reworded hooks in post-templates.md and short-form-video.md (no em dashes or "Here's why").
+- Added an untrusted-data note to references/listening.md.
+- Skipped: Publishing From Your Agent section, carousel-frameworks.md punctuation, evals, version bump.
+
+
 ## 1.2.0 — 2026-10-05
 - Generated post images, thumbnails, and clips apply `luckiest-video-studio-art-director` section 3b and its shot prompting reference. Bundle ships the art director.
 

@@ -1,5 +1,12 @@
 # Changelog — luckiest-video-studio-director
 
+## 1.3.0 — 2026-10-10
+- Reads `brief.md` from the studio's context interview for the intent line and
+  asks nothing it answers.
+- Shot list rows carry `kind` (including `ai`, routed to the recreate sub-skill
+  for prompts only) and `duration`. The storyboard review replaces the table
+  approval; idea notes from it come back to the shot list.
+
 ## 1.2.0 — 2026-10-05
 - `scripts/breakdown.mjs`: film over a strip of scene tiles; the active scene plays
   in sync with an accent outline, a playhead runs under it. Writes

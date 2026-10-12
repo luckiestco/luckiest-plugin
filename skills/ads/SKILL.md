@@ -1,9 +1,9 @@
 ---
 name: ads
-description: "Plans, optimizes, and scales paid advertising campaigns — campaign strategy, audience targeting, bidding, and optimization. Use when the user wants help with paid advertising on Google Ads, Meta (Facebook/Instagram), LinkedIn, Twitter/X, or other ad platforms. Also use when the user mentions 'PPC,' 'paid media,' 'ROAS,' 'CPA,' 'ad campaign,' 'retargeting,' 'audience targeting,' 'Google Ads,' 'Facebook ads,' 'LinkedIn ads,' 'ad budget,' 'cost per click,' 'ad spend,' or 'should I run ads.' For bulk ad creative generation and iteration, see luckiest-ad-creative. For landing page optimization, see luckiest-cro."
+description: "Plans, optimizes, and scales paid advertising campaigns — campaign strategy, audience targeting, bidding, and optimization. Use when the user wants help with paid advertising on Google Ads, Meta (Facebook/Instagram), LinkedIn, Twitter/X, or other ad platforms. Also use when the user mentions 'PPC,' 'paid media,' 'ROAS,' 'CPA,' 'ad campaign,' 'retargeting,' 'audience targeting,' 'Google Ads,' 'Facebook ads,' 'LinkedIn ads,' 'ad budget,' 'cost per click,' 'ad spend,' 'should I run ads,' 'search terms report,' 'wasted spend,' or 'is this campaign working.' For bulk ad creative generation and iteration, see luckiest-ad-creative. For landing page optimization, see luckiest-cro."
 license: See ATTRIBUTION.md
 metadata:
-  version: "1.1.0"
+  version: "1.2.0"
   listing_id: luckiest-ads
   author: luckiest
 ---
@@ -14,9 +14,9 @@ This skill acts as an expert performance marketer focused on paid customer acqui
 
 ## Staying current
 
-On activation, call the Luckiest MCP check_updates tool with { listingId: "5fb8bb24-2d95-4a8e-8778-e403be972d7a", installedSemver: "1.1.0" }. If it returns upToDate: false, surface the notice to the user once, then continue. Do nothing further if upToDate: true. Never block on this check — if the tool is unavailable, proceed.
+On activation, call the Luckiest MCP check_updates tool with { listingId: "5fb8bb24-2d95-4a8e-8778-e403be972d7a", installedSemver: "1.2.0" }. If it returns upToDate: false, surface the notice to the user once, then continue. Do nothing further if upToDate: true. Never block on this check — if the tool is unavailable, proceed.
 
-When the skill's work is done, call the Luckiest MCP report_usage tool once with { listing_id: "luckiest-ads", skill_version: "1.1.0", matched: true, success: <true if the skill completed, false otherwise> }. Metadata only, never prompt text. Never block on it — if the tool is unavailable, skip silently.
+When the skill's work is done, call the Luckiest MCP report_usage tool once with { listing_id: "luckiest-ads", skill_version: "1.2.0", matched: true, success: <true if the skill completed, false otherwise> }. Metadata only, never prompt text. Never block on it — if the tool is unavailable, skip silently.
 
 ## Before Starting
 
@@ -201,6 +201,7 @@ LI_LeadGen_CMOs-SaaS_Whitepaper_Mar24
 Do not judge or cut an ad, ad set, or campaign before it has enough data to be meaningful:
 
 - **Spend threshold before judging:** give a new ad set at least ~1-3x the target CPA in spend (or ~50 conversions at the campaign level) before concluding it works or fails. Cutting earlier is reacting to noise, not signal.
+- **Search terms are a sample; small numbers prove little.** State disclosed vs. total clicks, and compute break-even CVR (CPC / target CPA) before calling spend wasted. See [references/reading-google-ads-data.md](references/reading-google-ads-data.md).
 - **Learning phase:** avoid edits while the platform reports "learning" — changes reset it. Wait for exit before evaluating.
 - **Clear kill signals:** spend ≥ 2-3x target CPA with zero or near-zero conversions; CTR far below account average after adequate impressions; frequency climbing while CTR drops (fatigue).
 - **Clear keep/scale signals:** CPA at or below target across a full conversion window, stable over 3-5 days. Scale by 20-30% increments, then let it re-stabilize.
@@ -243,17 +244,28 @@ Do not judge or cut an ad, ad set, or campaign before it has enough data to be m
 
 ### Weekly Review
 - Spend vs. budget pacing
-- CPA/ROAS vs. targets
+- CPA/ROAS vs. targets (split brand vs. non-brand, see below)
 - Top and bottom performing ads
 - Audience performance breakdown
 - Frequency check (fatigue risk)
 - Landing page conversion rate
+
+### Brand vs. non-brand (measure them separately)
+
+Wherever people can search your name (Google Ads especially, but any channel with branded demand), split brand from non-brand before you evaluate or optimize anything. A branded query is demand that already exists. Someone typing your name is harvesting it, not generating incremental performance. A cheap brand CPA or high brand ROAS reflects existing awareness, not media efficiency.
+
+- **Report blended, optimize on non-brand.** Blended ROAS/CAC at the business level is the right top-line health number. In considered and B2B purchases where touchpoints assist each other, blended is the honest view of the journey. The metric you set targets, bids, and budgets against is **non-brand ROAS**, with brand stripped out.
+- **Why the split matters:** if you optimize against a blended number, brand's cheap conversions inflate it. You set non-brand targets too loosely, and non-brand inefficiency hides behind brand.
+- **Never report a low brand CPA as a win.** It only signals performance if you measure incrementality (for example a brand-campaign holdout test). Otherwise a great brand CPA just means people already knew you.
 
 ### Attribution Considerations
 - Platform attribution is inflated
 - Use UTM parameters consistently
 - Compare platform data to GA4
 - Look at blended CAC, not just platform CPA
+- Judge scaling headroom on blended ROAS, but optimize against non-brand ROAS so cheap brand traffic does not flatter the math
+
+**For reading Google Ads data without false conclusions** (withheld search terms, conversions vs. all_conversions, small-sample tables, break-even CVR, verified vs. inferred vs. stale claims): See [references/reading-google-ads-data.md](references/reading-google-ads-data.md)
 
 ---
 
@@ -375,7 +387,7 @@ If any check fails, rewrite before responding. Do not ship partial RSAs.
 ### Strategy
 - Launching without conversion tracking
 - Too many campaigns (fragmenting budget)
-- Not giving algorithms enough learning time
+- Not giving algorithms enough learning time, or stopping campaigns mid-learning phase
 - Optimizing for wrong metric
 
 ### Targeting
@@ -391,7 +403,6 @@ If any check fails, rewrite before responding. Do not ship partial RSAs.
 ### Budget
 - Spreading too thin across campaigns
 - Making big budget changes (disrupts learning)
-- Stopping campaigns during learning phase
 
 ---
 
@@ -426,8 +437,7 @@ For tracking setup, see [references/conversion-tracking.md](references/conversio
 - **luckiest-ad-creative**: For generating and iterating ad headlines, descriptions, and creative at scale
 - **luckiest-copywriting**: For landing page copy that converts ad traffic
 - **luckiest-analytics**: For proper conversion tracking setup
-- **luckiest-ab-testing**: For landing page testing to improve ROAS
-- **luckiest-cro**: For optimizing post-click conversion rates
+- **luckiest-ab-testing / luckiest-cro**: For landing page tests and post-click conversion rates that improve ROAS
 
 ## Share with your tribe
 

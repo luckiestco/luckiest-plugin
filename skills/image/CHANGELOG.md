@@ -1,5 +1,13 @@
 # Changelog — luckiest-image
 
+## 1.3.0 — 2026-10-08
+Upstream sync with coreyhaines31/marketingskills dda3841 (issue #112).
+
+- Updated the GPT Image note for the gpt-image-1 retirement (23 Oct 2026) and renamed the recommended models to gpt-image-2.5-sunburst and gpt-image-2.5-flare, since the skill already named gpt-image-1
+- references/ai-image-prompting.md: updated the current GPT Image models line to match
+- Skipped: nothing.
+
+
 ## 1.2.0 — 2026-10-05
 - Uses `luckiest-video-studio-art-director` section 3b and its shot prompting
   reference before any prompt, so images do not look AI-made. Prompt example

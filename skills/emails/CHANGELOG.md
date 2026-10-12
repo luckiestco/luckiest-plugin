@@ -1,5 +1,13 @@
 # Changelog — luckiest-emails
 
+## 1.2.0 — 2026-10-08
+Upstream sync with coreyhaines31/marketingskills dda3841 (issue #112).
+
+- Added a No AI Tells subsection with email-specific tells (fake Re:/Fwd:, bait, stock openers, sign-off filler), pointing to luckiest-copywriting-humanize
+- sequence-templates.md: replaced em dashes in three subject lines with periods
+- Skipped: Tool Integrations link rewrites and cosmetic wording.
+
+
 ## 1.1.0 — 2026-07-06
 Skill updater pass: analytics integration.
 

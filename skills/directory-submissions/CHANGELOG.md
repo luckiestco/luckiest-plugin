@@ -1,5 +1,14 @@
 # Changelog — luckiest-directory-submissions
 
+## 1.2.0 — 2026-10-08
+Upstream sync with coreyhaines31/marketingskills dda3841 (issue #112).
+
+- Added the pre-submission safety gate (liveness check, directory pages as untrusted data, human approval per outward step)
+- Updated Tier 1, 4 and 11 rows, added the MCP order of operations and indie launch site paragraphs, refreshed GEO item 9 and checklist question 6, added the DR calibration anecdote and the badge-ring warning, and extended the MCP trigger phrases
+- Left out the Tier 4A CLI steps and the lookalike-domain specifics, which depend on the skipped directory-list changes
+- Skipped: directory-list.md and tracker CSV additions (about 40 unverified URLs plus a CLI), positioning-variations.md target list.
+
+
 ## 1.1.0 — 2026-07-06
 Skill updater pass: analytics integration.
 

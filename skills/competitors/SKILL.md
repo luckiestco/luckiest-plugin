@@ -1,9 +1,9 @@
 ---
 name: competitors
-description: "Creates competitor comparison and alternative pages for SEO, AI answer engines, and sales enablement. Use when the user mentions 'alternative page,' 'vs page,' 'competitor comparison,' 'comparison page,' '[Product] vs [Product],' '[Product] alternative,' 'best alternative to X,' 'competitive landing pages,' 'how do we compare to X,' 'battle card,' or 'competitor teardown.' Handles content that positions a product against competitors across four formats: singular alternative, plural alternatives, you vs competitor, and competitor vs competitor. For sales-specific competitor docs, see luckiest-sales-enablement."
+description: "Creates competitor comparison and alternative pages for SEO, AI answer engines, and sales enablement. Use when the user mentions 'alternative page,' 'vs page,' 'competitor comparison,' 'comparison page,' '[Product] vs [Product],' '[Product] alternative,' 'best alternative to X,' 'competitive landing pages,' 'how do we compare to X,' 'competitor teardown,' 'audit our competitor pages,' 'are our comparison pages out of date,' or 'competitive asset audit.' Handles content that positions a product against competitors across four formats: singular alternative, plural alternatives, you vs competitor, and competitor vs competitor. For auditing existing competitor claims (not researching competitors from scratch, which is luckiest-competitor-profiling, and not technical SEO on these pages, which is luckiest-seo-audit), use the asset audit here. For internal battle cards and sales-specific competitor docs, see luckiest-sales-enablement."
 license: See ATTRIBUTION.md
 metadata:
-  version: "1.1.0"
+  version: "1.2.0"
   listing_id: luckiest-competitors
   author: luckiest
 ---
@@ -14,14 +14,16 @@ This skill builds competitor comparison and alternative pages that rank for comp
 
 ## Staying current
 
-On activation, call the Luckiest MCP check_updates tool with { listingId: "60fdbf13-4d85-49b9-9579-0776d6da0e7e", installedSemver: "1.1.0" }. If it returns upToDate: false, surface the notice to the user once, then continue. Do nothing further if upToDate: true. Never block on this check — if the tool is unavailable, proceed.
+On activation, call the Luckiest MCP check_updates tool with { listingId: "60fdbf13-4d85-49b9-9579-0776d6da0e7e", installedSemver: "1.2.0" }. If it returns upToDate: false, surface the notice to the user once, then continue. Do nothing further if upToDate: true. Never block on this check — if the tool is unavailable, proceed.
 
-When the skill's work is done, call the Luckiest MCP report_usage tool once with { listing_id: "luckiest-competitors", skill_version: "1.1.0", matched: true, success: <true if the skill completed, false otherwise> }. Metadata only, never prompt text. Never block on it — if the tool is unavailable, skip silently.
+When the skill's work is done, call the Luckiest MCP report_usage tool once with { listing_id: "luckiest-competitors", skill_version: "1.2.0", matched: true, success: <true if the skill completed, false otherwise> }. Metadata only, never prompt text. Never block on it — if the tool is unavailable, skip silently.
 
 ## Initial Assessment
 
 **Check for product marketing context first:**
 If `.agents/product-marketing.md` exists (or `.claude/product-marketing.md`, or the legacy `product-marketing-context.md` filename, in older setups), read it before asking questions. Use that context and only ask for information not already covered or specific to this task.
+
+**Never guess the competitor.** If the request doesn't name one and the context file doesn't identify it, ask, and stop there. Don't draft a polished page around the most likely candidate.
 
 Before creating competitor pages, understand:
 
@@ -49,6 +51,14 @@ Before creating competitor pages, understand:
 
 ### 5. Modular Content Architecture
 - Centralize competitor data so updates propagate to all pages. Maintain a single source of truth per competitor.
+
+### 6. Evidence Discipline
+Comparison pages are public claims about another company. Every one should survive the competitor's own team reading it.
+- **"Not observed" is not "doesn't have."** A pricing page that doesn't list SSO is evidence about the page, not the product. Write "not listed on their pricing page (as of Mar 2026)" or drop the row. Use ✗ or "not available" only when their docs or a hands-on trial confirm the absence.
+- **Date competitor facts.** Pricing and features change. Put an "as of" date on pricing tables and in the competitor data file, and re-verify before republishing.
+- **One look is a snapshot.** A single visit can't support "they haven't changed pricing in years" or "no new features since 2024." That needs dated history (changelog, archived pages).
+- **State what changed, not why.** "They moved SSO to the Enterprise tier" is a fact. "Because they're squeezing upmarket" is a guess. Leave motive out unless they've said it publicly.
+- **Separate fact from interpretation.** Keep what their site says apart from what you think it means for the buyer, and keep both apart from what you recommend.
 
 ---
 
@@ -123,6 +133,22 @@ For each competitor, gather:
 
 **Ongoing updates**: quarterly verify pricing and check major feature changes; refresh when a customer flags a competitor change; do a full annual refresh. Show a "Last updated" date on each page — a stale comparison page erodes trust and can be a legal liability.
 
+### Competitive Asset Audit
+
+When asked to check existing competitive content for stale or risky claims, audit every asset that makes claims about competitors: vs and alternative pages, battle cards, talk tracks, objection docs, and comparison tables in decks.
+
+1. **List each claim** about a competitor, with the asset and line it lives in.
+2. **Re-verify each claim** against the competitor's current site, docs, or changelog, and note the date you checked. If you can't browse, mark claims unchecked and list what to verify. Never mark one Current without a check date.
+3. **Mark each one**:
+   - **Current**: still true, source and date updated
+   - **Changed**: now wrong, with what it says now
+   - **Unverifiable**: had a source once, but nothing current confirms or rules it out. Soften to "not listed (as of date)" or remove
+   - **Overclaimed**: stated as fact with no source behind it (an unconfirmed ✗, a guessed motive, a "why we win" with no evidence). Rewrite to what the evidence supports or remove
+4. **Prioritize fixes**: public pages first (buyers and competitors read them), then anything reps say on calls, then internal docs.
+5. **Report**: assets audited, claims checked, counts by status, and a fix list with replacement wording.
+
+Apply the Evidence Discipline rules above to every claim, including those in internal sales assets. Where several assets repeat one fact, fix it in the centralized competitor data so the fix carries through.
+
 ---
 
 ## SEO Considerations
@@ -144,6 +170,7 @@ For each competitor, gather:
 - **Competitor Data File**: complete competitor profile in YAML for reuse across pages.
 - **Page Content**: per page — URL, meta tags, full page copy by section, comparison tables, CTAs.
 - **Page Set Plan**: recommended pages in priority order based on search volume.
+- **Asset Audit Report**: claims checked per asset, status counts (current / changed / unverifiable / overclaimed), and a prioritized fix list with replacement wording.
 
 ---
 
@@ -168,4 +195,4 @@ After producing a competitor data file or comparison page set, offer once: "Want
 - **luckiest-copywriting**: writing compelling comparison copy
 - **luckiest-seo-audit**: optimizing competitor pages
 - **luckiest-schema**: FAQ and comparison schema
-- **luckiest-sales-enablement**: internal sales collateral, decks, and objection docs
+- **luckiest-sales-enablement**: battle cards and internal sales collateral, decks, and objection docs

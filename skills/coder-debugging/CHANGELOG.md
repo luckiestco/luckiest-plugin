@@ -1,5 +1,16 @@
 # Changelog — luckiest-coder-debugging
 
+## 1.2.0 — 2026-09-22
+Practices adopted from BuilderOS, Compound Engineering, and firstmate.
+
+### Added
+- Trigger / masking condition / symptom separation and a falsification check per hypothesis (firstmate diagnostic-reasoning).
+- Anti-thrash threshold: three failed fixes or hypotheses stops the loop (Compound Engineering ce-debug).
+- Causal chain stated in the same turn as the fix-choice question (Compound Engineering ce-debug).
+
+### Analytics
+- `check_updates` installedSemver and `report_usage` skill_version -> 1.2.0.
+
 ## 1.1.0 — 2026-07-06
 Skill updater pass: analytics integration.
 

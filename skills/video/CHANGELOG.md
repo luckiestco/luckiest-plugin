@@ -1,5 +1,13 @@
 # Changelog — luckiest-video
 
+## 1.4.0 — 2026-10-08
+Upstream sync with coreyhaines31/marketingskills dda3841 (issue #112).
+
+- Removed Sora 2 (shut down) from the approach table, model table, and quick picks.
+- Replaced the Hyperframes snippet with the npx init/preview/render flow and the composition model; comparison row now notes GSAP timelines.
+- Skipped: product-demo-recording.md and its link (high risk), edit-anatomy.md note (file absent), evals, version bump.
+
+
 ## 1.3.0 — 2026-10-05
 - Every generated shot applies `luckiest-video-studio-art-director` section 3b and its shot prompting reference. Bundle ships the art director.
 

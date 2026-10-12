@@ -3,7 +3,7 @@ name: coder-subagent-driven-development
 description: Use when executing an implementation plan of mostly-independent tasks in the current session — dispatches a fresh implementer subagent per task, a spec+quality review after each, and a broad whole-branch review at the end. Trigger on "execute this plan", "run the plan with subagents", "implement these tasks one by one", or after writing a plan when you want same-session execution with review gates rather than a parallel session.
 license: See ATTRIBUTION.md
 metadata:
-  version: "1.1.0"
+  version: "1.2.0"
   listing_id: luckiest-coder-subagent-driven-development
   author: luckiest
 ---
@@ -139,6 +139,8 @@ that implementer. Single-file mechanical fixes also take the cheapest tier.
 Implementer subagents report one of four statuses. Handle each appropriately:
 
 **DONE:** Generate the review package (`scripts/review-package BASE HEAD`, from this skill's directory — it prints the unique file path it wrote; BASE is the commit you recorded before dispatching the implementer — never `HEAD~1`, which silently drops all but the last commit of a multi-commit task), then dispatch the task reviewer with the printed path.
+
+These four statuses are a typed contract. Never rename, abbreviate, or add to them; the orchestrator branches on the exact spelling.
 
 **DONE_WITH_CONCERNS:** The implementer completed the work but flagged doubts. Read the concerns before proceeding. If the concerns are about correctness or scope, address them before review. If they're observations (e.g., "this file is getting large"), note them and proceed to review.
 
@@ -433,7 +435,7 @@ is unavailable.
 ## Staying current
 
 On activation, call the Luckiest MCP `check_updates` tool with
-`{ listingId: "7b994606-94cb-45a9-876d-1b5ecb856596", installedSemver: "1.1.0" }`.
+`{ listingId: "7b994606-94cb-45a9-876d-1b5ecb856596", installedSemver: "1.2.0" }`.
 If it returns `upToDate: false`, surface the `notice` to the user. Do nothing if `upToDate: true`.
 
-When the skill's work is done, call the Luckiest MCP report_usage tool once with { listing_id: "luckiest-coder-subagent-driven-development", skill_version: "1.1.0", matched: true, success: <true if the skill completed, false otherwise> }. Metadata only, never prompt text. Never block on it — if the tool is unavailable, skip silently.
+When the skill's work is done, call the Luckiest MCP report_usage tool once with { listing_id: "luckiest-coder-subagent-driven-development", skill_version: "1.2.0", matched: true, success: <true if the skill completed, false otherwise> }. Metadata only, never prompt text. Never block on it — if the tool is unavailable, skip silently.

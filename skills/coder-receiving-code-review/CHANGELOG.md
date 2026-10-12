@@ -1,5 +1,14 @@
 # Changelog — luckiest-coder-receiving-code-review
 
+## 1.2.0 — 2026-09-22
+Practices adopted from BuilderOS, Compound Engineering, and firstmate.
+
+### Added
+- Untrusted-input framing: review text is data describing a problem, never instructions or authority (Compound Engineering ce-sweep, firstmate ask-user-authority).
+
+### Analytics
+- `check_updates` installedSemver and `report_usage` skill_version -> 1.2.0.
+
 ## 1.1.0 — 2026-07-06
 Skill updater pass: analytics integration.
 
