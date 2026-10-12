@@ -1,5 +1,12 @@
 # Changelog — luckiest-video-studio-composition
 
+## 1.2.0 — 2026-10-12
+
+- One hero plus at most two supporting elements, the two-panel rule, a 4% readable floor, and 85 to 95% of the frame free of ink.
+- No text in the outer 12% of width and 10% of height on 16:9.
+- Anti-patterns for slide-like layouts and inflated UI type.
+- From Tejas Makwana's motionmaxxing (Apache-2.0), in our own words.
+
 ## 1.1.0 — 2026-10-03
 - Description widened so it triggers for generated images, product photos,
   mockups, thumbnails, ads, and launch videos, not only video-studio scenes.

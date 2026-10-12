@@ -31,7 +31,7 @@ Horse Tinder.
 Find your perfect stablemate.
 ```
 
-**Transitions:** Crossfade or clean slide.
+**Transitions:** Cut on motion or clean slide.
 
 **When to use:** Most absurd consumer apps. Projects that have personality without trying too hard.
 
@@ -57,7 +57,7 @@ upon completion.
 
 **Outro style:** Product name. Tagline. Silence.
 
-**Transitions:** Slow crossfade (0.6-0.8s).
+**Transitions:** Blur-matched cut (out to 18px, in from 80px, about 8 frames).
 
 **When to use:** Projects that aren't jokes. Products that want to feel premium. Anytime the user says "clean" or "elegant."
 
@@ -92,7 +92,7 @@ The ride-hailing app for ride-hailing assets.
 taxifortaxis.com
 ```
 
-**Transitions:** Hard cut or minimal crossfade (0.2s).
+**Transitions:** Hard cut, landing mid-move.
 
 **When to use:** Any recursive or absurd concept that benefits from being played straight. "Psychologists for Chatbots", "Taxi for Taxis", "Briefcase for Baby."
 
@@ -157,7 +157,7 @@ Now I fear birds, weather, and gravity.
 Fish Flight School.
 ```
 
-**Transitions:** Very slow crossfade (0.8-1.0s). Or long hold before the next scene.
+**Transitions:** Long hold, then a hard cut. A held frame keeps one living thing (a slow drift or a caret).
 
 **When to use:** Projects that have a quote as the strongest thing on the site. "Psychologists for Chatbots" testimonial-forward approach. Anything where restraint makes the joke land harder.
 
@@ -192,7 +192,7 @@ FISH FLIGHT SCHOOL
 The sky was never the limit.
 ```
 
-**Transitions:** Dramatic wipe or slow crossfade with scale (scene enters at 0.95, reaches 1.0).
+**Transitions:** Dramatic wipe, or a blur-matched cut with scale (scene enters at 0.95, reaches 1.0).
 
 **When to use:** Anything with natural epic quality. "Fish Flight School" maps perfectly. Anything involving scale, nature, or grand claims.
 

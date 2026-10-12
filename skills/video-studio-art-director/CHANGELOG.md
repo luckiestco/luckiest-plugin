@@ -1,5 +1,12 @@
 # Changelog — luckiest-video-studio-art-director
 
+## 1.6.0 — 2026-10-12
+
+- World per act (ground, light, depth, texture, sound) and a named hero frame in the look lock; accent colour carries one meaning.
+- Never-ship list: page chrome and HUD, deck layouts, generic web-component UI, the name's first association, invented proof, house-style defaults, cards on empty grounds. Review gains a never-ship column.
+- One clock and one blur grammar per film in the motion language and `art-direction.json`.
+- From Tejas Makwana's motionmaxxing (Apache-2.0), in our own words.
+
 ## 1.5.0 — 2026-10-08
 - "Do not repeat earlier runs": reads earlier `art-direction.json` files in the
   workspace and bans their signature transition, wow device, texture, and concept,

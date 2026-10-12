@@ -14,6 +14,9 @@
 //   node qa.mjs face        <run-dir> [--max 18]                       cards covering the speaker's face (scene faceRect)
 //   node qa.mjs avsync      <video> [--expect 1.5,4.2] [--duration 20] audio present, length right, hits within one frame
 //   node qa.mjs loop        <video> [--max 6]                          last frame must match the first, so the piece loops
+//   node qa.mjs endhold     <video> [--max 1.4] [--share 0.25]         end card held too long, final shot too long
+//   node qa.mjs blankframes <video> [--run 3]                          runs of empty swatch frames
+//   node qa.mjs hud         <composition-dir>                          counters, timecodes, BPM/FPS, greetings, "label · $value", tracked caps
 //   node qa.mjs facts       <run-dir>                                  on-screen numbers not in storyboard facts, em dashes on screen
 //   node qa.mjs safe        <run-dir> [--max 0.004] [--stills]         text or logo edges in the margins each format's platforms cover
 //   node qa.mjs judge       <new.mp4> <old.mp4> [--out dir] [--cmd "claude -p --model sonnet"] [--verdicts A,B]
@@ -292,6 +295,80 @@ export function loopCheck(video, { max = 6 } = {}) {
   return { ok: diff <= max, diff: Number(diff.toFixed(2)), frames: frames.length };
 }
 
+// ---------- end hold and final shot ----------
+
+// The picture must not sit unchanged at the end for more than `max` s, and the last shot
+// (last hard cut to the end) must be at most `share` of the film. A film with no cuts skips the share check.
+export function endHold(video, { max = 1.4, share = 0.25, still = 0.35 } = {}) {
+  const { fps } = probe(video), frames = grayFrames(video, 96, 54);
+  let n = 0;
+  for (let i = frames.length - 1; i > 0 && meanDiff(frames[i], frames[i - 1]) < still; i--) n++;
+  const duration = frames.length / fps, hold = Number((n / fps).toFixed(2));
+  const cuts = cutTimes(grayFrames(video), fps), last = cuts.at(-1);
+  const finalShare = last == null ? null : Number(((duration - last) / duration).toFixed(3));
+  return { ok: hold <= max && (finalShare == null || finalShare <= share), hold, finalShare,
+    note: hold < 0.6 ? "ends mid-motion (fine if intended)" : undefined };
+}
+
+// ---------- flat frames ----------
+
+// A flat frame is an empty swatch: luma std under 1.5 and range under 8 at 96x54. Fails on a run longer than `run` frames.
+export function blankRuns(video, { run = 3, std = 1.5, range = 8 } = {}) {
+  const { fps } = probe(video), runs = [];
+  let start = -1;
+  const frames = grayFrames(video, 96, 54);
+  frames.forEach((f, i) => {
+    let lo = 255, hi = 0, sum = 0;
+    for (const v of f) { lo = Math.min(lo, v); hi = Math.max(hi, v); sum += v; }
+    const mean = sum / f.length;
+    let sq = 0; for (const v of f) sq += (v - mean) ** 2;
+    const flat = Math.sqrt(sq / f.length) < std && hi - lo < range;
+    if (flat && start < 0) start = i;
+    if ((!flat || i === frames.length - 1) && start >= 0) {
+      const end = flat ? i + 1 : i;
+      if (end - start > run) runs.push({ start: Number((start / fps).toFixed(2)), frames: end - start });
+      start = -1;
+    }
+  });
+  return { ok: runs.length === 0, runs };
+}
+
+// ---------- HUD and page chrome ----------
+
+// Drop elements marked data-ui (real product UI) before scanning: a clock or a "1/3" inside the product is fine.
+export function stripUi(html) {
+  let out = "", depth = 0, last = 0;
+  for (const m of html.matchAll(/<(\/?)([a-z][\w-]*)\b[^>]*?(\/?)>/gi)) {
+    const [tag, close, , selfClose] = m, opens = !close && !selfClose && !/^(br|img|input|meta|link|hr|source|path|circle|rect|line|polyline|polygon|use)$/i.test(m[2]);
+    if (depth === 0) out += html.slice(last, m.index);
+    if (depth > 0) { if (close) depth--; else if (opens) depth++; }
+    else if (!close && /\bdata-ui\b/.test(tag)) { if (opens) depth = 1; }
+    else out += tag;
+    last = m.index + tag.length;
+  }
+  return depth === 0 ? out + html.slice(last) : out;
+}
+
+const CHROME = [
+  ["counter", /\b0\d\s*(?:\/\s*(?:\d{1,2}|[A-Z]{2,})|[-\u2013]\s*[A-Z]{2,})\b|\b\d{1,2}\s*\/\s*[A-Z]{2,}\b/g],
+  ["timecode", /\b\d{1,2}:\d{2}(?::\d{2})?(?:[:.]\d{2})?\b/g],
+  ["metadata", /\b\d+(?:\.\d+)?\s?(?:BPM|FPS|fps)\b/g],
+  ["greeting", /\bGood (?:morning|afternoon|evening)\b/gi],
+  ["label-value", /[A-Za-z]+\s*[\u00b7\u2022]\s*[$\u20ac\u00a3]\s?\d/g],
+];
+
+// Page chrome and HUD text that reads as a deck or an AI default. Text inside [data-ui] is exempt.
+// ponytail: tracked caps is a warning only, the card packs use it for kickers and source lines; promote it if packs change.
+export function scanHud(html) {
+  const src = stripUi(html), text = visibleText(src), found = [];
+  for (const [rule, re] of CHROME) for (const m of text.matchAll(re)) found.push({ rule, token: m[0].trim() });
+  for (const m of src.matchAll(/([^{}<>]+)\{([^{}]*)\}/g)) {
+    const body = m[2], ls = body.match(/letter-spacing\s*:\s*([\d.]+)(em|px)/);
+    if (/text-transform\s*:\s*uppercase/.test(body) && ls && (ls[2] === "em" ? +ls[1] >= 0.05 : +ls[1] >= 2)) found.push({ rule: "tracked-caps", warn: true, token: m[1].trim().split("\n").pop().trim() });
+  }
+  return found;
+}
+
 // ---------- facts ----------
 
 const ENTITIES = { amp: "&", nbsp: " ", mdash: "\u2014", ndash: "\u2013", lt: "<", gt: ">", quot: '"', "#39": "'", "#8212": "\u2014" };
@@ -447,7 +524,7 @@ if (process.argv[1] && resolve(process.argv[1]) === fileURLToPath(import.meta.ur
   if (gate === "judge" && rest[0] && !rest[0].startsWith("--")) rest.unshift("--old", rest.shift());
   const opt = (n, d) => { const i = rest.indexOf(n); return i >= 0 ? rest[i + 1] : d; };
   const num = (n, d) => Number(opt(n, d));
-  if (!gate || !target) { console.error("Usage: qa.mjs <tokens|crossfade|motion|legibility|pops|deadframes|presence|beatsync|beatgrid|face|avsync|loop|facts|safe|judge> <path> [options]"); process.exit(1); }
+  if (!gate || !target) { console.error("Usage: qa.mjs <tokens|crossfade|motion|legibility|pops|deadframes|presence|beatsync|beatgrid|face|avsync|loop|endhold|blankframes|hud|facts|safe|judge> <path> [options]"); process.exit(1); }
   let result;
   if (gate === "tokens") {
     const tokens = opt("--tokens") ? JSON.parse(readFileSync(opt("--tokens"), "utf8")) : DEFAULT_TOKENS;
@@ -482,6 +559,13 @@ if (process.argv[1] && resolve(process.argv[1]) === fileURLToPath(import.meta.ur
     const expect = (opt("--expect", "") || "").split(",").filter(Boolean).map(Number);
     result = avSync(target, { expect, duration: opt("--duration") != null ? num("--duration") : undefined });
   } else if (gate === "loop") result = loopCheck(target, { max: num("--max", 6) });
+  else if (gate === "endhold") result = endHold(target, { max: num("--max", 1.4), share: num("--share", 0.25) });
+  else if (gate === "blankframes") result = blankRuns(target, { run: num("--run", 3) });
+  else if (gate === "hud") {
+    const files = statSync(target).isDirectory() ? htmlFiles(target) : [target];
+    const found = files.flatMap((f) => scanHud(readFileSync(f, "utf8")).map((v) => ({ file: f, ...v })));
+    result = { ok: found.every((v) => v.warn), found };
+  }
   else if (gate === "safe") result = safeAreas(target, { max: num("--max", 0.004), stills: rest.includes("--stills") });
   else if (gate === "facts") {
     const sb = JSON.parse(readFileSync(join(target, "storyboard.json"), "utf8"));

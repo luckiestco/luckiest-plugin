@@ -82,11 +82,14 @@ approved (`step-4-deliver.md`, "Other formats (last)").
 
 ### Scene 1 — [name] — [duration]s
 [What's on screen. What text appears. What product material must be referenced.]
+Belief: [the viewer ... ; one belief, no "and"; importance 1, 2 or 3]
+Picture only: [what the picture shows with the text covered; "a card on a flat colour" is not an answer]
 Sequential/interaction: [yes — describe what appears one by one or what interaction is simulated, e.g. "3 stat cards arrive one by one" or "cursor clicks the match button"; or none]
 Audio intent: [what the sound should do emotionally]
 Audio-coupled idea: [typed text, beat-aligned reveal, counter ticks, card-by-card sequence, simulated tap/swipe/type — or none]
 Music: [mood, or "none" only if disabled / missing / intentionally silent]
 Transition mood: [clean / hard / dramatic / soft / chaotic] → Scene 2
+Handoff: [what carries into Scene 2, or "cut on motion"; Scene 2 opens already moving]
 
 ### Scene 2 — [name] — [duration]s
 [...]
@@ -182,7 +185,7 @@ These are among the most effective moments in a video — they make the product 
 If a scene has either of these, commit to it explicitly in the scene description:
 - Good: "3 horse profiles slide in one by one, each with a card sound"
 - Good: "Simulate a right-swipe on Thunder's profile card"
-- Good: "The hook line types out character by character with keyboard sounds"
+- Good: "The query types into the product's own search field with keyboard sounds" (type only into a real input field, never a headline)
 - Avoid: leaving it vague and hoping Hyperframes adds rhythm on its own
 
 Hyperframes can implement both patterns well — but only if the plan specifies what's appearing, in what order, and that interaction is being simulated. The plan is the contract.
@@ -253,16 +256,21 @@ If SFX are enabled, note likely sound opportunities but leave exact filenames to
 
 ## Transition vocabulary
 
-Match transitions to tone:
+Match transitions to tone. Never crossfade whole scenes: the `crossfade` gate fails
+an opacity tween on a full-frame layer. Cut on motion instead: scene A speeds up
+over its last 3 to 8 frames, scene B opens already moving. For a softer join, use
+a blur-matched cut (A blurs out to about 18px, B starts at about 80px and resolves
+in about 8 frames). Fades are for single objects, not scenes. Handoff recipes are
+in `luckiest-video-studio-motion`.
 
 | Tone | Preferred transitions |
 |---|---|
-| `default` | Crossfade, clean wipe |
-| `polished` | Soft crossfade, slide |
+| `default` | Cut on motion, clean wipe |
+| `polished` | Blur-matched cut, slide |
 | `yc-parody` | Hard cut, minimal |
 | `chaotic` | Hard cut, flash, zoom |
-| `deadpan` | Slow crossfade, long hold |
-| `cinematic` | Dramatic wipe, crossfade |
+| `deadpan` | Hard cut after a long hold |
+| `cinematic` | Dramatic wipe, blur-matched cut |
 | `app-store` | Slide, smooth wipe |
 
 ## Storyboard stills

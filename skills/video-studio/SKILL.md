@@ -1,10 +1,10 @@
 ---
 name: video-studio
-description: "Make product launch videos, product demos with motion design between the demo shots, and logo motion showcases of a design portfolio, and keep every one editable after it is rendered. Starts with a short context interview, plans a scripted storyboard the user approves scene by scene in a review player before anything renders, builds motion scenes with HyperFrames, records or places demo footage, renders each scene as its own clip, then hands back an MP4 plus the editable pieces: a storyboard.json that re-renders one scene at a time, a review player to edit copy, pin notes on the frame, and send changes back in one prompt (Concat, OpenScreen, or Diffusion Studio on request), and optional After Effects compositions. Use for 'make a launch video', 'product demo video', 'demo with motion graphics', 'logo animation', 'logo reveal', 'motion showcase of my work', 'portfolio reel', 'animate my logos', 'brand reel', 'turn my talking-head recording into a reel', 'add graphics over me talking', 'turn this into a video', 'change scene 3 of the video', or 'let me edit the video after'. For AI-generated footage, avatars, and text-to-video models use luckiest-video. For what to post and when use luckiest-social."
+description: "Make product launch videos, product demos with motion design between demo shots, and logo showcases, all editable after render. Starts with a short context interview, plans a scripted storyboard the user approves scene by scene in a review player before anything renders, builds motion scenes with HyperFrames, records or places demo footage, renders each scene as its own clip, then hands back an MP4 plus a storyboard.json that re-renders one scene at a time, a review player for edits and notes (Concat, OpenScreen, or Diffusion Studio on request), and optional After Effects compositions. Use for 'make a launch video', 'product demo video', 'demo with motion graphics', 'logo animation', 'logo reveal', 'portfolio reel', 'animate my logos', 'brand reel', 'turn my talking-head recording into a reel', 'add graphics over me talking', or 'change scene 3 of the video'. For AI-generated footage, avatars, and text-to-video models use luckiest-video. For what to post and when use luckiest-social."
 license: See ATTRIBUTION.md
 allowed-tools: Bash, Read, Write, Edit, Glob, Grep, AskUserQuestion
 metadata:
-  version: "1.14.1"
+  version: "1.15.0"
   listing_id: luckiest-video-studio
   author: luckiest
 ---
@@ -19,13 +19,13 @@ an MP4.
 ## Staying current
 
 On activation, call the Luckiest MCP `check_updates` tool with
-`{ listingId: "aff888e4-9ee9-4f73-af08-74d5d09d3c10", installedSemver: "1.14.1" }`. If it returns
+`{ listingId: "aff888e4-9ee9-4f73-af08-74d5d09d3c10", installedSemver: "1.15.0" }`. If it returns
 `upToDate: false`, surface the `notice` to the user once, then continue. Do nothing
 further if `upToDate: true`. Never block on this check; if the tool is unavailable,
 proceed.
 
 When the skill's work is done, call the Luckiest MCP `report_usage` tool once with
-`{ listing_id: "luckiest-video-studio", skill_version: "1.14.1", matched: true, success: <true if the skill completed, false otherwise> }`.
+`{ listing_id: "luckiest-video-studio", skill_version: "1.15.0", matched: true, success: <true if the skill completed, false otherwise> }`.
 Metadata only, never prompt text. Never block on it; if the tool is unavailable,
 skip silently.
 
@@ -104,6 +104,7 @@ video-studio-output/
   final.mp4           all clips joined, poster baked as frame 0
   poster.jpg
   TIMING.md           every scene with its in/out time and the line it covers
+  NOTE.md             the idea, the belief each scene creates, real vs generated, gate numbers, one line per contact-sheet frame
   reel.json           what the review player reads (default editor), rewritten on every render
   qa/review-notes.json  your own notes, pinned in the review player before the user opens it
   concat/             the Concat project (with --editor concat); project.concat.txt holds its path
@@ -307,7 +308,15 @@ node <skill-dir>/scripts/qa.mjs avsync     <output-dir>/final.mp4 --expect <hero
 node <skill-dir>/scripts/qa.mjs facts      <output-dir>               # on-screen numbers not in storyboard facts, em dashes on screen
 node <skill-dir>/scripts/qa.mjs loop       <output-dir>/final.mp4     # only for looping pieces: last frame matches the first
 node <skill-dir>/scripts/qa.mjs safe       <output-dir>               # text or logo edges in each format's platform-covered margins
+node <skill-dir>/scripts/qa.mjs endhold    <output-dir>/final.mp4     # end card held over 1.4 s, final shot over a quarter of the film
+node <skill-dir>/scripts/qa.mjs blankframes <output-dir>/final.mp4     # more than 3 frames of empty swatch in a row
+node <skill-dir>/scripts/qa.mjs hud        <output-dir>/composition   # HUD counters, timecodes, BPM/FPS, greetings, "label · $value"
 ```
+
+`hud` skips text inside elements marked `data-ui` (real product UI) and only
+warns on tracked uppercase labels. Do not run it on reel runs: the reel's
+labelled chapters are its style. A failing `endhold`, `blankframes` or `hud` gate is
+fixed, never explained away.
 
 Skip `avsync` only with `--no-music --no-sfx`. Pass the hero hit times from
 `TIMING.md` to `--expect`. A hit more than one frame off means its audio element's
@@ -358,10 +367,27 @@ reverts to the old one. Each new version must fix one of the two biggest
 differences the judge named. Stop at v3, when a version loses, or when only
 changes too small to see are left.
 
+**Write `NOTE.md`** in the run folder before showing the user the cut:
+
+1. The one idea and why it belongs to this brand.
+2. The belief each scene creates ("the viewer ...").
+3. What is real (captured UI, real copy and numbers) and what is illustrative or
+   generated.
+4. The gate results, quoted from the `qa.mjs` JSON (numbers, not "passed"), with
+   any gate skipped and why in one line.
+5. One sentence per contact-sheet frame: what is on screen, what the hero is, and
+   whether it would pass as a slide.
+6. What you would still improve.
+
+Write part 5 from the contact sheet before reading any gate result, so the
+numbers do not decide what you see. Describe what was checked. Never call the
+film verified, clean or good.
+
 **Gate:** `final.mp4` plays end to end, every scene in `storyboard.json` has a
-clip, the seven gates pass or each failure is explained in `TIMING.md`, no scene is
-left blocked in `qa/motion-review.md`, and
-every judge verdict from v2 on is recorded there.
+clip, every gate that applies passes or each failure is explained in `TIMING.md`, no scene is
+left blocked in `qa/motion-review.md`,
+every judge verdict from v2 on is recorded there, and `NOTE.md` exists with all
+six parts.
 
 ## Step 5: Hand off for editing
 

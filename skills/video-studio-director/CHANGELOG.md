@@ -1,5 +1,13 @@
 # Changelog — luckiest-video-studio-director
 
+## 1.4.0 — 2026-10-12
+
+- PAGE check under the creative intent, and a nine-row brand inventory before any idea.
+- The top three angles must be three different kinds of film, and each must pass the cover-the-logo test before scoring.
+- Every scene writes its belief ("the viewer ...") with a delete test, an importance of 1 to 3 (at most a quarter are 3), and what the picture shows with the text covered.
+- Ending rules: 0.6 to 1.4 s resolved hold, CTA at most a quarter of the film, logo arrives by cause, no web-footer ending.
+- From Tejas Makwana's motionmaxxing (Apache-2.0), in our own words.
+
 ## 1.3.0 — 2026-10-10
 - Reads `brief.md` from the studio's context interview for the intent line and
   asks nothing it answers.

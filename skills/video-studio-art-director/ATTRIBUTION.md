@@ -9,6 +9,7 @@
 | **"AI finally designs like me"** by The Design Guy (YouTube, 2026-09-27, https://www.youtube.com/watch?v=E3Lgtf4xjeM) | Video, all rights reserved | Ideas only: DESIGN.md as a file of decisions already made, rules as choice plus reason plus example, locked/guided/open freedom levels, mining repeated review corrections for rules, pointing to existing assets instead of describing them, and checking that the agent read the file. No text or footage is copied | n/a |
 | **prompt-images** by Replicate (`replicate/skills`, https://github.com/replicate/skills/tree/main/skills/prompt-images) | Apache-2.0, Copyright 2025 Replicate, Inc. | Adapted into `references/shot-prompting.md`: natural-language shot descriptions, naming subjects, camera, film, lighting and composition vocabulary, quoted text, editing and consistency rules, guidance and negative-prompt pitfalls. Rewritten and reordered, not copied verbatim | `LICENSE-replicate` |
 | **"How to make AI images look less like AI"** by Pixova (https://www.pixova.io/blog/how-to-make-ai-images-look-less-like-ai) | Article, all rights reserved | Ideas only, in section 3b: directional light with hard shadows, film stock and grain, skin texture, off-center candid framing, specific environments, banned prompt words, lower CFG. No text is copied | n/a |
+| **motionmaxxing** by Tejas Makwana (`Tejashmakwana/motionmaxxing`, FinalMotion, finalmotion.video), commit 8c8ec0f2 | Apache-2.0 | World per act, one system per film, the hero frame, and the additions to the Banned list. Rewritten in our own words; no code, runtime, media, studies or `library/` rows are copied | `LICENSE-motionmaxxing` |
 
 ## Changes in this edition
 
@@ -23,3 +24,5 @@
 - Added `art-direction.json` as a file the studio and other sub-skills read.
 - Mapped studio tone presets to tone cells.
 - Added style-frame approval at studio Step 2b and `--review` with Approve or Block.
+
+motionmaxxing NOTICE: "motionmaxxing: looksmaxxing for motion graphics. Made by Tejas Makwana (x.com/makwanatejas170), github.com/Tejashmakwana/motionmaxxing. Licensed under the Apache License, Version 2.0." Changes: ideas and measured numbers restated for HyperFrames and GSAP runs; its GSAP runtime, scripts, showcase media and precedent library are not included.

@@ -1,3 +1,8 @@
+## 0.1.40 — 2026-10-12 (npm luckiest-co 1.0.41)
+- Video studio 1.15.0: three new render checks catch an end card held too long, empty frames, and on-screen labels like "02 / SPEAK" or timecodes. Every finished video now comes with a `NOTE.md` that says what each scene makes the viewer believe, what is real and what is generated, and the check numbers.
+- Video studio sub-skills learn from motionmaxxing (Apache-2.0): director 1.4.0 adds a brand checklist, three kinds of idea and a cover-the-logo test; motion 1.2.0 adds timing in frames, scene handoffs and new guides for animated text and UI demos; art director 1.6.0, composition 1.2.0 and script 1.3.0 add a never-ship list, one hero per frame, and short-film word budgets.
+- Video studio no longer suggests crossfades between scenes, which its own check rejected.
+
 ## 0.1.39 — 2026-10-11 (npm luckiest-co 1.0.40)
 - New: `/luckiest:skill-audit` now gives every skill a security verdict from NVIDIA SkillSpector, next to its trigger and collision checks. New `/luckiest:skill-audit-security` checks one skill before you install it and answers Approve, Caution, or Reject with the file and line behind each call.
 - New: `/luckiest:video-studio-showreel` for product showreels in one continuous camera move.

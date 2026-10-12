@@ -20,7 +20,7 @@ user-invocable: true
 license: MIT. See ATTRIBUTION.md
 allowed-tools: Bash, Read, Write, Edit, Glob, Grep, AskUserQuestion
 metadata:
-  version: "1.5.0"
+  version: "1.6.0"
   listing_id: luckiest-video-studio-art-director
   author: luckiest
 ---
@@ -35,11 +35,11 @@ confidence. Variety reads as noise.
 ## Staying current
 
 On activation, call the Luckiest MCP `check_updates` tool with
-`{ listingId: "luckiest-video-studio-art-director", installedSemver: "1.5.0" }`. If
+`{ listingId: "luckiest-video-studio-art-director", installedSemver: "1.6.0" }`. If
 `upToDate: false`, surface the `notice` once and continue. Never block on it.
 
 When done, call `report_usage` once with
-`{ listing_id: "luckiest-video-studio-art-director", skill_version: "1.5.0", matched: true, success: <true|false> }`.
+`{ listing_id: "luckiest-video-studio-art-director", skill_version: "1.6.0", matched: true, success: <true|false> }`.
 Metadata only, never prompt text. Skip silently if unavailable.
 
 ## Standing rules
@@ -149,13 +149,42 @@ Fill every row with one choice:
 | Property | Rule |
 |---|---|
 | Palette | Background, surface, text, one accent. A second accent only when the brief names one |
-| Accent budget | The accent marks at most two things per hold frame |
+| Accent budget | The accent marks at most two things per hold frame, and has one meaning for the whole film (for example "done" or "the product acting") |
 | Display face | One, for headlines and numbers |
 | UI face | One, for labels, captions, and UI |
 | Type scale | From the composition skill's 8px scale |
 | Texture | One: none, grain, paper, or glass. Stays subliminal |
 | Imagery | Real product UI and real logos. Name the crop and device frame style |
-| Banned | Centered title on gradient, everything fading in, corner labels, frame borders, glow on UI chrome, generic particle bursts, and the looks of earlier runs (below) |
+| World | Per act: the ground (a surface with a source, such as a captured screen, a material or paper, not a flat swatch), the light, the depth, the texture, and the sound bed. A flat colour ground only for under about 1 second |
+| Hero frame | The one screenshot-worthy frame, named by scene id. It gets the hardest work (3D, a dense comp, a shader, a real-material surface) |
+| Banned | Centered title on gradient, everything fading in, corner labels, frame borders, glow on UI chrome, generic particle bursts, the never-ship list below, and the looks of earlier runs (below) |
+
+### Never ship
+
+These read as AI defaults or as a slide deck. Delete the element; do not argue
+for it.
+
+- **Page chrome and HUD:** a brand or film name in a corner, tracked-caps labels,
+  counters ("02 / SPEAK"), timecodes, BPM or FPS text, progress bars, corner
+  brackets, scene labels over a shot. (The reel sub-skill's labelled chapters are
+  its style and are exempt there.)
+- **Deck layouts:** a held left-aligned headline block, a small kicker above a
+  headline, headline left with a device right, title then content.
+- **Generic web-component UI:** a rounded card with a status dot and "label .
+  $value", a "Good morning" card, grey skeleton bars, made-up names or numbers
+  where real ones exist.
+- **The name's first association:** stars for a star name, a flame for a fire
+  name, a rocket for "launch".
+- **Invented proof:** stat walls, a big centered number over a small label with
+  no source, on-screen disclaimers.
+- **The house style as a default:** a giant cropped word, texture inside the
+  letters, a colour flood or circle wipe between every scene, a dot that becomes
+  the logo.
+- **A small card on an empty ground**, or a new flat swatch per scene. More than
+  three distinct flat grounds in one film reads as a deck.
+
+Any of these can be right with a stated reason in `plan.md` (a calm brand that
+fades, a held stillness). Without the reason, it is a Block in review.
 
 ### Do not repeat earlier runs
 
@@ -222,6 +251,8 @@ used: when the parent skill has a disclosure or provenance rule, it still applie
 | Easing | Two curves maximum: one out (entrances), one in (exits) |
 | Base unit | One duration. Every other duration is a multiple of it |
 | Transition family | One family between shots, such as match cut plus hard cut |
+| Clock | Smooth, or on twos for a hand-made look. One per film |
+| Blur | One grammar: motion blur, or smear frames, or crisp steps. One per film |
 | Stagger | One delay and direction for every grouped reveal |
 | Intensity | Travel distance, scale range, overshoot cap |
 | Hold | Minimum stillness after each beat, at least 0.3s |
@@ -254,6 +285,10 @@ element whose motion carries no meaning.
   "holdMin": 0.3,
   "wow": "s03",
   "wowDevice": "logo assembles from the product's own UI cards",
+  "accentMeaning": "done",
+  "clock": "smooth",
+  "blur": "motion",
+  "world": [{ "act": "hook", "ground": "captured dashboard, blurred 12px", "light": "soft top-left", "depth": "two planes", "texture": "grain 0.03", "sound": "room tone" }],
   "static": ["headline while read", "logo lockup"],
   "banned": ["centered title on gradient", "everything fading in", "liquid iris transition", "chrome text sweep"],
   "bannedFromEarlierRuns": [{ "run": "video-studio-output-2026-09-30-101500", "items": ["liquid iris transition", "chrome text sweep"] }]
@@ -277,8 +312,8 @@ a frame that fails **Looks generated** (any section 3b rule).
 `--review` reads `art-direction.json`, the composition files, and a rendered
 hold frame per scene. Write `<run-dir>/qa/art-direction-review.md`:
 
-| Scene | Matches design system | Repeats a logged correction | Color safe | Type holds | Easing in spec | Durations on base unit | Transition in family | One hero | Accent budget | Banned default | Looks generated | Verdict |
-|---|---|---|---|---|---|---|---|---|---|---|---|---|
+| Scene | Matches design system | Repeats a logged correction | Color safe | Type holds | Easing in spec | Durations on base unit | Transition in family | One hero | Accent budget | Banned default | Never-ship item | Looks generated | Verdict |
+|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
 
 Verdict is **Approve** or **Block**. Any "no", or a "yes" under
 Looks generated, is a direction defect. Block it and

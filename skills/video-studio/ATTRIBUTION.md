@@ -12,6 +12,7 @@ projects. Upstream license texts are kept beside this file.
 | **skills** by Emil Kowalski (`emilkowalski/skills`) | MIT | Motion and taste rules, the review posture, and the motion vocabulary, rewritten for video in the `luckiest-video-studio-motion` sub-skill | `luckiest-video-studio-motion/LICENSE-emil` |
 | **HyperFrames student kit** by Nate Herk and contributors (`hyperframes-student-kit`) | MIT for the original kit; the Student Kit Use Permission for its pipeline skills, style library, templates, and editing tools | Rewritten rules and ported scripts in the `luckiest-video-studio-cuts`, `-talk`, and `-reel` sub-skills | `LICENSE-student-kit`, `LICENSE-student-kit-pipeline` |
 | **Motion OS** by Jason Lee (`jasonlee-breadcrumb/motion-os`) | MIT | The review player in the `luckiest-video-studio-review` sub-skill (`editor/index.html`, `editor/serve.mjs`) and the `reel.json` format; see that sub-skill's `ATTRIBUTION.md` | `luckiest-video-studio-review/LICENSE-motion-os` |
+| **motionmaxxing** by Tejas Makwana (`Tejashmakwana/motionmaxxing`, FinalMotion, finalmotion.video), commit 8c8ec0f2 | Apache-2.0 | The beat contract, render-gate posture and `NOTE.md` review note, the `endhold`, `blankframes` and `hud` gate thresholds in `scripts/qa.mjs`, the no-crossfade transition table, and the sound-arc numbers in `references/audio.md`. Rewritten in our own words; no code, runtime, media, studies or `library/` rows are copied | `LICENSE-motionmaxxing` |
 
 Studied, not copied:
 
@@ -62,3 +63,5 @@ Used at runtime, not bundled:
 - From the same kit's style library: the `luckiest-video-studio-cards` card packs,
   renamed and rebranded (S39 to S47), and QA gates written from the checks its
   storytelling rules describe but did not ship (`scripts/qa.mjs`).
+
+motionmaxxing NOTICE: "motionmaxxing: looksmaxxing for motion graphics. Made by Tejas Makwana (x.com/makwanatejas170), github.com/Tejashmakwana/motionmaxxing. Licensed under the Apache License, Version 2.0." Changes: ideas and measured numbers restated for HyperFrames and GSAP runs; its GSAP runtime, scripts, showcase media and precedent library are not included.
