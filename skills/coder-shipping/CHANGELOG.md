@@ -1,5 +1,14 @@
 # Changelog — luckiest-coder-shipping
 
+## 1.2.0 — 2026-09-22
+Practices adopted from BuilderOS, Compound Engineering, and firstmate.
+
+### Added
+- Review receipt gate in pre-flight: ship only after a real review or an explicit user skip, never a mental self-review (Compound Engineering ce-work).
+
+### Analytics
+- `check_updates` installedSemver and `report_usage` skill_version -> 1.2.0.
+
 ## 1.1.0 — 2026-07-06
 Skill updater pass: analytics integration.
 

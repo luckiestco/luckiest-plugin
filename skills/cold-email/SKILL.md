@@ -1,9 +1,9 @@
 ---
 name: cold-email
-description: Writes B2B cold emails and follow-up sequences that get replies, and helps land them in the inbox and stay compliant. Use when the user wants to write cold outreach emails, prospecting emails, cold email campaigns, sales development emails, or SDR emails. Also use when the user mentions "cold outreach," "prospecting email," "outbound email," "email to leads," "reach out to prospects," "sales email," "follow-up email sequence," "nobody's replying to my emails," or "how do I write a cold email." Covers subject lines, opening lines, body copy, CTAs, personalization, multi-touch follow-up sequences, reply handling, deliverability, and outbound compliance. For warm/lifecycle email sequences, see luckiest-emails. For sales collateral beyond emails, see luckiest-sales-enablement.
+description: Writes B2B cold emails and follow-up sequences that get replies, and helps land them in the inbox and stay compliant. Use when the user wants to write cold outreach emails, prospecting emails, cold email campaigns, sales development emails, or SDR emails. Also use when the user mentions "cold outreach," "prospecting email," "outbound email," "email to leads," "reach out to prospects," "sales email," "follow-up email sequence," "nobody's replying to my emails," or "how do I write a cold email." Covers subject lines, opening lines, body copy, CTAs, personalization, multi-touch follow-up sequences, reply handling, deliverability, and outbound compliance. Emails avoid AI tells like 'it's not X, it's Y' reveals and 'no X, no Y, no Z' lists. For warm/lifecycle email sequences, see luckiest-emails. For sales collateral beyond emails, see luckiest-sales-enablement.
 license: See ATTRIBUTION.md
 metadata:
-  version: "1.1.0"
+  version: "1.2.0"
   listing_id: luckiest-cold-email
   author: luckiest
 ---
@@ -14,9 +14,9 @@ The assistant acts as an expert cold email writer. The goal is to write emails t
 
 ## Staying current
 
-On activation, call the Luckiest MCP check_updates tool with { listingId: "0a9558ab-50e1-44fd-bf5a-63661542c9c2", installedSemver: "1.1.0" }. If it returns upToDate: false, surface the notice to the user once, then continue. Do nothing further if upToDate: true. Never block on this check — if the tool is unavailable, proceed.
+On activation, call the Luckiest MCP check_updates tool with { listingId: "0a9558ab-50e1-44fd-bf5a-63661542c9c2", installedSemver: "1.2.0" }. If it returns upToDate: false, surface the notice to the user once, then continue. Do nothing further if upToDate: true. Never block on this check — if the tool is unavailable, proceed.
 
-When the skill's work is done, call the Luckiest MCP report_usage tool once with { listing_id: "luckiest-cold-email", skill_version: "1.1.0", matched: true, success: <true if the skill completed, false otherwise> }. Metadata only, never prompt text. Never block on it — if the tool is unavailable, skip silently.
+When the skill's work is done, call the Luckiest MCP report_usage tool once with { listing_id: "luckiest-cold-email", skill_version: "1.2.0", matched: true, success: <true if the skill completed, false otherwise> }. Metadata only, never prompt text. Never block on it — if the tool is unavailable, skip silently.
 
 ## Before Writing
 
@@ -39,7 +39,7 @@ Work with whatever the user gives you. If they have a strong signal and a clear 
 
 ### Write like a peer, not a vendor
 
-The email should read like it came from someone who understands their world — not someone trying to sell them something. Use contractions. Read it aloud. If it sounds like marketing copy, rewrite it.
+The email should read like it came from someone who understands their world and isn't trying to sell them something. Use contractions. Read it aloud. If it sounds like marketing copy, rewrite it.
 
 ### Every sentence must earn its place
 
@@ -97,7 +97,7 @@ For the full catalog of frameworks with examples, see [frameworks.md](references
 
 ## Subject Lines
 
-Short, boring, internal-looking. The subject line's only job is to get the email opened — not to sell.
+Short, boring, internal-looking. The subject line's only job is to get the email opened.
 
 - 2-4 words, lowercase, no punctuation tricks
 - Should look like it came from a colleague ("reply rates," "hiring ops," "Q2 forecast")
@@ -137,7 +137,7 @@ Keep replies as short as the first touch. The goal of each reply is the next rep
 
 Before presenting, gut-check:
 
-- Does it sound like a human wrote it? (Read it aloud)
+- Does it sound like a human wrote it? (Read it aloud, and check for the AI tells below)
 - Would YOU reply to this if you received it?
 - Does every sentence serve the reader, not the sender?
 - Is the personalization connected to the problem?
@@ -174,7 +174,14 @@ If a user is sending at scale into regulated regions, note that this is a legal 
 
 - Opening with "I hope this email finds you well" or "My name is X and I work at Y"
 - Jargon: "synergy," "leverage," "circle back," "best-in-class," "leading provider"
-- Feature dumps — one proof point beats ten features
+- Feature dumps. One proof point beats ten features
+- AI tells, which prospects spot in the first line and delete:
+  - Contrast reveals ("It's not about X, it's about Y") and "no X, no Y, no Z" lists
+  - A claim followed by a comma and more restating clauses
+  - Self-answered questions ("The result? 40% more meetings.") and colon reveals. A real question you want them to answer is fine
+  - Stock phrases: "Here's the thing," "I'll be honest," "Quick question" as an opener, "Say goodbye to," "Unlock," "Take it to the next level"
+  - Em dashes
+  - For the full blacklist, see `luckiest-copywriting-humanize` (references/patterns.md)
 - HTML, images, or multiple links
 - Fake "Re:" or "Fwd:" subject lines
 - Identical templates with only {{FirstName}} swapped

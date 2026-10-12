@@ -5,10 +5,12 @@ description = "Development tooling for the /brag skill."
 requires-python = ">=3.11"
 dependencies = [
   "librosa>=0.10.2",
-  "numpy>=1.26",
-  "scipy>=1.11",
+  "numpy>=2.4.6",
+  "scipy>=1.17.1",
   "soundfile>=0.12",
 ]
 
 [tool.uv]
 package = false
+# urllib3 comes in through librosa's download helpers; 2.8.0 fixes GHSA-8988-9cw3-xx77, GHSA-gh4c-6fx4-qh6g, GHSA-vxq7-64xx-v4gw.
+constraint-dependencies = ["urllib3>=2.8.0"]

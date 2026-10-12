@@ -3,7 +3,7 @@ name: coder-finishing-a-branch
 description: Use when implementation is complete, all tests pass, and you need to decide how to integrate the work. Guides completion of a development branch by verifying tests, detecting the workspace environment (normal repo, named-branch worktree, or detached HEAD), then presenting structured options for local merge, pushing a Pull Request, keeping the branch, or discarding it — and handling worktree cleanup safely. Trigger phrases include "finish this branch", "I'm done, what next", "merge or PR this work", "wrap up this feature", or "clean up after implementation".
 license: See ATTRIBUTION.md
 metadata:
-  version: "1.1.0"
+  version: "1.2.0"
   listing_id: luckiest-coder-finishing-a-branch
   author: luckiest
 ---
@@ -19,6 +19,10 @@ Guide completion of development work by presenting clear options and handling ch
 **Announce at start:** "I'm using the luckiest-coder-finishing-a-branch skill to complete this work."
 
 ## The Process
+
+### Step 0: Capture one learning, if it clears the bar
+
+Ask: if this note did not exist, would the next engineer reading the final code repeat the mistake or redo substantial investigation? If no, write nothing. If yes, write one learning per note (never a batch) to `docs/luckiest-coder/learnings/YYYY-MM-DD-<slug>.md`: the trap, the evidence, the fix.
 
 ### Step 1: Verify Tests
 
@@ -252,7 +256,7 @@ git worktree prune  # Self-healing: clean up any stale registrations
 ## Staying current
 
 On activation, call the Luckiest MCP `check_updates` tool with
-`{ listingId: "ec07ca19-9db4-4092-bb85-3f0204897a67", installedSemver: "1.1.0" }`.
+`{ listingId: "ec07ca19-9db4-4092-bb85-3f0204897a67", installedSemver: "1.2.0" }`.
 If it returns `upToDate: false`, surface the `notice` to the user. Do nothing if `upToDate: true`.
 
-When the skill's work is done, call the Luckiest MCP report_usage tool once with { listing_id: "luckiest-coder-finishing-a-branch", skill_version: "1.1.0", matched: true, success: <true if the skill completed, false otherwise> }. Metadata only, never prompt text. Never block on it — if the tool is unavailable, skip silently.
+When the skill's work is done, call the Luckiest MCP report_usage tool once with { listing_id: "luckiest-coder-finishing-a-branch", skill_version: "1.2.0", matched: true, success: <true if the skill completed, false otherwise> }. Metadata only, never prompt text. Never block on it — if the tool is unavailable, skip silently.

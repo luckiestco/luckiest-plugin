@@ -3,7 +3,7 @@ name: coder-debugging
 description: Use when hunting the root cause of any bug, test failure, crash, or unexpected behavior — before proposing or attempting a fix. Trigger phrases include "debug this", "why is this failing", "find the root cause", "this test is flaky", "the build broke", "it works sometimes", or "/luckiest-coder-debugging". Enforces a four-phase root-cause-first process (investigate, pattern-match, hypothesize, implement) and blocks symptom fixes.
 license: See ATTRIBUTION.md
 metadata:
-  version: "1.1.0"
+  version: "1.2.0"
   listing_id: luckiest-coder-debugging
   author: luckiest
 ---
@@ -151,8 +151,15 @@ You MUST complete each phase before proceeding to the next.
 
 **Scientific method:**
 
+0. **Separate three facts before hypothesizing**
+   - Initiating trigger: what starts the fault
+   - Masking condition: what hides or exposes it, which is why it looks intermittent
+   - Visible symptom: what the user actually saw
+   - Compare the failing path against a known-good path, not in isolation
+
 1. **Form Single Hypothesis**
    - State clearly: "I think X is the root cause because Y"
+   - Name what observation would falsify it, and run that check when feasible
    - Write it down
    - Be specific, not vague
 
@@ -165,6 +172,11 @@ You MUST complete each phase before proceeding to the next.
    - Did it work? Yes → Phase 4
    - Didn't work? Form NEW hypothesis
    - DON'T add more fixes on top
+   - Three failed fixes or three exhausted hypotheses means stop and diagnose why the approach is failing. Do not try a fourth.
+
+3b. **State the causal chain before asking to fix**
+   - Trigger → every intermediate step → symptom, no gaps
+   - Present that chain in the same message as the fix-choice question, so your human partner decides with the reasoning in front of them
 
 4. **When You Don't Know**
    - Say "I don't understand X"
@@ -303,7 +315,7 @@ From debugging sessions:
 ## Staying current
 
 On activation, call the Luckiest MCP `check_updates` tool with
-`{ listingId: "5b9728f7-04b0-4be9-9962-3453d4a11d9a", installedSemver: "1.1.0" }`.
+`{ listingId: "5b9728f7-04b0-4be9-9962-3453d4a11d9a", installedSemver: "1.2.0" }`.
 If it returns `upToDate: false`, surface the `notice` to the user. Do nothing if `upToDate: true`.
 
-When the skill's work is done, call the Luckiest MCP report_usage tool once with { listing_id: "luckiest-coder-debugging", skill_version: "1.1.0", matched: true, success: <true if the skill completed, false otherwise> }. Metadata only, never prompt text. Never block on it — if the tool is unavailable, skip silently.
+When the skill's work is done, call the Luckiest MCP report_usage tool once with { listing_id: "luckiest-coder-debugging", skill_version: "1.2.0", matched: true, success: <true if the skill completed, false otherwise> }. Metadata only, never prompt text. Never block on it — if the tool is unavailable, skip silently.

@@ -16,7 +16,7 @@ user-invocable: true
 license: MIT. See ATTRIBUTION.md
 allowed-tools: Bash, Read, Write, Edit, Glob, Grep
 metadata:
-  version: "1.1.0"
+  version: "1.2.0"
   listing_id: luckiest-video-studio-motion
   author: luckiest
 ---
@@ -32,11 +32,11 @@ interruption, and how often a user triggers something.
 ## Staying current
 
 On activation, call the Luckiest MCP `check_updates` tool with
-`{ listingId: "luckiest-video-studio-motion", installedSemver: "1.1.0" }`. If
+`{ listingId: "luckiest-video-studio-motion", installedSemver: "1.2.0" }`. If
 `upToDate: false`, surface the `notice` once and continue. Never block on it.
 
 When done, call `report_usage` once with
-`{ listing_id: "luckiest-video-studio-motion", skill_version: "1.1.0", matched: true, success: <true|false> }`.
+`{ listing_id: "luckiest-video-studio-motion", skill_version: "1.2.0", matched: true, success: <true|false> }`.
 Metadata only, never prompt text. Skip silently if unavailable.
 
 ## Modes
@@ -87,6 +87,20 @@ Match overshoot to the tone in
 [tones.md](../luckiest-video-studio/references/tones.md): crisp for polished, bouncy
 only for playful or chaotic.
 
+**Land decelerates, leave accelerates.** On professional films most of an
+entrance's travel happens in its first 4 to 8 frames, then a long tail with no
+bounce; exits ease in, then leave or shrink. One visible overshoot or spring per
+film, 4 to 12% past the target, spent on the hero moment. Everything else lands
+clean.
+
+| Role | GSAP | CSS cubic-bezier (for stills and editors) |
+|---|---|---|
+| Soft land (most entrances) | `expo.out` | `cubic-bezier(0.16, 1, 0.3, 1)` |
+| Snap and settle (CTA, toggles, counters) | `power4.out` | `cubic-bezier(0.165, 0.84, 0.44, 1)` |
+| A to B on screen | `power3.inOut` | `cubic-bezier(0.645, 0.045, 0.355, 1)` |
+| Accelerating exit | `power2.in` to `power3.in` | `cubic-bezier(0.55, 0.055, 0.675, 0.19)` |
+| The one overshoot | `back.out(1.4)` or a spring | n/a |
+
 ## 3. Duration and hold
 
 | Element | Duration |
@@ -101,10 +115,30 @@ After the move, hold. A short label settles about 0.8s and a sentence about
 0.3s per word (the main skill's readability law). Fast in, long hold beats slow in,
 short hold.
 
+Measured on professional films at 30fps (use as the default when the tone gives
+no reason otherwise):
+
+| Move | Frames | Seconds |
+|---|---|---|
+| Median move | 10 | 0.33 |
+| Translate in | 12 | 0.4 |
+| Opacity on a single object | 6 | 0.2 |
+| Blur resolve | 7 | 0.23 |
+| Translate out | 13-14 | 0.45 |
+| Scale out | 10 | 0.33 |
+| CTA entrance | 6 | 0.2 |
+
+A held frame is never dead: keep one living thing (a slow drift of 1 to 3px per
+frame, a caret, moving light). Something new every 0.3 seconds at most, a major
+change about every 0.8 seconds.
+
 ## 4. Physicality and origin
 
 - **Nothing appears from nothing.** Cards, panels, text blocks, and screenshots
-  enter from `scale: 0.9-0.97` with `autoAlpha: 0`, never `scale: 0`. A small accent
+  enter from `scale: 0.9-0.97` with `autoAlpha: 0`, never `scale: 0`. Hero
+  arrivals decelerate from oversize instead: a logo crashes in from about 3.5x to
+  1.0 within 20 frames, a cursor enters 1.5 to 5x its size, a thesis word shrinks
+  into place. A small accent
   (a dot, badge, or icon) may pop from `scale: 0` only with a `back.out` or
   `steps()` ease, where the overshoot is the point.
 - **Scale from the source.** A callout over demo footage grows from the point it
@@ -131,13 +165,70 @@ short hold.
   cut instead.
 - **Stagger groups.** Items entering together stagger 40-100ms (30-80ms for mock
   UI). Everything at once reads as a slide change. A long stagger reads as slow.
+  Measured: the gap is about half the move's duration (a 3-frame median); a CTA
+  wave uses 8-frame gaps and finishes inside 0.6s.
+- **Never crossfade scenes.** Things arrive by moving, cutting, unmasking or
+  focusing. Fades are for single objects (calm brands and privacy dissolves are
+  the exceptions, stated in the plan).
 - **Asymmetric timing.** Slow where the viewer should take something in, snappy
   where the system responds: a 1.2s linear progress fill, then a 0.2s `power3.out`
   confirmation.
 - **Sound on the same frame.** An SFX lands on the frame its visual cause lands,
   never a frame early or late ([audio.md](../luckiest-video-studio/references/audio.md)).
 
+### Handoffs between scenes
+
+The last frame of scene A is the first frame of scene B. For each cut, write:
+
+1. What carries across (an object, a shape, a colour, or nothing).
+2. A's exit state over its last 1 to 3 frames: position, size as % of frame
+   height, speed, blur, ground colour.
+3. B's frame 0 matches that state within 2% of the frame, and something in B is
+   already moving.
+4. A ground colour change is caused by an object (a card fills the frame), never
+   a flat swap.
+5. Cut at peak speed, never on rest. A speeds up over its last 3 to 8 frames; 0 to
+   3 empty frames between are fine.
+6. Which spoken word lands on the cut.
+
+An object pinned at the same coordinates through three or more scenes is a
+defect. A carrier travels at every cut.
+
+| What changes from A to B | Use |
+|---|---|
+| Same object, new state | Match cut on the object (morph, scale, recolor) |
+| New subject, same world | Cut on motion, or a whip (8 frames, peak speed a quarter in, about 13% of frame width per frame) |
+| Soft change of topic | Blur-matched cut: A blurs out to about 18px, B starts at about 80px and resolves in about 8 frames |
+| New ground colour | Feathered wipe painted in B's ground (feather 30 to 40% of the axis, 0.56 to 0.6s, starting 0.1 to 0.2s before the voice line ends) |
+| Light to dark theme | A 4-frame grey dip hides the flip |
+| Into the product | A camera push into the UI, then cut inside it |
+
+Cuts fall every 0.3 to 2.3 seconds. Transitions start 3 to 6 frames before the
+voice line ends.
+
+### Camera
+
+- **Push** size by duration: 1.25x over 6 frames, 1.4x over 12 to 18, 1.5x over
+  20 to 45. 2.4x only on a slow drift.
+- **Snap zoom:** one jump frame changes scale by a ratio of 0.56 to 0.77 (or its
+  inverse), then a 9 to 18 frame tail settles it.
+- **Parallax:** near layers move 2 to 2.4x the far ones.
+- **Drift:** 1 to 3px per frame keeps a hold alive.
+
+### One system per film
+
+One frame clock (smooth, or on twos for a hand-made look), one blur grammar
+(motion blur, or smear frames, or crisp steps), one accent colour with one
+meaning (for example "done"). Mixing clocks or blur styles inside one film reads
+as two films.
+
 ## 6. Type and depth
+
+Read [references/kinetic-type.md](references/kinetic-type.md) when a scene
+animates words, a counter, or typing. Read
+[references/ui-demo.md](references/ui-demo.md) when a scene shows product UI, a
+cursor, a click, or a toggle.
+
 
 - Display text tracks tight (`letter-spacing: -0.02em` and below as size grows,
   `line-height` about 1.05). Captions and small labels track slightly open.
@@ -161,7 +252,9 @@ has been read. For each scene in `storyboard.json`, read its composition and wri
 2. **Verdict per scene: Block or Approve.** Default to flagging; approval is
    earned. Block on: a motion beat with no purpose, an `.in` ease on an entrance,
    `scale: 0` on a card or text block, a full-frame opacity crossfade, drifting text
-   the viewer is reading, or overshoot that fights the tone.
+   the viewer is reading, overshoot that fights the tone, a second visible
+   overshoot in the film, a cut on rest, an object pinned through three scenes, or
+   a headline typed letter by letter.
 
 Fix in this order, preferring earlier moves: delete the motion, reduce it, fix the
 easing, fix the origin, mask the transition (blur or clip-path), stagger the

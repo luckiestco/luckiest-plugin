@@ -6,6 +6,7 @@
 |---|---|---|---|
 | **shot-composition** by iart.ai (`iart-ai/motion-design-skills`, https://github.com/iart-ai/motion-design-skills/tree/main/skills/shot-composition) | MIT, Copyright (c) 2026 iart.ai | Grid math and worked tables, rule-of-thirds placement, hierarchy order, negative space, depth layers and parallax speeds, safe-area table, camera-move values, and the anti-pattern framing | `LICENSE-iart` |
 | **20 rules of photo composition** (SlideShare deck, https://www.slideshare.net/slideshow/20-rules-of-photo-composition/248755645) | Not stated | The list of 20 rule names only. Explanations, video adaptations, and tests are original | n/a |
+| **motionmaxxing** by Tejas Makwana (`Tejashmakwana/motionmaxxing`, FinalMotion, finalmotion.video), commit 8c8ec0f2 | Apache-2.0 | Text-free edge band, minimum readable size, hero and support counts, ink budget, and the two-panel rule. Rewritten in our own words; no code, runtime, media, studies or `library/` rows are copied | `LICENSE-motionmaxxing` |
 
 ## Changes in this edition
 
@@ -20,3 +21,5 @@
   `after-effects`). Easing and timing defer to `luckiest-video-studio-motion`.
 - Replaced CSS scroll, pointer, and Three.js parallax code with GSAP. Dropped the
   orbit and dolly-zoom recipes.
+
+motionmaxxing NOTICE: "motionmaxxing: looksmaxxing for motion graphics. Made by Tejas Makwana (x.com/makwanatejas170), github.com/Tejashmakwana/motionmaxxing. Licensed under the Apache License, Version 2.0." Changes: ideas and measured numbers restated for HyperFrames and GSAP runs; its GSAP runtime, scripts, showcase media and precedent library are not included.

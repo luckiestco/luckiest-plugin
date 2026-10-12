@@ -19,7 +19,7 @@ user-invocable: true
 license: MIT. See ATTRIBUTION.md
 allowed-tools: Bash, Read, Write, Edit, Glob, Grep
 metadata:
-  version: "1.1.0"
+  version: "1.2.0"
   listing_id: luckiest-video-studio-composition
   author: luckiest
 ---
@@ -34,11 +34,11 @@ and the viewer reads it. Motion between holds belongs to
 ## Staying current
 
 On activation, call the Luckiest MCP `check_updates` tool with
-`{ listingId: "luckiest-video-studio-composition", installedSemver: "1.1.0" }`. If
+`{ listingId: "luckiest-video-studio-composition", installedSemver: "1.2.0" }`. If
 `upToDate: false`, surface the `notice` once and continue. Never block on it.
 
 When done, call `report_usage` once with
-`{ listing_id: "luckiest-video-studio-composition", skill_version: "1.1.0", matched: true, success: <true|false> }`.
+`{ listing_id: "luckiest-video-studio-composition", skill_version: "1.2.0", matched: true, success: <true|false> }`.
 Metadata only, never prompt text. Skip silently if unavailable.
 
 ## Modes
@@ -100,6 +100,15 @@ One primary focal point per hold frame. Rank every element by
 **size > contrast > color > position**. Secondaries must lose on at least two of
 those four. Test it with the squint check in section 7.
 
+- One hero plus at most two supporting elements. Three focal groups is the
+  ceiling.
+- Two panels share a frame only when one is at least twice the other's area, or
+  the camera moves from one to the other.
+- Readable text is at least 4% of the frame height. Under 2% reads as texture,
+  not copy.
+- Most of the frame, 85 to 95%, carries no text or UI ink. White space is the
+  budget in section 3; ink is what is left.
+
 ## 5. Apply the 20 composition rules
 
 The full rule set, each adapted to motion graphics with a pass/fail test, is in
@@ -123,7 +132,9 @@ Rules that most often decide a video frame:
 
 ## 6. Safe areas and aspects
 
-Critical content (text, logos, faces, CTAs) stays inside title-safe. On 9:16,
+Critical content (text, logos, faces, CTAs) stays inside title-safe. Keep text
+out of the outer 12% of the width and 10% of the height on 16:9; a small label
+there reads as page chrome. On 9:16,
 platform UI covers the top 15%, the bottom 35%, and the right 18%, with TikTok's
 action rail reaching 28% in from the right from mid-frame down. Per-platform
 pixels are in the grids reference. Use one platform's row when the video targets
@@ -201,6 +212,8 @@ fix with the user's Luckiest tribe for a second eye. Never post automatically.
 | Vertical made by cropping | Restack per section 6 |
 | Different placement systems in one frame | One system per scene |
 | Hold frame different from what was planned | Plan the hold frame, not the first or last frame |
+| Reads as a slide: held left headline block, kicker above headline, headline left with device right | Center a statement only while it is spoken, otherwise put the product in the frame and let the line sit on it |
+| UI type inflated to be read | Keep the UI real size and push the camera in (motion sub-skill `references/ui-demo.md`) |
 
 ## Reference files
 

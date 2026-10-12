@@ -36,7 +36,9 @@ this file and re-renders only what it touched. Schema:
 | `loudness` | Integrated loudness of `final.mp4` in LUFS, default `-14` (the streaming norm), two-pass with a -1.2 dBTP ceiling. `false` skips it. |
 | `sfx` | Optional `{ "file": "audio/sfx.wav", "volume": 1 }` from `scripts/sfx-cues.mjs`, mixed under the joined video at 0 s. Cue times are global, so re-run the mixer after a scene's length changes. |
 | `scenes[].id` | Lowercase and hyphens. Stable: edits refer to scenes by id. |
-| `scenes[].kind` | `motion` (HyperFrames scene), `logo` (HyperFrames logo recipe), `demo` (footage). |
+| `scenes[].kind` | `motion` (HyperFrames scene), `logo` (HyperFrames logo recipe), `demo` (footage), `ai` (AI-generated shot, storyboard stage only: it becomes `demo` once its clip is generated and approved). |
+| `scenes[].still` | Optional. The scene's storyboard still, default `storyboard/<id>.png`. The storyboard review shows it. |
+| `scenes[].prompt` | For `ai`, the generation prompt from `luckiest-video-studio-recreate`. Kept after the scene becomes `demo`, so the shot can be regenerated. |
 | `scenes[].composition` | For motion and logo, the sub-composition under `composition/`. Default `compositions/<id>.html`. |
 | `scenes[].source`, `sourceStart` | For demo, the footage file and where to start in it. |
 | `scenes[].focus` | For demo, `{ "x": 0.5, "y": 0.5 }` as fractions of the source frame: the point kept in view when the footage is cropped to a different shape (a 16:9 screen recording in a vertical cut). Set it on the cursor, the face, or the UI the line talks about. |

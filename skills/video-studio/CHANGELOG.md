@@ -1,5 +1,30 @@
 # Changelog — luckiest-video-studio
 
+## 1.15.0 — 2026-10-12
+
+- Three new QA gates in `scripts/qa.mjs`, each with a failing and a passing test: `endhold` (end card held over 1.4 s, or a final shot over a quarter of the film), `blankframes` (more than 3 empty swatch frames in a row) and `hud` (HUD counters, timecodes, BPM/FPS, greetings, "label · $value"; text in `data-ui` product UI is exempt, tracked caps only warn).
+- `NOTE.md` is now required before showing a cut: the idea, the belief each scene creates, real vs generated, gate numbers, one sentence per contact-sheet frame (written before reading the gates), and what is left to improve.
+- Storyboard scenes take optional `belief`, `importance` and `pictureOnly` fields; the plan template asks for them plus a handoff per cut.
+- Transition tables no longer recommend crossfades, which the `crossfade` gate fails; cut on motion and blur-matched cuts replace them. Headlines are no longer typed letter by letter.
+- `references/audio.md`: the sound arc across a film (1 to 3 hero hits, silence before the hit, dips while reading, ducking under voice).
+- Ideas and numbers from Tejas Makwana's motionmaxxing (Apache-2.0), in our own words; no code copied. Description trimmed under 1024 characters.
+
+## 1.14.1 — 2026-10-10
+- Security: `scripts/pyproject.toml` floors raised to the locked, advisory-free numpy 2.4.6 and scipy 1.17.1 (SkillSpector SC4). urllib3, pulled in through librosa's pooch download helper, constrained to 2.8.0 or later and relocked from 2.7.0, fixing GHSA-8988-9cw3-xx77, GHSA-gh4c-6fx4-qh6g and GHSA-vxq7-64xx-v4gw. OSV reports 0 of 31 locked packages vulnerable.
+
+## 1.14.0 — 2026-10-10
+- Step 0b, context interview: who, message, where, why now, and type (HyperFrames,
+  AI-generated, or a mix), plus references, must-show assets, and voice. At most
+  2 AskUserQuestion calls of 4. Answers go to `brief.md`
+  (`references/interview.md`).
+- Step 2 ends in a storyboard review: one still per scene in `storyboard/<id>.png`,
+  opened in the review player with `build-reel.mjs --storyboard` and approved
+  scene by scene. It replaces showing the scene table. Step 2b is unchanged.
+- New scene kind `ai` with `scenes[].prompt` (prompts from the recreate sub-skill,
+  nothing generated). Step 3 runs the cost check and asks before generating, then
+  the scene becomes `demo`. `render-scenes.mjs` refuses an `ai` scene with no clip.
+- `scenes[].still` in the schema. `--yes` infers the brief and never spends credits.
+
 ## 1.13.0 — 2026-10-08
 - Formats come last: iterate and approve the master 16:9, then add `formats`
   ("Other formats (last)" in `step-4-deliver.md`).

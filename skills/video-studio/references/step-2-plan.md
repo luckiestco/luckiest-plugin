@@ -1,6 +1,8 @@
 # Step 2: Write the video plan
 
-Write `<output-dir>/plan.md`. One focused page. This is the creative north star for the entire video.
+Write `<output-dir>/plan.md`. One focused page. Start from `brief.md` (the
+context interview): its audience, message, platform, length, call to action, and
+type are settled. Do not re-ask or change them; flag a conflict to the user instead. This is the creative north star for the entire video.
 
 The plan should specify what the video must communicate and what project material must be used. It should not prescribe low-level Hyperframes implementation details. Hyperframes will decide the concrete composition structure, animation mechanics, and render workflow from the brief in Step 3.
 
@@ -80,11 +82,14 @@ approved (`step-4-deliver.md`, "Other formats (last)").
 
 ### Scene 1 — [name] — [duration]s
 [What's on screen. What text appears. What product material must be referenced.]
+Belief: [the viewer ... ; one belief, no "and"; importance 1, 2 or 3]
+Picture only: [what the picture shows with the text covered; "a card on a flat colour" is not an answer]
 Sequential/interaction: [yes — describe what appears one by one or what interaction is simulated, e.g. "3 stat cards arrive one by one" or "cursor clicks the match button"; or none]
 Audio intent: [what the sound should do emotionally]
 Audio-coupled idea: [typed text, beat-aligned reveal, counter ticks, card-by-card sequence, simulated tap/swipe/type — or none]
 Music: [mood, or "none" only if disabled / missing / intentionally silent]
 Transition mood: [clean / hard / dramatic / soft / chaotic] → Scene 2
+Handoff: [what carries into Scene 2, or "cut on motion"; Scene 2 opens already moving]
 
 ### Scene 2 — [name] — [duration]s
 [...]
@@ -180,7 +185,7 @@ These are among the most effective moments in a video — they make the product 
 If a scene has either of these, commit to it explicitly in the scene description:
 - Good: "3 horse profiles slide in one by one, each with a card sound"
 - Good: "Simulate a right-swipe on Thunder's profile card"
-- Good: "The hook line types out character by character with keyboard sounds"
+- Good: "The query types into the product's own search field with keyboard sounds" (type only into a real input field, never a headline)
 - Avoid: leaving it vague and hoping Hyperframes adds rhythm on its own
 
 Hyperframes can implement both patterns well — but only if the plan specifies what's appearing, in what order, and that interaction is being simulated. The plan is the contract.
@@ -251,15 +256,42 @@ If SFX are enabled, note likely sound opportunities but leave exact filenames to
 
 ## Transition vocabulary
 
-Match transitions to tone:
+Match transitions to tone. Never crossfade whole scenes: the `crossfade` gate fails
+an opacity tween on a full-frame layer. Cut on motion instead: scene A speeds up
+over its last 3 to 8 frames, scene B opens already moving. For a softer join, use
+a blur-matched cut (A blurs out to about 18px, B starts at about 80px and resolves
+in about 8 frames). Fades are for single objects, not scenes. Handoff recipes are
+in `luckiest-video-studio-motion`.
 
 | Tone | Preferred transitions |
 |---|---|
-| `default` | Crossfade, clean wipe |
-| `polished` | Soft crossfade, slide |
+| `default` | Cut on motion, clean wipe |
+| `polished` | Blur-matched cut, slide |
 | `yc-parody` | Hard cut, minimal |
 | `chaotic` | Hard cut, flash, zoom |
-| `deadpan` | Slow crossfade, long hold |
-| `cinematic` | Dramatic wipe, crossfade |
+| `deadpan` | Hard cut after a long hold |
+| `cinematic` | Dramatic wipe, blur-matched cut |
 | `app-store` | Slide, smooth wipe |
 
+## Storyboard stills
+
+Every scene gets one still, `storyboard/<id>.png` at the master size, before the
+storyboard review. The still shows the hold frame: what the viewer sees when the
+scene settles. Cheap and local only, never a generated image or clip.
+
+| Kind | Still |
+|---|---|
+| `motion`, `ai` | A static HTML frame, `storyboard/frames/<id>.html`: the brand background, the scene's main text in the brand fonts, and the real assets it will show, placed where the hold frame puts them. For `ai`, add a one-line caption of what the shot shows. |
+| `demo` | A frame grab of the footage at the hold point: `ffmpeg -ss <t> -i <file> -frames:v 1 storyboard/<id>.png`. No footage yet: an HTML frame naming what will be recorded. |
+| `logo` | The logo file centered on the brand background, as an HTML frame. |
+
+Capture each HTML frame with headless Chrome (no install):
+
+```bash
+"/Applications/Google Chrome.app/Contents/MacOS/Google Chrome" --headless=new --hide-scrollbars \
+  --window-size=<width>,<height> --screenshot=<abs-run-dir>/storyboard/<id>.png "file://<abs-run-dir>/storyboard/frames/<id>.html"
+```
+
+Look at each still before the review. A scene whose `still` field names another
+file uses that one instead. When a review edit changes a line or a layout,
+redraw only that scene's still.

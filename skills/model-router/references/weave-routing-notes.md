@@ -11,6 +11,7 @@ Weave Router (github.com/weave-os/router, Apache 2.0) is a Go proxy that picks a
 | Cost vs quality is one knob | `internal/router/cluster`: α blends cost into the rankings at training time | `--prefer` shifts all tiers by one step |
 | Session pin | `session_pin` tables keep a session on one model so the cache stays warm | `depends_on` chains never drop below the tier of the task they build on |
 | Struggle escalation | `struggle_escalation_events`: move a session up after repeated failure | Two failed checks lead to one tier higher, with heavy as the ceiling |
+| Task domain bits | `sidecars/task-domain`: the initial task is classified into ui/logic/data/infra/docs; only logic and infra add a quality correction | `UPSHIFT` carries infra and logic signals (deploy, kubernetes, terraform, algorithm, concurrency, parser); ui, data and docs words alone do not move a task up |
 | No fail-open | cluster CLAUDE.md: the old heuristic fallback silently sent everything to Haiku and hid regressions | Unsure means standard, with the reason stated |
 
 Later evidence (trend pass, 2026-09-25):

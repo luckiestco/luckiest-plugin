@@ -10,6 +10,8 @@ Headline formulas, page section types, and structural templates.
 
 ## Headline Formulas
 
+These are starting points. Fill every slot with specifics, and check the result against the No AI Tells section in SKILL.md (or run luckiest-copywriting-humanize): a "without" or "Never X again" headline is fine once, but don't follow it with a negation list.
+
 ### Outcome-Focused
 
 **{Achieve desirable outcome} without {pain point}**
@@ -91,9 +93,6 @@ Headline formulas, page section types, and structural templates.
 
 **What if you could {desirable outcome}?**
 > What if you could close deals 30% faster?
-
-**Everything you need to {outcome}**
-> Everything you need to launch your course
 
 **The {adjective} {category} built for {audience}**
 > The lightweight CRM built for startups

@@ -1,5 +1,14 @@
 # Changelog — luckiest-coder-finishing-a-branch
 
+## 1.2.0 — 2026-09-22
+Practices adopted from BuilderOS, Compound Engineering, and firstmate.
+
+### Added
+- Step 0 learning capture with the durable-bar counterfactual, one learning per note (Compound Engineering ce-compound).
+
+### Analytics
+- `check_updates` installedSemver and `report_usage` skill_version -> 1.2.0.
+
 ## 1.1.0 — 2026-07-06
 Skill updater pass: analytics integration.
 

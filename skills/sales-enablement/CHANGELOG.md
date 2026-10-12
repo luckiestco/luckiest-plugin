@@ -1,5 +1,13 @@
 # Changelog — luckiest-sales-enablement
 
+## 1.2.0 — 2026-10-08
+Upstream sync with coreyhaines31/marketingskills dda3841 (issue #112).
+
+- Added Claims Reps Can Defend, Live Deal Objection, Battle Cards, and Win-Loss Analysis sections, two output-format rows, two related skills, and new description triggers.
+- Added references/win-loss-analysis.md.
+- Skipped: upstream tool-table links, evals, version bump.
+
+
 ## 1.1.0 — 2026-07-06
 Skill updater pass: analytics integration.
 

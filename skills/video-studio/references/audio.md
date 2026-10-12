@@ -217,6 +217,21 @@ The bundled library has no whooshes or risers. Source them with HyperFrames
 - **Staggered elements:** usually accent the first, final, or strongest beat;
   only score every item when that rhythm is intentional and still feels clean.
 
+### The sound arc across the film
+
+- **1 to 3 hero hits per film**, placed by hand, drawn from 3 to 5 kinds of
+  sound. Everything else is detail under them.
+- **Silence before the hit.** Clear the music 8 to 15 dB for 0.2 to 0.5 seconds
+  right before the biggest move, so the hit lands in space.
+- **Dip while the viewer reads.** Pull the music down 6 to 10 dB while a line of
+  text holds on screen.
+- **Duck under the voice.** With narration, the music sits about 9 dB lower while
+  a line plays (80 ms down, 300 ms back up).
+- **Normalize SFX to a -3 dBFS peak** before the gain ladder, so gains mean the
+  same thing for every file.
+- **Grid at 30fps:** 120 BPM is exactly 15 frames per beat, so cuts land on whole
+  frames.
+
 Composition notation:
 ```
 Scene 2 — Reveal — 3s

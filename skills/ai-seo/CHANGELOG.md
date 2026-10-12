@@ -1,5 +1,16 @@
 # Changelog — luckiest-ai-seo
 
+## 1.2.0 — 2026-10-08
+Upstream sync with coreyhaines31/marketingskills dda3841 (issue #112).
+
+- Crawler guidance rewritten by purpose (search discovery, user retrieval, training, Google-Extended); fixed the mistake and pitfall that said blocking GPTBot kills citation; robots.txt example and checklist row updated.
+- Critical stats rewritten with sources and dates plus a drift caveat; added the organic-rankings-still-matter sentence.
+- Inauthentic-mentions rule extended (fake awards, owned review sites, FTC 2024 reviews rule); added consensus-profile and LinkedIn bullets and a prompt-tracking tip.
+- platform-ranking-factors.md: softened AI Overviews and schema claims, updated Copilot and Claude sections.
+- content-types.md: added Industry / Segment Pages.
+- Added references/linkedin-ai-citations.md and references/positioning-and-consensus.md (curl check removed, links to files absent in this fork removed).
+- Skipped: updates to agent-readiness, citations-vs-recommendations, format-volatility, youtube-ai-citations (not in this fork), evals, and registry link rewrites.
+
 ## 1.1.0 — 2026-07-06
 Skill updater pass: analytics integration.
 

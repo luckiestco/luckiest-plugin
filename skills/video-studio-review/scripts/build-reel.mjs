@@ -3,7 +3,10 @@
 // per storyboard scene, in storyboard order, with each scene's variables as editable fields. Rerunning bumps
 // "version" so an open player reloads itself. <run-dir>/qa/review-notes.json ([{ t, x, y, text, scene? }]), when
 // present, is pinned on the frame as Claude's own notes. Then serve it: node <skill-dir>/editor/serve.mjs <run-dir>
-// Usage: node build-reel.mjs <run-dir>
+// Usage: node build-reel.mjs <run-dir> [--storyboard]
+// --storyboard: review the plan before anything renders. Joins each scene's hold-frame still (scenes[].still, default
+// storyboard/<id>.png) for its duration into storyboard/animatic.mp4 with ffmpeg and serves that instead of final.mp4.
+// Each scene's line and (for "ai" scenes) its prompt become editable fields.
 import { spawnSync } from "node:child_process";
 import { existsSync, readFileSync, writeFileSync } from "node:fs";
 import { basename, dirname, join, resolve } from "node:path";
@@ -12,6 +15,8 @@ import { fileURLToPath } from "node:url";
 const MEDIA = { image: /\.(png|jpe?g|webp|gif|svg)$/i, video: /\.(mp4|mov|webm)$/i, audio: /\.(mp3|wav|m4a)$/i };
 const mediaType = (v) => Object.keys(MEDIA).find((k) => MEDIA[k].test(v));
 const slug = (v) => v.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "");
+export const stillOf = (s) => s.still ?? `storyboard/${s.id}.png`;
+const ANIMATIC = "storyboard/animatic.mp4";
 const words = (id) => id.replace(/-/g, " ").replace(/^./, (c) => c.toUpperCase());
 
 // One field per variable: hex -> color, file path -> media, number -> number, other strings -> text.
@@ -26,7 +31,7 @@ function field(k, v) {
 }
 
 // Pure: the reel for a storyboard. prevVersion is the version of the reel.json already in the run, or 0.
-export function buildReel(sb, runDir, prevVersion = 0, duration = 0, qaNotes = []) {
+export function buildReel(sb, runDir, prevVersion = 0, duration = 0, qaNotes = [], storyboard = false) {
   const assets = new Map();
   // The player's color fields pick from the brand palette, so every distinct hex becomes a palette entry and the
   // field links to it. Editing a palette color in the Style tab then changes every scene that uses it.
@@ -48,12 +53,17 @@ export function buildReel(sb, runDir, prevVersion = 0, duration = 0, qaNotes = [
       props[k] = f;
       if (f.type === "media") asset(v, "Run");
     }
+    if (storyboard) {
+      props.line = { type: "longtext", label: "Line", v: s.line ?? "" };
+      if (s.prompt) props.prompt = { type: "longtext", label: "Prompt", v: s.prompt };
+      asset(stillOf(s), "Storyboard");
+    }
     if (s.kind === "demo" && s.source) { props.source = { type: "media", label: "Footage", v: s.source }; asset(s.source, "Footage"); }
     for (const a of s.assets ?? []) asset(a, "Run");
     props.motion = { type: "motion", label: "Motion", v: [s.kind, s.recipe].filter(Boolean).join(", ") };
-    const src = s.kind === "demo" ? s.source : `composition/${s.composition ?? `compositions/${s.id}.html`}`;
+    const src = storyboard ? stillOf(s) : s.kind === "demo" ? s.source : `composition/${s.composition ?? `compositions/${s.id}.html`}`;
     return {
-      id: s.id, name: words(s.id), t: range,
+      id: s.id, name: words(s.id), t: range, ...(storyboard && { still: stillOf(s) }),
       els: [{ id: s.id, label: s.line || words(s.id), t: range, box: null, src: `storyboard.json scenes[${i}] · ${src}`, props }],
     };
   });
@@ -64,7 +74,8 @@ export function buildReel(sb, runDir, prevVersion = 0, duration = 0, qaNotes = [
     title: sb.title,
     version: prevVersion + 1,
     path: runDir,
-    src: "final.mp4",
+    src: storyboard ? ANIMATIC : "final.mp4",
+    ...(storyboard && { stage: "storyboard" }),
     w: sb.format.width, h: sb.format.height, fps: sb.format.fps,
     // The joined file can run a frame or two off the storyboard sum; trust the file when it was probed.
     duration: duration || +t.toFixed(3),
@@ -79,18 +90,32 @@ export function buildReel(sb, runDir, prevVersion = 0, duration = 0, qaNotes = [
 }
 
 if (process.argv[1] === fileURLToPath(import.meta.url)) {
-  const runDir = resolve(process.argv[2] ?? ".");
+  const args = process.argv.slice(2);
+  const storyboard = args.includes("--storyboard");
+  const runDir = resolve(args.find((a) => !a.startsWith("--")) ?? ".");
   const fail = (m) => { console.error(`error: ${m}`); process.exit(1); };
   if (!existsSync(join(runDir, "storyboard.json"))) fail(`no storyboard.json in ${runDir}`);
-  if (!existsSync(join(runDir, "final.mp4"))) fail(`no final.mp4 in ${runDir}; run render-scenes.mjs first`);
   const sb = JSON.parse(readFileSync(join(runDir, "storyboard.json"), "utf8"));
+  const video = storyboard ? ANIMATIC : "final.mp4";
+  if (storyboard) {
+    const missing = sb.scenes.map(stillOf).filter((f) => !existsSync(join(runDir, f)));
+    if (missing.length) fail(`missing storyboard stills: ${missing.join(", ")}`);
+    const { width: W, height: H, fps } = sb.format;
+    // One still per scene, held for its duration, letterboxed to the master size, joined in order.
+    const inputs = sb.scenes.flatMap((s) => ["-loop", "1", "-t", String(s.duration), "-i", join(runDir, stillOf(s))]);
+    const fit = sb.scenes.map((_, i) => `[${i}:v]scale=${W}:${H}:force_original_aspect_ratio=decrease,pad=${W}:${H}:(ow-iw)/2:(oh-ih)/2,setsar=1,fps=${fps},format=yuv420p[v${i}]`);
+    const filter = `${fit.join(";")};${sb.scenes.map((_, i) => `[v${i}]`).join("")}concat=n=${sb.scenes.length}:v=1:a=0[out]`;
+    const ff = spawnSync("ffmpeg", ["-v", "error", "-y", ...inputs, "-filter_complex", filter, "-map", "[out]", "-c:v", "libx264", "-tune", "stillimage", "-movflags", "+faststart", join(runDir, video)], { encoding: "utf8" });
+    if (ff.status !== 0) fail(`ffmpeg could not build ${video}: ${ff.stderr || ff.error?.message}`);
+  } else if (!existsSync(join(runDir, "final.mp4"))) fail(`no final.mp4 in ${runDir}; run render-scenes.mjs first, or pass --storyboard to review the plan`);
   const reelFile = join(runDir, "reel.json");
   const prev = existsSync(reelFile) ? JSON.parse(readFileSync(reelFile, "utf8")).version ?? 0 : 0;
-  const probe = spawnSync("ffprobe", ["-v", "error", "-show_entries", "format=duration", "-of", "csv=p=0", join(runDir, "final.mp4")], { encoding: "utf8" });
+  const probe = spawnSync("ffprobe", ["-v", "error", "-show_entries", "format=duration", "-of", "csv=p=0", join(runDir, video)], { encoding: "utf8" });
   const notesFile = join(runDir, "qa", "review-notes.json");
   const qaNotes = existsSync(notesFile) ? JSON.parse(readFileSync(notesFile, "utf8")) : [];
-  const reel = buildReel(sb, runDir, prev, +(Number(probe.stdout?.trim()) || 0).toFixed(3), qaNotes);
+  // The animatic is built from the storyboard, so its scene sum is exact; probe only the rendered final.mp4.
+  const reel = buildReel(sb, runDir, prev, storyboard ? 0 : +(Number(probe.stdout?.trim()) || 0).toFixed(3), qaNotes, storyboard);
   writeFileSync(reelFile, JSON.stringify(reel, null, 1) + "\n");
   const serve = join(dirname(fileURLToPath(import.meta.url)), "..", "editor", "serve.mjs");
-  console.log(`wrote ${reelFile} v${reel.version} (${reel.scenes.length} scenes, ${reel.duration}s). Open it: node "${resolve(serve)}" "${runDir}"`);
+  console.log(`wrote ${reelFile} v${reel.version}${storyboard ? " storyboard" : ""} (${reel.scenes.length} scenes, ${reel.duration}s). Open it: node "${resolve(serve)}" "${runDir}"`);
 }

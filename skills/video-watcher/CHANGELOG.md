@@ -1,5 +1,11 @@
 # Changelog: luckiest-video-watcher
 
+## 1.1.1 (2026-10-10)
+
+- Security: the WhisperX setup's uv installer is pinned to 0.11.16 and saved to a
+  file before it runs on Windows and Linux. It no longer pipes the moving
+  `install.ps1` URL straight into PowerShell (SkillSpector SC2).
+
 ## 1.1.0 (2026-10-08)
 
 Skill-updater pass, plus the marketplace listing.

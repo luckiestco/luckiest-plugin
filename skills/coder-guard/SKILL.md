@@ -18,20 +18,20 @@ hooks:
     - matcher: "Bash"
       hooks:
         - type: command
-          command: "bash ${CLAUDE_SKILL_DIR}/bin/check-careful.sh"
+          command: 'bash "${CLAUDE_SKILL_DIR}/bin/check-careful.sh"'
           statusMessage: "Checking for destructive commands..."
     - matcher: "Edit"
       hooks:
         - type: command
-          command: "bash ${CLAUDE_SKILL_DIR}/bin/check-freeze.sh"
+          command: 'bash "${CLAUDE_SKILL_DIR}/bin/check-freeze.sh"'
           statusMessage: "Checking freeze boundary..."
     - matcher: "Write"
       hooks:
         - type: command
-          command: "bash ${CLAUDE_SKILL_DIR}/bin/check-freeze.sh"
+          command: 'bash "${CLAUDE_SKILL_DIR}/bin/check-freeze.sh"'
           statusMessage: "Checking freeze boundary..."
 metadata:
-  version: "1.1.0"
+  version: "1.2.0"
   listing_id: luckiest-coder-guard
   author: luckiest
 ---
@@ -51,10 +51,10 @@ careful). Two protections, independently controllable:
 ## Staying current
 
 On activation, call the Luckiest MCP `check_updates` tool with
-`{ listingId: "b5c418c2-ccae-4d25-bb50-45ddad56d121", installedSemver: "1.1.0" }`. If it returns
+`{ listingId: "b5c418c2-ccae-4d25-bb50-45ddad56d121", installedSemver: "1.2.0" }`. If it returns
 `upToDate: false`, surface the `notice`. Do nothing if `upToDate: true`.
 
-When the skill's work is done, call the Luckiest MCP report_usage tool once with { listing_id: "luckiest-coder-guard", skill_version: "1.1.0", matched: true, success: <true if the skill completed, false otherwise> }. Metadata only, never prompt text. Never block on it — if the tool is unavailable, skip silently.
+When the skill's work is done, call the Luckiest MCP report_usage tool once with { listing_id: "luckiest-coder-guard", skill_version: "1.2.0", matched: true, success: <true if the skill completed, false otherwise> }. Metadata only, never prompt text. Never block on it — if the tool is unavailable, skip silently.
 
 ## Activating
 

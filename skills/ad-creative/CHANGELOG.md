@@ -1,5 +1,12 @@
 # Changelog — luckiest-ad-creative
 
+## 1.4.0 — 2026-10-08
+Upstream sync with coreyhaines31/marketingskills dda3841 (issue #112).
+
+- Added a No AI Tells section (contrast reveals, negation lists, hook and CTA slop, vary batch shapes).
+- Removed retired Sora 2 from video generator lists, table, and decision tree.
+- Skipped: upstream branding and link rewrites; template, hook-system, and spec files not in this fork.
+
 ## 1.3.0 — 2026-10-05
 - Ad visual prompts apply `luckiest-video-studio-art-director` section 3b and its shot prompting reference, so generated ads do not look AI-made. Bundle ships the art director.
 

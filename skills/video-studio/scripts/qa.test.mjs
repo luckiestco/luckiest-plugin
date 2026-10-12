@@ -10,7 +10,7 @@ import {
   scanTokens, scanCrossfades, scanMotion, legibility, findPops, deadFrames, presence,
   beatSync, findAnchor, cutTimes, beatGrid, grayFrames, probe,
   faceCover, pairVerdict, parseWinner, audioOnsets, avSync, visibleText, scanFacts, loopCheck,
-  fullFrameSelectors, safeAreas,
+  fullFrameSelectors, safeAreas, endHold, blankRuns, scanHud,
 } from "./qa.mjs";
 
 const dir = mkdtempSync(join(tmpdir(), "qa-gates-"));
@@ -207,6 +207,42 @@ test("loop: last frame matching the first passes, a different end frame fails", 
   const ends = video("ends.mp4", [["0x3050a0", 0.5], ["0xa05030", 1]]);
   assert.equal(loopCheck(ends).ok, false);
   assert.equal(cli("loop", ends).status, 1);
+});
+
+test("endhold: a 2 s static end card fails, a short resolved hold and a one-shot film pass", () => {
+  const long = video("endhold-long.mp4", [["testsrc", 2], ["0x202020", 2]]);
+  const r = endHold(long);
+  assert.equal(r.ok, false);
+  assert.ok(r.hold >= 1.9 && r.finalShare > 0.25, JSON.stringify(r));
+  assert.equal(cli("endhold", long).status, 1);
+  const short = video("endhold-short.mp4", [["testsrc", 3.5], ["0x202020", 0.8]]);
+  assert.equal(endHold(short).ok, true, JSON.stringify(endHold(short)));
+  const oneShot = video("endhold-oneshot.mp4", [["testsrc", 3]]);
+  assert.deepEqual([endHold(oneShot).ok, endHold(oneShot).finalShare], [true, null]);
+});
+
+test("blankframes: half a second of empty swatch fails, a 3-frame dip passes", () => {
+  const empty = video("flat-empty.mp4", [["testsrc", 1], ["0x335577", 0.5], ["testsrc", 1]]);
+  const r = blankRuns(empty);
+  assert.equal(r.ok, false);
+  assert.equal(r.runs[0].frames, 15);
+  assert.equal(cli("blankframes", empty).status, 1);
+  const dip = video("flat-dip.mp4", [["testsrc", 1], ["0x335577", 0.1], ["testsrc", 1]]);
+  assert.equal(blankRuns(dip).ok, true, JSON.stringify(blankRuns(dip)));
+});
+
+test("hud: HUD counters, timecodes, BPM, greetings and label-value fail; product UI and plain copy pass", () => {
+  const bad = `<p>02 / SPEAK</p><p>01 - THE WAIT</p><p>00:14</p><p>120 BPM</p><p>Good morning, Sam</p><p>Revenue · $4,200</p>`;
+  assert.deepEqual(scanHud(bad).map((v) => v.rule), ["counter", "counter", "timecode", "metadata", "greeting", "label-value"]);
+  const good = `<h1>Rent the name before you buy it</h1><p>3 / 10 founders</p><div data-ui class="phone"><span>9:41</span><p>Good morning</p></div>`;
+  assert.deepEqual(scanHud(good), []);
+  const caps = scanHud(`<style>.k{text-transform:uppercase;letter-spacing:0.12em}</style><p class="k">source</p>`);
+  assert.deepEqual(caps.map((v) => [v.rule, v.warn]), [["tracked-caps", true]]);
+  const comp = join(dir, "chrome-comp"); mkdirSync(comp, { recursive: true });
+  writeFileSync(join(comp, "a.html"), bad);
+  assert.equal(cli("hud", comp).status, 1);
+  writeFileSync(join(comp, "a.html"), good);
+  assert.equal(cli("hud", comp).status, 0);
 });
 
 test("crossfade: a full-frame layer is found at the composition's own size, not only 1920x1080", () => {

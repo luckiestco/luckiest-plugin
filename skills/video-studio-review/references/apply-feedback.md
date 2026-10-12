@@ -69,3 +69,22 @@ look at a contact sheet before showing anything:
 Then rerun `build-reel.mjs`. The prompt
 asks for version `N+1`; `build-reel.mjs` sets it. Reply with what changed, what
 was skipped and why, and anything you could not do.
+
+## Storyboard stage
+
+A prompt whose Do line says "This is the storyboard" comes from a reel built with
+`build-reel.mjs --storyboard`. Nothing is rendered yet, so:
+
+- `Line` edits set `scenes[N].line`, and `Prompt` edits set `scenes[N].prompt`,
+  with the same before-value check. When the run has a `script.md`, write the new
+  line there too (the script sub-skill's Step 5).
+- `timing (s)` edits set the scene's `duration`.
+- Notes are read against the scene's still (`storyboard/<id>.png`), not a frame
+  of `final.mp4`. A note about the idea (the hook is weak, a beat is missing)
+  goes back to `luckiest-video-studio-director` to fix the shot list.
+- A scene marked approved that also carries an edit was approved as edited:
+  apply that edit, then leave the scene alone.
+- Never render. Redraw only the stills whose scene changed, then rerun
+  `build-reel.mjs --storyboard` so the player reloads at the next version.
+- When every scene in the Scenes block is approved, apply any edits, then hand
+  back to `luckiest-video-studio` for Step 2b. That is the storyboard gate.

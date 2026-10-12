@@ -1,5 +1,14 @@
 # Changelog — luckiest-coder-writing-plans
 
+## 1.2.0 — 2026-09-22
+Practices adopted from BuilderOS, Compound Engineering, and firstmate.
+
+### Added
+- `**Status:** X/N tasks complete` header line so progress is greppable in the plan file, not only claimed in chat (BuilderOS).
+
+### Analytics
+- `check_updates` installedSemver and `report_usage` skill_version -> 1.2.0.
+
 ## 1.1.0 — 2026-07-06
 Skill updater pass: analytics integration.
 

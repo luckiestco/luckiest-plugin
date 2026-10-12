@@ -151,7 +151,9 @@ TASK_TYPES = [
     ("utility", "light", r"\b(rename|format|lint|typo|bump|title|label|tag|move|copy|translate|reword)\b"),
 ]
 # Signals that push a task one tier up regardless of type.
-UPSHIFT = r"\b(across (the )?(codebase|repo)|multi.file|end.to.end|whole (app|system)|production|irreversible|data loss)\b"
+# Weave task-domain rule (sidecars/task-domain, 2026-10): logic and infra work
+# earns a quality correction; ui, data and docs alone do not.
+UPSHIFT = r"\b(across (the )?(codebase|repo)|multi.file|end.to.end|whole (app|system)|production|irreversible|data loss|deploy\w*|ci pipeline|kubernetes|k8s|terraform|dockerfile|infra\w*|algorithm\w*|concurren\w*|state machine|parser)\b"
 PREFER_SHIFT = {"cheap": -1, "balanced": 0, "quality": 1}
 # Multi-step tool work never drops to light, even with --prefer cheap. Small
 # models outside their comfort zone loop on tool calls and end up costing more

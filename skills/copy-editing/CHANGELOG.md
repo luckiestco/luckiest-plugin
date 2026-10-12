@@ -1,5 +1,15 @@
 # Changelog — luckiest-copy-editing
 
+## 1.2.0 — 2026-10-08
+Upstream sync with coreyhaines31/marketingskills dda3841 (issue #112).
+
+- Added an AI-Tell Check section (pattern table, caps, fix-from-facts rule, leave-alone list) after the quick-pass checks, a "Reads as AI-Written" problem entry, and AI-tell trigger phrases in the description
+- Replaced the Innovative/Robust/Seamless/Cutting-edge synonym swaps with a "Replace with the fact" table
+- Added an AI Tells block to references/checklist.md
+- Pointed to luckiest-copywriting-humanize for the full pattern pass instead of a new reference file
+- Skipped: intro prose and wording tweaks.
+
+
 ## 1.1.0 — 2026-07-06
 Skill updater pass: analytics integration.
 

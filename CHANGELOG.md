@@ -1,3 +1,14 @@
+## 0.1.40 — 2026-10-12 (npm luckiest-co 1.0.41)
+- Video studio 1.15.0: three new render checks catch an end card held too long, empty frames, and on-screen labels like "02 / SPEAK" or timecodes. Every finished video now comes with a `NOTE.md` that says what each scene makes the viewer believe, what is real and what is generated, and the check numbers.
+- Video studio sub-skills learn from motionmaxxing (Apache-2.0): director 1.4.0 adds a brand checklist, three kinds of idea and a cover-the-logo test; motion 1.2.0 adds timing in frames, scene handoffs and new guides for animated text and UI demos; art director 1.6.0, composition 1.2.0 and script 1.3.0 add a never-ship list, one hero per frame, and short-film word budgets.
+- Video studio no longer suggests crossfades between scenes, which its own check rejected.
+
+## 0.1.39 — 2026-10-11 (npm luckiest-co 1.0.40)
+- New: `/luckiest:skill-audit` now gives every skill a security verdict from NVIDIA SkillSpector, next to its trigger and collision checks. New `/luckiest:skill-audit-security` checks one skill before you install it and answers Approve, Caution, or Reject with the file and line behind each call.
+- New: `/luckiest:video-studio-showreel` for product showreels in one continuous camera move.
+- Security: video-watcher pins its uv installer and no longer pipes a download into PowerShell. Video-studio's audio tools move to urllib3 2.8.0. Trends lists what it can access, and its upstream dev scripts no longer ship.
+- 36 skills catch up to their latest versions, including the coder family 1.2.0, copywriting 1.2.0, social 1.3.0, video 1.4.0 and video-studio 1.14.1.
+
 ## 0.1.38 — 2026-10-08 (npm luckiest-co 1.0.39)
 - Every skill drops the repeated prefix in the `/` menu: `/luckiest:luckiest-ads` is now `/luckiest:ads`, `/luckiest:luckiest-copywriting` is now `/luckiest:copywriting`, and so on for all 96. The old long names no longer work as slash commands. Asking in plain words still works the same.
 - Without the plugin, npx still installs every skill as `luckiest-ads`, `luckiest-copywriting`, and so on, and never overwrites a skill of yours named `ads` or `copywriting`.

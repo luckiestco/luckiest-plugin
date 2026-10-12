@@ -1,7 +1,7 @@
 ---
 name: video-studio-review
 description: >-
-  Open a rendered luckiest-video-studio run in the review player, a local
+  Open a luckiest-video-studio storyboard (before render) or a rendered run in the review player, a local
   scene-by-scene player (built on Motion OS) where the user edits each scene's
   copy and colors, pins notes on the exact frame, marks scenes approved, and
   copies one prompt back. Then apply that prompt: edits land in storyboard.json,
@@ -18,7 +18,7 @@ user-invocable: true
 license: MIT. See ATTRIBUTION.md
 allowed-tools: Bash, Read, Write, Edit, Glob, AskUserQuestion
 metadata:
-  version: "1.0.0"
+  version: "1.1.0"
   listing_id: luckiest-video-studio-review
   author: luckiest
 ---
@@ -36,11 +36,11 @@ so the run stays the source of truth and untouched scenes never re-render.
 ## Staying current
 
 On activation, call the Luckiest MCP `check_updates` tool with
-`{ listingId: "luckiest-video-studio-review", installedSemver: "1.0.0" }`. If
+`{ listingId: "luckiest-video-studio-review", installedSemver: "1.1.0" }`. If
 `upToDate: false`, surface the `notice` once and continue. Never block on it.
 
 When done, call `report_usage` once with
-`{ listing_id: "luckiest-video-studio-review", skill_version: "1.0.0", matched: true, success: <true|false> }`.
+`{ listing_id: "luckiest-video-studio-review", skill_version: "1.1.0", matched: true, success: <true|false> }`.
 Metadata only, never prompt text. Skip silently if unavailable.
 
 ## Standing rules
@@ -57,7 +57,8 @@ Metadata only, never prompt text. Skip silently if unavailable.
 ## Step 1: Open the player
 
 Needs `node` 18+ and `ffprobe`. Run `render-scenes.mjs` first: the player shows
-`final.mp4`.
+`final.mp4`. To review a storyboard before anything renders, see **Storyboard
+review** below.
 
 ```bash
 node <skill-dir>/scripts/build-reel.mjs <run-dir>     # writes <run-dir>/reel.json
@@ -101,6 +102,31 @@ node <skill-dir>/scripts/build-reel.mjs <run-dir>
 
 `build-reel.mjs` bumps `version`; the open player reloads within about 3 seconds.
 Reply with a short list of what changed and anything you could not do.
+
+## Storyboard review
+
+Before the render, the studio's Step 2 reviews the plan scene by scene in the
+same player. No `final.mp4` is needed:
+
+```bash
+node <skill-dir>/scripts/build-reel.mjs <run-dir> --storyboard
+node <skill-dir>/editor/serve.mjs <run-dir>
+```
+
+It needs one still per scene (`scenes[].still`, default `storyboard/<id>.png`)
+and `ffmpeg`. It joins the stills, each held for its scene's `duration`, into
+`storyboard/animatic.mp4` and writes `reel.json` with `"stage": "storyboard"`.
+The player draws each scene's still with its line and length over the frame.
+Each scene's `line` is an editable field (and `prompt` for `ai` scenes), so the
+Script tab holds the whole script. Edit, notes, Timing, and Approved work as on
+a render. A missing still stops the build and names the file.
+
+Send to Claude works even with no edits, so the user can send "all approved".
+Its prompt has the same format as a render's, with a Do line that says it is the
+storyboard. Apply it as the storyboard section of
+[references/apply-feedback.md](references/apply-feedback.md) says, then rerun
+`build-reel.mjs --storyboard`. When the prompt says every scene is approved, hand
+back to the studio for Step 2b.
 
 ## Talking-head cuts
 

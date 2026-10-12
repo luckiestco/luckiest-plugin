@@ -1,5 +1,16 @@
 # Changelog — luckiest-copywriting
 
+## 1.2.0 — 2026-10-08
+Upstream sync with coreyhaines31/marketingskills dda3841 (issue #112).
+
+- Added a No AI Tells section (never-write list, keep-rare list, pre-delivery check) and an "Any AI tells?" quality-check bullet
+- Reworded the rhetorical-questions guidance and flagged self-labelling questions as a tell
+- copy-frameworks.md: added a starting-points note under Headline Formulas and removed the "Everything you need to {outcome}" formula
+- natural-transitions.md: removed self-answered-question and throat-clearing transitions, tightened the moreover/furthermore and question-based notes
+- Did not add upstream references/ai-tells.md: luckiest-copywriting-humanize already covers negative parallelism, rule of three, em dashes and AI vocabulary, so the skill points to it instead
+- Skipped: em dash punctuation rewrites and the "Option A" format change.
+
+
 ## 1.1.0 — 2026-07-06
 Skill updater pass: analytics integration.
 

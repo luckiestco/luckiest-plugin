@@ -1,5 +1,13 @@
 # Changelog — luckiest-customer-research
 
+## 1.2.0 — 2026-10-08
+Upstream sync with coreyhaines31/marketingskills dda3841 (issue #112).
+
+- Added the untrusted-data guard for fetched reviews, posts and community threads
+- Added a related-skills row pointing to luckiest-marketing-plan references/market-sizing.md
+- Skipped: version bump and SparkToro link change.
+
+
 ## 1.1.0 — 2026-07-06
 Skill updater pass: analytics integration.
 
