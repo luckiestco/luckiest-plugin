@@ -9,6 +9,11 @@ npx hyperframes check   # the single pre-render gate — fix every error it repo
 
 Fix all errors. `check` is the single pre-render gate — run it and fix everything it reports, including WCAG contrast failures (they gate as errors, not warnings). Each contrast finding carries a suggested compliant color, so apply it or adjust within the palette family and re-run `check` — most fixes need no screenshot. There is no per-element contrast escape hatch for real text; the only bypass is `check --no-contrast`, which skips the entire WCAG pass (all-or-nothing), not a way to accept one borderline element. For exact contrast thresholds, layout escape hatches, and reporting details, follow the current hyperframes-cli `check` guidance. `check`'s layout pass backstops the "keep all text readable" creative law — fix any reported overflow.
 
+Then check what `check` cannot see: no fallback fonts or tofu (every face is a
+local `@font-face` and every glyph exists), nothing clipped at the frame edges,
+no shimmer on thin lines (at least 1.5px at 1080p), no gradient banding (add 1-2%
+grain or dither).
+
 For a visual gut-check before rendering, optionally capture key frames:
 
 ```bash

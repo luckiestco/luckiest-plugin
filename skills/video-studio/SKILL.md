@@ -1,10 +1,10 @@
 ---
-name: video-studio
-description: "Make product launch videos, product demos with motion design between demo shots, and logo showcases, all editable after render. Starts with a short context interview, plans a scripted storyboard the user approves scene by scene in a review player before anything renders, builds motion scenes with HyperFrames, records or places demo footage, renders each scene as its own clip, then hands back an MP4 plus a storyboard.json that re-renders one scene at a time, a review player for edits and notes (Concat, OpenScreen, or Diffusion Studio on request), and optional After Effects compositions. Use for 'make a launch video', 'product demo video', 'demo with motion graphics', 'logo animation', 'logo reveal', 'portfolio reel', 'animate my logos', 'brand reel', 'turn my talking-head recording into a reel', 'add graphics over me talking', or 'change scene 3 of the video'. For AI-generated footage, avatars, and text-to-video models use luckiest-video. For what to post and when use luckiest-social."
+name: luckiest-video-studio
+description: "Make product launch videos, product demos with motion design between demo shots, and logo showcases, all editable after render, in 38 named styles. Starts with a short context interview, plans a scripted storyboard the user approves scene by scene in a review player before anything renders, builds motion scenes with HyperFrames, records or places demo footage, renders each scene as its own clip, then hands back an MP4 plus a storyboard.json that re-renders one scene at a time, a review player for edits and notes (Concat, OpenScreen, or Diffusion Studio on request), and optional After Effects compositions. Use for 'make a launch video', 'product demo video', 'demo with motion graphics', 'logo animation', 'logo reveal', 'portfolio reel', 'animate my logos', 'brand reel', 'turn my talking-head recording into a reel', 'add graphics over me talking', or 'change scene 3 of the video'. For AI-generated footage, avatars, and text-to-video models use luckiest-video. For what to post and when use luckiest-social."
 license: See ATTRIBUTION.md
 allowed-tools: Bash, Read, Write, Edit, Glob, Grep, AskUserQuestion
 metadata:
-  version: "1.15.0"
+  version: "1.16.0"
   listing_id: luckiest-video-studio
   author: luckiest
 ---
@@ -19,13 +19,13 @@ an MP4.
 ## Staying current
 
 On activation, call the Luckiest MCP `check_updates` tool with
-`{ listingId: "aff888e4-9ee9-4f73-af08-74d5d09d3c10", installedSemver: "1.15.0" }`. If it returns
+`{ listingId: "aff888e4-9ee9-4f73-af08-74d5d09d3c10", installedSemver: "1.16.0" }`. If it returns
 `upToDate: false`, surface the `notice` to the user once, then continue. Do nothing
 further if `upToDate: true`. Never block on this check; if the tool is unavailable,
 proceed.
 
 When the skill's work is done, call the Luckiest MCP `report_usage` tool once with
-`{ listing_id: "luckiest-video-studio", skill_version: "1.15.0", matched: true, success: <true if the skill completed, false otherwise> }`.
+`{ listing_id: "luckiest-video-studio", skill_version: "1.16.0", matched: true, success: <true if the skill completed, false otherwise> }`.
 Metadata only, never prompt text. Never block on it; if the tool is unavailable,
 skip silently.
 
@@ -69,6 +69,7 @@ in `<skill-dir>/assets/sfx/`. Resolve it; never assume an install path.
 |---|---|---|
 | `--mode` | `launch`, `demo`, `logos` | inferred |
 | `--tone` | preset or freeform ([references/tones.md](references/tones.md)) | inferred |
+| `--style` | a style id from [references/styles.md](references/styles.md); its card is `references/styles/<id>.md`. 38 looks (flat vector, synthwave, whiteboard explainer, paper collage, ink wash...) plus era styles | named in the request, else asked |
 | `--format` | `landscape`, `vertical`, `square`: the master size scenes are designed at | `landscape` |
 | `--formats` | comma list of `landscape`, `vertical`, `square`: render the same video once per format, one file each | master only |
 | `--duration` | seconds | per mode |
@@ -129,7 +130,9 @@ produces `final.mp4` and `storyboard.json`.
 Before anything else on a new run, find out who the video is for, the one
 message, where it will be posted (platform, format, length), why now (the call to
 action), and the type: HyperFrames motion graphics, AI-generated video, or a mix.
-Also references, must-show assets, and voice. Infer what the request and the repo
+Also the style ([references/styles.md](references/styles.md): taken from the
+request when it names one, otherwise offered as a choice), references, must-show
+assets, and voice. Infer what the request and the repo
 already answer and say so in one line, then ask the rest with AskUserQuestion: at
 most 4 questions per call, at most 2 calls. Write the answers to `brief.md`. With
 `--yes`, ask nothing: infer the brief, write it, and show it.
@@ -377,7 +380,8 @@ changes too small to see are left.
    any gate skipped and why in one line.
 5. One sentence per contact-sheet frame: what is on screen, what the hero is, and
    whether it would pass as a slide.
-6. What you would still improve.
+6. The honest top three weaknesses, ranked, and with a `style`, how each
+   signature feature on its card is realized.
 
 Write part 5 from the contact sheet before reading any gate result, so the
 numbers do not decide what you see. Describe what was checked. Never call the

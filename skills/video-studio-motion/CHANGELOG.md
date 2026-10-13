@@ -1,5 +1,9 @@
 # Changelog — luckiest-video-studio-motion
 
+## 1.3.0 — 2026-10-12
+
+- Camera as punctuation: three questions before each move, a move table (slow push, pull, glide, snap, whip, slam), accents at most a third of shots, no three push-ins in a row, enter slow and exit fast, reveals landed on beats or words (from huashu-art-motion, MIT).
+
 ## 1.2.0 — 2026-10-12
 
 - Frame-measured durations at 30fps, ease roles with GSAP and cubic-bezier equivalents, one overshoot per film, hero arrivals from oversize.

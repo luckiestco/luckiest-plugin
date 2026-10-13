@@ -233,6 +233,18 @@ Write every scene so the same HTML lays out at any of the three sizes:
 
 ---
 
+## Key frames before motion
+
+Build the look as stills first: render the hold frame of 6 to 10 key moments and
+look at each as a poster (hierarchy, negative space, kerning, 5% margins). Only
+then animate. Preview motion at draft quality and step the fastest moves frame by
+frame: spacing, arcs, overlap, anticipation and follow-through, no dead spans.
+
+Keep one cue sheet, the beat and hit times in `storyboard.json` and the SFX cue
+list, that both the picture and the sound read from. A hit moved in one is moved
+in the other. With a style card, map each signature feature to a scene in
+`plan.md` before building.
+
 ## Self-review checklist
 
 Before moving to delivery, verify:
@@ -247,4 +259,5 @@ Before moving to delivery, verify:
 - [ ] Sequential events (cards, stats, list items) snap to consecutive `beats[]` timestamps (±0.10s), marked `// beat-grid` (or natural timing was chosen for readability).
 - [ ] The composition shows at least one real UI, copy, or visual element from the project.
 - [ ] Total duration is 15-25 seconds.
+- [ ] With a `style`, every signature feature on its card is on screen, and each override is listed in `plan.md`.
 - [ ] Hyperframes check passes, or any blocker is documented for the user.

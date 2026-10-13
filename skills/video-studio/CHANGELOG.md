@@ -1,5 +1,14 @@
 # Changelog — luckiest-video-studio
 
+## 1.16.0 — 2026-10-12
+
+- Style library: 38 style cards in `references/styles/` plus 18 era styles in `styles/era-styles.md`, indexed by `references/styles.md`. 15 motion-design styles from mg-styles-15 (flat vector, line art, isometric, soft 3D, cel boil, paper cut collage, liquid, morph, Bauhaus, synthwave, aurora glass, variety show, sticker explainer, pixel, HUD), 9 explainer grammars and 14 art styles from huashu-art-motion. Each card: palette, motion numbers, signature features, a beat seed, sound, and how to build it in HyperFrames. Both sources MIT; famous names appear only as trigger words.
+- Styles are picked from the prompt (trigger match), `--style <id>`, or a new Style question in the interview with 3 offers per video type plus "Pick one for me". When all three offers are glossy, one hand-made style is offered. `style` is stored in `brief.md`, `storyboard.json` and `art-direction.json`.
+- The paper cut collage card reuses the showreel `papercut` look and the cards `01-paper-collage` pack.
+- New `qa.mjs storyboard` gate (with tests): flat pictures, scenes over 8 s, text-led opening or ending, text-led share over 30%, unknown style; yellows for camera streaks, accent overuse and weak verbs. New optional `scenes[].camera`.
+- Key frames before motion and one shared cue sheet (`step-3-compose.md`), final checks for tofu, edge clipping, thin-line shimmer and banding (`step-4-deliver.md`), and `NOTE.md` part 6 is now the ranked top three weaknesses plus how each signature feature is realized.
+- Ideas held for later: pace gate, audio QC gate, motion blur by sub-frame averaging, determinism gate, one-command delivery (see `.luckiest/upstream-mg-huashu.md`).
+
 ## 1.15.0 — 2026-10-12
 
 - Three new QA gates in `scripts/qa.mjs`, each with a failing and a passing test: `endhold` (end card held over 1.4 s, or a final shot over a quarter of the film), `blankframes` (more than 3 empty swatch frames in a row) and `hud` (HUD counters, timecodes, BPM/FPS, greetings, "label · $value"; text in `data-ui` product UI is exempt, tracked caps only warn).

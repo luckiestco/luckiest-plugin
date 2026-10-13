@@ -1,3 +1,9 @@
+## 0.1.41 — 2026-10-12 (npm luckiest-co 1.0.42)
+- Video studio 1.16.0: 38 named styles you can ask for by name ("make it synthwave", "paper cut look", "whiteboard explainer") or pick from in the interview, plus 18 era styles for history and tribute pieces. Each style comes with its palette, motion, must-have features and how to build it. Styles come from mg-styles-15 and huashu-art-motion (both MIT).
+- The paper cut collage style reuses the showreel paper-cut look and the paper-collage card pack.
+- A storyboard check now runs before anything is built: it stops flat pictures, scenes over 8 seconds and text-heavy openings or endings.
+- Director 1.5.0 adds an independent jury review with a scoring scale; art director 1.7.0 adds style rules, character rules and fallback palettes; motion 1.3.0 adds camera rules so push-ins do not repeat every shot.
+
 ## 0.1.40 — 2026-10-12 (npm luckiest-co 1.0.41)
 - Video studio 1.15.0: three new render checks catch an end card held too long, empty frames, and on-screen labels like "02 / SPEAK" or timecodes. Every finished video now comes with a `NOTE.md` that says what each scene makes the viewer believe, what is real and what is generated, and the check numbers.
 - Video studio sub-skills learn from motionmaxxing (Apache-2.0): director 1.4.0 adds a brand checklist, three kinds of idea and a cover-the-logo test; motion 1.2.0 adds timing in frames, scene handoffs and new guides for animated text and UI demos; art director 1.6.0, composition 1.2.0 and script 1.3.0 add a never-ship list, one hero per frame, and short-film word budgets.

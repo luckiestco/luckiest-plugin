@@ -1,5 +1,5 @@
 ---
-name: video-studio-director
+name: luckiest-video-studio-director
 description: >-
   Creative director for luckiest-video-studio runs. Owns the idea and the
   quality bar: turns a request into a one-line creative intent, picks the angle
@@ -18,7 +18,7 @@ user-invocable: true
 license: MIT. See ATTRIBUTION.md
 allowed-tools: Bash, Read, Write, Edit, Glob, Grep, AskUserQuestion
 metadata:
-  version: "1.4.0"
+  version: "1.5.0"
   listing_id: luckiest-video-studio-director
   author: luckiest
 ---
@@ -32,11 +32,11 @@ idea, the order, and the quality bar, and it signs off before the full render.
 ## Staying current
 
 On activation, call the Luckiest MCP `check_updates` tool with
-`{ listingId: "luckiest-video-studio-director", installedSemver: "1.4.0" }`. If
+`{ listingId: "luckiest-video-studio-director", installedSemver: "1.5.0" }`. If
 `upToDate: false`, surface the `notice` once and continue. Never block on it.
 
 When done, call `report_usage` once with
-`{ listing_id: "luckiest-video-studio-director", skill_version: "1.4.0", matched: true, success: <true|false> }`.
+`{ listing_id: "luckiest-video-studio-director", skill_version: "1.5.0", matched: true, success: <true|false> }`.
 Metadata only, never prompt text. Skip silently if unavailable.
 
 ## Standing rules
@@ -232,7 +232,11 @@ Run before the full render and before showing the user any cut.
    ffmpeg -i preview.mp4 -vf "fps=1,scale=360:-1,tile=6x4" -frames:v 1 qa/contact.png
    ```
    Then look at it.
-2. Score each 1 to 10 with one line of evidence:
+2. Score each 1 to 10 with one line of evidence. Anchor the scale: 5 is
+   competent student work, 6 a decent template, 7 solid professional, 8 high-end
+   agency, 9 award shortlist. Most first cuts are 5 to 7. With a `style` set,
+   add **Style fidelity**: every signature feature on the style card is on screen
+   and correct.
 
    | Score | 8 means |
    |---|---|
@@ -263,6 +267,12 @@ Run before the full render and before showing the user any cut.
 Write every round to `<run-dir>/qa/director-score.md`. Only then hand back to the
 studio for the full render and its judge step.
 
+**Independent jury.** Your scores are the maker's scores. Before sign-off, run
+[references/jury.md](references/jury.md) in a fresh subagent that sees only
+`final.mp4`, `brief.md` and the style card, and save its review to
+`<run-dir>/review/jury-1.md`. Apply its fixes with the revise prompt, at most two
+rounds. Ask before spending a second model on it when the user set a budget.
+
 ## 6. Sign-off
 
 Give the user the creative intent, the angle, the contact sheet, and the final
@@ -281,6 +291,12 @@ tribe for a second eye. Never post automatically.
 | A scene that creates no belief | Run the delete test and cut it |
 | Every scene is "the point" | Re-rate importance; at most a quarter are 3 |
 | Long static end card | Hold 0.6 to 1.4 seconds, then end |
+| Copying the sample | A style card's beat seed or a reference's layout pasted in. Keep the technique, recompose for this topic |
+| No concrete object | Every shot names a noun and what it does. No object, no shot |
+| Dead background | A large area unchanged while a small piece moves. The hero fills at least half the frame; the background changes with the content |
+| Real material drawn in code | Screenshots, photos and quotes go full frame; code only annotates them |
+| A new look every shot | One style, one palette, one clock for the film |
+| No thread | One example (the same invoice, the same hands) runs through the whole film; the last shot is the hero acting or a pull back to the whole |
 | Could be any brand's film | Rework from the brand inventory until it fails the cover-the-logo test for competitors |
 
 ## Reference

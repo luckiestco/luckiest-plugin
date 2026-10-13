@@ -10,7 +10,7 @@ import {
   scanTokens, scanCrossfades, scanMotion, legibility, findPops, deadFrames, presence,
   beatSync, findAnchor, cutTimes, beatGrid, grayFrames, probe,
   faceCover, pairVerdict, parseWinner, audioOnsets, avSync, visibleText, scanFacts, loopCheck,
-  fullFrameSelectors, safeAreas, endHold, blankRuns, scanHud,
+  fullFrameSelectors, safeAreas, endHold, blankRuns, scanHud, lintStoryboard,
 } from "./qa.mjs";
 
 const dir = mkdtempSync(join(tmpdir(), "qa-gates-"));
@@ -283,4 +283,26 @@ test("safe --stills reads the hold-frame PNGs from render-scenes --stills, no fi
   assert.deepEqual(low.hits.map((h) => h.side), ["bottom"]);
   assert.equal(safeAreas(place("stills-mid", 700), { stills: true }).ok, true);
   assert.equal(cli("safe", join(dir, "stills-low"), "--stills").status, 1);
+});
+
+test("storyboard: flat pictures, long scenes, text-led ends and unknown styles fail; a varied board passes", () => {
+  const good = { style: "flat-vector", scenes: [
+    { id: "a", kind: "motion", duration: 3, pictureOnly: "a coffee cup tips and spills onto the invoice", camera: "push" },
+    { id: "b", kind: "motion", duration: 4, pictureOnly: "the invoice folds into a paper plane and flies right", camera: "glide" },
+    { id: "c", kind: "demo", duration: 12, pictureOnly: "the dashboard with the paid stamp landing", camera: "hold" },
+    { id: "d", kind: "logo", duration: 3, pictureOnly: "the logo mark stamps the plane flat", camera: "snap" },
+  ] };
+  const ok = lintStoryboard(good);
+  assert.equal(ok.ok, true, JSON.stringify(ok));
+  const bad = lintStoryboard({ style: "nope", scenes: [
+    { id: "a", kind: "motion", duration: 9, pictureOnly: "title over the logo" },
+    { id: "b", kind: "motion", duration: 3, pictureOnly: "a flat colour" },
+    { id: "c", kind: "motion", duration: 3, pictureOnly: "headline text" },
+  ] });
+  const rules = bad.red.map((r) => r.rule);
+  for (const r of ["unknown-style", "scene-over-8s", "flat-picture", "text-led-end", "text-led-share"]) assert.ok(rules.includes(r), r);
+  const streak = lintStoryboard({ scenes: ["push", "snap", "slam"].map((camera, i) => ({ id: `s${i}`, kind: "motion", duration: 3, pictureOnly: "a gear turns the clock hands", camera })) });
+  assert.ok(streak.yellow.some((y) => y.rule === "inward-x3"));
+  assert.ok(streak.yellow.some((y) => y.rule === "accents-over-third"));
+  assert.equal(lintStoryboard({ style: "polka-infinity", scenes: [] }).ok, true);
 });

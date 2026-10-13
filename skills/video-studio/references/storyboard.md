@@ -13,6 +13,7 @@ this file and re-renders only what it touched. Schema:
   "title": "Acme launch",
   "mode": "demo",
   "tone": "polished",
+  "style": "keynote-ui",
   "format": { "width": 1920, "height": 1080, "fps": 30 },
   "formats": ["landscape", "vertical", "square"],
   "hyperframes": "0.8.84",

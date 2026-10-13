@@ -1,5 +1,11 @@
 # Changelog — luckiest-video-studio-director
 
+## 1.5.0 — 2026-10-12
+
+- Anchored 1-10 scale in the score loop and a Style fidelity score when a style is set.
+- `references/jury.md`: independent read-only jury and revise prompts (from mg-styles-15, MIT), run in a fresh subagent before sign-off, at most two rounds.
+- Six new anti-patterns: copying the sample, no concrete object, dead background, real material drawn in code, a new look every shot, no thread (from huashu-art-motion, MIT).
+
 ## 1.4.0 — 2026-10-12
 
 - PAGE check under the creative intent, and a nine-row brand inventory before any idea.

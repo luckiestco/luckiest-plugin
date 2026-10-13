@@ -17,6 +17,7 @@
 //   node qa.mjs endhold     <video> [--max 1.4] [--share 0.25]         end card held too long, final shot too long
 //   node qa.mjs blankframes <video> [--run 3]                          runs of empty swatch frames
 //   node qa.mjs hud         <composition-dir>                          counters, timecodes, BPM/FPS, greetings, "label · $value", tracked caps
+//   node qa.mjs storyboard  <run-dir>                                  scene lengths, picture-only, text-led share, camera streaks, style id
 //   node qa.mjs facts       <run-dir>                                  on-screen numbers not in storyboard facts, em dashes on screen
 //   node qa.mjs safe        <run-dir> [--max 0.004] [--stills]         text or logo edges in the margins each format's platforms cover
 //   node qa.mjs judge       <new.mp4> <old.mp4> [--out dir] [--cmd "claude -p --model sonnet"] [--verdicts A,B]
@@ -395,6 +396,44 @@ export function scanFacts(texts, facts = []) {
   return found;
 }
 
+// ---------- storyboard ----------
+
+const STYLES = join(fileURLToPath(new URL(".", import.meta.url)), "..", "references", "styles");
+const FLAT_PICTURE = /^(a |an )?(flat colou?r|card on|block of text|title|bullets?|background|icon)\b/i;
+const WEAK_VERB = /\b(appears?|shows?|displays?|fades? in|pops? up|lists?|lights? up|stays?|static)\b/i;
+const TEXT_LED = /\b(text|title|headline|words?|caption|quote)\b/i;
+const INWARD = new Set(["push", "snap", "slam"]), ACCENT = new Set(["snap", "slam", "whip"]);
+
+// Rules a storyboard must pass before anything is built (huashu-art-motion storyboard lint, rewritten).
+// Length rules apply to motion, logo and ai scenes; demo footage runs as long as the walkthrough needs.
+export function lintStoryboard(sb, { stylesDir = STYLES } = {}) {
+  const red = [], yellow = [], scenes = sb.scenes ?? [];
+  const textLed = (s) => TEXT_LED.test(s.pictureOnly ?? "");
+  if (sb.style && !existsSync(join(stylesDir, `${sb.style}.md`))) {
+    const era = existsSync(join(stylesDir, "era-styles.md")) ? readFileSync(join(stylesDir, "era-styles.md"), "utf8") : "";
+    if (!era.includes(`\`${sb.style}\``)) red.push({ rule: "unknown-style", style: sb.style });
+  }
+  for (const s of scenes) {
+    const built = s.kind !== "demo";
+    if (built && s.duration > 8) red.push({ id: s.id, rule: "scene-over-8s", duration: s.duration });
+    else if (built && (s.duration < 2 || s.duration > 6)) yellow.push({ id: s.id, rule: "scene-length", duration: s.duration });
+    if (!s.pictureOnly) yellow.push({ id: s.id, rule: "no-pictureOnly" });
+    else if (FLAT_PICTURE.test(s.pictureOnly.trim())) red.push({ id: s.id, rule: "flat-picture", pictureOnly: s.pictureOnly });
+    else if (WEAK_VERB.test(s.pictureOnly)) yellow.push({ id: s.id, rule: "weak-verb", pictureOnly: s.pictureOnly });
+  }
+  if (scenes.length > 1) for (const s of [scenes[0], scenes.at(-1)]) if (textLed(s)) red.push({ id: s.id, rule: "text-led-end" });
+  const share = scenes.length ? scenes.filter(textLed).length / scenes.length : 0;
+  if (share > 0.3) red.push({ rule: "text-led-share", share: +share.toFixed(2) });
+  const cams = scenes.map((s) => s.camera).filter(Boolean);
+  for (let i = 2; i < scenes.length; i++) {
+    const run = scenes.slice(i - 2, i + 1).map((s) => s.camera);
+    if (run[0] && run.every((c) => c === run[0]) && !["hold", "cut"].includes(run[0])) yellow.push({ id: scenes[i].id, rule: "same-move-x3", camera: run[0] });
+    else if (run.every((c) => INWARD.has(c))) yellow.push({ id: scenes[i].id, rule: "inward-x3" });
+  }
+  if (cams.length && cams.filter((c) => ACCENT.has(c)).length > cams.length / 3) yellow.push({ rule: "accents-over-third" });
+  return { ok: red.length === 0, red, yellow, textLedShare: +share.toFixed(2) };
+}
+
 // ---------- face ----------
 
 // Crop a 0-1 rect [x, y, w, h] out of a w x h gray frame.
@@ -566,6 +605,7 @@ if (process.argv[1] && resolve(process.argv[1]) === fileURLToPath(import.meta.ur
     const found = files.flatMap((f) => scanHud(readFileSync(f, "utf8")).map((v) => ({ file: f, ...v })));
     result = { ok: found.every((v) => v.warn), found };
   }
+  else if (gate === "storyboard") result = lintStoryboard(JSON.parse(readFileSync(join(target, "storyboard.json"), "utf8")));
   else if (gate === "safe") result = safeAreas(target, { max: num("--max", 0.004), stills: rest.includes("--stills") });
   else if (gate === "facts") {
     const sb = JSON.parse(readFileSync(join(target, "storyboard.json"), "utf8"));
