@@ -36,5 +36,11 @@ Bubbly gloops, pour, splash and drip, deep bass swell under a glossy synth bed.
 ## Build it in HyperFrames
 WebGL2 fragment shader: sum of 2D SDF circles with smooth-min (polynomial k about 0.2 of radius), normals from the field gradient for fake 3D lighting, text as an SDF texture blended with the same field. Positions come from closed-form springs and splines of t. Cheaper fallback: SVG blur 20px+ then an feColorMatrix alpha threshold for the goo, add highlights as a second pass.
 
+
+## Logo construction
+Rule from logo-design (MIT, kaankiziltug): the entrance is built from the mark's own construction, and the resolve frame equals the master logo. Before animating, write the mark's construction in one line in `plan.md` (its primitives, strokes or modules, and the order they would be drawn). The resolve frame is the real logo file (`brand/logo.svg` or the SVG the user supplied), never a styled stand-in or an invented wordmark: render the last frame and the logo SVG at the same size and position, and any visible difference is a Block. Sting length 1 to 3 seconds, easing from this card.
+- Construction: the liquid gathers into the mark's primitives one by one (largest first), with the necks snapping at the joins the mark actually has.
+- Resolve: the metaball field converges onto the logo's SDF in the last 0.3s, the specular and rim lighting fade out, and the hold frame is the flat logo SVG in brand colors. Liquid-styled lettering is never the resolve.
+
 ## Watch out
 Flat blob look if lighting is skipped. Necks that never snap read as jelly. Banding in gradients: add 2-3% noise. Keep wave front phase offsets seeded, not random per frame.

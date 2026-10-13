@@ -73,6 +73,35 @@ Mark every value you did not hear from the user in the "Inferred" line (write
 file states is written as `<url> [confirm]`. In chat, summarize the brief in four
 lines or fewer and give its path, then go to Step 1.
 
+## 4. Three looks before the storyboard
+
+Runs in Step 2, after the director's angle and before `storyboard.json` is
+written. Never offer one look: a single option gets a yes by default and hides
+the better film.
+
+Draft three looks with `luckiest-video-studio-art-director` (sections 2b and 3).
+Each is a short block:
+
+- **Idea:** one sentence that no competitor's film fits
+- **Style:** a style id from [styles.md](styles.md), or the user's named style
+- **Palette and faces:** background, accent, display face
+- **Motion:** personality and tone cell
+- **Hero frame:** what the one screenshot-worthy frame shows
+
+The three must contrast in idea and tone cell, not only in color. A recolor of
+the same layout counts as one look. When the user named a style, all three use
+it and differ in idea, hero frame, and palette within the style's rules.
+
+Put your recommendation first and say why in one line. Ask once with
+AskUserQuestion, "Which look should the video take?", one option per look plus
+"Mix them" (the user says what to take from which). Write the chosen look to
+`plan.md` under **Look** and hand it to the art director to lock. The art
+director's style-frame candidates (its section 7) then vary composition within
+that look.
+
+With `--yes`, take the recommended look and list the other two in one line each
+in `NOTE.md`.
+
 ## With --yes
 
 Ask nothing. Infer every field from the request and the repo, write `brief.md`

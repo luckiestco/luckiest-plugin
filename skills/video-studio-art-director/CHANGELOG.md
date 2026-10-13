@@ -1,5 +1,12 @@
 # Changelog — luckiest-video-studio-art-director
 
+## 1.8.0 — 2026-10-12
+
+- Section 2b: the film's idea in one sentence in `plan.md` and `art-direction.json` (`idea`, `ideaCheckedAgainst`) before the look is locked. Rejected and rewritten when it could describe a competitor's film.
+- Section 3 "Category clichés": 5 to 8 clichés of the product's category listed as `cliches`, banned unless each is given a fresh form in one line.
+- Section 8: thumbnail (160px), squint (8px blur) and shelf (beside 3 to 4 competitor frames) still tests on every hold frame and the hero frame, plus "Unanswered cliché" and "Still tests" columns.
+- Adapted from kaankiziltug `logo-design` (MIT); see ATTRIBUTION.md and `LICENSE-logo-design`.
+
 ## 1.7.0 — 2026-10-12
 
 - Section 0c: read the chosen style card; its signature features are locked and override Never ship items they need, each listed in `plan.md`. Signature features are exempt from the earlier-runs ban.

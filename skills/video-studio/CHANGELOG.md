@@ -1,5 +1,12 @@
 # Changelog — luckiest-video-studio
 
+## 1.17.0 — 2026-10-12
+
+- Three looks before the storyboard (`references/interview.md` section 4, Step 2): three contrasting looks, each with a one-sentence idea, style, palette and faces, motion, and hero frame, contrasting in idea and tone cell. The user picks one or mixes them; with `--yes` the recommended one is taken and the others go in `NOTE.md`.
+- Logo construction on the `morph`, `line-art`, `liquid` and `bauhaus` style cards: the entrance is built from the mark's own construction, and the resolve frame equals the master logo SVG (a visible difference is a Block).
+- Uses art director 1.8.0 (idea gate, category clichés, still tests).
+- Adapted from kaankiziltug `logo-design` (MIT); see ATTRIBUTION.md and `LICENSE-logo-design`.
+
 ## 1.16.0 — 2026-10-12
 
 - Style library: 38 style cards in `references/styles/` plus 18 era styles in `styles/era-styles.md`, indexed by `references/styles.md`. 15 motion-design styles from mg-styles-15 (flat vector, line art, isometric, soft 3D, cel boil, paper cut collage, liquid, morph, Bauhaus, synthwave, aurora glass, variety show, sticker explainer, pixel, HUD), 9 explainer grammars and 14 art styles from huashu-art-motion. Each card: palette, motion numbers, signature features, a beat seed, sound, and how to build it in HyperFrames. Both sources MIT; famous names appear only as trigger words.

@@ -10,8 +10,11 @@
 | **prompt-images** by Replicate (`replicate/skills`, https://github.com/replicate/skills/tree/main/skills/prompt-images) | Apache-2.0, Copyright 2025 Replicate, Inc. | Adapted into `references/shot-prompting.md`: natural-language shot descriptions, naming subjects, camera, film, lighting and composition vocabulary, quoted text, editing and consistency rules, guidance and negative-prompt pitfalls. Rewritten and reordered, not copied verbatim | `LICENSE-replicate` |
 | **"How to make AI images look less like AI"** by Pixova (https://www.pixova.io/blog/how-to-make-ai-images-look-less-like-ai) | Article, all rights reserved | Ideas only, in section 3b: directional light with hard shadows, film stock and grain, skin texture, off-center candid framing, specific environments, banned prompt words, lower CFG. No text is copied | n/a |
 | **motionmaxxing** by Tejas Makwana (`Tejashmakwana/motionmaxxing`, FinalMotion, finalmotion.video), commit 8c8ec0f2 | Apache-2.0 | World per act, one system per film, the hero frame, and the additions to the Banned list. Rewritten in our own words; no code, runtime, media, studies or `library/` rows are copied | `LICENSE-motionmaxxing` |
+| **logo-design** by kaankiziltug (`kaankiziltug/logo-design-skill`, `skills/logo-design`) | MIT, Copyright (c) 2026 kaankiziltug | Ideas from `SKILL.md` phases 2, 3 and 5, `references/principles.md` and `references/testing-checklist.md`, rewritten for video: the one-sentence idea tested against competitors (section 2b), the category cliché list with fresh-form exception (section 3), and the thumbnail, squint and shelf still tests (section 8). The SVG library, mark types and scripts are not included | `LICENSE-logo-design` |
 
 ## Changes in this edition
+
+- 1.8.0: section 2b "One idea per film", "Category clichés" in section 3, and the still tests plus "Unanswered cliché" column in review, adapted from logo-design (MIT).
 
 - 1.5.0: "Do not repeat earlier runs", a practice studied from the Motion Studio skill bundle; no code or text copied.
 - 1.4.0: section 3b "Real, not generated", `references/shot-prompting.md`, and the "Looks generated" check.

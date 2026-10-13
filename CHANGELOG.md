@@ -1,3 +1,8 @@
+## 0.1.42 — 2026-10-12 (npm luckiest-co 1.0.43)
+- Art director 1.8.0: every film now needs a one-sentence idea that no competitor's film fits before the look is locked, a list of the category's clichés (banned unless given a fresh form), and a thumbnail, squint and shelf test on each scene's still frame.
+- Video studio 1.17.0: you pick from three contrasting looks before the storyboard instead of approving one. The morph, line-art, liquid and bauhaus styles now build a logo's entrance from how the mark is drawn and end on the exact logo file.
+- Both adapted from the logo-design skill by kaankiziltug (MIT).
+
 ## 0.1.41 — 2026-10-12 (npm luckiest-co 1.0.42)
 - Video studio 1.16.0: 38 named styles you can ask for by name ("make it synthwave", "paper cut look", "whiteboard explainer") or pick from in the interview, plus 18 era styles for history and tribute pieces. Each style comes with its palette, motion, must-have features and how to build it. Styles come from mg-styles-15 and huashu-art-motion (both MIT).
 - The paper cut collage style reuses the showreel paper-cut look and the paper-collage card pack.

@@ -37,5 +37,11 @@ Minimal felt piano with a soft string swell. Pen-on-paper whisper whose loudness
 ## Build it in HyperFrames
 Inline SVG paths pre-joined into one path, animated with stroke-dasharray = length and stroke-dashoffset as a function of t (use getTotalLength). Camera is a transform on a parent group, computed from the path point at t (getPointAtLength) with smoothing. Glow with an SVG blur filter on a duplicate stroke. Fill via a clip or mask expanding from the anchor.
 
+
+## Logo construction
+Rule from logo-design (MIT, kaankiziltug): the entrance is built from the mark's own construction, and the resolve frame equals the master logo. Before animating, write the mark's construction in one line in `plan.md` (its primitives, strokes or modules, and the order they would be drawn). The resolve frame is the real logo file (`brand/logo.svg` or the SVG the user supplied), never a styled stand-in or an invented wordmark: render the last frame and the logo SVG at the same size and position, and any visible difference is a Block. Sting length 1 to 3 seconds, easing from this card.
+- Construction: the pen draws the logo's strokes in its construction order, at the logo's own stroke width when it is a line mark. For a filled mark, draw its outline, then the line-to-fill sweep fills it from the anchor.
+- Resolve: after the fill, the frame is the logo SVG exactly: the glow on the tip and the dimmed older lines are gone by the hold.
+
 ## Watch out
 Shimmer on thin lines at 3px: render at 2x supersample. Do not vary line width. Keep the path truly continuous or the idea breaks. Avoid camera jitter from raw tip positions.
