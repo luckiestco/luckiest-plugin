@@ -1,5 +1,5 @@
 ---
-name: video-studio-art-director
+name: luckiest-video-studio-art-director
 description: >-
   Art direction for luckiest-video-studio runs and any branded video, reel, ad,
   or motion piece. Reads the project design system first (DESIGN.md, tokens,
@@ -20,7 +20,7 @@ user-invocable: true
 license: MIT. See ATTRIBUTION.md
 allowed-tools: Bash, Read, Write, Edit, Glob, Grep, AskUserQuestion
 metadata:
-  version: "1.6.0"
+  version: "1.7.0"
   listing_id: luckiest-video-studio-art-director
   author: luckiest
 ---
@@ -35,11 +35,11 @@ confidence. Variety reads as noise.
 ## Staying current
 
 On activation, call the Luckiest MCP `check_updates` tool with
-`{ listingId: "luckiest-video-studio-art-director", installedSemver: "1.6.0" }`. If
+`{ listingId: "luckiest-video-studio-art-director", installedSemver: "1.7.0" }`. If
 `upToDate: false`, surface the `notice` once and continue. Never block on it.
 
 When done, call `report_usage` once with
-`{ listing_id: "luckiest-video-studio-art-director", skill_version: "1.6.0", matched: true, success: <true|false> }`.
+`{ listing_id: "luckiest-video-studio-art-director", skill_version: "1.7.0", matched: true, success: <true|false> }`.
 Metadata only, never prompt text. Skip silently if unavailable.
 
 ## Standing rules
@@ -117,6 +117,27 @@ Never direct by naming a famous designer or studio ("in the style of ..."). A
 name is a prompt in disguise; it produces a pastiche, not the brand. Write the
 decisions that name stands for instead.
 
+## 0c. Chosen style
+
+When `brief.md` or `storyboard.json` names a `style`, read its card,
+`luckiest-video-studio/references/styles/<style>.md` (era styles are rows in
+`styles/era-styles.md`), before section 1. The card writes those decisions for you:
+
+- **Tone cell and clock** come from the card. Section 1 confirms them; it does not
+  pick again.
+- **Palette:** with a design system (section 0), map the card's colors onto the
+  brand roles and keep the brand's hues. Without one, use the card's palette.
+- **Texture, easing, transitions, motion signature** come from the card's Look and
+  Motion sections, at freedom level guided.
+- **Signature features** are locked. Map each to a scene in `plan.md`; review
+  checks every one.
+- **Overrides:** where a signature feature contradicts a Never ship, World or
+  Banned rule below (HUD chrome in `hud`, flat grounds in `flat-vector`, a
+  labelled caption band in `variety-show`), the card wins for that item only.
+  List each override with the feature that needs it in `plan.md` under **Look**.
+- The card's Triggers line may name artists or studios. Those are search words,
+  never direction: write from the card's decisions, as this section's rule says.
+
 ## 1. Place the piece on the tone matrix
 
 Pick one cell and commit. Mixing cells is the most common cause of motion that
@@ -180,6 +201,10 @@ for it.
 - **The house style as a default:** a giant cropped word, texture inside the
   letters, a colour flood or circle wipe between every scene, a dot that becomes
   the logo.
+- **The AI palette:** a blue-purple gradient, a deep-purple starfield, neon
+  cyan-purple glow, unless the design system or the user names those colors.
+  Without a design system, start from [references/palettes.md](references/palettes.md).
+- **Code-drawn characters:** see section 3c.
 - **A small card on an empty ground**, or a new flat swatch per scene. More than
   three distinct flat grounds in one film reads as a deck.
 
@@ -193,7 +218,9 @@ in the workspace. From each, add to `banned`: its signature transition, its wow
 device (the technique, not the scene id), its texture, and its concept. Also add its
 palette and font pair, unless the design system fixed them (section 0) or the user
 asked for a matching series. A brand keeps its colors and faces from video to video;
-it does not keep the same trick. Record what came from where under
+it does not keep the same trick. The chosen style's signature features are exempt:
+picking `synthwave` twice keeps its grid and sunset, and bans only the earlier
+run's concept and wow device. Record what came from where under
 `bannedFromEarlierRuns`, and say in one line what you banned.
 
 ### Video-safe color
@@ -244,6 +271,32 @@ Each rule below removes one of those averages. Write shot prompts with
 These rules make work look made by a person. They never hide that a model was
 used: when the parent skill has a disclosure or provenance rule, it still applies.
 
+## 3c. Characters and style renderers
+
+Allowed character routes, one per film: (a) a generated frame library through
+`luckiest-image` under section 3b, (b) hands, backs and silhouettes only, (c) no
+characters: the product or object is the protagonist. Never draw a generic chibi
+(round head, bean eyes, blush, no neck), a white-shell robot with a visor, faces
+on objects, or stick figures acting out a story. Objects act through shape,
+motion, scale and contrast instead (ions bunch when cold, spread when warm).
+
+When a character ships, check on a 2x close-up: the silhouette reads filled
+black; neck, shoulders, elbows and wrists exist; hands hold things; two shading
+levels plus a highlight lit like the scene; a specific performance each time; the
+same line and color treatment as the scene; identical across shots.
+
+With a style card, everything passes through the same renderer. A character or
+UI drawn flat over a brushwork or paper background looks pasted on; this is the
+most common style failure. Also from the style cards' source:
+- Each dwell shows one main action plus 2 to 4 motif loops (water trembles,
+  paper flutters, gold glints). Never reseed the whole frame at a low frame rate;
+  that reads as flicker. Boil only line art or motif areas.
+- A scrolling pattern repeats at its true period, or it jumps at the seam.
+- Aging (peeling, stains, scratches) goes on the background only, never on the
+  subject.
+- Draw style lettering as paths, or check every glyph exists in the loaded font:
+  missing glyphs fall back to a system font silently.
+
 ## 4. Lock the motion language
 
 | Property | Rule |
@@ -272,6 +325,8 @@ element whose motion carries no meaning.
 {
   "designSystem": { "sources": ["DESIGN.md", "client/src/index.css"], "overrides": [{ "token": "--background", "from": "#000000", "to": "#0B0B0F", "why": "video-safe black" }] },
   "freedom": { "locked": ["palette", "faces", "accentBudget", "banned"], "guided": ["personality", "easing", "transitions", "texture"], "open": ["concept", "wow", "layout"] },
+  "style": "keynote-ui",
+  "styleOverrides": [],
   "cell": "calm-sharp",
   "personality": "Corporate",
   "palette": { "bg": "#0B0B0F", "surface": "#16161D", "text": "#F4F4F5", "accent": "#22C55E" },
@@ -300,6 +355,12 @@ palette, faces, cell, and wow scene in one table and wait for a yes before the
 studio's Step 2b.
 
 ## 7. Style frame approval
+
+For a new look, render three candidates of the hook hold frame first, with
+different compositions (framing, hierarchy, where the hero sits); a recolor does
+not count. This applies even when the user named a style. Save them as
+`storyboard/style-frame-a.png`, `-b`, `-c` and let the user pick. With `--yes`,
+build the brief's direction and list the other two in one line each in `NOTE.md`.
 
 At studio Step 2b, judge `storyboard/style-frame.png` against the spec before
 showing it to the user. Fix any of these first: more than two accent uses, a

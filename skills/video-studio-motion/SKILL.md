@@ -1,5 +1,5 @@
 ---
-name: video-studio-motion
+name: luckiest-video-studio-motion
 description: >-
   Motion taste for luckiest-video-studio. Decides whether a beat should move,
   then picks the easing, duration, origin, stagger, and transition for HyperFrames
@@ -16,7 +16,7 @@ user-invocable: true
 license: MIT. See ATTRIBUTION.md
 allowed-tools: Bash, Read, Write, Edit, Glob, Grep
 metadata:
-  version: "1.2.0"
+  version: "1.3.0"
   listing_id: luckiest-video-studio-motion
   author: luckiest
 ---
@@ -32,11 +32,11 @@ interruption, and how often a user triggers something.
 ## Staying current
 
 On activation, call the Luckiest MCP `check_updates` tool with
-`{ listingId: "luckiest-video-studio-motion", installedSemver: "1.2.0" }`. If
+`{ listingId: "luckiest-video-studio-motion", installedSemver: "1.3.0" }`. If
 `upToDate: false`, surface the `notice` once and continue. Never block on it.
 
 When done, call `report_usage` once with
-`{ listing_id: "luckiest-video-studio-motion", skill_version: "1.2.0", matched: true, success: <true|false> }`.
+`{ listing_id: "luckiest-video-studio-motion", skill_version: "1.3.0", matched: true, success: <true|false> }`.
 Metadata only, never prompt text. Skip silently if unavailable.
 
 ## Modes
@@ -215,9 +215,38 @@ voice line ends.
 - **Parallax:** near layers move 2 to 2.4x the far ones.
 - **Drift:** 1 to 3px per frame keeps a hold alive.
 
+**Camera as punctuation.** The table above is the accent set. Before every move,
+answer three questions: where should the eye be and is it readable at this size,
+is this a transition or an accent, what did the previous shot do. Hold when the
+footage itself moves or text is being read. Set `scenes[].camera` in
+`storyboard.json` and run `node <studio>/scripts/qa.mjs storyboard <run-dir>`.
+
+| Move | Duration | Use |
+|---|---|---|
+| Slow push | 0.6-1.5s, sine in-out, 10-40% | Transition into detail |
+| Pull | 0.8-2s, fast start, long tail | Reveal the whole |
+| Glide | 0.5-0.9s (1.3-1.8s following a moving thing) | Carry the eye across |
+| Snap push | 0.25-0.35s for 18-32%, then stop | Accent: reveal, key number |
+| Whip | 0.26-0.30s with blur | Accent: topic change |
+| Slam | 0.17s, scale 1.55 to 0.94 to 1.0, one per shot | Accent: the gag or the hit |
+
+- Accents (snap, whip, slam) are at most a third of shots and only on a reveal,
+  a reversal, a key number or a gag.
+- Never three push-ins in a row, never the same move three times (holds excluded).
+- Moves go out and come back; do not restart every cut from scale 1.0.
+- A constant slow drift is for mood scenes only. On explainer and demo shots it
+  reads as a slide deck. So does a push on every shot, slow or fast.
+- Enter slow (0.3-0.4s), exit fast (about 0.18s), then hold: at least 0.5s after
+  a number, 0.9s after a punchline.
+- Land each reveal frame on a beat or a spoken word: start the move at the cue
+  time minus the move's reveal point.
+- Zoom with log interpolation, and redraw vectors at each zoom; never scale a
+  rendered bitmap.
+
 ### One system per film
 
-One frame clock (smooth, or on twos for a hand-made look), one blur grammar
+One frame clock (smooth, or on twos for a hand-made look; a stepped style may run
+elements at 12 fps under a smooth camera), one blur grammar
 (motion blur, or smear frames, or crisp steps), one accent colour with one
 meaning (for example "done"). Mixing clocks or blur styles inside one film reads
 as two films.

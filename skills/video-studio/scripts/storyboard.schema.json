@@ -8,6 +8,7 @@
     "title": { "type": "string", "minLength": 1 },
     "mode": { "enum": ["launch", "demo", "logos"] },
     "tone": { "type": "string" },
+    "style": { "type": "string", "pattern": "^[a-z0-9][a-z0-9-]*$", "description": "Style card id from references/styles.md (or an era-styles.md row id). The art director reads the card" },
     "format": {
       "type": "object",
       "required": ["width", "height", "fps"],
@@ -60,6 +61,7 @@
           "line": { "type": "string", "description": "What this scene says or shows, one line, used in TIMING.md" },
           "belief": { "type": "string", "description": "The belief this scene creates: 'the viewer ...'. One change in the viewer, no 'and'. Written by the director" },
           "importance": { "enum": [1, 2, 3], "description": "1 support, 2 build, 3 the point. At most a quarter of scenes are 3" },
+          "camera": { "enum": ["hold", "push", "glide", "pull", "snap", "whip", "slam", "cut"], "description": "The camera move that carries this scene. snap, whip and slam are accents: at most a third of scenes, never three inward moves in a row" },
           "pictureOnly": { "type": "string", "description": "What the picture shows with the text covered. 'A flat colour', 'a card on a flat colour' and 'a block of text' are rejected answers" },
           "composition": { "type": "string", "description": "motion and logo: sub-composition path relative to composition/, default compositions/<id>.html" },
           "recipe": { "type": "string", "description": "logo: recipe name from references/logo-recipes.md" },

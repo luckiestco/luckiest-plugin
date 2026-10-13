@@ -63,6 +63,12 @@ in `storyboard.json`.
 
 ## 4. Approve one style frame
 
+First lint the board: `node <skill-dir>/scripts/qa.mjs storyboard <output-dir>`.
+Fix every red (flat pictures, scenes over 8s, text-led opening or ending, more
+than 30% text-led scenes, unknown style). Read the yellows. With a style set, the
+art director offers three compositions of the hook frame before this approval
+(art director section 7).
+
 Build only the hook scene (the first scene) as Step 3 describes, with the root
 `index.html` hosting just that scene for now, pass `hyperframes check`, and capture
 its hold frame as a still. No video render is needed:

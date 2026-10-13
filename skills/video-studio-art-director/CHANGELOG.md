@@ -1,5 +1,12 @@
 # Changelog — luckiest-video-studio-art-director
 
+## 1.7.0 — 2026-10-12
+
+- Section 0c: read the chosen style card; its signature features are locked and override Never ship items they need, each listed in `plan.md`. Signature features are exempt from the earlier-runs ban.
+- Section 3c: three allowed character routes, banned code-drawn characters, a 2x close-up delivery check, and style-renderer rules (characters through the same renderer, motif loops, true pattern period, aging on background only, glyph checks).
+- Never ship adds the blue-purple AI palette; `references/palettes.md` adds 8 fallback palettes.
+- Section 7: three compositions of the hook frame before the style frame approval.
+
 ## 1.6.0 — 2026-10-12
 
 - World per act (ground, light, depth, texture, sound) and a named hero frame in the look lock; accent colour carries one meaning.

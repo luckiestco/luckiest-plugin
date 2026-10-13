@@ -14,6 +14,12 @@ repo states one value for it, not when you could guess it. When sources disagree
 candidates (two audiences), the field is open: ask, with those candidates as the
 options.
 
+Style is answered when the request names one: match it against the Triggers in
+[styles.md](styles.md) ("make it synthwave", "paper cut look", "like a
+whiteboard explainer"). One match fills the field and is said in the inferred
+line. Several matches make the Style question with only those options. A reference
+link the user pastes fills References.
+
 ## 2. Ask what is left
 
 Use AskUserQuestion. At most 4 questions per call and at most 2 calls. Skip every
@@ -32,7 +38,7 @@ Each question offers 2 to 4 options drawn from the repo (the user can always pic
 | 1 | Where | Where will it be posted? | "X and LinkedIn, 16:9, 20s", "TikTok and Reels, 9:16, 30s", "YouTube or website, 16:9, 60-90s" |
 | 1 | Type | What kind of video? | "Motion graphics (HyperFrames)", "AI-generated video", "A mix of both" |
 | 2 | Why now | What should viewers do after watching? | "Sign up", "Join the waitlist", "Watch the launch", with the real URL |
-| 2 | References | Any video or style you want it to feel like? | "No reference", "I'll paste a link" |
+| 2 | Style | What style should it have? | 3 styles for this video type from [styles.md](styles.md), then "Pick one for me (Recommended)". "Other" takes a style name or a reference link |
 | 2 | Must show | Anything that has to be in it? | "Our logo and the dashboard", "A real customer number", "Nothing specific" |
 | 2 | Voice | Voiceover or no voiceover? | "No voice, music and text only", "AI voice (Kokoro)", "I'll record it" |
 
@@ -54,6 +60,7 @@ generation (SKILL.md Step 3).
 - Where: <platforms>, <format>, <length>s
 - Type: <motion graphics | AI-generated | mix>
 - Call to action: <action>, <url>
+- Style: <style id from styles.md, or "picked for me">
 - References: <links or none>
 - Must show: <assets or none>
 - Voice: <none | Kokoro | user recording>
@@ -71,5 +78,6 @@ lines or fewer and give its path, then go to Step 1.
 Ask nothing. Infer every field from the request and the repo, write `brief.md`
 with every field listed under "Inferred", show it, and continue. Defaults when
 nothing says otherwise: Where is "X and LinkedIn, 16:9" at the middle of the
-mode's default length (20s for `launch`), Type is motion graphics, Voice is none,
+mode's default length (20s for `launch`), Type is motion graphics, Style is the
+first style offered for the video type in styles.md, Voice is none,
 References and Must show are none, and a missing URL is `[confirm]`.
