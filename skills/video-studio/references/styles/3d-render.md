@@ -9,7 +9,7 @@
 - Clock: smooth 24 fps
 
 ## Look
-Pastel studio with an infinite cyc backdrop, big soft area lights plus an HDRI, shallow depth of field (about f/1.8 feel), real motion blur. Material trio: SSS gummy (candy pink, peach), glossy plastic (cream, lilac), frosted glass or chrome accent. AO, soft reflections, subtle subsurface glow. Hero is an inflated, bevelled 3D wordmark or glossy jelly logo with an invented brand name. Clean hero composition at the end.
+Pastel studio with an infinite cyc backdrop, big soft area lights plus an HDRI, shallow depth of field (about f/1.8 feel), real motion blur. Material trio: SSS gummy (candy pink, peach), glossy plastic (cream, lilac), frosted glass or chrome accent. AO, soft reflections, subtle subsurface glow. Hero is an inflated, bevelled 3D wordmark or glossy jelly logo. Clean hero composition at the end.
 
 ## Motion
 Cloner-style grid of glossy pills or spheres ripples with an effector wave. Hero drops in with squash and stretch via a damped spring, collides with and displaces the field. Long-tail ease on the camera: about 80% of the move in the first 20% of the time, very slow finish. Physics-feel everywhere, nothing linear. Impacts drive the cuts.
@@ -34,6 +34,11 @@ Airy cinematic pad with ASMR-style soft thuds, squishes and bubbly pops, frame-s
 
 ## Build it in HyperFrames
 Blender is not available. Use Three.js (WebGL2) with MeshPhysicalMaterial (clearcoat, sheen, transmission, thickness for SSS-like glow), RoomEnvironment or an HDRI for lighting, SSAO plus a bokeh pass for DOF, and a sub-frame accumulation buffer (render 8-16 sub-times per frame, average) for real motion blur. Instanced mesh for the cloner, the wave as a closed-form function of (distance, t). Hero springs are closed-form damped oscillators, no stateful physics.
+
+## Logo construction
+Rule from logo-design (MIT, kaankiziltug): the entrance is built from the mark's own construction, and the resolve frame equals the master logo. Before animating, write the mark's construction in one line in `plan.md` (its primitives, strokes or modules, and the order they would be drawn). The resolve frame is the real logo file (`brand/logo.svg` or the SVG the user supplied), never a styled stand-in or an invented wordmark: render the last frame and the logo SVG at the same size and position, and any visible difference is a Block. Sting length 1 to 3 seconds, easing from this card.
+- Construction: the hero is the logo SVG's own paths extruded and bevelled (Three.js SVGLoader plus ExtrudeGeometry), dropped in as the mark's primitives in construction order (outer shape first, then cuts and counters), each landing with its own damped-spring squash. The jelly inflation swells those exact paths; it never adds letters, a wordmark or a name the logo does not have.
+- Resolve: during the 1s hold the camera settles front-on and orthographic-matched, and in the last 0.3s the depth, SSS, clearcoat and bokeh flatten out so the hold frame is the flat logo SVG in brand colors. An invented inflated wordmark is never the resolve.
 
 ## Watch out
 Browser render cost: cap sub-frames and instance counts. Muddy transmission on dark backgrounds. SSS is faked, tune with a rim light. Without DOF and motion blur it reads as a game engine.
