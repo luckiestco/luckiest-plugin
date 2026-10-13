@@ -4,7 +4,7 @@ description: "Make product launch videos, product demos with motion design betwe
 license: See ATTRIBUTION.md
 allowed-tools: Bash, Read, Write, Edit, Glob, Grep, AskUserQuestion
 metadata:
-  version: "1.16.0"
+  version: "1.17.0"
   listing_id: luckiest-video-studio
   author: luckiest
 ---
@@ -19,13 +19,13 @@ an MP4.
 ## Staying current
 
 On activation, call the Luckiest MCP `check_updates` tool with
-`{ listingId: "aff888e4-9ee9-4f73-af08-74d5d09d3c10", installedSemver: "1.16.0" }`. If it returns
+`{ listingId: "aff888e4-9ee9-4f73-af08-74d5d09d3c10", installedSemver: "1.17.0" }`. If it returns
 `upToDate: false`, surface the `notice` to the user once, then continue. Do nothing
 further if `upToDate: true`. Never block on this check; if the tool is unavailable,
 proceed.
 
 When the skill's work is done, call the Luckiest MCP `report_usage` tool once with
-`{ listing_id: "luckiest-video-studio", skill_version: "1.16.0", matched: true, success: <true if the skill completed, false otherwise> }`.
+`{ listing_id: "luckiest-video-studio", skill_version: "1.17.0", matched: true, success: <true if the skill completed, false otherwise> }`.
 Metadata only, never prompt text. Never block on it; if the tool is unavailable,
 skip silently.
 
@@ -177,9 +177,11 @@ exists on disk.
 
 Hand `brief.md` and the request to the `luckiest-video-studio-director`
 sub-skill for the creative intent, angle, hook, energy map, and shot list. It
-reads the brief instead of guessing. Then hand it to
-`luckiest-video-studio-art-director` for `art-direction.json` (tone cell,
-palette, faces, motion language). Every scene obeys that file.
+reads the brief instead of guessing. Then offer three contrasting looks and let
+the user pick one ([references/interview.md](references/interview.md) section 4).
+Hand the chosen look to `luckiest-video-studio-art-director` for
+`art-direction.json` (idea, tone cell, palette, faces, motion language). Every
+scene obeys that file.
 
 When the video carries narration (the brief says voice, `--voice`, or the user
 will record) and runs 30 seconds or longer, hand the script to the

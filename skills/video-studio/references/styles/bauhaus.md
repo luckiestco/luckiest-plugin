@@ -35,6 +35,12 @@ Minimal techno and clicks. Each flip is a pitched click or blip, kick on quarter
 ## Build it in HyperFrames
 SVG or Canvas with GSAP on a module-based coordinate system (x = col * 240). Compute beat = t / 0.5 and drive each module's step with floor and an eased fraction of the beat. Cascade phase = (col + row) * beat offset. Cue sheet shared with the audio so clicks match the flips exactly.
 
+
+## Logo construction
+Rule from logo-design (MIT, kaankiziltug): the entrance is built from the mark's own construction, and the resolve frame equals the master logo. Before animating, write the mark's construction in one line in `plan.md` (its primitives, strokes or modules, and the order they would be drawn). The resolve frame is the real logo file (`brand/logo.svg` or the SVG the user supplied), never a styled stand-in or an invented wordmark: render the last frame and the logo SVG at the same size and position, and any visible difference is a Block. Sting length 1 to 3 seconds, easing from this card.
+- Construction: break the mark into grid modules (circles, quarter circles, bars). One module lands per beat in the mark's construction order, on whole grid steps. A mark that does not split into modules uses the card's rotation pivot to reveal its negative shape instead.
+- Resolve: the freeze is the logo SVG at its true proportions, not snapped or re-colored to the poster palette, set on the grid with the card's type.
+
 ## Watch out
 Any overshoot or bounce breaks the style. Off-grid positions from sub-pixel rounding. Colour count creep. Keep the type grid-aligned too.
 

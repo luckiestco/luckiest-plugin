@@ -20,7 +20,7 @@ user-invocable: true
 license: MIT. See ATTRIBUTION.md
 allowed-tools: Bash, Read, Write, Edit, Glob, Grep, AskUserQuestion
 metadata:
-  version: "1.7.0"
+  version: "1.8.0"
   listing_id: luckiest-video-studio-art-director
   author: luckiest
 ---
@@ -35,11 +35,11 @@ confidence. Variety reads as noise.
 ## Staying current
 
 On activation, call the Luckiest MCP `check_updates` tool with
-`{ listingId: "luckiest-video-studio-art-director", installedSemver: "1.7.0" }`. If
+`{ listingId: "luckiest-video-studio-art-director", installedSemver: "1.8.0" }`. If
 `upToDate: false`, surface the `notice` once and continue. Never block on it.
 
 When done, call `report_usage` once with
-`{ listing_id: "luckiest-video-studio-art-director", skill_version: "1.7.0", matched: true, success: <true|false> }`.
+`{ listing_id: "luckiest-video-studio-art-director", skill_version: "1.8.0", matched: true, success: <true|false> }`.
 Metadata only, never prompt text. Skip silently if unavailable.
 
 ## Standing rules
@@ -163,6 +163,19 @@ calm-sharp, `cinematic` to calm-soft, `default` and `yc-parody` to kinetic-soft,
 
 No overshoot on pricing, money, or security content in any personality.
 
+## 2b. One idea per film
+
+Before locking anything below, write the film's idea as one sentence in
+`plan.md` under **Idea**, for example "the invoice pays itself while you watch".
+The idea is what the look serves. It is not the message line from the brief.
+
+Test it against three competitor films, named by product. If the sentence could
+describe any of them, it is not an idea: rewrite it with an ownable twist. If it
+needs a second sentence to make sense, it will not read on screen: cut it down.
+Write the sentence to `art-direction.json` as `idea`, and list the competitors
+you checked under `ideaCheckedAgainst`. With `--yes`, still write and test it;
+never skip to the look.
+
 ## 3. Lock the look
 
 Fill every row with one choice:
@@ -210,6 +223,20 @@ for it.
 
 Any of these can be right with a stated reason in `plan.md` (a calm brand that
 fades, a held stillness). Without the reason, it is a Block in review.
+
+### Category clichés
+
+The never-ship list covers AI defaults. Each product category has its own
+defaults too. Before filling the rows, list 5 to 8 visual clichés of this
+product's category in `plan.md` under **Clichés**, for example fintech: blue,
+upward arrows, shields, globes, coins; developer tools: a terminal typing
+itself, green-on-black code, a glowing cursor; coffee: beans, steam, a cup.
+Write them to `art-direction.json` as `cliches`.
+
+A listed cliché is banned unless the film gives it a form no competitor has
+used, written beside it in one line ("the arrow is the invoice's own fold
+line"). Drawing the product or the category's symbol as it is never counts as
+a fresh form.
 
 ### Do not repeat earlier runs
 
@@ -325,6 +352,9 @@ element whose motion carries no meaning.
 {
   "designSystem": { "sources": ["DESIGN.md", "client/src/index.css"], "overrides": [{ "token": "--background", "from": "#000000", "to": "#0B0B0F", "why": "video-safe black" }] },
   "freedom": { "locked": ["palette", "faces", "accentBudget", "banned"], "guided": ["personality", "easing", "transitions", "texture"], "open": ["concept", "wow", "layout"] },
+  "idea": "the invoice pays itself while you watch",
+  "ideaCheckedAgainst": ["Stripe Invoicing launch film", "FreshBooks 2026 ad", "Wave payments promo"],
+  "cliches": [{ "item": "upward arrow", "fresh": "the arrow is the invoice's own fold line" }, { "item": "coins", "fresh": null }],
   "style": "keynote-ui",
   "styleOverrides": [],
   "cell": "calm-sharp",
@@ -373,12 +403,27 @@ a frame that fails **Looks generated** (any section 3b rule).
 `--review` reads `art-direction.json`, the composition files, and a rendered
 hold frame per scene. Write `<run-dir>/qa/art-direction-review.md`:
 
-| Scene | Matches design system | Repeats a logged correction | Color safe | Type holds | Easing in spec | Durations on base unit | Transition in family | One hero | Accent budget | Banned default | Never-ship item | Looks generated | Verdict |
-|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
+| Scene | Matches design system | Repeats a logged correction | Color safe | Type holds | Easing in spec | Durations on base unit | Transition in family | One hero | Accent budget | Banned default | Never-ship item | Unanswered cliché | Looks generated | Still tests | Verdict |
+|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
 
-Verdict is **Approve** or **Block**. Any "no", or a "yes" under
-Looks generated, is a direction defect. Block it and
-name the fix. Grep the composition files for stray `linear`, `ease`, or easing
+Verdict is **Approve** or **Block**. Any "no", or a "yes" under Unanswered
+cliché or Looks generated, is a direction defect. Block it and
+name the fix.
+
+**Still tests.** Run three checks on each scene's hold frame and on the hero
+frame. A scene passes only if all three pass.
+
+1. **Thumbnail:** scale the frame to 160px wide, the size of a feed thumbnail
+   or a timeline scrubber. The hero and the one line still read. If they do
+   not, enlarge or cut.
+2. **Squint:** blur the frame about 8px at full size. The hero's silhouette
+   alone is still distinct, and nothing else competes with it.
+3. **Shelf:** place the frame beside hold frames from 3 to 4 competitor films
+   of the same category, at the same size. It stands apart instead of blending
+   in, and it does not feel familiar. If it feels familiar and it is not this
+   brand's, it is someone else's: change it.
+
+Record which test failed in the table. Grep the composition files for stray `linear`, `ease`, or easing
 values not in the spec, and durations that are not multiples of the base unit.
 
 ## 9. Corrections become rules
@@ -413,6 +458,7 @@ corrections. In `--review`, a scene that repeats a correction already logged in
 
 | Symptom | Fix |
 |---|---|
+| Could be a competitor's film | Section 2b: rewrite the idea until no competitor's film fits it |
 | Looks generic | Replace stock gradient and centered title with real product UI on the phi or thirds anchor |
 | Looks cheap | Cut overshoot, cut glow, drop to one accent, add holds |
 | Feels inconsistent | Audit easing and transitions against the spec |
@@ -430,4 +476,6 @@ Skill Me `motion-color-and-light` and `kinetic-typography` (MIT). The rule forma
 freedom levels, and corrections loop follow ideas from The Design Guy, "AI finally
 designs like me" (YouTube, 2026-09-27). Section 3b follows ideas from Pixova,
 "How to make AI images look less like AI". `references/shot-prompting.md` is
-adapted from Replicate `prompt-images` (Apache-2.0). See ATTRIBUTION.md.
+adapted from Replicate `prompt-images` (Apache-2.0). The one-idea gate, category
+clichés, and still tests are adapted from kaankiziltug `logo-design` (MIT). See
+ATTRIBUTION.md.

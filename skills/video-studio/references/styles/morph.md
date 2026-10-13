@@ -35,5 +35,11 @@ Rhythmic plucky arpeggio. A pitched whoosh per morph landing on the beat.
 ## Build it in HyperFrames
 SVG with GSAP MorphSVGPlugin if licensed, otherwise flubber or a custom resampler: resample both paths to the same N points (about 200), rotate the start index to minimise total vertex distance, then lerp with the easing curve. All as a pure function of t. Always render mid-point stills for every morph and inspect for knots.
 
+
+## Logo construction
+Rule from logo-design (MIT, kaankiziltug): the entrance is built from the mark's own construction, and the resolve frame equals the master logo. Before animating, write the mark's construction in one line in `plan.md` (its primitives, strokes or modules, and the order they would be drawn). The resolve frame is the real logo file (`brand/logo.svg` or the SVG the user supplied), never a styled stand-in or an invented wordmark: render the last frame and the logo SVG at the same size and position, and any visible difference is a Block. Sting length 1 to 3 seconds, easing from this card.
+- Construction: the chain's last morph lands on the logo's own primitives, in the order the mark is built (outer shape first, then cuts and counters). The bridge circle or capsule before the logo is the mark's largest primitive when it has one.
+- Resolve: the final morph target is the logo's path itself, resampled from the SVG, not a hand-traced copy. Swap to the untouched SVG on the hold frame; the swap must be invisible.
+
 ## Watch out
 Mismatched vertex counts and starting points cause knots. Skipping the intermediate circle on complex pairs. Mechanical look when squash and rotation are missing. Make beat times come from a single cue sheet.
