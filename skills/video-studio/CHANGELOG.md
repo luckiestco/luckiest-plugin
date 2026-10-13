@@ -1,5 +1,10 @@
 # Changelog — luckiest-video-studio
 
+## 1.17.1 — 2026-10-12
+
+- Logo construction on the `retro-cgi` style card (Best for: 3D-logo reveals): the mark is drawn as wireframe in its construction order, then scanline-filled to plastic, and the hold frame is the flat logo SVG (a visible difference is a Block).
+- Adapted from kaankiziltug `logo-design` (MIT); see ATTRIBUTION.md.
+
 ## 1.17.0 — 2026-10-12
 
 - Three looks before the storyboard (`references/interview.md` section 4, Step 2): three contrasting looks, each with a one-sentence idea, style, palette and faces, motion, and hero frame, contrasting in idea and tone cell. The user picks one or mixes them; with `--yes` the recommended one is taken and the others go in `NOTE.md`.
