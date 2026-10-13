@@ -47,6 +47,11 @@ Fake it in Canvas 2D or really render in Three.js with MeshPhong materials and a
 - Snapshot the wireframe from the first frame of the incoming scene, so that frame must be complete (no blank first frame).
 - Smooth any polyline silhouettes before applying plastic shading or corners show.
 
+## Logo construction
+Rule from logo-design (MIT, kaankiziltug): the entrance is built from the mark's own construction, and the resolve frame equals the master logo. Before animating, write the mark's construction in one line in `plan.md` (its primitives, strokes or modules, and the order they would be drawn). The resolve frame is the real logo file (`brand/logo.svg` or the SVG the user supplied), never a styled stand-in or an invented wordmark: render the last frame and the logo SVG at the same size and position, and any visible difference is a Block. Sting length 1 to 3 seconds, easing from this card.
+- Construction: the mark first appears as the card's wireframe, its edges drawn in the mark's construction order (outer silhouette, then cuts and counters), then the scanline fill turns it into plastic shading. The chrome ball, ring and flare keep moving behind it; they never stand in for the mark.
+- Resolve: the plastic bevel, specular and floor reflection fade out in the last 0.3s, and the hold frame is the flat logo SVG in brand colors. A chrome or extruded rendering of the name is never the resolve.
+
 ## Watch out
 - Current weak spot: legs look like straight columns and the face reads like a mask. Give organic parts rounded profiles and expression.
 - Narrow use: only works when the retro 3D joke is the point.

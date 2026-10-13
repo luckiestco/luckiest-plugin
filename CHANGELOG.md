@@ -1,3 +1,6 @@
+## 0.1.43 — 2026-10-12 (npm luckiest-co 1.0.44)
+- Video studio 1.17.1: the retro CGI style now builds a logo's entrance from how the mark is drawn (wireframe first, then the plastic fill) and ends on the exact logo file, like the morph, line-art, liquid and bauhaus styles.
+
 ## 0.1.42 — 2026-10-12 (npm luckiest-co 1.0.43)
 - Art director 1.8.0: every film now needs a one-sentence idea that no competitor's film fits before the look is locked, a list of the category's clichés (banned unless given a fresh form), and a thumbnail, squint and shelf test on each scene's still frame.
 - Video studio 1.17.0: you pick from three contrasting looks before the storyboard instead of approving one. The morph, line-art, liquid and bauhaus styles now build a logo's entrance from how the mark is drawn and end on the exact logo file.
