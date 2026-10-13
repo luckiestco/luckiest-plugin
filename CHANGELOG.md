@@ -1,3 +1,6 @@
+## 0.1.44 — 2026-10-13 (npm luckiest-co 1.0.45)
+- Video studio 1.17.2: the soft 3D render style now builds a logo sting from the logo's own shapes, dropped in the order the mark is drawn, and ends on the exact logo file instead of an invented inflated wordmark.
+
 ## 0.1.43 — 2026-10-12 (npm luckiest-co 1.0.44)
 - Video studio 1.17.1: the retro CGI style now builds a logo's entrance from how the mark is drawn (wireframe first, then the plastic fill) and ends on the exact logo file, like the morph, line-art, liquid and bauhaus styles.
 
