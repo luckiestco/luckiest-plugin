@@ -1,5 +1,11 @@
 # Changelog — luckiest-video-studio
 
+## 1.17.3 — 2026-10-13
+
+- Logo construction on the `mosaic`, `pixel` and `flat-vector` style cards: mosaic lays stones along the mark's outline then fill and grout; pixel draws the mark into the low-res grid then steps up to the crisp SVG; flat-vector flies in the mark's own shapes with overshoot. Each resolves to the flat logo SVG (a visible difference is a Block).
+- Pixel and flat-vector no longer call for an invented logo ("PIXEL QUEST", "invented brand lockup").
+- Adapted from kaankiziltug `logo-design` (MIT); see ATTRIBUTION.md.
+
 ## 1.17.2 — 2026-10-12
 
 - Logo construction on the `3d-render` style card (Best for: brand sting): the jelly hero is the logo SVG's own paths extruded and dropped in construction order with damped-spring squash, and the hold frame flattens to the flat logo SVG (a visible difference is a Block). The Look line no longer calls for an invented brand name.
