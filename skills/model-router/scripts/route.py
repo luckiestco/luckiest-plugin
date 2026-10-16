@@ -130,7 +130,7 @@ def score_prompt(prompt, tools):
 TIERS = ["light", "standard", "heavy"]
 # Same provider table as server/mcp/modelHint.js. LUCKIEST_MODEL_PROVIDER picks one.
 PROVIDER_MODELS = {
-    "anthropic": {"light": "claude-haiku-4-5-20251001", "standard": "claude-sonnet-5", "heavy": "claude-opus-5-5"},
+    "anthropic": {"light": "claude-haiku-5-5", "standard": "claude-sonnet-5-5", "heavy": "claude-opus-5-5"},
     "openai": {"light": "gpt-5-mini", "standard": "gpt-5", "heavy": "gpt-5"},
     "google": {"light": "gemini-flash", "standard": "gemini-pro", "heavy": "gemini-pro"},
 }

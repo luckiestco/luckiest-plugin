@@ -1,5 +1,11 @@
 # Changelog — luckiest-model-router
 
+## 2.2.0 — 2026-10-16
+Model ids refreshed (issue #198), matching `server/mcp/modelHint.js`.
+
+- light `claude-haiku-5-5` (was `claude-haiku-4-5-20251001`), standard
+  `claude-sonnet-5-5` (was `claude-sonnet-5`). Heavy stays `claude-opus-5-5`.
+
 ## 2.1.0 — 2026-10-08
 Upstream sync with weave-os/router 834d6bb (issue #114).
 

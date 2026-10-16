@@ -3,7 +3,7 @@ name: model-router
 description: Use when the user asks which agent or which model should handle a task. Two modes. Agent mode detects which of Claude, Codex, Cursor, Conductor, or Factory is installed and picks the best fit for the prompt. Model mode tags each task with a Haiku, Sonnet, or Opus tier by task type, so subagents run on the smallest model that fits. Triggers include "which tool should I use", "route this", "best model for this task", "haiku or opus", "which model for each task", "tag tasks with models", and /luckiest plan drafting a task list. Use it whenever someone is choosing between coding agents or model sizes, even if they don't name one.
 license: See ATTRIBUTION.md
 metadata:
-  version: "2.1.0"
+  version: "2.2.0"
   listing_id: luckiest-model-router
   author: luckiest
 ---
@@ -23,7 +23,7 @@ Rules for both modes:
 
 On activation, call the Luckiest MCP check_updates tool with { listingId: "641e0cd7-0695-4caf-b97a-f7a0b3f872ec", installedSemver: "2.1.0" }. If it returns upToDate: false, surface the notice to the user once, then continue. Do nothing further if upToDate: true. Never block on this check. If the tool is unavailable, proceed.
 
-When the skill's work is done, call the Luckiest MCP report_usage tool once with { listing_id: "luckiest-model-router", skill_version: "2.1.0", matched: true, success: <true if the skill completed, false otherwise> }. Send metadata only, never prompt text. Never block on it. If the tool is unavailable, skip silently.
+When the skill's work is done, call the Luckiest MCP report_usage tool once with { listing_id: "luckiest-model-router", skill_version: "2.2.0", matched: true, success: <true if the skill completed, false otherwise> }. Send metadata only, never prompt text. Never block on it. If the tool is unavailable, skip silently.
 
 ## Model mode
 
@@ -61,7 +61,7 @@ Use this mode when the question is about model size, or when /luckiest plan is t
    - `--prefer quality` moves every task up one tier. `--prefer cheap` moves every task down one tier, except that design, debug, security and implement tasks never drop below standard, because small models loop on multi-step tool work and end up costing more. Read the preference from the user's words: "keep it cheap", "save tokens" or "on a budget" means `cheap`. "Best quality", "don't cut corners" or "this is critical" means `quality`. Otherwise use `balanced`.
    - A dependent task never drops below the tier of the task it builds on, so a chain can share one model and its context. It can still move up if it needs more. If the output has `warnings`, a `depends_on` index was wrong. Fix the index and route again.
 4. Treat the script as a starting point. When the title undersells the task, raise the tier and say why in the reason. Only lower a tier when the task is clearly trivial.
-5. Model IDs: light `claude-haiku-4-5-20251001`, standard `claude-sonnet-5`, heavy `claude-opus-5-5`. Setting `LUCKIEST_MODEL_PROVIDER=openai` or `google` switches to that provider's table, which matches the server. When showing tiers to the user, say **Haiku**, **Sonnet** or **Opus**. When a subagent runs the task, always pass its model explicitly. Claude Code subagents inherit the session model when none is set, and that is Opus by default.
+5. Model IDs: light `claude-haiku-5-5`, standard `claude-sonnet-5-5`, heavy `claude-opus-5-5`. Setting `LUCKIEST_MODEL_PROVIDER=openai` or `google` switches to that provider's table, which matches the server. When showing tiers to the user, say **Haiku**, **Sonnet** or **Opus**. When a subagent runs the task, always pass its model explicitly. Claude Code subagents inherit the session model when none is set, and that is Opus by default.
 
 ### Escalation during execution
 

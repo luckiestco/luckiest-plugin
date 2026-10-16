@@ -43,6 +43,11 @@ class RouteTask(unittest.TestCase):
         self.assertEqual([t["tier"] for t in out], ["heavy", "heavy", "light"])
         self.assertEqual(len(warnings), 1)
 
+    def test_anthropic_ids_match_server(self):
+        # must match server/mcp/modelHint.js MODELS.anthropic
+        self.assertEqual(route.PROVIDER_MODELS["anthropic"],
+                         {"light": "claude-haiku-5-5", "standard": "claude-sonnet-5-5", "heavy": "claude-opus-5-5"})
+
 
 if __name__ == "__main__":
     unittest.main()
