@@ -10,7 +10,7 @@ import {
   scanTokens, scanCrossfades, scanMotion, legibility, findPops, deadFrames, presence,
   beatSync, findAnchor, cutTimes, beatGrid, grayFrames, probe,
   faceCover, pairVerdict, parseWinner, audioOnsets, avSync, visibleText, scanFacts, loopCheck,
-  fullFrameSelectors, safeAreas, endHold, blankRuns, scanHud, lintStoryboard,
+  fullFrameSelectors, safeAreas, endHold, blankRuns, scanHud, lintStoryboard, logoResolve,
 } from "./qa.mjs";
 
 const dir = mkdtempSync(join(tmpdir(), "qa-gates-"));
@@ -207,6 +207,34 @@ test("loop: last frame matching the first passes, a different end frame fails", 
   const ends = video("ends.mp4", [["0x3050a0", 0.5], ["0xa05030", 1]]);
   assert.equal(loopCheck(ends).ok, false);
   assert.equal(cli("loop", ends).status, 1);
+});
+
+test("logo: a sting ending on the logo passes, one ending on a different shape fails", () => {
+  // A dark mark at 120,60 (80x60) on paper; the stand-in rasterizer draws the "logo" as that filled box.
+  const run = (name, end) => {
+    const r = join(dir, name);
+    mkdirSync(join(r, "clips"), { recursive: true });
+    const g = spawnSync("ffmpeg", ["-v", "error", "-y", "-f", "lavfi", "-i", "color=c=0xf3efe6:size=320x180:rate=30:duration=1",
+      "-vf", `drawbox=x=120:y=60:w=80:h=60:color=0x1a1a1a:t=${end},format=yuv420p`, "-c:v", "libx264", "-crf", "12", join(r, "clips", "01-sting.mp4")]);
+    assert.equal(g.status, 0, g.stderr?.toString());
+    writeFileSync(join(r, "storyboard.json"), JSON.stringify({ format: { width: 320, height: 180, fps: 30 }, scenes: [{ id: "sting", kind: "logo", duration: 1 }] }));
+    return r;
+  };
+  const raster = ({ W, H, box, bg, out }) => {
+    const g = spawnSync("ffmpeg", ["-v", "error", "-y", "-f", "lavfi", "-i", `color=c=${bg}:size=${W}x${H}`, "-vf", `drawbox=x=${box.x}:y=${box.y}:w=${box.w}:h=${box.h}:color=0x1a1a1a:t=fill`, "-frames:v", "1", out]);
+    assert.equal(g.status, 0, g.stderr?.toString());
+    return out;
+  };
+  const same = logoResolve(run("logo-same", "fill"), { raster });
+  assert.equal(same.ok, true, JSON.stringify(same));
+  assert.equal(same.checked, 1);
+  const off = logoResolve(run("logo-outline", 6), { raster });
+  assert.equal(off.ok, false);
+  assert.equal(off.hits[0].scene, "sting");
+  const missing = join(dir, "logo-missing");
+  mkdirSync(missing, { recursive: true });
+  writeFileSync(join(missing, "storyboard.json"), JSON.stringify({ format: { width: 320, height: 180, fps: 30 }, scenes: [{ id: "sting", kind: "logo", duration: 1 }] }));
+  assert.equal(cli("logo", missing).status, 1);
 });
 
 test("endhold: a 2 s static end card fails, a short resolved hold and a one-shot film pass", () => {

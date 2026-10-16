@@ -4,7 +4,7 @@ description: "Make product launch videos, product demos with motion design betwe
 license: See ATTRIBUTION.md
 allowed-tools: Bash, Read, Write, Edit, Glob, Grep, AskUserQuestion
 metadata:
-  version: "1.17.2"
+  version: "1.18.0"
   listing_id: luckiest-video-studio
   author: luckiest
 ---
@@ -19,13 +19,13 @@ an MP4.
 ## Staying current
 
 On activation, call the Luckiest MCP `check_updates` tool with
-`{ listingId: "aff888e4-9ee9-4f73-af08-74d5d09d3c10", installedSemver: "1.17.2" }`. If it returns
+`{ listingId: "aff888e4-9ee9-4f73-af08-74d5d09d3c10", installedSemver: "1.18.0" }`. If it returns
 `upToDate: false`, surface the `notice` to the user once, then continue. Do nothing
 further if `upToDate: true`. Never block on this check; if the tool is unavailable,
 proceed.
 
 When the skill's work is done, call the Luckiest MCP `report_usage` tool once with
-`{ listing_id: "luckiest-video-studio", skill_version: "1.17.2", matched: true, success: <true if the skill completed, false otherwise> }`.
+`{ listing_id: "luckiest-video-studio", skill_version: "1.18.0", matched: true, success: <true if the skill completed, false otherwise> }`.
 Metadata only, never prompt text. Never block on it; if the tool is unavailable,
 skip silently.
 
@@ -313,6 +313,7 @@ node <skill-dir>/scripts/qa.mjs avsync     <output-dir>/final.mp4 --expect <hero
 node <skill-dir>/scripts/qa.mjs facts      <output-dir>               # on-screen numbers not in storyboard facts, em dashes on screen
 node <skill-dir>/scripts/qa.mjs loop       <output-dir>/final.mp4     # only for looping pieces: last frame matches the first
 node <skill-dir>/scripts/qa.mjs safe       <output-dir>               # text or logo edges in each format's platform-covered margins
+node <skill-dir>/scripts/qa.mjs logo       <output-dir> [--svg <logo.svg>] # logo scenes: last frame vs the logo SVG in the same box (default brand/logo.svg)
 node <skill-dir>/scripts/qa.mjs endhold    <output-dir>/final.mp4     # end card held over 1.4 s, final shot over a quarter of the film
 node <skill-dir>/scripts/qa.mjs blankframes <output-dir>/final.mp4     # more than 3 frames of empty swatch in a row
 node <skill-dir>/scripts/qa.mjs hud        <output-dir>/composition   # HUD counters, timecodes, BPM/FPS, greetings, "label · $value"

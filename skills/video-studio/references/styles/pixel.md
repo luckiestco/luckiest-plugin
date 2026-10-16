@@ -9,7 +9,7 @@
 - Clock: stepped 10-12 fps for sprites (30 fps timeline for scrolling)
 
 ## Look
-Internal resolution 320x180 scaled x6 to 1920x1080 with nearest-neighbour. Limited palette (PICO-8-like 16-32 colors), dithered sky gradient. 3-4 parallax layers (sky, far mountains, mid forest or city, near ground tiles). Sprites hand-authored 16x16 to 24x24 as pixel arrays. Chunky pixel logo (for example "PIXEL QUEST"), pixel font dialogue box. Optional CRT pass: scanlines, slight barrel, phosphor glow, without blurring pixels into mush.
+Internal resolution 320x180 scaled x6 to 1920x1080 with nearest-neighbour. Limited palette (PICO-8-like 16-32 colors), dithered sky gradient. 3-4 parallax layers (sky, far mountains, mid forest or city, near ground tiles). Sprites hand-authored 16x16 to 24x24 as pixel arrays. Chunky pixel version of the real logo, pixel font dialogue box. Optional CRT pass: scanlines, slight barrel, phosphor glow, without blurring pixels into mush.
 
 ## Motion
 Strictly integer pixel positions and stepped timing, no smooth easing on sprites. Run cycle 6-8 frames at about 10-12 fps. Coin sparkle, slime bop, chest opens with a light burst. Parallax layers move by whole pixels at different speeds. Palette shifts day to sunset. Dialogue types out character by character. Logo drops in with a shine sweep.
@@ -28,13 +28,18 @@ Strictly integer pixel positions and stepped timing, no smooth easing on sprites
 - 1.2-4s: run, jump, bop a slime, parallax scrolling.
 - 4-7s (hero at 60-75%): palette shifts to sunset, chest opens with a light burst.
 - 7-8.5s: dialogue typed out.
-- 8.5-10s: pixel logo drops in with shine sweep, held with blink.
+- 8.5-10s: the real logo builds in pixels with a shine sweep, then resolves to the logo SVG (see Logo construction).
 
 ## Sound
 Chiptune: pulse lead, triangle bass, noise drums, plus jump, coin and chest SFX.
 
 ## Build it in HyperFrames
 Canvas 2D at 320x180 with imageSmoothingEnabled = false, then drawImage upscaled x6 (or CSS image-rendering: pixelated). Sprite frame = floor(t*10) mod N. Parallax offset = floor(t * speed). Palette as an array of hex values, palette shift by lerping and re-quantising. Ordered-dither (Bayer 4x4) for gradients. CRT pass applied after upscale.
+
+## Logo construction
+Rule from logo-design (MIT, kaankiziltug): the entrance is built from the mark's own construction, and the resolve frame equals the master logo. Before animating, write the mark's construction in one line in `plan.md` (its primitives, strokes or modules, and the order they would be drawn). The resolve frame is the real logo file (`brand/logo.svg` or the SVG the user supplied), never a styled stand-in or an invented wordmark: render the last frame and the logo SVG at the same size and position, and any visible difference is a Block. Sting length 1 to 3 seconds, easing from this card.
+- Construction: the mark is drawn into the low-res grid in its construction order (outer silhouette, then cuts and counters), stepped a few pixels per frame at the card's 10-12 fps, palette-quantized from the logo's own colors. The shine sweep runs once the shape is complete.
+- Resolve: on the hold the pixel grid steps up to full resolution in 2 to 3 hard steps (no smooth scale), ending on the crisp logo SVG in brand colors. A chunky pixel wordmark is never the resolve.
 
 ## Watch out
 Fractional positions cause shimmer. Never use a smooth scale or rotation on sprites. Scanlines that are too heavy hide the art. Pixel CJK fonts must be OFL.

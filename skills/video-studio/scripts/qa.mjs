@@ -20,13 +20,15 @@
 //   node qa.mjs storyboard  <run-dir>                                  scene lengths, picture-only, text-led share, camera streaks, style id
 //   node qa.mjs facts       <run-dir>                                  on-screen numbers not in storyboard facts, em dashes on screen
 //   node qa.mjs safe        <run-dir> [--max 0.004] [--stills]         text or logo edges in the margins each format's platforms cover
+//   node qa.mjs logo        <run-dir> [--svg brand/logo.svg] [--max 8] last frame of each logo scene must match the logo SVG drawn in the same box
 //   node qa.mjs judge       <new.mp4> <old.mp4> [--out dir] [--cmd "claude -p --model sonnet"] [--verdicts A,B]
 //                           new vs old, asked twice with the order swapped; the new one is kept only if it wins both
 //
 // A gate that has never failed proves nothing: qa.test.mjs runs each one on a control
 // built to fail it.
 
-import { readFileSync, readdirSync, existsSync, statSync, mkdirSync, writeFileSync } from "node:fs";
+import { readFileSync, readdirSync, existsSync, statSync, mkdirSync, writeFileSync, mkdtempSync, rmSync } from "node:fs";
+import { tmpdir } from "node:os";
 import { join, resolve, extname } from "node:path";
 import { spawnSync } from "node:child_process";
 import { fileURLToPath } from "node:url";
@@ -556,6 +558,65 @@ B: ${b}
 Open both images. Judge which reads better to a viewer: every card legible, the speaker's face never covered, visuals change with what is said, no empty or cluttered stretches, real evidence instead of filler, and motion that feels designed: elements arrive fast and settle instead of creeping in or popping from nothing, moves match each other in speed and easing, and nothing drifts while it is being read.
 Name the two biggest differences, then end with exactly one line: WINNER: A or WINNER: B`;
 
+// ---------- logo resolve ----------
+
+// The SVG drawn into `box` on a plain `bg` page at W x H, captured with HyperFrames (headless Chrome),
+// the same snapshot path render-scenes.mjs --stills uses. The mark is fitted by its own bounding box.
+export function rasterLogo({ svg, W, H, box, bg, out, version = "latest" }) {
+  const proj = mkdtempSync(join(tmpdir(), "qa-logo-"));
+  writeFileSync(join(proj, "index.html"), `<!doctype html><html><head><meta charset="UTF-8"><script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
+<style>*{margin:0;padding:0}html,body{width:${W}px;height:${H}px;overflow:hidden;background:${bg}}#m{position:absolute;left:${box.x}px;top:${box.y}px;width:${box.w}px;height:${box.h}px}#m svg{width:100%;height:100%;display:block}</style></head>
+<body><div id="root" data-composition-id="main" data-start="0" data-duration="1" data-width="${W}" data-height="${H}"><div id="m" class="clip" data-start="0" data-duration="1" data-track-index="0">${readFileSync(svg, "utf8")}</div></div>
+<script>const s=document.querySelector("#m svg"),b=s.getBBox();s.setAttribute("viewBox",[b.x,b.y,b.width,b.height].join(" "));
+window.__timelines={main:gsap.timeline({paused:true}).to({},{duration:1})};</script></body></html>`);
+  const hf = spawnSync("hyperframes", ["--version"]).error ? ["npx", `hyperframes@${version}`] : ["hyperframes"];
+  const r = spawnSync(hf[0], [...hf.slice(1), "snapshot", proj, "--at", "0.5", "--no-end", "-o", join(proj, ".snap"), "--describe", "false"], { encoding: "utf8" });
+  const png = existsSync(join(proj, ".snap")) && readdirSync(join(proj, ".snap")).find((f) => f.startsWith("frame-"));
+  if (r.status !== 0 || !png) throw new Error(`logo snapshot failed: ${(r.stderr ?? "").trim().split("\n").pop()}`);
+  ff(["-v", "error", "-y", "-i", join(proj, ".snap", png), "-vf", `scale=${W}:${H}`, out]);
+  rmSync(proj, { recursive: true, force: true });
+  return out;
+}
+
+// Each logo scene's last frame against the logo SVG drawn at the same size and position.
+// The box is the ink that differs from the frame's corner color; any visible difference inside it is a Block.
+// ponytail: box from ink, so a caption beside the mark widens it and fails; add a scene logoBox override when a run needs it.
+export function logoResolve(runDir, { svg, max = 8, raster = rasterLogo, ink = 24 } = {}) {
+  const sb = JSON.parse(readFileSync(join(runDir, "storyboard.json"), "utf8"));
+  const logo = resolve(runDir, svg ?? sb.brand?.logo ?? "brand/logo.svg");
+  const targets = Array.isArray(sb.formats) ? sb.formats.map((f) => [f, ...FORMATS[f], join(runDir, "clips", f)]) : [[null, sb.format.width, sb.format.height, join(runDir, "clips")]];
+  const hits = [], tmp = mkdtempSync(join(tmpdir(), "qa-logo-"));
+  let checked = 0;
+  for (const [fmt, W, H, dir] of targets) {
+    const w = Math.round(W / 4), h = Math.round(H / 4);
+    sb.scenes.forEach((s, i) => {
+      if (s.kind !== "logo") return;
+      const name = `${String(i + 1).padStart(2, "0")}-${s.id}`, clip = join(dir, `${name}.mp4`), tag = { ...(fmt ? { format: fmt } : {}), scene: s.id };
+      if (!existsSync(clip)) return hits.push({ ...tag, missing: clip });
+      const last = join(tmp, `${fmt ?? "main"}-${name}.png`);
+      ff(["-v", "error", "-y", "-sseof", "-0.25", "-i", clip, "-update", "1", last]);
+      const [f] = grayFrames(last, w, h);
+      if (!f) return hits.push({ ...tag, missing: last });
+      let x0 = w, y0 = h, x1 = -1, y1 = -1;
+      for (let y = 0; y < h; y++) for (let x = 0; x < w; x++) {
+        if (Math.abs(f[y * w + x] - f[0]) > ink) { x0 = Math.min(x0, x); y0 = Math.min(y0, y); x1 = Math.max(x1, x); y1 = Math.max(y1, y); }
+      }
+      if (x1 < 0) return hits.push({ ...tag, blank: true });
+      const rgb = ff(["-v", "error", "-i", last, "-vf", "crop=1:1:0:0,format=rgb24", "-f", "rawvideo", "-"]).stdout;
+      const bg = `#${[...rgb.subarray(0, 3)].map((v) => v.toString(16).padStart(2, "0")).join("")}`;
+      const box = { x: x0 * 4, y: y0 * 4, w: (x1 - x0 + 1) * 4, h: (y1 - y0 + 1) * 4 };
+      const [ref] = grayFrames(raster({ svg: logo, W, H, box, bg, out: join(tmp, `${fmt ?? "main"}-${name}-ref.png`), version: sb.hyperframes }), w, h);
+      let sum = 0, n = 0;
+      for (let y = y0; y <= y1; y++) for (let x = x0; x <= x1; x++) { sum += Math.abs(f[y * w + x] - ref[y * w + x]); n++; }
+      const diff = Number((sum / n).toFixed(2));
+      checked++;
+      if (diff > max) hits.push({ ...tag, diff, box });
+    });
+  }
+  rmSync(tmp, { recursive: true, force: true });
+  return { ok: hits.length === 0, hits, checked, svg: logo };
+}
+
 // ---------- CLI ----------
 
 if (process.argv[1] && resolve(process.argv[1]) === fileURLToPath(import.meta.url)) {
@@ -563,7 +624,7 @@ if (process.argv[1] && resolve(process.argv[1]) === fileURLToPath(import.meta.ur
   if (gate === "judge" && rest[0] && !rest[0].startsWith("--")) rest.unshift("--old", rest.shift());
   const opt = (n, d) => { const i = rest.indexOf(n); return i >= 0 ? rest[i + 1] : d; };
   const num = (n, d) => Number(opt(n, d));
-  if (!gate || !target) { console.error("Usage: qa.mjs <tokens|crossfade|motion|legibility|pops|deadframes|presence|beatsync|beatgrid|face|avsync|loop|endhold|blankframes|hud|facts|safe|judge> <path> [options]"); process.exit(1); }
+  if (!gate || !target) { console.error("Usage: qa.mjs <tokens|crossfade|motion|legibility|pops|deadframes|presence|beatsync|beatgrid|face|avsync|loop|endhold|blankframes|hud|facts|safe|logo|judge> <path> [options]"); process.exit(1); }
   let result;
   if (gate === "tokens") {
     const tokens = opt("--tokens") ? JSON.parse(readFileSync(opt("--tokens"), "utf8")) : DEFAULT_TOKENS;
@@ -607,6 +668,7 @@ if (process.argv[1] && resolve(process.argv[1]) === fileURLToPath(import.meta.ur
   }
   else if (gate === "storyboard") result = lintStoryboard(JSON.parse(readFileSync(join(target, "storyboard.json"), "utf8")));
   else if (gate === "safe") result = safeAreas(target, { max: num("--max", 0.004), stills: rest.includes("--stills") });
+  else if (gate === "logo") result = logoResolve(target, { svg: opt("--svg"), max: num("--max", 8) });
   else if (gate === "facts") {
     const sb = JSON.parse(readFileSync(join(target, "storyboard.json"), "utf8"));
     const comp = join(target, "composition");

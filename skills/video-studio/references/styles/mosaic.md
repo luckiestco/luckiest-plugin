@@ -44,6 +44,11 @@ Canvas 2D with typed arrays; build once at init (about 200 ms).
 - Distance transform (Felzenszwalb-Huttenlocher) on a structure map, then walk iso-contours placing stones spaced at the tile size using a spatial hash with minimum spacing 0.8 x size; fill remaining gaps with staggered rows.
 - Per pixel store tile id and shade; per frame sample the flat drawing at each tile center and write color x shade. Draw to an offscreen canvas then `drawImage` (direct `putImageData` ignores scaling and transitions).
 
+## Logo construction
+Rule from logo-design (MIT, kaankiziltug): the entrance is built from the mark's own construction, and the resolve frame equals the master logo. Before animating, write the mark's construction in one line in `plan.md` (its primitives, strokes or modules, and the order they would be drawn). The resolve frame is the real logo file (`brand/logo.svg` or the SVG the user supplied), never a styled stand-in or an invented wordmark: render the last frame and the logo SVG at the same size and position, and any visible difference is a Block. Sting length 1 to 3 seconds, easing from this card.
+- Construction: stones are laid along the mark's own outline first, in its construction order (outer silhouette, then cuts and counters), then the fill rows set in, then the grout darkens in, each tile with a stone click. The halo ring goes on last. Lettering in the mark uses the logo's letterforms, never the card's monospace tile letters.
+- Resolve: in the last 0.3s the grout, edge shading and jitter fade out and the tiles merge into the flat logo SVG in brand colors on the hold frame. A tiled rendering of the name is never the resolve.
+
 ## Watch out
 - Current weak spot: facial detail gets lost at small tile sizes.
 - Hand, cup and face crowd together at 6-8.5 px tiles. Use bigger gestures or sprite inserts.

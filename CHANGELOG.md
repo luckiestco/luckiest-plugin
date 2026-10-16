@@ -1,3 +1,9 @@
+## 0.1.46 — 2026-10-15 (npm luckiest-co 1.0.47)
+- Video studio 1.18.0: a new check compares the last frame of each logo scene with the real logo file and fails the render if the ending logo is wrong.
+
+## 0.1.45 — 2026-10-13 (npm luckiest-co 1.0.46)
+- Video studio 1.17.3: the mosaic, pixel and flat-vector styles now build a logo sting from how the mark is drawn and end on the exact logo file, instead of an invented logo.
+
 ## 0.1.44 — 2026-10-13 (npm luckiest-co 1.0.45)
 - Video studio 1.17.2: the soft 3D render style now builds a logo sting from the logo's own shapes, dropped in the order the mark is drawn, and ends on the exact logo file instead of an invented inflated wordmark.
 
