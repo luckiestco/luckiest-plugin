@@ -1,5 +1,9 @@
 # Changelog — luckiest-video-studio
 
+## 1.18.0 — 2026-10-13
+
+- New QA gate `node qa.mjs logo <run-dir> [--svg path] [--max 8]`: for every logo scene it takes the clip's last frame, finds the mark's box, draws the logo SVG (default `brand/logo.svg`) into the same box on the same background with HyperFrames, and fails when they differ. Enforces the "resolve frame equals the master logo" rule in the style cards' Logo construction sections.
+
 ## 1.17.3 — 2026-10-13
 
 - Logo construction on the `mosaic`, `pixel` and `flat-vector` style cards: mosaic lays stones along the mark's outline then fill and grout; pixel draws the mark into the low-res grid then steps up to the crisp SVG; flat-vector flies in the mark's own shapes with overshoot. Each resolves to the flat logo SVG (a visible difference is a Block).
