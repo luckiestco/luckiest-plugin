@@ -1,5 +1,10 @@
 # Changelog — luckiest-cro
 
+## 1.1.1 — 2026-10-16
+From coreyhaines31/marketingskills at 1efedbc (issue #174, MIT).
+
+- Reference routing table (form, experiments); enrichment after a lead form points at luckiest-revops; enrichment tool list updated.
+
 ## 1.1.0 — 2026-07-06
 Skill updater pass: analytics integration.
 

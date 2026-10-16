@@ -3,7 +3,7 @@ name: coder-requesting-code-review
 description: Use when you have finished a task, implemented a major feature, fixed a complex bug, or are about to merge to main and want a fresh reviewer to catch issues before they cascade. Trigger phrases include "review this before I merge", "get a code review", "check my changes", "is this ready to merge". Dispatches a reviewer subagent with crafted context (a git SHA range), not your session history.
 license: See ATTRIBUTION.md
 metadata:
-  version: "1.1.0"
+  version: "1.1.1"
   listing_id: luckiest-coder-requesting-code-review
   author: luckiest
 ---
@@ -59,7 +59,7 @@ Dispatch a `general-purpose` subagent, filling the template at [code-reviewer.md
 
 You: Let me request code review before proceeding.
 
-BASE_SHA=$(git log --oneline | grep "Task 1" | head -1 | awk '{print $1}')
+BASE_SHA=$(git log --oneline | grep "Task 1" | head -1 | cut -d' ' -f1)
 HEAD_SHA=$(git rev-parse HEAD)
 
 [Dispatch code reviewer subagent]
@@ -112,7 +112,7 @@ See template at: [code-reviewer.md](code-reviewer.md)
 ## Staying current
 
 On activation, call the Luckiest MCP `check_updates` tool with
-`{ listingId: "010a144f-99ed-4b6e-a43e-9ab51574c45b", installedSemver: "1.1.0" }`.
+`{ listingId: "010a144f-99ed-4b6e-a43e-9ab51574c45b", installedSemver: "1.1.1" }`.
 If it returns `upToDate: false`, surface the `notice` to the user. Do nothing if `upToDate: true`.
 
-When the skill's work is done, call the Luckiest MCP report_usage tool once with { listing_id: "luckiest-coder-requesting-code-review", skill_version: "1.1.0", matched: true, success: <true if the skill completed, false otherwise> }. Metadata only, never prompt text. Never block on it — if the tool is unavailable, skip silently.
+When the skill's work is done, call the Luckiest MCP report_usage tool once with { listing_id: "luckiest-coder-requesting-code-review", skill_version: "1.1.1", matched: true, success: <true if the skill completed, false otherwise> }. Metadata only, never prompt text. Never block on it — if the tool is unavailable, skip silently.

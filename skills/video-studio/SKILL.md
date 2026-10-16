@@ -1,10 +1,10 @@
 ---
 name: luckiest-video-studio
-description: "Make product launch videos, product demos with motion design between demo shots, and logo showcases, all editable after render, in 38 named styles. Starts with a short context interview, plans a scripted storyboard the user approves scene by scene in a review player before anything renders, builds motion scenes with HyperFrames, records or places demo footage, renders each scene as its own clip, then hands back an MP4 plus a storyboard.json that re-renders one scene at a time, a review player for edits and notes (Concat, OpenScreen, or Diffusion Studio on request), and optional After Effects compositions. Use for 'make a launch video', 'product demo video', 'demo with motion graphics', 'logo animation', 'logo reveal', 'portfolio reel', 'animate my logos', 'brand reel', 'turn my talking-head recording into a reel', 'add graphics over me talking', or 'change scene 3 of the video'. For AI-generated footage, avatars, and text-to-video models use luckiest-video. For what to post and when use luckiest-social."
+description: "Make product launch videos, product demos with motion design between demo shots, and logo showcases, all editable after render, in 39 named styles. Starts with a short context interview, plans a scripted storyboard the user approves scene by scene in a review player before anything renders, builds motion scenes with HyperFrames, records or places demo footage, renders each scene as its own clip, then hands back an MP4 plus a storyboard.json that re-renders one scene at a time, a review player for edits and notes (Concat, OpenScreen, or Diffusion Studio on request), and optional After Effects compositions. Use for 'make a launch video', 'product demo video', 'demo with motion graphics', 'logo animation', 'logo reveal', 'portfolio reel', 'animate my logos', 'brand reel', 'turn my talking-head recording into a reel', 'add graphics over me talking', or 'change scene 3 of the video'. For AI-generated footage, avatars, and text-to-video models use luckiest-video. For what to post and when use luckiest-social."
 license: See ATTRIBUTION.md
 allowed-tools: Bash, Read, Write, Edit, Glob, Grep, AskUserQuestion
 metadata:
-  version: "1.18.0"
+  version: "1.19.0"
   listing_id: luckiest-video-studio
   author: luckiest
 ---
@@ -25,7 +25,7 @@ further if `upToDate: true`. Never block on this check; if the tool is unavailab
 proceed.
 
 When the skill's work is done, call the Luckiest MCP `report_usage` tool once with
-`{ listing_id: "luckiest-video-studio", skill_version: "1.18.0", matched: true, success: <true if the skill completed, false otherwise> }`.
+`{ listing_id: "luckiest-video-studio", skill_version: "1.19.0", matched: true, success: <true if the skill completed, false otherwise> }`.
 Metadata only, never prompt text. Never block on it; if the tool is unavailable,
 skip silently.
 
@@ -69,7 +69,7 @@ in `<skill-dir>/assets/sfx/`. Resolve it; never assume an install path.
 |---|---|---|
 | `--mode` | `launch`, `demo`, `logos` | inferred |
 | `--tone` | preset or freeform ([references/tones.md](references/tones.md)) | inferred |
-| `--style` | a style id from [references/styles.md](references/styles.md); its card is `references/styles/<id>.md`. 38 looks (flat vector, synthwave, whiteboard explainer, paper collage, ink wash...) plus era styles | named in the request, else asked |
+| `--style` | a style id from [references/styles.md](references/styles.md); its card is `references/styles/<id>.md`. 39 looks (flat vector, synthwave, whiteboard explainer, paper collage, ink wash...) plus era styles | named in the request, else asked |
 | `--format` | `landscape`, `vertical`, `square`: the master size scenes are designed at | `landscape` |
 | `--formats` | comma list of `landscape`, `vertical`, `square`: render the same video once per format, one file each | master only |
 | `--duration` | seconds | per mode |

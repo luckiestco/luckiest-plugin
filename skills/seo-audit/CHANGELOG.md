@@ -1,5 +1,10 @@
 # Changelog — luckiest-seo-audit
 
+## 1.2.0 — 2026-10-16
+From coreyhaines31/marketingskills at 1efedbc (issue #174, MIT).
+
+- New references: title tags, rankings push (striking-distance keywords), local SEO (profile, citations, pages and measurement).
+
 ## 1.1.0 — 2026-07-06
 Skill updater pass: analytics integration.
 

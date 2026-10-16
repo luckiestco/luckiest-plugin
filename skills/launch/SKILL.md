@@ -1,9 +1,9 @@
 ---
 name: launch
-description: "When the user wants to plan a product launch, feature announcement, or release strategy. Also use when the user mentions 'launch,' 'Product Hunt,' 'feature release,' 'announcement,' 'go-to-market,' 'beta launch,' 'early access,' 'waitlist,' 'product update,' 'how do I launch this,' 'launch checklist,' 'GTM plan,' or 'we're about to ship.' Use this whenever someone is preparing to release something publicly. For ongoing marketing after launch, see luckiest-marketing-ideas. For the offer being launched (bonuses, guarantees, scarcity, naming), see luckiest-offers."
+description: "When the user wants to plan a product launch, feature announcement, or release strategy. Also use when the user mentions 'launch,' 'Product Hunt,' 'feature release,' 'announcement,' 'go-to-market,' 'beta launch,' 'early access,' 'waitlist,' 'product update,' 'how do I launch this,' 'site launch,' 'go live,' 'pre-launch QA,' 'launch checklist,' 'GTM plan,' 'we're about to ship,' 'changelog,' 'release notes,' or 'what did we ship this week.' Use this whenever someone is preparing to release something publicly. For ongoing marketing after launch, see luckiest-marketing-ideas. For the offer being launched (bonuses, guarantees, scarcity, naming), see luckiest-offers."
 license: See ATTRIBUTION.md
 metadata:
-  version: "1.1.1"
+  version: "1.2.0"
   listing_id: luckiest-launch
   author: luckiest
 ---
@@ -14,9 +14,9 @@ This skill helps the user plan SaaS product launches and feature announcements t
 
 ## Staying current
 
-On activation, call the Luckiest MCP check_updates tool with { listingId: "b65cba33-d644-4eda-b14b-aea9b19f203e", installedSemver: "1.1.0" }. If it returns upToDate: false, surface the notice to the user once, then continue. Do nothing further if upToDate: true. Never block on this check — if the tool is unavailable, proceed.
+On activation, call the Luckiest MCP check_updates tool with { listingId: "b65cba33-d644-4eda-b14b-aea9b19f203e", installedSemver: "1.2.0" }. If it returns upToDate: false, surface the notice to the user once, then continue. Do nothing further if upToDate: true. Never block on this check — if the tool is unavailable, proceed.
 
-When the skill's work is done, call the Luckiest MCP report_usage tool once with { listing_id: "luckiest-launch", skill_version: "1.1.1", matched: true, success: <true if the skill completed, false otherwise> }. Metadata only, never prompt text. Never block on it — if the tool is unavailable, skip silently.
+When the skill's work is done, call the Luckiest MCP report_usage tool once with { listing_id: "luckiest-launch", skill_version: "1.2.0", matched: true, success: <true if the skill completed, false otherwise> }. Metadata only, never prompt text. Never block on it — if the tool is unavailable, skip silently.
 
 ## Before Starting
 
@@ -320,6 +320,9 @@ Continue using email, social, and in-app messaging to highlight improvements.
 **Signal active development:**
 Even small changelog updates remind customers the product is evolving. This builds retention and word-of-mouth—customers feel confident the company will be around.
 
+**Turn shipped code into announcements:**
+If you can read the product repo, generate the week's changelog, announcement drafts, and pages-to-update list straight from merged PRs. See [references/shipped-changes.md](references/shipped-changes.md).
+
 ---
 
 ## Launch Checklist
@@ -335,6 +338,7 @@ Even small changelog updates remind customers the product is evolving. This buil
 - [ ] Launch assets created (screenshots, demo video, GIFs). For framing, if `luckiest-video-studio-composition` is installed, read it to place the focal point, pick the grid, and keep white space and platform safe areas
 - [ ] Onboarding flow ready
 - [ ] Analytics/tracking in place
+- [ ] Site QA done if the launch includes a new site, redesign, or migration (see [references/site-launch-qa.md](references/site-launch-qa.md))
 - [ ] Pre-mortem run: top failure modes identified and mitigated
 
 ### Launch Day

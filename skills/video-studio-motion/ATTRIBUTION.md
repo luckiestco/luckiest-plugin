@@ -4,7 +4,7 @@
 
 | Source | License | What this sub-skill uses | License file |
 |---|---|---|---|
-| **skills** by Emil Kowalski (`emilkowalski/skills`) | MIT | The animation decision order, easing and duration rules, physicality and origin rules, blur-masked transitions, stagger, asymmetric timing, and the strict review posture from `emil-design-eng`, `animate`, `review-animations`, and `find-animation-opportunities`; type and material rules from `apple-design`; the glossary from `animation-vocabulary` | `LICENSE-emil` |
+| **skills** by Emil Kowalski (`emilkowalski/skills`) | MIT | The animation decision order, easing and duration rules, physicality and origin rules, blur-masked transitions, stagger, asymmetric timing, and the strict review posture from `emil-design-eng`, `animate`, `review-animations`, and `find-animation-opportunities`; type and material rules from `apple-design`; the glossary from `animation-vocabulary`; shadow, CSS-variable and `transition: all` rules from `animation-performance` | `LICENSE-emil` |
 | **motionmaxxing** by Tejas Makwana (`Tejashmakwana/motionmaxxing`, FinalMotion, finalmotion.video), commit 8c8ec0f2 | Apache-2.0 | Frame-measured durations, ease roles, stagger and camera values, handoff and transition recipes, and the numbers in `references/kinetic-type.md` and `references/ui-demo.md`. Rewritten in our own words; no code, runtime, media, studies or `library/` rows are copied | `LICENSE-motionmaxxing` |
 
 ## Changes in this edition

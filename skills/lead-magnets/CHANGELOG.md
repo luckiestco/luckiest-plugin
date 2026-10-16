@@ -1,5 +1,10 @@
 # Changelog — luckiest-lead-magnets
 
+## 1.2.0 — 2026-10-16
+From coreyhaines31/marketingskills at 1efedbc (issue #174, MIT).
+
+- New content-to-skill references: package an owned course or content library as an installable agent skill (corpus design, release).
+
 ## 1.1.0 — 2026-07-06
 Skill updater pass: analytics integration.
 

@@ -1,5 +1,9 @@
 # Changelog — luckiest-coder-requesting-code-review
 
+## 1.1.1 — 2026-10-16
+
+- BASE_SHA example uses `cut` instead of `awk` (from obra/superpowers at bb92a77 (v7.0.0, MIT)).
+
 ## 1.1.0 — 2026-07-06
 Skill updater pass: analytics integration.
 

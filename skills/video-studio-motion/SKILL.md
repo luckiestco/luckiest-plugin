@@ -1,5 +1,5 @@
 ---
-name: luckiest-video-studio-motion
+name: video-studio-motion
 description: >-
   Motion taste for luckiest-video-studio. Decides whether a beat should move,
   then picks the easing, duration, origin, stagger, and transition for HyperFrames
@@ -16,7 +16,7 @@ user-invocable: true
 license: MIT. See ATTRIBUTION.md
 allowed-tools: Bash, Read, Write, Edit, Glob, Grep
 metadata:
-  version: "1.3.0"
+  version: "1.3.1"
   listing_id: luckiest-video-studio-motion
   author: luckiest
 ---
@@ -32,11 +32,11 @@ interruption, and how often a user triggers something.
 ## Staying current
 
 On activation, call the Luckiest MCP `check_updates` tool with
-`{ listingId: "luckiest-video-studio-motion", installedSemver: "1.3.0" }`. If
+`{ listingId: "luckiest-video-studio-motion", installedSemver: "1.3.1" }`. If
 `upToDate: false`, surface the `notice` once and continue. Never block on it.
 
 When done, call `report_usage` once with
-`{ listing_id: "luckiest-video-studio-motion", skill_version: "1.3.0", matched: true, success: <true|false> }`.
+`{ listing_id: "luckiest-video-studio-motion", skill_version: "1.3.1", matched: true, success: <true|false> }`.
 Metadata only, never prompt text. Skip silently if unavailable.
 
 ## Modes
@@ -151,7 +151,10 @@ change about every 0.8 seconds.
   for fades, wipes, and linear fills.
 - **Transform, not layout.** Animate `x`, `y`, `scale`, `rotate`, `autoAlpha`,
   `clipPath`, and `filter`. `width`, `height`, `top`, and `left` snap to whole
-  pixels and shimmer in the render.
+  pixels and shimmer in the render. Animate a shadow with `filter: drop-shadow()`,
+  not `box-shadow`. Tween `transform` on the element itself, never a CSS variable
+  on a parent: every child restyles each frame and long scenes render slowly.
+  Name the tweened properties; no `transition: all`.
 - **Fast moves strobe.** At 30fps, an element crossing more than about a tenth of
   the frame per frame reads as jumps. Shorten the distance, lengthen the move, or
   make it a deliberate whip with a blur.

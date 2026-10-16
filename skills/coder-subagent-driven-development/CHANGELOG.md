@@ -1,5 +1,9 @@
 # Changelog — luckiest-coder-subagent-driven-development
 
+## 1.2.1 — 2026-10-16
+
+- `sdd-workspace` writes its `.gitignore` only when none exists, so a repo's committed one is kept (from obra/superpowers at bb92a77 (v7.0.0, MIT)).
+
 ## 1.2.0 — 2026-09-22
 Practices adopted from BuilderOS, Compound Engineering, and firstmate.
 

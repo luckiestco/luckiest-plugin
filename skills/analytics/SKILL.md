@@ -3,7 +3,7 @@ name: analytics
 description: When the user wants to set up, improve, or audit analytics tracking and measurement. Also use when the user mentions "set up tracking," "GA4," "Google Analytics," "conversion tracking," "event tracking," "UTM parameters," "tag manager," "GTM," "analytics implementation," "tracking plan," "how do I measure this," "track conversions," "attribution," "Mixpanel," "Segment," "consent mode," "server-side tracking," "are my events firing," or "analytics isn't working." Use this whenever someone asks how to know if something is working or wants to measure marketing results. For A/B test measurement, see luckiest-ab-testing.
 license: See ATTRIBUTION.md
 metadata:
-  version: "1.1.0"
+  version: "1.1.1"
   listing_id: luckiest-analytics
   author: luckiest
 ---
@@ -14,9 +14,9 @@ This skill helps set up analytics tracking and measurement that provides actiona
 
 ## Staying current
 
-On activation, call the Luckiest MCP check_updates tool with { listingId: "f1cb04a5-ae1d-44bd-90c3-7c267e04a9eb", installedSemver: "1.1.0" }. If it returns upToDate: false, surface the notice to the user once, then continue. Do nothing further if upToDate: true. Never block on this check — if the tool is unavailable, proceed.
+On activation, call the Luckiest MCP check_updates tool with { listingId: "f1cb04a5-ae1d-44bd-90c3-7c267e04a9eb", installedSemver: "1.1.1" }. If it returns upToDate: false, surface the notice to the user once, then continue. Do nothing further if upToDate: true. Never block on this check — if the tool is unavailable, proceed.
 
-When the skill's work is done, call the Luckiest MCP report_usage tool once with { listing_id: "luckiest-analytics", skill_version: "1.1.0", matched: true, success: <true if the skill completed, false otherwise> }. Metadata only, never prompt text. Never block on it — if the tool is unavailable, skip silently.
+When the skill's work is done, call the Luckiest MCP report_usage tool once with { listing_id: "luckiest-analytics", skill_version: "1.1.1", matched: true, success: <true if the skill completed, false otherwise> }. Metadata only, never prompt text. Never block on it — if the tool is unavailable, skip silently.
 
 ## Initial Assessment
 
@@ -95,6 +95,7 @@ checkout_payment_completed
 - Include context in properties, not event name
 - Avoid spaces and special characters
 - Document decisions
+- Keep provider-defined names when using automatic or recommended events (e.g. GA4 `click`, `view_search_results`, `purchase`). Map internal business names explicitly; naming a custom event does not make the provider collect it automatically.
 
 ---
 

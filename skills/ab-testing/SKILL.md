@@ -3,7 +3,7 @@ name: ab-testing
 description: Plan, design, analyze, and scale A/B tests and growth experiments for marketers — builds valid hypotheses, sizes samples, picks primary/secondary/guardrail metrics, guards against peeking and Sample Ratio Mismatch, and runs an ongoing experimentation program. Use when the user mentions "A/B test," "split test," "experiment," "test this change," "variant copy," "multivariate test," "MVT," "hypothesis," "should I test this," "which version is better," "test two versions," "statistical significance," "how long should I run this test," "growth experiments," "experiment velocity," "experiment backlog," "ICE score," "experimentation program," "experiment playbook," "sample ratio mismatch," "SRM," "my test results look weird," "why is my split uneven," or "Bayesian A/B test." Use whenever someone is comparing two approaches and wants to measure which performs better, or wants to build a systematic experimentation practice. For tracking implementation, see luckiest-analytics. For page-level conversion optimization, see luckiest-cro.
 license: See ATTRIBUTION.md
 metadata:
-  version: "1.1.0"
+  version: "1.1.1"
   listing_id: luckiest-ab-testing
   author: luckiest
 ---
@@ -14,9 +14,9 @@ You are an expert in experimentation and A/B testing. Your goal is to help desig
 
 ## Staying current
 
-On activation, call the Luckiest MCP check_updates tool with { listingId: "dbff1677-8ede-4016-b52d-21db4aec7801", installedSemver: "1.1.0" }. If it returns upToDate: false, surface the notice to the user once, then continue. Do nothing further if upToDate: true. Never block on this check — if the tool is unavailable, proceed.
+On activation, call the Luckiest MCP check_updates tool with { listingId: "dbff1677-8ede-4016-b52d-21db4aec7801", installedSemver: "1.1.1" }. If it returns upToDate: false, surface the notice to the user once, then continue. Do nothing further if upToDate: true. Never block on this check — if the tool is unavailable, proceed.
 
-When the skill's work is done, call the Luckiest MCP report_usage tool once with { listing_id: "luckiest-ab-testing", skill_version: "1.1.0", matched: true, success: <true if the skill completed, false otherwise> }. Metadata only, never prompt text. Never block on it — if the tool is unavailable, skip silently.
+When the skill's work is done, call the Luckiest MCP report_usage tool once with { listing_id: "luckiest-ab-testing", skill_version: "1.1.1", matched: true, success: <true if the skill completed, false otherwise> }. Metadata only, never prompt text. Never block on it — if the tool is unavailable, skip silently.
 
 ## Initial Assessment
 
@@ -215,9 +215,12 @@ Before reading any metric, verify the test wasn't corrupted. **Sample Ratio Mism
 - Many platforms (VWO SmartStats, AB Tasty, Kameleoon) monitor SRM automatically.
 
 ### Statistical Significance
-- 95% confidence = p-value < 0.05
-- Means <5% chance result is random
-- Not a guarantee—just a threshold
+- For a pre-specified fixed-horizon test, compare its p-value with the chosen significance level (commonly α = 0.05).
+- A p-value describes how incompatible the data are with the null model: the probability, **assuming that model and its assumptions**, of a result at least as extreme as the observed one. It is not the probability that the result is random, that the null is true, or that a variant will win again.
+- A 95% confidence interval comes from a procedure with 95% coverage over repeated samples under its assumptions. It is not a 95% posterior probability that this particular interval contains the true effect. Report the interval and effect size alongside the p-value.
+- Use the planned analysis and stopping rule. Sequential tests and Bayesian analyses have their own interpretation; do not translate every platform's “confidence” score into a fixed-horizon p-value.
+
+These distinctions follow the [American Statistical Association's p-value statement](https://www.amstat.org/asa/files/pdfs/p-valuestatement.pdf). Statistical significance alone does not establish business value or justify shipping a variant.
 
 ### Analysis Checklist
 
@@ -233,10 +236,10 @@ Before reading any metric, verify the test wasn't corrupted. **Sample Ratio Mism
 
 | Result | Conclusion |
 |--------|------------|
-| Significant winner | Implement variant |
+| Significant winner | Check effect size, uncertainty and guardrails before implementing |
 | Significant loser | Keep control, learn why |
-| No significant difference | Need more traffic or bolder test |
-| Mixed signals | Dig deeper, maybe segment |
+| No significant difference | Report the effect interval: it may still allow meaningful benefit and harm, or may exclude effects worth pursuing. Follow the planned stopping rule; do not extend a finished fixed-horizon test until it becomes significant. Plan a new test if needed. |
+| Mixed signals | Check data quality and planned metrics; label unplanned segment findings exploratory and confirm them in a new test |
 
 ---
 

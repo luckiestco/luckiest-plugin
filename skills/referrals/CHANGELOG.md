@@ -1,5 +1,10 @@
 # Changelog — luckiest-referrals
 
+## 1.2.0 — 2026-10-16
+From coreyhaines31/marketingskills at 1efedbc (issue #174, MIT).
+
+- New review-program references (collecting G2 and Trustpilot reviews within platform rules, responding to bad reviews) and affiliate operations.
+
 ## 1.1.0 — 2026-07-06
 Skill updater pass: analytics integration.
 

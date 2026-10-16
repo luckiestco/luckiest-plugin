@@ -1,5 +1,10 @@
 # Changelog — luckiest-sales-enablement
 
+## 1.3.0 — 2026-10-16
+From coreyhaines31/marketingskills at 1efedbc (issue #174, MIT).
+
+- New cold-call-scripts reference (openers, voicemails, pushback).
+
 ## 1.2.0 — 2026-10-08
 Upstream sync with coreyhaines31/marketingskills dda3841 (issue #112).
 

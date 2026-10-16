@@ -1,13 +1,13 @@
 ---
 name: trends
-version: "1.1.1"
+version: "1.2.0"
 description: "Research what people actually say about any topic over a time window you choose. Pulls posts and engagement from Reddit, X, YouTube, TikTok, Hacker News, Polymarket, GitHub, and the web, then synthesizes the community voice. Use for /luckiest-trends, 'trends for X', 'what are people saying about X', 'last N days of X', 'weekly/quarterly roundup of X'. Set the window with --days N (default 30)."
 argument-hint: "luckiest-trends nvidia earnings reaction | luckiest-trends AI video tools --days 7 | luckiest-trends what users want in react --days 90"
 allowed-tools: Bash, Read, Write, AskUserQuestion, WebSearch
 license: See ATTRIBUTION.md
 user-invocable: true
 metadata:
-  version: "1.1.1"
+  version: "1.2.0"
   listing_id: luckiest-trends
   author: luckiest
   openclaw:
@@ -18,6 +18,7 @@ metadata:
         - SCRAPECREATORS_API_KEY
         - OPENAI_API_KEY
         - XAI_API_KEY
+        - X_BEARER_TOKEN
         - OPENROUTER_API_KEY
         - PERPLEXITY_API_KEY
         - PARALLEL_API_KEY
@@ -28,6 +29,7 @@ metadata:
         - BSKY_HANDLE
         - BSKY_APP_PASSWORD
         - TRUTHSOCIAL_TOKEN
+        - XIAOHONGSHU_API_BASE
       bins:
         - node
         - python3
@@ -62,20 +64,22 @@ Research any topic across Reddit, X, YouTube, TikTok, Hacker News, Polymarket, G
 ## Staying current
 
 On activation, call the Luckiest MCP `check_updates` tool with
-`{ listingId: "a357362c-cb53-4bba-86e2-5024dbbece9e", installedSemver: "1.1.1" }`.
+`{ listingId: "a357362c-cb53-4bba-86e2-5024dbbece9e", installedSemver: "1.2.0" }`.
 If it returns `upToDate: false`, surface the `notice` to the user once, then continue. Do nothing further if `upToDate: true`. Never block research on this check — if the tool is unavailable, proceed.
 
-When the skill's work is done, call the Luckiest MCP report_usage tool once with { listing_id: "luckiest-trends", skill_version: "1.1.1", matched: true, success: <true if the skill completed, false otherwise> }. Metadata only, never prompt text. Never block on it — if the tool is unavailable, skip silently.
+When the skill's work is done, call the Luckiest MCP report_usage tool once with { listing_id: "luckiest-trends", skill_version: "1.2.0", matched: true, success: <true if the skill completed, false otherwise> }. Metadata only, never prompt text. Never block on it — if the tool is unavailable, skip silently.
 
 ## What this skill can access
 
 Tell the user this before first-run setup, and whenever they ask what the skill touches.
 
-- **Browser cookies (X login only): off unless the user opts in.** With `FROM_BROWSER` unset, no browser is read (`scripts/lib/env.py:568`). Setup reads cookies only when run with `--allow-browser-cookies`, after the user says yes (`scripts/last30days.py:877`). Cookies are read live and never written to disk. Turn off any time with `FROM_BROWSER=off` or `--no-browser-cookies`. Unattended watchlist runs always pass `--no-browser-cookies` (`scripts/watchlist.py:191`).
+- **Browser cookies (X login only): off unless the user opts in.** With `FROM_BROWSER` unset or `off`, no browser cookie store is read (`scripts/lib/env.py:1115`). Setup reads cookies only when run with `--allow-browser-cookies`, after the user says yes (`scripts/last30days.py:2631`). Cookies are read live and never written to disk. Unattended watchlist runs always pass `--no-browser-cookies` (`scripts/watchlist.py:217`).
+- **Extra X cookie lookups: Linux, a Mac mini, or `AGENTCOOKIE=on` only.** On those hosts the engine may ask a user-installed `agentcookie` CLI for the X login pair, or read it from a Chrome the user started with a remote-debugging port (`scripts/box_chrome_login.py` prints that launch command). The live-Chrome read needs `BROWSER_CONSENT=true` or an explicit browser choice (`scripts/lib/chrome_cdp.py:400`). A plain MacBook never runs either (`scripts/lib/env.py:951`). `AGENTCOOKIE=off` turns the sidecar off.
 - **macOS Keychain: only this skill's own items.** It looks up entries named `last30days-<KEY>` that the user stored with `scripts/setup-keychain.sh`, plus any aliases the user lists in `LAST30DAYS_KEYCHAIN_ALIASES`. It never lists or reads other Keychain items.
-- **API keys:** read from `~/.config/last30days/.env`, the process environment, or the Keychain items above. Never ask for a key in chat.
-- **Network:** search requests to the sources listed in the description, plus the APIs whose keys the user configured.
-- **Installs:** `yt-dlp` and the Digg CLI, only after the user agrees in the setup wizard.
+- **API keys:** read from `~/.config/last30days/.env`, the process environment, or the Keychain items above. Never ask for a key in chat. Local state files are written owner-only.
+- **Local files:** the corpus source reads only directories the user registered, with no network calls.
+- **Network:** search requests to the sources listed in the description, plus the APIs whose keys the user configured. Hosted-API calls must be https.
+- **Other programs:** `yt-dlp`, the Digg CLI, the Bright Data CLI, and `pdftotext` run only when the user installed them. The setup wizard installs `yt-dlp` and Digg only after the user agrees.
 
 ## Time window (--days N)
 

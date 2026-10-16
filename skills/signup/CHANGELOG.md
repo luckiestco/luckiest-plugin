@@ -1,5 +1,10 @@
 # Changelog — luckiest-signup
 
+## 1.1.1 — 2026-10-16
+From coreyhaines31/marketingskills at 1efedbc (issue #174, MIT).
+
+- Sales-assist handoff points at the luckiest-revops inbound-routing playbook.
+
 ## 1.1.0 — 2026-07-06
 Skill updater pass: analytics integration.
 

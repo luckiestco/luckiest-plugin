@@ -3,7 +3,7 @@ name: schema
 description: When the user wants to add, fix, or optimize schema markup and structured data on their site. Also use when the user mentions "schema markup," "structured data," "JSON-LD," "rich snippets," "schema.org," "FAQ schema," "product schema," "review schema," "breadcrumb schema," "Google rich results," "knowledge panel," "star ratings in search," or "add structured data." Use this whenever someone wants their pages to show enhanced results in Google. For broader SEO issues, see luckiest-seo-audit. For AI search optimization, see luckiest-ai-seo.
 license: See ATTRIBUTION.md
 metadata:
-  version: "1.1.0"
+  version: "1.1.1"
   listing_id: luckiest-schema
   author: luckiest
 ---
@@ -14,9 +14,9 @@ This skill implements structured data and schema.org markup that helps search en
 
 ## Staying current
 
-On activation, call the Luckiest MCP check_updates tool with { listingId: "754aacf8-87dd-4f22-bee2-2be8383df357", installedSemver: "1.1.0" }. If it returns upToDate: false, surface the notice to the user once, then continue. Do nothing further if upToDate: true. Never block on this check — if the tool is unavailable, proceed.
+On activation, call the Luckiest MCP check_updates tool with { listingId: "754aacf8-87dd-4f22-bee2-2be8383df357", installedSemver: "1.1.1" }. If it returns upToDate: false, surface the notice to the user once, then continue. Do nothing further if upToDate: true. Never block on this check — if the tool is unavailable, proceed.
 
-When the skill's work is done, call the Luckiest MCP report_usage tool once with { listing_id: "luckiest-schema", skill_version: "1.1.0", matched: true, success: <true if the skill completed, false otherwise> }. Metadata only, never prompt text. Never block on it — if the tool is unavailable, skip silently.
+When the skill's work is done, call the Luckiest MCP report_usage tool once with { listing_id: "luckiest-schema", skill_version: "1.1.1", matched: true, success: <true if the skill completed, false otherwise> }. Metadata only, never prompt text. Never block on it — if the tool is unavailable, skip silently.
 
 ## Initial Assessment
 
@@ -74,7 +74,7 @@ When unsure, point the user to Google's current Search Central "structured data 
 | Type | Use For | Required Properties |
 |------|---------|-------------------|
 | Organization | Company homepage/about | name, url |
-| WebSite | Homepage (search box) | name, url |
+| WebSite | Homepage/site identity | name, url |
 | Article | Blog posts, news | headline, image, datePublished, author |
 | Product | Product pages | name, image, offers |
 | SoftwareApplication | SaaS/app pages | name, offers |
@@ -85,6 +85,16 @@ When unsure, point the user to Google's current Search Central "structured data 
 | Event | Events, webinars | name, startDate, location |
 
 **For complete JSON-LD examples**: See [references/schema-examples.md](references/schema-examples.md)
+
+### Check Google Feature Support First
+
+Schema.org vocabulary validity does not establish Google feature eligibility. Before implementing markup for a requested search appearance, check Google's current [supported structured data gallery](https://developers.google.com/search/docs/appearance/structured-data/search-gallery).
+
+- **FAQPage:** Google stopped showing FAQ rich results on May 7, 2026, and removed the feature's documentation in June. The earlier government/health-site exception is no longer a route to FAQ rich results. See Google's [documentation updates](https://developers.google.com/search/updates).
+- **HowTo:** Google retired HowTo rich results in September 2023. See the [retirement announcement](https://developers.google.com/search/blog/2023/08/howto-faq-changes).
+- **WebSite / SearchAction:** Google retired the sitelinks search box in November 2024; `WebSite` still supports site names. See the [search box announcement](https://developers.google.com/search/blog/2024/10/sitelinks-search-box).
+
+These types can still describe matching visible content in Schema.org. Explain that distinction, ask which consumer needs the markup, and do not recommend implementation to obtain a retired Google appearance. Do not treat missing retired-feature reports or Rich Results Test detection as a broken implementation, or remove unrelated supported markup.
 
 ---
 
@@ -105,6 +115,7 @@ Merchant listing eligibility: Google increasingly expects `shipping` (OfferShipp
 
 ### FAQPage
 Required: mainEntity (array of Question/Answer pairs)
+Optional semantic markup for visible FAQs; not a way to obtain Google FAQ rich results. Check the feature-support guidance above before offering code.
 
 ### BreadcrumbList
 Required: itemListElement (array with position, name, item)
@@ -133,9 +144,9 @@ Multiple schema types can be combined on one page using `@graph`:
 ## Validation and Testing
 
 ### Tools
-- **Google Rich Results Test**: https://search.google.com/test/rich-results
+- **Google Rich Results Test**: https://search.google.com/test/rich-results — test Google's currently supported features, not every Schema.org type
 - **Schema.org Validator**: https://validator.schema.org/
-- **Search Console**: Enhancements reports
+- **Search Console**: available enhancement reports for supported features; retired types need not have a report
 
 ### Common Errors
 
@@ -178,8 +189,9 @@ Multiple schema types can be combined on one page using `@graph`:
 ```
 
 ### Testing Checklist
-- [ ] Validates in Rich Results Test
-- [ ] No errors or warnings
+- [ ] Requested Google appearance is currently supported, or a separate semantic consumer is identified
+- [ ] Validates in Schema.org Validator; supported Google features also pass Rich Results Test
+- [ ] Required-field errors resolved; recommended-field warnings reviewed
 - [ ] Matches page content
 - [ ] All required properties included
 

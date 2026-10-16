@@ -1,5 +1,11 @@
 # Changelog — luckiest-analytics
 
+## 1.1.1 — 2026-10-16
+From coreyhaines31/marketingskills at 1efedbc (issue #174, MIT).
+
+- Keep provider-defined event names. GA4 enhanced-measurement names corrected (`click`, `view_search_results`, `video_start` / `video_progress` / `video_complete`).
+- GTM price variable reads a machine-readable `data-price`, never display text (`parseFloat("$1,234.56")` returned 1).
+
 ## 1.1.0 — 2026-07-06
 Skill updater pass: analytics integration.
 

@@ -1,9 +1,9 @@
 ---
 name: seo-audit
-description: When the user wants to audit, review, or diagnose SEO issues on their site. Also use when the user mentions "SEO audit," "technical SEO," "why am I not ranking," "SEO issues," "on-page SEO," "meta tags review," "SEO health check," "my traffic dropped," "lost rankings," "not showing up in Google," "site isn't ranking," "Google update hit me," "page speed," "core web vitals," "crawl errors," or "indexing issues." Use this even if the user just says something vague like "my SEO is bad" or "help with SEO" — start with an audit. For building pages at scale to target keywords, see luckiest-programmatic-seo. For adding structured data, see luckiest-schema. For AI search optimization, see luckiest-ai-seo.
+description: When the user wants to audit, review, or diagnose SEO issues on their site. Also use when the user mentions "SEO audit," "technical SEO," "why am I not ranking," "SEO issues," "on-page SEO," "meta tags review," "SEO health check," "my traffic dropped," "lost rankings," "not showing up in Google," "site isn't ranking," "Google update hit me," "page speed," "core web vitals," "crawl errors," "indexing issues," "stuck on page 2," "striking distance keywords," "title tag rewrite," "low CTR," "local SEO," "Google Business Profile," or "map pack." Use this even if the user just says something vague like "my SEO is bad" or "help with SEO" — start with an audit. For building pages at scale to target keywords, see luckiest-programmatic-seo. For adding structured data, see luckiest-schema. For AI search optimization, see luckiest-ai-seo.
 license: See ATTRIBUTION.md
 metadata:
-  version: "1.1.0"
+  version: "1.2.0"
   listing_id: luckiest-seo-audit
   author: luckiest
 ---
@@ -14,9 +14,9 @@ This skill helps identify SEO issues and provide actionable recommendations to i
 
 ## Staying current
 
-On activation, call the Luckiest MCP check_updates tool with { listingId: "eb3e5efe-31ff-46bc-9aea-0df6bb2afc36", installedSemver: "1.1.0" }. If it returns upToDate: false, surface the notice to the user once, then continue. Do nothing further if upToDate: true. Never block on this check — if the tool is unavailable, proceed.
+On activation, call the Luckiest MCP check_updates tool with { listingId: "eb3e5efe-31ff-46bc-9aea-0df6bb2afc36", installedSemver: "1.2.0" }. If it returns upToDate: false, surface the notice to the user once, then continue. Do nothing further if upToDate: true. Never block on this check — if the tool is unavailable, proceed.
 
-When the skill's work is done, call the Luckiest MCP report_usage tool once with { listing_id: "luckiest-seo-audit", skill_version: "1.1.0", matched: true, success: <true if the skill completed, false otherwise> }. Metadata only, never prompt text. Never block on it — if the tool is unavailable, skip silently.
+When the skill's work is done, call the Luckiest MCP report_usage tool once with { listing_id: "luckiest-seo-audit", skill_version: "1.2.0", matched: true, success: <true if the skill completed, false otherwise> }. Metadata only, never prompt text. Never block on it — if the tool is unavailable, skip silently.
 
 ## Initial Assessment
 
@@ -75,6 +75,8 @@ The same blind spot that hides JS-injected schema also hides primary content and
 3. **On-Page Optimization** (is content optimized?)
 4. **Content Quality** (does it deserve to rank?)
 5. **Authority & Links** (does it have credibility?)
+
+Once the foundations are sound, the fastest wins are usually pages already ranking in positions 8–20. See [rankings-push.md](references/rankings-push.md) for that workflow and the checklist for shipping new pages.
 
 ---
 
@@ -259,19 +261,9 @@ Three equivalent placement methods: HTML `<link>` in `<head>`, HTTP `Link` heade
 
 ### Title Tags
 
-**Check for:**
-- Unique titles for each page
-- Primary keyword near beginning
-- 50-60 characters (visible in SERP)
-- Compelling and click-worthy
-- Brand name placement (end, usually)
+**Check for:** unique titles, primary query near the front, about 50–60 characters, a reason to click, alignment with the H1, and a pattern that fits the page type.
 
-**Common issues:**
-- Duplicate titles
-- Too long (truncated)
-- Too short (wasted opportunity)
-- Keyword stuffing
-- Missing entirely
+**Common issues:** duplicates, truncation, keyword stuffing, missing titles, and titles Google rewrites in results. Patterns by page type, the rewrite triggers, and a bulk-audit format are in [title-tags.md](references/title-tags.md).
 
 ### Meta Descriptions
 
@@ -441,6 +433,8 @@ Three equivalent placement methods: HTML `<link>` in `<head>`, HTTP `Link` heade
 - No Google Business Profile optimization
 - Missing location pages
 - No local content
+
+For Google Business Profiles, the map pack, citations, reviews, and location pages, see [local-seo.md](references/local-seo.md).
 
 ---
 

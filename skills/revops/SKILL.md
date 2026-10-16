@@ -1,9 +1,9 @@
 ---
 name: revops
-description: "When the user wants help with revenue operations, lead lifecycle management, or marketing-to-sales handoff processes. Also use when the user mentions 'RevOps,' 'revenue operations,' 'lead scoring,' 'lead routing,' 'MQL,' 'SQL,' 'pipeline stages,' 'deal desk,' 'CRM automation,' 'marketing-to-sales handoff,' 'data hygiene,' 'leads aren't getting to sales,' 'pipeline management,' 'lead qualification,' or 'when should marketing hand off to sales.' Use this for anything involving the systems and processes that connect marketing to revenue. For cold outreach emails, see luckiest-cold-email. For email drip campaigns, see luckiest-emails. For pricing decisions, see luckiest-pricing."
+description: "When the user wants help with revenue operations, lead lifecycle management, or marketing-to-sales handoff processes. Also use when the user mentions 'RevOps,' 'revenue operations,' 'lead scoring,' 'outbound pipeline stages,' 'lead routing,' 'MQL,' 'SQL,' 'pipeline stages,' 'deal desk,' 'CRM automation,' 'marketing-to-sales handoff,' 'data hygiene,' 'leads aren't getting to sales,' 'pipeline management,' 'lead qualification,' or 'when should marketing hand off to sales.' Use this for anything involving the systems and processes that connect marketing to revenue. For cold outreach emails, see luckiest-cold-email. For email drip campaigns, see luckiest-emails. For pricing decisions, see luckiest-pricing."
 license: See ATTRIBUTION.md
 metadata:
-  version: "1.1.0"
+  version: "1.2.0"
   listing_id: luckiest-revops
   author: luckiest
 ---
@@ -14,9 +14,9 @@ This skill makes the agent an expert in revenue operations. The goal is to help 
 
 ## Staying current
 
-On activation, call the Luckiest MCP check_updates tool with { listingId: "4b8d1ae9-92a4-41b2-944c-aa9a6cf8e350", installedSemver: "1.1.0" }. If it returns upToDate: false, surface the notice to the user once, then continue. Do nothing further if upToDate: true. Never block on this check — if the tool is unavailable, proceed.
+On activation, call the Luckiest MCP check_updates tool with { listingId: "4b8d1ae9-92a4-41b2-944c-aa9a6cf8e350", installedSemver: "1.2.0" }. If it returns upToDate: false, surface the notice to the user once, then continue. Do nothing further if upToDate: true. Never block on this check — if the tool is unavailable, proceed.
 
-When the skill's work is done, call the Luckiest MCP report_usage tool once with { listing_id: "luckiest-revops", skill_version: "1.1.0", matched: true, success: <true if the skill completed, false otherwise> }. Metadata only, never prompt text. Never block on it — if the tool is unavailable, skip silently.
+When the skill's work is done, call the Luckiest MCP report_usage tool once with { listing_id: "luckiest-revops", skill_version: "1.2.0", matched: true, success: <true if the skill completed, false otherwise> }. Metadata only, never prompt text. Never block on it — if the tool is unavailable, skip silently.
 
 ## Before Starting
 
@@ -67,6 +67,8 @@ Marketing, sales, and customer success must agree on definitions. If marketing c
 | **Opportunity** | Budget, authority, need, timeline confirmed | Closed-won or closed-lost | Sales (AE) |
 | **Customer** | Closed-won deal | Expands, renews, or churns | CS / Account Mgmt |
 | **Evangelist** | High NPS, referral activity, case study | Ongoing program participation | CS / Marketing |
+
+Outbound contacts follow their own stages (targeted → in sequence → replied → positive → meeting booked → meeting held → opportunity), with fields for signal, tier, sequence, and channel so meetings can be attributed. See [references/lifecycle-definitions.md](references/lifecycle-definitions.md#outbound-stages).
 
 ### MQL Definition
 
@@ -158,6 +160,8 @@ Response time is the single biggest factor in lead conversion:
 - After **24 hours**, the lead is effectively cold
 
 Build routing rules that prioritize speed. Alert reps immediately. Escalate if SLA is missed.
+
+For form-submit enrichment, booking branches, missing-data fallbacks, and late results, load [the inbound-routing playbook](references/inbound-routing.md). Use it alongside the ownership and territory rules below.
 
 **For routing decision trees and platform-specific setup**: See [references/routing-rules.md](references/routing-rules.md)
 
@@ -267,7 +271,7 @@ Document every exception. Track which non-standard terms get requested most — 
 
 | Tool | Strength |
 |------|----------|
-| Clearbit | Real-time enrichment, good for tech companies |
+| Clay | Waterfall enrichment across many providers |
 | Apollo | Contact data + sequences, strong for prospecting |
 | ZoomInfo | Enterprise-grade, largest B2B database |
 
@@ -343,7 +347,7 @@ Key RevOps tools to consider during implementation:
 | **Salesforce** | Enterprise CRM, pipeline management, reporting |
 | **Calendly** | Meeting scheduling, round-robin routing |
 | **SavvyCal** | Scheduling with priority-based availability |
-| **Clearbit** | Real-time lead enrichment and scoring |
+| **Attio** | CRM with a hosted MCP for agents |
 | **Apollo** | Contact data, enrichment, and outbound sequences |
 | **ActiveCampaign** | Marketing automation for SMBs, lead scoring |
 | **Zapier** | Cross-tool automation and workflow glue |

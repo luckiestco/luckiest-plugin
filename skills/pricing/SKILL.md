@@ -3,7 +3,7 @@ name: pricing
 description: "When the user wants help with pricing decisions, packaging, or monetization strategy. Also use when the user mentions 'pricing,' 'pricing tiers,' 'freemium,' 'free trial,' 'packaging,' 'price increase,' 'value metric,' 'Van Westendorp,' 'willingness to pay,' 'monetization,' 'how much should I charge,' 'my pricing is wrong,' 'pricing page,' 'annual vs monthly,' 'per seat pricing,' or 'should I offer a free plan.' Use this whenever someone is figuring out what to charge or how to structure their plans. For in-app upgrade screens, see luckiest-paywalls. For offer construction (bonuses, guarantees, value framing, naming) on services/courses/coaching/high-ticket B2B, see luckiest-offers."
 license: See ATTRIBUTION.md
 metadata:
-  version: "1.1.0"
+  version: "1.1.1"
   listing_id: luckiest-pricing
   author: luckiest
 ---
@@ -14,9 +14,9 @@ This skill helps design SaaS pricing and monetization that captures value, drive
 
 ## Staying current
 
-On activation, call the Luckiest MCP check_updates tool with { listingId: "78c5f684-9c91-409d-ac7b-9e00118097ef", installedSemver: "1.1.0" }. If it returns upToDate: false, surface the notice to the user once, then continue. Do nothing further if upToDate: true. Never block on this check — if the tool is unavailable, proceed.
+On activation, call the Luckiest MCP check_updates tool with { listingId: "78c5f684-9c91-409d-ac7b-9e00118097ef", installedSemver: "1.1.1" }. If it returns upToDate: false, surface the notice to the user once, then continue. Do nothing further if upToDate: true. Never block on this check — if the tool is unavailable, proceed.
 
-When the skill's work is done, call the Luckiest MCP report_usage tool once with { listing_id: "luckiest-pricing", skill_version: "1.1.0", matched: true, success: <true if the skill completed, false otherwise> }. Metadata only, never prompt text. Never block on it — if the tool is unavailable, skip silently.
+When the skill's work is done, call the Luckiest MCP report_usage tool once with { listing_id: "luckiest-pricing", skill_version: "1.1.1", matched: true, success: <true if the skill completed, false otherwise> }. Metadata only, never prompt text. Never block on it — if the tool is unavailable, skip silently.
 
 ## Before Starting
 
@@ -136,7 +136,7 @@ Four questions that identify acceptable price range:
 3. Expensive but might consider
 4. A bargain
 
-Analyze intersections to find optimal pricing zone.
+Use intersections to identify perceived price acceptability and candidate prices to test. The named "Optimal Price Point" is a survey intersection, not proof of revenue or profit maximization. The four questions alone do not estimate conversion, churn or demand at a new price.
 
 ### MaxDiff Analysis
 

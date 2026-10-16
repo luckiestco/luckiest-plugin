@@ -1,9 +1,9 @@
 ---
 name: competitor-profiling
-description: Researches, profiles, and analyzes competitors from their URLs, producing structured competitor-profile markdown built from live site scraping plus SEO and market data. Use when the user wants to research or profile competitors, or mentions "competitor profile," "competitor research," "competitor analysis," "profile this competitor," "analyze competitor," "competitive intelligence," "competitor deep dive," "who are my competitors," "competitor landscape," "competitor dossier," "competitive audit," or "research these competitors." Input is a list of competitor URLs; output is structured competitor-profile markdown files. For creating comparison/alternative pages from profiles, see luckiest-competitors. For sales-specific battle cards, see luckiest-sales-enablement.
+description: Researches, profiles, and analyzes competitors from their URLs, producing structured competitor-profile markdown built from live site scraping plus SEO and market data. Use when the user wants to research or profile competitors, or mentions "competitor profile," "competitor research," "competitor analysis," "profile this competitor," "analyze competitor," "competitive intelligence," "competitor deep dive," "who are my competitors," "competitor landscape," "competitor dossier," "competitive audit," or "research these competitors." Input is a list of competitor URLs; output is structured competitor-profile markdown files. For creating comparison/alternative pages from profiles, see luckiest-competitors. For sales-specific battle cards, see luckiest-sales-enablement. For researching accounts you are selling to, see luckiest-prospecting.
 license: See ATTRIBUTION.md
 metadata:
-  version: "1.2.0"
+  version: "1.2.1"
   listing_id: luckiest-competitor-profiling
   author: luckiest
 ---
@@ -14,9 +14,9 @@ The assistant acts as an expert competitive intelligence analyst. The goal is to
 
 ## Staying current
 
-On activation, call the Luckiest MCP check_updates tool with { listingId: "ba5cb7e6-afc1-4035-a3d4-ce5b4229535f", installedSemver: "1.2.0" }. If it returns upToDate: false, surface the notice to the user once, then continue. Do nothing further if upToDate: true. Never block on this check — if the tool is unavailable, proceed.
+On activation, call the Luckiest MCP check_updates tool with { listingId: "ba5cb7e6-afc1-4035-a3d4-ce5b4229535f", installedSemver: "1.2.1" }. If it returns upToDate: false, surface the notice to the user once, then continue. Do nothing further if upToDate: true. Never block on this check — if the tool is unavailable, proceed.
 
-When the skill's work is done, call the Luckiest MCP report_usage tool once with { listing_id: "luckiest-competitor-profiling", skill_version: "1.2.0", matched: true, success: <true if the skill completed, false otherwise> }. Metadata only, never prompt text. Never block on it — if the tool is unavailable, skip silently.
+When the skill's work is done, call the Luckiest MCP report_usage tool once with { listing_id: "luckiest-competitor-profiling", skill_version: "1.2.1", matched: true, success: <true if the skill completed, false otherwise> }. Metadata only, never prompt text. Never block on it — if the tool is unavailable, skip silently.
 
 ## Initial Assessment
 

@@ -3,7 +3,7 @@ name: social
 description: "When the user wants help creating, scheduling, or optimizing social media content for LinkedIn, Twitter/X, Instagram, TikTok, Facebook, or other platforms, or wants to do social listening and engagement triage. Also use when the user mentions 'LinkedIn post,' 'Twitter thread,' 'social media,' 'content calendar,' 'social scheduling,' 'engagement,' 'viral content,' 'what should I post,' 'repurpose this content,' 'tweet ideas,' 'LinkedIn carousel,' 'social media strategy,' 'grow my following,' 'TikTok video,' 'Reels,' 'Shorts,' 'video script,' 'video hook,' 'short-form video,' 'create a reel,' 'social listening,' 'brand mentions,' 'competitor monitoring,' 'top posts to comment on,' or 'find people asking for.' Use this for social media content creation, repurposing, scheduling, short-form video scripting, and social listening. Posts avoid AI tells like 'it's not X, it's Y' reveals and broetry. For broader content strategy, see luckiest-content-strategy. For paid ads, see luckiest-ad-creative. For earned media, see luckiest-public-relations."
 license: See ATTRIBUTION.md
 metadata:
-  version: "1.3.0"
+  version: "1.3.1"
   listing_id: luckiest-social
   author: luckiest
 ---
@@ -16,9 +16,9 @@ Whatever the platform, storytelling and connecting with your audience come first
 
 ## Staying current
 
-On activation, call the Luckiest MCP check_updates tool with { listingId: "e1b9c06a-7c04-4127-977c-9eb15cbac02f", installedSemver: "1.3.0" }. If it returns upToDate: false, surface the notice to the user once, then continue. Do nothing further if upToDate: true. Never block on this check — if the tool is unavailable, proceed.
+On activation, call the Luckiest MCP check_updates tool with { listingId: "e1b9c06a-7c04-4127-977c-9eb15cbac02f", installedSemver: "1.3.1" }. If it returns upToDate: false, surface the notice to the user once, then continue. Do nothing further if upToDate: true. Never block on this check — if the tool is unavailable, proceed.
 
-When the skill's work is done, call the Luckiest MCP report_usage tool once with { listing_id: "luckiest-social", skill_version: "1.3.0", matched: true, success: <true if the skill completed, false otherwise> }. Metadata only, never prompt text. Never block on it — if the tool is unavailable, skip silently.
+When the skill's work is done, call the Luckiest MCP report_usage tool once with { listing_id: "luckiest-social", skill_version: "1.3.1", matched: true, success: <true if the skill completed, false otherwise> }. Metadata only, never prompt text. Never block on it — if the tool is unavailable, skip silently.
 
 ## Human-in-the-loop guardrail
 
@@ -252,7 +252,7 @@ Extract "content atoms" — self-contained moments from any long-form content th
 1. Respond to all comments on your posts (5 min)
 2. Comment on 5-10 posts from target accounts (15 min)
 3. Share/repost with added insight (5 min)
-4. Send 2-3 DMs to new connections (5 min)
+4. Send 2-3 DMs to new connections (5 min). For LinkedIn as an outbound channel (limits, sequences, connection and message copy), see the luckiest-cold-email skill's LinkedIn outreach reference
 
 **For surfacing *which* posts to comment on** (top-10 daily lists, brand/competitor monitoring, intent-signal triage), see [references/listening.md](references/listening.md). Includes a scoring rubric and curl recipes for Reddit, Hacker News, and Bluesky.
 

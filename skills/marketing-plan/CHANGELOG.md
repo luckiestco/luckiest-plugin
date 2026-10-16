@@ -1,5 +1,10 @@
 # Changelog — luckiest-marketing-plan
 
+## 1.2.1 — 2026-10-16
+From coreyhaines31/marketingskills at 1efedbc (issue #174, MIT).
+
+- Budget formula corrected: retain the starting base first, then size new customers on retained ARR (the old formula undercounted by ignoring base churn; worked example now $225.5K, not $200K).
+
 ## 1.2.0 — 2026-10-08
 Upstream sync with coreyhaines31/marketingskills dda3841 (issue #112).
 

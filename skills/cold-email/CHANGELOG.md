@@ -1,5 +1,12 @@
 # Changelog — luckiest-cold-email
 
+## 1.3.0 — 2026-10-16
+From coreyhaines31/marketingskills at 1efedbc (issue #174, MIT).
+
+- New references: deliverability, LinkedIn outreach, multichannel cadence, outbound plays, reply handling. Sending setup (secondary domains, list verification, tracking off) folded into Deliverability; reply classification folded into Handling the Reply; new Beyond Email section.
+- Benchmarks: vendor-sourced ranges, reply rate ~3.4% average, drop open rate as a metric; personalization with AI section.
+- Two new evals. Skipped upstream's tools-registry table.
+
 ## 1.2.0 — 2026-10-08
 Upstream sync with coreyhaines31/marketingskills dda3841 (issue #112).
 

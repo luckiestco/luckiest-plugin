@@ -40,6 +40,8 @@ ENRICH_LIMITS = {
     "deep": 10,
 }
 
+DISCOVERY_LIMITS = {"quick": 20, "default": 40, "deep": 60}
+
 
 def _log(msg: str):
     log.source_log("HN", msg, tty_only=False)
@@ -145,6 +147,47 @@ def search_hackernews(
     return response
 
 
+def fetch_discovery_listings(
+    from_date: str,
+    to_date: str,
+    depth: str = "default",
+) -> Dict[str, Any]:
+    """Fetch topic-less HN front-page and best-in-window story listings."""
+    limit = DISCOVERY_LIMITS.get(depth, DISCOVERY_LIMITS["default"])
+    from_ts = _date_to_unix(from_date)
+    to_ts = _date_to_unix(to_date) + 86400
+    from urllib.parse import urlencode
+
+    urls = [
+        f"{ALGOLIA_SEARCH_URL}?{urlencode({'tags': 'front_page', 'hitsPerPage': str(limit)})}",
+        f"{ALGOLIA_SEARCH_URL}?{urlencode({
+            'tags': 'story',
+            'numericFilters': f'created_at_i>{from_ts},created_at_i<{to_ts}',
+            'hitsPerPage': str(limit),
+        })}",
+    ]
+    hits: list[dict[str, Any]] = []
+    errors: list[str] = []
+    for url in urls:
+        try:
+            response = http.request("GET", url, timeout=30)
+            hits.extend(response.get("hits") or [])
+        except Exception as exc:
+            errors.append(str(exc))
+
+    seen: set[str] = set()
+    unique_hits: list[dict[str, Any]] = []
+    for hit in hits:
+        object_id = str(hit.get("objectID") or "")
+        if not object_id or object_id in seen:
+            continue
+        seen.add(object_id)
+        unique_hits.append(hit)
+
+    items = parse_hackernews_response({"hits": unique_hits}, query="")
+    return {"items": items, "errors": errors}
+
+
 _WORD_BOUNDARY_RE_CACHE: Dict[str, "re.Pattern[str]"] = {}
 
 
@@ -232,7 +275,7 @@ def parse_hackernews_response(response: Dict[str, Any], query: str = "") -> List
 
         # Article URL vs HN discussion URL
         article_url = hit.get("url") or ""
-        hn_url = f"https://news.ycombinator.com/item?id={object_id}"
+        hn_url = _hn_item_url(object_id)
 
         # Relevance: blend Algolia rank with token-overlap content matching
         rank_score = max(0.3, 1.0 - (i * 0.02))  # 1.0 -> 0.3 over 35 items
@@ -259,6 +302,11 @@ def parse_hackernews_response(response: Dict[str, Any], query: str = "") -> List
         })
 
     return items
+
+
+def _hn_item_url(item_id: Any) -> str:
+    """HN discussion/comment permalink for an item id."""
+    return f"https://news.ycombinator.com/item?id={item_id}"
 
 
 def _fetch_item_comments(object_id: str, max_comments: int = 5) -> Dict[str, Any]:
@@ -290,13 +338,18 @@ def _fetch_item_comments(object_id: str, max_comments: int = 5) -> Dict[str, Any
 
     comments = []
     insights = []
+    # A quote links to where it was said: the comment's own permalink, else the
+    # story's discussion page -- never the article URL.
+    discussion_url = _hn_item_url(object_id)
     for c in real_comments[:max_comments]:
         text = _strip_html(c.get("text", ""))
         excerpt = text[:300] + "..." if len(text) > 300 else text
+        comment_id = c.get("id")
         comments.append({
             "author": c.get("author", ""),
             "text": excerpt,
-            "points": c.get("points") or 0,
+            "points": c.get("points"),
+            "url": _hn_item_url(comment_id) if comment_id else discussion_url,
         })
         # First sentence as insight
         first_sentence = text.split(". ")[0].split("\n")[0][:200]
@@ -327,7 +380,7 @@ def enrich_top_stories(
     # Sort by points to enrich the most popular stories
     by_points = sorted(
         range(len(items)),
-        key=lambda i: items[i].get("engagement", {}).get("points", 0),
+        key=lambda i: items[i].get("engagement", {}).get("points") or 0,
         reverse=True,
     )
     to_enrich = by_points[:limit]
@@ -335,8 +388,12 @@ def enrich_top_stories(
     _log(f"Enriching top {len(to_enrich)} stories with comments")
 
     with ThreadPoolExecutor(max_workers=5) as executor:
+        # submit_with_context, not executor.submit: a plain submit drops the
+        # pipeline's capture_failures() sink, so failed or rate-limited item
+        # fetches would vanish and the HN source would look fully enriched.
         futures = {
-            executor.submit(
+            http.submit_with_context(
+                executor,
                 _fetch_item_comments,
                 items[idx]["id"],
             ): idx

@@ -1,3 +1,7 @@
+## 0.1.47 — 2026-10-15 (npm luckiest-co 1.0.48)
+- Video studio 1.19.0: a new Continuous Product Flight style, one camera flight around one product with speed ramps timed to the music, side captions and callouts. Built for collectible and premium product reveals.
+- 34 skills caught up with their upstream sources (reviews #174 to #180): trends runs on the last30days 3.28.0 engine; 27 marketing skills get the newer marketingskills playbooks and references (cold email, prospecting, SEO audit, referrals, pricing and more); brainstorm and coder brainstorming, debugging, code review and subagent skills get superpowers v7.0.0 fixes; video studio motion is 1.3.1.
+
 ## 0.1.46 — 2026-10-15 (npm luckiest-co 1.0.47)
 - Video studio 1.18.0: a new check compares the last frame of each logo scene with the real logo file and fails the render if the ending logo is wrong.
 

@@ -1,5 +1,10 @@
 # Changelog — luckiest-pricing
 
+## 1.1.1 — 2026-10-16
+From coreyhaines31/marketingskills at 1efedbc (issue #174, MIT).
+
+- Van Westendorp output now gives candidate test prices, not an "optimal zone", and says it does not measure demand or churn impact.
+
 ## 1.1.0 — 2026-07-06
 Skill updater pass: analytics integration.
 

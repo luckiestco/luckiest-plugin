@@ -1,5 +1,15 @@
 # Changelog — luckiest-coder-brainstorming
 
+## 1.4.0 — 2026-10-16
+
+- Rebuilt-brainstorming ideas from obra/superpowers at bb92a77 (v7.0.0, MIT): first message offers to skip the questions and opens with one open question, open questions before any menu, defaults said out loud, throwaway spikes with a gate exception, a builder-check subagent (`builder-check-prompt.md`) in place of the spec self-review, and a Red Flags table. Removed the unused `spec-document-reviewer-prompt.md`.
+- Visual companion server: content containing `$&` or `$'` no longer corrupts the page (function replacement).
+
+## 1.3.0 — 2026-10-12
+- Explore step runs the `luckiest-coder-components` lookup when the work involves
+  UI components, so reusable matches shape the proposed approaches.
+- `check_updates` and `report_usage` -> 1.3.0.
+
 ## 1.2.0 — 2026-09-22
 Practices adopted from BuilderOS, Compound Engineering, and firstmate.
 

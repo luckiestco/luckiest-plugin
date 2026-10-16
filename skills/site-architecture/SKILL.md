@@ -1,9 +1,9 @@
 ---
 name: site-architecture
-description: When the user wants to plan, map, or restructure their website's page hierarchy, navigation, URL structure, or internal linking. Also use when the user mentions "sitemap," "site map," "visual sitemap," "site structure," "page hierarchy," "information architecture," "IA," "navigation design," "URL structure," "breadcrumbs," "internal linking strategy," "website planning," "what pages do I need," "how should I organize my site," "site navigation," "redirect map," "AEO," or "how AI search finds my pages." Use this whenever someone is planning what pages a website should have and how they connect. NOT for XML sitemaps (that's technical SEO — see luckiest-seo-audit). For SEO audits, see luckiest-seo-audit. For structured data, see luckiest-schema.
+description: When the user wants to plan, map, or restructure their website's page hierarchy, navigation, URL structure, or internal linking. Also use when the user mentions "sitemap," "site map," "visual sitemap," "site structure," "page hierarchy," "information architecture," "IA," "navigation design," "URL structure," "breadcrumbs," "internal linking strategy," "website planning," "what pages do I need," "how should I organize my site," "site navigation," "redirect map," "AEO," "how AI search finds my pages," "which website builder should I use," "migrate my website," or "add a blog to my existing site." Use this whenever someone is planning what pages a website should have, how they connect, and where to build them. NOT for XML sitemaps (that's technical SEO — see luckiest-seo-audit). For SEO audits, see luckiest-seo-audit. For structured data, see luckiest-schema.
 license: See ATTRIBUTION.md
 metadata:
-  version: "1.1.0"
+  version: "1.2.0"
   listing_id: luckiest-site-architecture
   author: luckiest
 ---
@@ -14,9 +14,9 @@ This skill acts as an information architecture expert. Its goal is to help plan 
 
 ## Staying current
 
-On activation, call the Luckiest MCP check_updates tool with { listingId: "7a564054-6046-49dc-a0f4-cdf766496716", installedSemver: "1.1.0" }. If it returns upToDate: false, surface the notice to the user once, then continue. Do nothing further if upToDate: true. Never block on this check — if the tool is unavailable, proceed.
+On activation, call the Luckiest MCP check_updates tool with { listingId: "7a564054-6046-49dc-a0f4-cdf766496716", installedSemver: "1.2.0" }. If it returns upToDate: false, surface the notice to the user once, then continue. Do nothing further if upToDate: true. Never block on this check — if the tool is unavailable, proceed.
 
-When the skill's work is done, call the Luckiest MCP report_usage tool once with { listing_id: "luckiest-site-architecture", skill_version: "1.1.0", matched: true, success: <true if the skill completed, false otherwise> }. Metadata only, never prompt text. Never block on it — if the tool is unavailable, skip silently.
+When the skill's work is done, call the Luckiest MCP report_usage tool once with { listing_id: "luckiest-site-architecture", skill_version: "1.2.0", matched: true, success: <true if the skill completed, false otherwise> }. Metadata only, never prompt text. Never block on it — if the tool is unavailable, skip silently.
 
 ## Before Planning
 
@@ -34,6 +34,7 @@ Gather this context (ask if not provided):
 - New site or restructuring an existing one?
 - If restructuring: what's broken? (high bounce, poor SEO, users can't find things)
 - Existing URLs that must be preserved (for redirects)?
+- What platform is it on, and is a platform change on the table? (For choosing a platform, adding a section to an existing site, or migrating, see [references/platforms-and-migration.md](references/platforms-and-migration.md).)
 
 ### 3. Site Type
 - SaaS marketing site

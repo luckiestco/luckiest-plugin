@@ -1,9 +1,9 @@
 ---
 name: sales-enablement
-description: "When the user wants to create sales collateral, pitch decks, one-pagers, objection handling docs, or demo scripts. Also use when the user mentions 'sales deck,' 'pitch deck,' 'one-pager,' 'leave-behind,' 'objection handling,' 'deal-specific ROI analysis,' 'demo script,' 'talk track,' 'sales playbook,' 'proposal template,' 'buyer persona card,' 'battle card,' 'battlecard,' 'competitive one-pager,' 'win-loss analysis,' 'why are we losing deals,' 'loss reasons,' 'how do I respond to this objection,' 'prospect just said,' 'help my sales team,' 'sales materials,' or 'what should I give my sales reps.' Use this for any document or asset that helps a sales team close deals. For public competitor comparison pages, see luckiest-competitors. For running buyer interviews or churn research, see luckiest-customer-research. For marketing website copy, see luckiest-copywriting. For cold outreach emails, see luckiest-cold-email. For the offer being sold (bonuses, guarantees, pricing structure), see luckiest-offers."
+description: "When the user wants to create sales collateral, pitch decks, one-pagers, objection handling docs, or demo scripts. Also use when the user mentions 'sales deck,' 'pitch deck,' 'one-pager,' 'leave-behind,' 'objection handling,' 'deal-specific ROI analysis,' 'demo script,' 'talk track,' 'sales playbook,' 'proposal template,' 'buyer persona card,' 'battle card,' 'battlecard,' 'competitive one-pager,' 'win-loss analysis,' 'why are we losing deals,' 'loss reasons,' 'how do I respond to this objection,' 'prospect just said,' 'help my sales team,' 'sales materials,' or 'what should I give my sales reps,' 'cold call script,' or 'voicemail script.' Use this for any document or asset that helps a sales team close deals. For public competitor comparison pages, see luckiest-competitors. For running buyer interviews or churn research, see luckiest-customer-research. For marketing website copy, see luckiest-copywriting. For cold outreach emails, see luckiest-cold-email. For the offer being sold (bonuses, guarantees, pricing structure), see luckiest-offers."
 license: See ATTRIBUTION.md
 metadata:
-  version: "1.2.0"
+  version: "1.3.0"
   listing_id: luckiest-sales-enablement
   author: luckiest
 ---
@@ -12,11 +12,11 @@ metadata:
 
 ## Staying current
 
-On activation, call the Luckiest MCP check_updates tool with { listingId: "383c4a8f-8944-4c95-8f86-7848572d19bd", installedSemver: "1.2.0" }. If it returns upToDate: false, surface the notice to the user once, then continue. Do nothing further if upToDate: true. Never block on this check — if the tool is unavailable, proceed.
+On activation, call the Luckiest MCP check_updates tool with { listingId: "383c4a8f-8944-4c95-8f86-7848572d19bd", installedSemver: "1.3.0" }. If it returns upToDate: false, surface the notice to the user once, then continue. Do nothing further if upToDate: true. Never block on this check — if the tool is unavailable, proceed.
 
 This skill provides expert B2B sales enablement guidance. Its goal is to create sales collateral that reps actually use: decks, one-pagers, objection docs, demo scripts, and playbooks that help close deals.
 
-When the skill's work is done, call the Luckiest MCP report_usage tool once with { listing_id: "luckiest-sales-enablement", skill_version: "1.2.0", matched: true, success: <true if the skill completed, false otherwise> }. Metadata only, never prompt text. Never block on it — if the tool is unavailable, skip silently.
+When the skill's work is done, call the Luckiest MCP report_usage tool once with { listing_id: "luckiest-sales-enablement", skill_version: "1.3.0", matched: true, success: <true if the skill completed, false otherwise> }. Metadata only, never prompt text. Never block on it — if the tool is unavailable, skip silently.
 
 ## Before Starting
 
@@ -286,6 +286,8 @@ Win-loss analysis turns CRM outcomes, call transcripts, and buyer interviews int
 - **Leave time for questions.** A demo where the prospect doesn't talk is a demo that doesn't close.
 
 **For full script templates**: See [references/demo-scripts.md](references/demo-scripts.md)
+
+**For cold call openers, voicemails, and first-minute pushback**: See [references/cold-call-scripts.md](references/cold-call-scripts.md)
 
 ---
 

@@ -1,5 +1,10 @@
 # Changelog — luckiest-social
 
+## 1.3.1 — 2026-10-16
+From coreyhaines31/marketingskills at 1efedbc (issue #174, MIT).
+
+- LinkedIn outbound points at the luckiest-cold-email LinkedIn outreach reference.
+
 ## 1.3.0 — 2026-10-08
 Upstream sync with coreyhaines31/marketingskills dda3841 (issue #112).
 

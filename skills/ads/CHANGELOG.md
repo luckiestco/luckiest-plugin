@@ -1,5 +1,10 @@
 # Changelog — luckiest-ads
 
+## 1.2.1 — 2026-10-16
+From coreyhaines31/marketingskills at 1efedbc (issue #174, MIT).
+
+- Description points outbound to target accounts at luckiest-cold-email.
+
 ## 1.2.0 — 2026-10-08
 Upstream sync with coreyhaines31/marketingskills dda3841 (issue #112).
 

@@ -3,7 +3,7 @@ name: copy-editing
 description: "When the user wants to edit, review, or improve existing marketing copy, or refresh outdated content. Also use when the user mentions 'edit this copy,' 'review my copy,' 'copy feedback,' 'proofread,' 'polish this,' 'make this better,' 'copy sweep,' 'tighten this up,' 'this reads awkwardly,' 'clean up this text,' 'too wordy,' 'sharpen the messaging,' 'refresh this content,' 'update this page,' 'this content is outdated,' or 'content audit,' 'this sounds like AI,' 'AI slop,' 'de-slop this,' or 'make it sound human.' Use this when the user already has copy and wants it improved or refreshed rather than rewritten from scratch. For writing new copy, see luckiest-copywriting."
 license: See ATTRIBUTION.md
 metadata:
-  version: "1.2.0"
+  version: "1.2.1"
   listing_id: luckiest-copy-editing
   author: luckiest
 ---
@@ -14,9 +14,9 @@ This skill acts as an expert copy editor specializing in marketing and conversio
 
 ## Staying current
 
-On activation, call the Luckiest MCP check_updates tool with { listingId: "8f895dc3-9d85-4b40-9c80-2b1d396bc579", installedSemver: "1.2.0" }. If it returns upToDate: false, surface the notice to the user once, then continue. Do nothing further if upToDate: true. Never block on this check — if the tool is unavailable, proceed.
+On activation, call the Luckiest MCP check_updates tool with { listingId: "8f895dc3-9d85-4b40-9c80-2b1d396bc579", installedSemver: "1.2.1" }. If it returns upToDate: false, surface the notice to the user once, then continue. Do nothing further if upToDate: true. Never block on this check — if the tool is unavailable, proceed.
 
-When the skill's work is done, call the Luckiest MCP report_usage tool once with { listing_id: "luckiest-copy-editing", skill_version: "1.2.0", matched: true, success: <true if the skill completed, false otherwise> }. Metadata only, never prompt text. Never block on it — if the tool is unavailable, skip silently.
+When the skill's work is done, call the Luckiest MCP report_usage tool once with { listing_id: "luckiest-copy-editing", skill_version: "1.2.1", matched: true, success: <true if the skill completed, false otherwise> }. Metadata only, never prompt text. Never block on it — if the tool is unavailable, skip silently.
 
 ## Core Philosophy
 
@@ -475,7 +475,7 @@ This iterative process ensures each edit doesn't create new problems while respe
 ## References
 
 - [Plain English Alternatives](references/plain-english-alternatives.md): Replace complex words with simpler alternatives
-- [Content Refresh](references/content-refresh.md): Full checklist, refresh vs. rewrite matrix, and cadence guide
+- [Content Refresh](references/content-refresh.md): SERP gap analysis, full checklist, refresh vs. rewrite matrix, and cadence guide
 - [Copy Editing Checklist](references/checklist.md): Full QA checklist across all seven sweeps plus the AI-tell check
 
 ---
@@ -484,7 +484,7 @@ This iterative process ensures each edit doesn't create new problems while respe
 
 Copy editing isn't just for new content. Existing pages decay over time — outdated stats, stale examples, and drifted brand voice. Use the content refresh framework when traffic is declining, data is stale, or the product has changed.
 
-**For the full refresh checklist, refresh vs. rewrite decision matrix, and cadence guide**: See [references/content-refresh.md](references/content-refresh.md)
+**For the SERP gap analysis, full refresh checklist, refresh vs. rewrite decision matrix, and cadence guide**: See [references/content-refresh.md](references/content-refresh.md)
 
 ---
 

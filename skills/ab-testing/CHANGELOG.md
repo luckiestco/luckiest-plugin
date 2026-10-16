@@ -1,5 +1,10 @@
 # Changelog — luckiest-ab-testing
 
+## 1.1.1 — 2026-10-16
+From coreyhaines31/marketingskills at 1efedbc (issue #174, MIT).
+
+- Corrected statistics wording: what a p-value, significance level and confidence interval do and do not mean (ASA guidance), and result actions that check effect size, guardrails and the planned stopping rule. Evals updated to match.
+
 ## 1.1.0 — 2026-07-06
 Skill updater pass: analytics integration.
 

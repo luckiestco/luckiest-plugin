@@ -1,5 +1,9 @@
 # Changelog — luckiest-video-studio
 
+## 1.19.0 — 2026-10-15
+
+- New motion-design style card `product-flight` (Continuous Product Flight): one camera flight around one hero object, speed ramps between stops on downbeats, side captions, glass callouts with pointer lines, one procedural VFX peak. Distilled from the approved PSA slab film and its review corrections. Offered for collectible and single premium product reveals. 39 styles.
+
 ## 1.18.0 — 2026-10-13
 
 - New QA gate `node qa.mjs logo <run-dir> [--svg path] [--max 8]`: for every logo scene it takes the clip's last frame, finds the mark's box, draws the logo SVG (default `brand/logo.svg`) into the same box on the same background with HyperFrames, and fails when they differ. Enforces the "resolve frame equals the master logo" rule in the style cards' Logo construction sections.

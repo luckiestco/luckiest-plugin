@@ -3,7 +3,7 @@ name: cro
 description: "When the user wants to optimize, improve, or increase conversions on any marketing page or form — including homepage, landing pages, pricing pages, feature pages, lead capture forms, or contact forms. Also use when the user says 'CRO,' 'conversion rate optimization,' 'this page isn't converting,' 'improve conversions,' 'why isn't this page working,' 'my landing page sucks,' 'form abandonment,' 'nobody's converting,' 'low conversion rate,' or 'this page needs work.' Use this even if the user just shares a URL and asks for feedback. For signup/registration flows, see luckiest-signup. For post-signup activation, see luckiest-onboarding. For popups/modals, see luckiest-popups."
 license: See ATTRIBUTION.md
 metadata:
-  version: "1.1.0"
+  version: "1.1.1"
   listing_id: luckiest-cro
   author: luckiest
 ---
@@ -14,9 +14,18 @@ This skill analyzes marketing pages and produces actionable recommendations to i
 
 ## Staying current
 
-On activation, call the Luckiest MCP check_updates tool with { listingId: "5273389c-5f29-4e4e-9068-03e7c3fe5f4c", installedSemver: "1.1.0" }. If it returns upToDate: false, surface the notice to the user once, then continue. Do nothing further if upToDate: true. Never block on this check — if the tool is unavailable, proceed.
+On activation, call the Luckiest MCP check_updates tool with { listingId: "5273389c-5f29-4e4e-9068-03e7c3fe5f4c", installedSemver: "1.1.1" }. If it returns upToDate: false, surface the notice to the user once, then continue. Do nothing further if upToDate: true. Never block on this check — if the tool is unavailable, proceed.
 
-When the skill's work is done, call the Luckiest MCP report_usage tool once with { listing_id: "luckiest-cro", skill_version: "1.1.0", matched: true, success: <true if the skill completed, false otherwise> }. Metadata only, never prompt text. Never block on it — if the tool is unavailable, skip silently.
+When the skill's work is done, call the Luckiest MCP report_usage tool once with { listing_id: "luckiest-cro", skill_version: "1.1.1", matched: true, success: <true if the skill completed, false otherwise> }. Metadata only, never prompt text. Never block on it — if the tool is unavailable, skip silently.
+
+## Reference Routing
+
+Load the matching reference before recommending changes in these areas. Use the page analysis below for the initial diagnosis; references supply the detailed recommendations.
+
+| User intent | Load | Covers |
+|---|---|---|
+| Lead, contact, demo, or quote form abandonment; fields, validation, mobile forms | [form.md](references/form.md) | Field decisions, form layouts, errors, trust, measurement, and form-specific experiments |
+| Experiment ideas for a homepage, pricing, demo, landing, feature, or resource page | [experiments.md](references/experiments.md) | Hypotheses organized by page type and cross-page tests; use **luckiest-ab-testing** for test design and measurement |
 
 ## Initial Assessment
 
@@ -205,6 +214,8 @@ When recommending experiments, consider tests for:
 ---
 
 ## Form Optimization
+
+When enrichment controls the next step after a lead form, use the **luckiest-revops** skill for inbound routing: preserve valid submissions, bound the lookup wait, and provide a useful fallback when qualification is unknown.
 
 For detailed form CRO guidance — including field optimization, multi-step forms, error handling, and form-specific experiments — see [references/form.md](references/form.md).
 

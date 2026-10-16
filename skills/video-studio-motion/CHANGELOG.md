@@ -1,5 +1,9 @@
 # Changelog — luckiest-video-studio-motion
 
+## 1.3.1 — 2026-10-16
+
+- Transform rule now covers shadows (`drop-shadow` over `box-shadow`), tweening transforms directly instead of an inherited CSS variable, and no `transition: all`. From emilkowalski/skills animation-performance at 2d22863 (MIT).
+
 ## 1.3.0 — 2026-10-12
 
 - Camera as punctuation: three questions before each move, a move table (slow push, pull, glide, snap, whip, slam), accents at most a third of shots, no three push-ins in a row, enter slow and exit fast, reveals landed on beats or words (from huashu-art-motion, MIT).

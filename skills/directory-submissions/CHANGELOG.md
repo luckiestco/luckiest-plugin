@@ -1,5 +1,10 @@
 # Changelog — luckiest-directory-submissions
 
+## 1.2.1 — 2026-10-16
+From coreyhaines31/marketingskills at 1efedbc (issue #174, MIT).
+
+- Backlink check inspects the actual anchor's `href` and `rel` in HTML (not `curl -I` headers); records unqualified, missing or unverified. One updated eval.
+
 ## 1.2.0 — 2026-10-08
 Upstream sync with coreyhaines31/marketingskills dda3841 (issue #112).
 
