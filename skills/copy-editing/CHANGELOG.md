@@ -1,5 +1,10 @@
 # Changelog — luckiest-copy-editing
 
+## 1.2.1 — 2026-10-16
+From coreyhaines31/marketingskills at 1efedbc (issue #174, MIT).
+
+- Content refresh starts with a SERP gap grid (expected, common, distinctive, uncovered) and keeps the URL, anchors and voice.
+
 ## 1.2.0 — 2026-10-08
 Upstream sync with coreyhaines31/marketingskills dda3841 (issue #112).
 

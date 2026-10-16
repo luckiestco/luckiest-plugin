@@ -1,5 +1,25 @@
 # Changelog — luckiest-trends
 
+## 1.2.0 — 2026-10-16
+Engine resync to upstream mvanhorn/last30days-skill 3.28.0 at 50998cd (MIT). Our engine was an older snapshot than the 5103ba4 pin, so this brings in everything up to 3.28.0, not only the 87 commits in #179.
+
+### Security fixes from upstream
+- Credentials are stripped from direct-request redirects.
+- The hosted API must be https, and local state files are owner-only.
+- Provider endpoint overrides and loopback proxy routing are guarded.
+- Browser cookie discovery needs durable consent, cookie pairs must be complete, and denied cookie access is reported.
+- X research via Grok runs behind an audited tool boundary.
+
+### New in the engine
+- Sources: dev.to (keyless, opt-in), Stocktwits, Amazon, Meta ad library and Telegram (via ScrapeCreators), Dripstack, a local document corpus, Bright Data pipelines (only with its CLI installed), and the official X API (`X_BEARER_TOKEN`).
+- Extra X cookie lookups on Linux and Mac mini hosts only (agentcookie CLI, or live Chrome over a debugging port with consent). A plain MacBook never runs them.
+- `doctor`, research library, watchlist spend accounting, freshness checks, and many ranking, date-window and reporting fixes.
+
+### Skill
+- `references/` now carries upstream's per-stage instruction files; `engine-contract.md` is the 3.28.0 contract.
+- "What this skill can access" updated for the new cookie paths, local files, and CLIs, with current code lines.
+- Brand strings in the badge, report titles and HTML strip rule reapplied. Dropped `scripts/lib/reddit_rss.py` (removed upstream, unused).
+
 ## 1.1.1 — 2026-10-10
 - Security disclosure: new "What this skill can access" section listing browser cookies (opt-in, off by default), Keychain (only `last30days-*` items), API key sources, network, and installs, each with the code line that enforces it. No behavior change. SkillSpector rates this CAUTION (needed and disclosed), not a defect.
 

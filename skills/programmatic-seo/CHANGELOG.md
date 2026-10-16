@@ -1,5 +1,10 @@
 # Changelog — luckiest-programmatic-seo
 
+## 1.2.0 — 2026-10-16
+From coreyhaines31/marketingskills at 1efedbc (issue #174, MIT).
+
+- New implementation-platforms reference (which CMS or builder fits programmatic pages). Partner plug removed.
+
 ## 1.1.0 — 2026-07-06
 Skill updater pass: analytics integration.
 

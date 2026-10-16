@@ -1,5 +1,10 @@
 # Changelog — luckiest-revops
 
+## 1.2.0 — 2026-10-16
+From coreyhaines31/marketingskills at 1efedbc (issue #174, MIT).
+
+- New inbound-routing reference (enrich-then-route after a form with a bounded wait and fallback). Outbound pipeline stages. Attio replaces Clearbit in the tools table.
+
 ## 1.1.0 — 2026-07-06
 Skill updater pass: analytics integration.
 

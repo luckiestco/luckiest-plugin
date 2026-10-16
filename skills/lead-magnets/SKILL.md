@@ -1,9 +1,9 @@
 ---
 name: lead-magnets
-description: When the user wants to create, plan, or optimize a lead magnet for email capture or lead generation. Also use when the user mentions "lead magnet," "gated content," "content upgrade," "downloadable," "ebook," "cheat sheet," "checklist," "template download," "opt-in," "freebie," "PDF download," "resource library," "content offer," "email capture content," "Notion template," "spreadsheet template," or "what should I give away for emails." Use this for planning what to create and how to distribute it. For interactive tools as lead magnets, see luckiest-free-tools. For writing the actual content, see luckiest-copywriting. For the email sequence after capture, see luckiest-emails.
+description: When the user wants to create, plan, or optimize a lead magnet for email capture or lead generation. Also use when the user mentions "lead magnet," "gated content," "content upgrade," "downloadable," "ebook," "cheat sheet," "checklist," "template download," "opt-in," "freebie," "PDF download," "resource library," "content offer," "email capture content," "Notion template," "spreadsheet template," "what should I give away for emails," "course as a skill," or "package our content as an agent skill." Use this for planning what to create and how to distribute it. For interactive tools as lead magnets, see luckiest-free-tools. For writing the actual content, see luckiest-copywriting. For the email sequence after capture, see luckiest-emails.
 license: See ATTRIBUTION.md
 metadata:
-  version: "1.1.0"
+  version: "1.2.0"
   listing_id: luckiest-lead-magnets
   author: luckiest
 ---
@@ -14,9 +14,9 @@ This skill provides expert guidance on lead magnet strategy. The goal is to help
 
 ## Staying current
 
-On activation, call the Luckiest MCP check_updates tool with { listingId: "5931f4c2-8a69-4709-9e52-ba35d66c41a0", installedSemver: "1.1.0" }. If it returns upToDate: false, surface the notice to the user once, then continue. Do nothing further if upToDate: true. Never block on this check — if the tool is unavailable, proceed.
+On activation, call the Luckiest MCP check_updates tool with { listingId: "5931f4c2-8a69-4709-9e52-ba35d66c41a0", installedSemver: "1.2.0" }. If it returns upToDate: false, surface the notice to the user once, then continue. Do nothing further if upToDate: true. Never block on this check — if the tool is unavailable, proceed.
 
-When the skill's work is done, call the Luckiest MCP report_usage tool once with { listing_id: "luckiest-lead-magnets", skill_version: "1.1.0", matched: true, success: <true if the skill completed, false otherwise> }. Metadata only, never prompt text. Never block on it — if the tool is unavailable, skip silently.
+When the skill's work is done, call the Luckiest MCP report_usage tool once with { listing_id: "luckiest-lead-magnets", skill_version: "1.2.0", matched: true, success: <true if the skill completed, false otherwise> }. Metadata only, never prompt text. Never block on it — if the tool is unavailable, skip silently.
 
 ## Before Planning
 
@@ -99,6 +99,8 @@ Gather this context (ask if not provided):
 | Free trial/community access | Product experience | Varies | Varies |
 
 **For detailed creation guidance per format**: See [references/format-guide.md](references/format-guide.md)
+
+**Agent skills as a lead magnet**: a course, webinar series, podcast, or newsletter archive you own can ship as an installable agent skill. See [references/content-to-skill.md](references/content-to-skill.md) for rights checks, the extraction pilot, source-backed lessons, and release.
 
 ---
 

@@ -1,5 +1,9 @@
 # Changelog — luckiest-coder-debugging
 
+## 1.2.1 — 2026-10-16
+
+- Secret-presence example prints only SET or UNSET and never the value (from obra/superpowers at bb92a77 (v7.0.0, MIT)).
+
 ## 1.2.0 — 2026-09-22
 Practices adopted from BuilderOS, Compound Engineering, and firstmate.
 

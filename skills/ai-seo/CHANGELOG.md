@@ -1,5 +1,12 @@
 # Changelog — luckiest-ai-seo
 
+## 1.3.0 — 2026-10-16
+From coreyhaines31/marketingskills at 1efedbc (issue #174, MIT).
+
+- Reference routing table for the six bundled references.
+- Test queries spread across buyer awareness stages; findings turned into page fixes and a PR target list; Wikipedia and review-site presence asked up front.
+- Related skills: luckiest-lead-magnets.
+
 ## 1.2.0 — 2026-10-08
 Upstream sync with coreyhaines31/marketingskills dda3841 (issue #112).
 

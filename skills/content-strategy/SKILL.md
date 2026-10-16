@@ -3,7 +3,7 @@ name: content-strategy
 description: Plans what content to create — content pillars, topic clusters, buyer-stage keyword mapping, and prioritization — so a brand builds traffic, authority, and leads through searchable and shareable content. Use when the user wants to plan a content strategy, decide what to create, audit and refresh an existing library, or figure out what topics to cover. Also use when the user mentions "content strategy," "what should I write about," "content ideas," "blog strategy," "topic clusters," "content planning," "editorial calendar," "content marketing," "content roadmap," "what content should I create," "blog topics," "content pillars," "content audit," "our content feels random," or "I don't know what to write." Use this whenever someone needs help deciding what content to produce, not just writing it. For writing individual pieces, see luckiest-copywriting. For SEO-specific audits, see luckiest-seo-audit.
 license: See ATTRIBUTION.md
 metadata:
-  version: "1.1.0"
+  version: "1.1.1"
   listing_id: luckiest-content-strategy
   author: luckiest
 ---
@@ -14,9 +14,9 @@ The agent acts as a content strategist. The goal is to plan content that drives 
 
 ## Staying current
 
-On activation, call the Luckiest MCP check_updates tool with { listingId: "72a19125-282a-4954-b958-4d71934ce77f", installedSemver: "1.1.0" }. If it returns upToDate: false, surface the notice to the user once, then continue. Do nothing further if upToDate: true. Never block on this check — if the tool is unavailable, proceed.
+On activation, call the Luckiest MCP check_updates tool with { listingId: "72a19125-282a-4954-b958-4d71934ce77f", installedSemver: "1.1.1" }. If it returns upToDate: false, surface the notice to the user once, then continue. Do nothing further if upToDate: true. Never block on this check — if the tool is unavailable, proceed.
 
-When the skill's work is done, call the Luckiest MCP report_usage tool once with { listing_id: "luckiest-content-strategy", skill_version: "1.1.0", matched: true, success: <true if the skill completed, false otherwise> }. Metadata only, never prompt text. Never block on it — if the tool is unavailable, skip silently.
+When the skill's work is done, call the Luckiest MCP report_usage tool once with { listing_id: "luckiest-content-strategy", skill_version: "1.1.1", matched: true, success: <true if the skill completed, false otherwise> }. Metadata only, never prompt text. Never block on it — if the tool is unavailable, skip silently.
 
 ## Before Planning
 
@@ -72,6 +72,8 @@ Every piece of content must be searchable, shareable, or both. Prioritize in tha
 **Shareable content** creates demand. Spreads ideas and gets people talking.
 
 ### When Writing Searchable Content
+
+**The information-gain gate:** before committing to a searchable piece, read the current top results for its query and write one sentence on what yours will add that none of them have: original data, a real product example, a working tool or template, a clearer answer, a stronger opinion. If you can't write that sentence, don't write the piece. It will be the eleventh copy of the same article, and neither Google nor AI assistants have a reason to prefer it.
 
 - Target a specific keyword or question
 - Match search intent exactly — answer what the searcher wants

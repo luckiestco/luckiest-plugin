@@ -3,7 +3,7 @@ name: ai-seo
 description: "When the user wants to optimize content for AI search engines, get cited by LLMs, or appear in AI-generated answers. Also use when the user mentions 'AI SEO,' 'AEO,' 'GEO,' 'LLMO,' 'answer engine optimization,' 'generative engine optimization,' 'LLM optimization,' 'AI Overviews,' 'optimize for ChatGPT,' 'optimize for Perplexity,' 'AI citations,' 'AI visibility,' 'zero-click search,' 'how do I show up in AI answers,' 'LLM mentions,' 'optimize for Claude/Gemini,' 'llms.txt,' 'AGENTS.md,' 'OKF,' 'Open Knowledge Format,' 'knowledge bundle,' or 'agent-readable site.' Use this whenever someone wants their content to be cited or surfaced by AI assistants and AI search engines. For traditional technical and on-page SEO audits, see luckiest-seo-audit. For structured data implementation, see luckiest-schema."
 license: See ATTRIBUTION.md
 metadata:
-  version: "1.2.0"
+  version: "1.3.0"
   listing_id: luckiest-ai-seo
   author: luckiest
 ---
@@ -14,9 +14,24 @@ This skill provides expertise in AI search optimization — the practice of maki
 
 ## Staying current
 
-On activation, call the Luckiest MCP check_updates tool with { listingId: "658062d1-7ff2-498f-a355-0ed2e2a516fb", installedSemver: "1.2.0" }. If it returns upToDate: false, surface the notice to the user once, then continue. Do nothing further if upToDate: true. Never block on this check — if the tool is unavailable, proceed.
+On activation, call the Luckiest MCP check_updates tool with { listingId: "658062d1-7ff2-498f-a355-0ed2e2a516fb", installedSemver: "1.3.0" }. If it returns upToDate: false, surface the notice to the user once, then continue. Do nothing further if upToDate: true. Never block on this check — if the tool is unavailable, proceed.
 
-When the skill's work is done, call the Luckiest MCP report_usage tool once with { listing_id: "luckiest-ai-seo", skill_version: "1.2.0", matched: true, success: <true if the skill completed, false otherwise> }. Metadata only, never prompt text. Never block on it — if the tool is unavailable, skip silently.
+When the skill's work is done, call the Luckiest MCP report_usage tool once with { listing_id: "luckiest-ai-seo", skill_version: "1.3.0", matched: true, success: <true if the skill completed, false otherwise> }. Metadata only, never prompt text. Never block on it — if the tool is unavailable, skip silently.
+
+## Reference Routing
+
+Start with this skill's core workflow. Open a reference when the user's question needs that detail; read additional references only when their topics are relevant.
+
+| User questions | Local reference |
+|---|---|
+| How should we structure a definition, comparison, or FAQ? What makes an answer block useful on its own? | [Content patterns](references/content-patterns.md) |
+| How does the approach differ for product pages, docs, local businesses, or ecommerce? Which content type should we improve? | [Content types](references/content-types.md) |
+| Should we publish LinkedIn posts, articles, or company-page content? What makes that content discoverable and citable? | [LinkedIn citations](references/linkedin-ai-citations.md) |
+| What belongs in an OKF bundle? Is it an established AI-search requirement or an emerging experiment? | [Open Knowledge Format](references/okf.md) |
+| Where should we start for a particular AI engine? Which search and training crawlers should we distinguish? | [Platform ranking factors](references/platform-ranking-factors.md) |
+| Why does AI describe our positioning incorrectly? How can third-party consensus reinforce a specific use case? | [Positioning and consensus](references/positioning-and-consensus.md) |
+
+Read these bundled files from the installed skill directory. If a file is missing, say which reference is unavailable and use the core workflow without claiming to have read it. For time-sensitive statistics, platform behavior, or tool claims in any reference, check the source date and current primary documentation before making a recommendation.
 
 ## Before Starting
 
@@ -44,6 +59,7 @@ Gather this context (ask if not provided):
 ### 4. Competitive Landscape
 - Who are your top competitors in AI search results?
 - Are they being cited where you're not?
+- Do you have Wikipedia coverage or a presence on review sites?
 
 ---
 
@@ -126,12 +142,11 @@ Test 10-20 of your most important queries across platforms:
 | [query 1] | Yes/No | Yes/No | Yes/No | Yes/No | [who] |
 | [query 2] | Yes/No | Yes/No | Yes/No | Yes/No | [who] |
 
-**Query types to test:**
-- "What is [your product category]?"
-- "Best [product category] for [use case]"
-- "[Your brand] vs [competitor]"
-- "How to [problem your product solves]"
-- "[Your product category] pricing"
+**Query types to test**, spread across buyer awareness stages and written the way people actually type into a chat box:
+- Problem-aware: "How do I [problem your product solves]?"
+- Solution-aware: "What is [your product category]?" / "Best [category] for [use case]"
+- Product-aware: "[Your brand] vs [competitor]" / "Is [your brand] good for [use case]?"
+- Most aware: "[Your brand] pricing" / "Does [your brand] integrate with [tool]?"
 
 Keep the list to prompts that would change revenue. A citation for a glossary question ("what is gross profit?") rarely sells anything. Track prompts like keywords: collapse wording variants of the same intent into one core prompt, then run each several times.
 
@@ -143,6 +158,8 @@ When your competitors get cited and you don't, examine:
 - **Freshness** — Is their content more recently updated?
 - **Schema markup** — Do they have structured data you're missing?
 - **Third-party presence** — Are they cited via Wikipedia, Reddit, review sites?
+
+**Turn findings into work.** If an assistant states something wrong or vague about you, the page that should state that fact isn't saying it plainly; fix that page first. If you're absent, the sources it cites for the prompt are your target list for PR, review sites, and directories.
 
 ### Step 3: Content Extractability Check
 
@@ -488,17 +505,6 @@ For implementation, see the [tools registry](../../tools/REGISTRY.md).
 
 ---
 
-## Task-Specific Questions
-
-1. What are your top 10-20 most important queries?
-2. Have you checked if AI answers exist for those queries today?
-3. Do you have structured data (schema markup) on your site?
-4. What content types do you publish? (Blog, docs, comparisons, etc.)
-5. Are competitors being cited by AI where you're not?
-6. Do you have a Wikipedia page or presence on review sites?
-
----
-
 ## Related Skills
 
 - **luckiest-seo-audit**: For traditional technical and on-page SEO audits
@@ -507,3 +513,4 @@ For implementation, see the [tools registry](../../tools/REGISTRY.md).
 - **luckiest-competitors**: For building comparison pages that get cited
 - **luckiest-programmatic-seo**: For building SEO pages at scale
 - **luckiest-copywriting**: For writing content that's both human-readable and AI-extractable
+- **luckiest-lead-magnets**: For packaging an owned course or content library as an installable agent skill (different from public-site AI visibility)

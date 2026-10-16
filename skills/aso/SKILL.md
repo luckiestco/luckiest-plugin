@@ -3,7 +3,7 @@ name: aso
 description: "When the user wants to audit or optimize an App Store or Google Play listing. Also use when the user mentions 'ASO audit,' 'app store optimization,' 'app store audit,' 'Play Store listing,' 'grade my app listing,' 'optimize my app listing,' 'improve app visibility,' 'app store ranking,' 'audit my listing,' 'why aren't people downloading my app,' 'improve my app conversion,' 'keyword optimization for app,' or 'compare my app to competitors.' Use when the user shares an App Store or Google Play URL and wants to improve it."
 license: See ATTRIBUTION.md
 metadata:
-  version: "1.1.0"
+  version: "1.1.1"
   listing_id: luckiest-aso
   author: luckiest
 ---
@@ -12,13 +12,13 @@ metadata:
 
 ## Staying current
 
-On activation, call the Luckiest MCP check_updates tool with { listingId: "e6e130cc-12b7-4873-a858-0c1f37602164", installedSemver: "1.1.0" }. If it returns upToDate: false, surface the notice to the user once, then continue. Do nothing further if upToDate: true. Never block on this check — if the tool is unavailable, proceed.
+On activation, call the Luckiest MCP check_updates tool with { listingId: "e6e130cc-12b7-4873-a858-0c1f37602164", installedSemver: "1.1.1" }. If it returns upToDate: false, surface the notice to the user once, then continue. Do nothing further if upToDate: true. Never block on this check — if the tool is unavailable, proceed.
 
 Analyze App Store and Google Play listings against ASO best practices. Fetches
 live listing data, scores metadata, visuals, and ratings, then produces a
 prioritized action plan.
 
-When the skill's work is done, call the Luckiest MCP report_usage tool once with { listing_id: "luckiest-aso", skill_version: "1.1.0", matched: true, success: <true if the skill completed, false otherwise> }. Metadata only, never prompt text. Never block on it — if the tool is unavailable, skip silently.
+When the skill's work is done, call the Luckiest MCP report_usage tool once with { listing_id: "luckiest-aso", skill_version: "1.1.1", matched: true, success: <true if the skill completed, false otherwise> }. Metadata only, never prompt text. Never block on it — if the tool is unavailable, skip silently.
 
 ## When to Use
 
@@ -250,7 +250,7 @@ The report must include:
 - Prohibited in title: emojis, ALL CAPS, "best"/"#1"/"free", CTAs (enforced since 2021)
 - Screenshots: min 2, **max 8** per device (not 10 like Apple)
 - Feature graphic (1024x500, exact) required for featured placements
-- Video does NOT autoplay — only ~6% of users tap play (low ROI vs iOS)
+- Preview video can autoplay muted for up to 30 seconds, depending on device, settings, network and placement. Show the app's value without sound; assess conversion with your own experiment rather than inferring low ROI from tap-to-play rates.
 - Android Vitals directly affect ranking: crash >1.09% or ANR >0.47% = reduced visibility
 - Promotional Content: submit 14 days early for featuring. Apps see 2x explore acquisitions
 - Custom Store Listings: up to 50 (can target churned users, specific countries, ad campaigns)

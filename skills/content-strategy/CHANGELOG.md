@@ -1,5 +1,10 @@
 # Changelog — luckiest-content-strategy
 
+## 1.1.1 — 2026-10-16
+From coreyhaines31/marketingskills at 1efedbc (issue #174, MIT).
+
+- Information-gain gate: write one sentence on what a searchable piece adds that the current top results lack, or don't write it.
+
 ## 1.1.0 — 2026-07-06
 Skill updater pass: analytics integration.
 

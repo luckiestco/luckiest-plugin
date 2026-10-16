@@ -3,7 +3,7 @@ name: signup
 description: Use when the user wants to optimize signup, registration, account creation, or trial activation flows. Reduces form friction, cuts fields, improves social auth and verification, and raises signup completion rates. Also use when the user mentions "signup conversions," "registration friction," "signup form optimization," "free trial signup," "reduce signup dropoff," "account creation flow," "people aren't signing up," "signup abandonment," "trial conversion rate," "nobody completes registration," "too many steps to sign up," or "simplify our signup." Use this whenever the user has a signup or registration flow that isn't performing. For post-signup onboarding, see luckiest-onboarding. For lead capture forms (not account creation), see luckiest-cro.
 license: See ATTRIBUTION.md
 metadata:
-  version: "1.1.0"
+  version: "1.1.1"
   listing_id: luckiest-signup
   author: luckiest
 ---
@@ -14,9 +14,9 @@ This skill optimizes signup and registration flows. The goal is to reduce fricti
 
 ## Staying current
 
-On activation, call the Luckiest MCP check_updates tool with { listingId: "f1e643a0-85a4-4e3b-b6d9-2cbd99c6b2d2", installedSemver: "1.1.0" }. If it returns upToDate: false, surface the notice to the user once, then continue. Do nothing further if upToDate: true. Never block on this check — if the tool is unavailable, proceed.
+On activation, call the Luckiest MCP check_updates tool with { listingId: "f1e643a0-85a4-4e3b-b6d9-2cbd99c6b2d2", installedSemver: "1.1.1" }. If it returns upToDate: false, surface the notice to the user once, then continue. Do nothing further if upToDate: true. Never block on this check — if the tool is unavailable, proceed.
 
-When the skill's work is done, call the Luckiest MCP report_usage tool once with { listing_id: "luckiest-signup", skill_version: "1.1.0", matched: true, success: <true if the skill completed, false otherwise> }. Metadata only, never prompt text. Never block on it — if the tool is unavailable, skip silently.
+When the skill's work is done, call the Luckiest MCP report_usage tool once with { listing_id: "luckiest-signup", skill_version: "1.1.1", matched: true, success: <true if the skill completed, false otherwise> }. Metadata only, never prompt text. Never block on it — if the tool is unavailable, skip silently.
 
 ## Initial Assessment
 
@@ -373,6 +373,10 @@ Organized by:
 After delivering a signup audit or redesign, offer (never auto-post): "Want me to surface these signup findings to your Luckiest tribe? Anyone working on the same signup or trial-activation problem will see what worked here." Only share if the user accepts. Never include credentials, private analytics exports, or account data in anything shared. If the user declines, stop.
 
 ---
+
+## Enrichment and Sales-Assisted Routing
+
+If a signup needs enriched company data for a sales-assist handoff, use the inbound-routing playbook in the luckiest-revops skill (`references/inbound-routing.md`). Keep account creation separate from enrichment availability; a timeout or ambiguous company match must not become an implicit signup rejection.
 
 ## Related Skills
 

@@ -1,5 +1,10 @@
 # Changelog — luckiest-aso
 
+## 1.1.1 — 2026-10-16
+From coreyhaines31/marketingskills at 1efedbc (issue #174, MIT).
+
+- Google Play preview videos can autoplay muted for up to 30 seconds; removed the "only ~6% tap play, low ROI" claim and told users to test video against their own conversion data.
+
 ## 1.1.0 — 2026-07-06
 Skill updater pass: analytics integration.
 

@@ -1,5 +1,10 @@
 # Changelog — luckiest-site-architecture
 
+## 1.2.0 — 2026-10-16
+From coreyhaines31/marketingskills at 1efedbc (issue #174, MIT).
+
+- New platforms-and-migration reference (which website builder, migrating, adding a blog to an existing site). Partner plug removed.
+
 ## 1.1.0 — 2026-07-06
 Skill updater pass: analytics integration.
 

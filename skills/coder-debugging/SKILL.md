@@ -3,7 +3,7 @@ name: coder-debugging
 description: Use when hunting the root cause of any bug, test failure, crash, or unexpected behavior — before proposing or attempting a fix. Trigger phrases include "debug this", "why is this failing", "find the root cause", "this test is flaky", "the build broke", "it works sometimes", or "/luckiest-coder-debugging". Enforces a four-phase root-cause-first process (investigate, pattern-match, hypothesize, implement) and blocks symptom fixes.
 license: See ATTRIBUTION.md
 metadata:
-  version: "1.2.0"
+  version: "1.2.1"
   listing_id: luckiest-coder-debugging
   author: luckiest
 ---
@@ -95,11 +95,11 @@ You MUST complete each phase before proceeding to the next.
    ```bash
    # Layer 1: Workflow
    echo "=== Secrets available in workflow: ==="
-   echo "IDENTITY: ${IDENTITY:+SET}${IDENTITY:-UNSET}"
+   echo "IDENTITY: $([ -n "${IDENTITY:-}" ] && echo SET || echo UNSET)"
 
    # Layer 2: Build script
    echo "=== Env vars in build script: ==="
-   env | grep IDENTITY || echo "IDENTITY not in environment"
+   printenv IDENTITY >/dev/null 2>&1 && echo "IDENTITY in environment" || echo "IDENTITY not in environment"
 
    # Layer 3: Signing script
    echo "=== Keychain state: ==="
@@ -315,7 +315,7 @@ From debugging sessions:
 ## Staying current
 
 On activation, call the Luckiest MCP `check_updates` tool with
-`{ listingId: "5b9728f7-04b0-4be9-9962-3453d4a11d9a", installedSemver: "1.2.0" }`.
+`{ listingId: "5b9728f7-04b0-4be9-9962-3453d4a11d9a", installedSemver: "1.2.1" }`.
 If it returns `upToDate: false`, surface the `notice` to the user. Do nothing if `upToDate: true`.
 
-When the skill's work is done, call the Luckiest MCP report_usage tool once with { listing_id: "luckiest-coder-debugging", skill_version: "1.2.0", matched: true, success: <true if the skill completed, false otherwise> }. Metadata only, never prompt text. Never block on it — if the tool is unavailable, skip silently.
+When the skill's work is done, call the Luckiest MCP report_usage tool once with { listing_id: "luckiest-coder-debugging", skill_version: "1.2.1", matched: true, success: <true if the skill completed, false otherwise> }. Metadata only, never prompt text. Never block on it — if the tool is unavailable, skip silently.

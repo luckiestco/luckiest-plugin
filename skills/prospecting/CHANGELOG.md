@@ -1,5 +1,12 @@
 # Changelog — luckiest-prospecting
 
+## 1.3.0 — 2026-10-16
+From coreyhaines31/marketingskills at 1efedbc (issue #174, MIT).
+
+- New references: account research, enrichment playbook, signal plays, sourcing and enrichment.
+- Tool table: Clearbit replaced by FullEnrich, LeadMagic, TheirStack and Apify; MCP support marked. Compliance checklist adds country gating, DNC scrubbing and data-origin notice.
+- Description: verify emails before any sequence, never scrape LinkedIn. Partner plug removed.
+
 ## 1.2.0 — 2026-10-08
 Upstream sync with coreyhaines31/marketingskills dda3841 (issue #112).
 

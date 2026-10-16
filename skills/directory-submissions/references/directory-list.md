@@ -468,10 +468,8 @@ Industry-specific directories. Only submit if your product genuinely fits the ve
 
 ## Verification
 
-After any submission goes live, verify the backlink exists and is dofollow. You can:
+After a submission goes live, follow [Verify the Actual Backlink](../SKILL.md#verify-the-actual-backlink). Inspect the product's destination anchor in fetched HTML or the rendered DOM and record its `href` and `rel` tokens, including `nofollow`, `sponsored`, and `ugc`. HTTP headers or a canonical tag do not establish a backlink. Record missing or inaccessible links separately from observed unqualified links; none guarantees ranking credit.
 
-1. **Manual:** Open the listing, right-click your product link, "Inspect" → check for `rel="nofollow"` or `rel="ugc"`. If absent, the link is dofollow.
-2. **curl:** `curl -sIL https://directory.com/your-listing | grep -i link`
-3. **SEO tools:** Ahrefs Site Explorer → Backlinks → filter by this directory's domain.
+Catalog descriptions and tracker defaults are planning assumptions, not evidence for your particular listing. An SEO tool's backlink report can help find a listing, but verify the current anchor and timestamp the observation before reporting its link type.
 
 **Re-verify quarterly.** Directories sometimes change all outbound links to nofollow without warning — if DR stops moving, check whether your biggest inbound links have silently flipped.

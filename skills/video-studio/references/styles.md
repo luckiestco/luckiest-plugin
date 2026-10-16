@@ -1,6 +1,6 @@
 # Style library
 
-38 visual styles plus 18 era styles, each a card in `styles/`. A style decides the
+39 visual styles plus 18 era styles, each a card in `styles/`. A style decides the
 renderer, texture, motion signature, clock and transition family. The brand still
 decides the colors and faces when it has a design system (art director section 0):
 map the card's palette roles onto the brand palette instead of replacing it.
@@ -28,6 +28,7 @@ map the card's palette roles onto the brand palette instead of replacing it.
 | Hype, gaming, dev tools | `synthwave`, `hud`, `pixel` |
 | Vertical social (9:16) | `variety-show`, `kinetic-type`, `collage` |
 | Logo showcase | `morph`, `liquid`, `bauhaus` |
+| Collectible, single premium product reveal | `product-flight`, `3d-render`, `aurora-glass` |
 
    When all three offers are polished looks, swap the third for one hand-made style
    (`collage`, `cel-boil`, `line-art`, `whiteboard`, `cut-paper`): in 2026 feeds full
@@ -72,6 +73,7 @@ the concept. Brand names in seeds are placeholders: use the real product.
 | [`liquid`](styles/liquid.md) | Liquid Metaball Motion | kinetic-soft | music video packaging, food and drink ads, logo genesis, transition packs | liquid, fluid, metaball, goo, gooey, paint splash, drip, melt, blob, ink flood, liquid transition, logo reveal |
 | [`morph`](styles/morph.md) | Shape Morph Chain | calm-sharp | keynote-grade storytelling, icon sequences, feature walkthroughs, brand reveal built from meaningful symbols | morph, morphing, shape transition, icon morph, shape shifting, one shape becomes another, Apple keynote, visual storytelling, flubber |
 | [`pixel`](styles/pixel.md) | Pixel Art 8-bit | kinetic-sharp | game trailers and attract screens, 8-bit music videos, nostalgic brand marketing, indie game promos | pixel art, 8-bit, 16-bit, retro game, sprite, chiptune, side scroller, CRT, dithering, PICO-8, Aseprite, Minecraft, Terraria |
+| [`product-flight`](styles/product-flight.md) | Continuous Product Flight | calm-sharp | collectible and premium single-object reveals (graded cards, watches, sneakers, devices, bottles), music-timed hero films, launch teasers, 9:16 and 4:5 cutdowns of the same flight | continuous shot, one take, oner, camera flight, fly around, orbit the product, speed ramp, speed ramps, transparent case, clear acrylic, acrylic slab, graded card, PSA slab, collectible, trading card, whatships |
 | [`sticker-explainer`](styles/sticker-explainer.md) | Sticker Knowledge Explainer | calm-sharp | hard-core science explainers, finance and knowledge channels, corporate documentary explainers, data-rich narration videos | sticker, knowledge video, science explainer, infographic video, big canvas, camera pan and zoom, photo cutouts with white outline, periodic table, PaperClip, Lin Chao, explainer channel |
 | [`synthwave`](styles/synthwave.md) | Synthwave VHS Retro | kinetic-sharp | retro title sequences, music videos, trend brand films, gaming and nostalgia content, Y2K chrome revivals | synthwave, outrun, 80s, retro, neon, VHS, vaporwave, Y2K, chrome text, scanlines, grid horizon, retrowave |
 | [`variety-show`](styles/variety-show.md) | Variety Show Kinetic Captions | kinetic-soft | 9:16 vlogs, pet and lifestyle shorts, interview and reaction edits, comedic re-edits, caption-heavy social video | variety show, hanazi, Chinese variety captions, kinetic captions, sticker text, fancy text, reaction text, vlog captions, burst box, outlined text, TikTok captions, Douyin, bilibili |

@@ -1,5 +1,10 @@
 # Changelog — luckiest-churn-prevention
 
+## 1.1.1 — 2026-10-16
+From coreyhaines31/marketingskills at 1efedbc (issue #174, MIT).
+
+- Paddle Billing webhook names corrected (`transaction.payment_failed`, `subscription.past_due`, `subscription.canceled`).
+
 ## 1.1.0 — 2026-07-06
 Skill updater pass: analytics integration.
 

@@ -1,5 +1,10 @@
 # Changelog — luckiest-schema
 
+## 1.1.1 — 2026-10-16
+From coreyhaines31/marketingskills at 1efedbc (issue #174, MIT).
+
+- Check Google feature support before writing markup: valid Schema.org does not mean a Google rich result (FAQ rich results are retired). WebSite schema described as site identity, not a search box.
+
 ## 1.1.0 — 2026-07-06
 Skill updater pass: analytics integration.
 

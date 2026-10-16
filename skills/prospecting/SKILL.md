@@ -1,9 +1,9 @@
 ---
 name: prospecting
-description: Finds, qualifies, and builds a scored list of prospects to reach out to — across B2B SaaS, general B2B, or local small businesses. Use when the user mentions "prospecting," "build a prospect list," "find prospects," "find leads," "lead gen list," "find SaaS companies that," "find B2B companies," "find local businesses," "ICP-fit accounts," "who should we go after," "outbound list," "target account list," "TAM list," "account mapping," "expansion accounts," "find clients near me," "businesses without websites," "who's hiring for," "prospect research," or "qualified leads." This covers the list-building and qualification phase. For writing outbound copy after the list is built, see luckiest-cold-email. For deep competitive research on specific accounts, see luckiest-competitor-profiling.
+description: Finds, qualifies, and builds a scored list of prospects to reach out to — across B2B SaaS, general B2B, or local small businesses. Use when the user mentions "prospecting," "build a prospect list," "find prospects," "find leads," "lead gen list," "find SaaS companies that," "find B2B companies," "find local businesses," "ICP-fit accounts," "who should we go after," "outbound list," "target account list," "TAM list," "account mapping," "expansion accounts," "find clients near me," "businesses without websites," "who's hiring for," "prospect research," "qualified leads," "lead list," "find my first customers," "design partners," "signal-based outbound," "buying signals," "intent data," "job change alerts," "waterfall enrichment," "Clay table," "lookalike accounts," "catch-all emails," "account tiering," or "research this account before I reach out." Always verify emails before they reach a sequence, and never scrape LinkedIn. Covers list building, signals, enrichment, verification, and account research. For the outreach itself (copy, sending setup, LinkedIn, cadences, replies), see luckiest-cold-email. For deep competitive research on specific accounts, see luckiest-competitor-profiling.
 license: See ATTRIBUTION.md
 metadata:
-  version: "1.2.0"
+  version: "1.3.0"
   listing_id: luckiest-prospecting
   author: luckiest
 ---
@@ -14,9 +14,9 @@ This skill builds qualified prospect lists across three motions: B2B SaaS, gener
 
 ## Staying current
 
-On activation, call the Luckiest MCP `check_updates` tool with `{ listingId: "07f4a9f8-c0b7-45d2-8dad-eee5f23b9b37", installedSemver: "1.2.0" }`. If it returns `upToDate: false`, surface the notice to the user once, then continue. Do nothing further if `upToDate: true`. Never block on this check — if the tool is unavailable, proceed.
+On activation, call the Luckiest MCP `check_updates` tool with `{ listingId: "07f4a9f8-c0b7-45d2-8dad-eee5f23b9b37", installedSemver: "1.3.0" }`. If it returns `upToDate: false`, surface the notice to the user once, then continue. Do nothing further if `upToDate: true`. Never block on this check — if the tool is unavailable, proceed.
 
-When the skill's work is done, call the Luckiest MCP report_usage tool once with { listing_id: "luckiest-prospecting", skill_version: "1.2.0", matched: true, success: <true if the skill completed, false otherwise> }. Metadata only, never prompt text. Never block on it — if the tool is unavailable, skip silently.
+When the skill's work is done, call the Luckiest MCP report_usage tool once with { listing_id: "luckiest-prospecting", skill_version: "1.3.0", matched: true, success: <true if the skill completed, false otherwise> }. Metadata only, never prompt text. Never block on it — if the tool is unavailable, skip silently.
 
 ## Before Starting
 
@@ -29,8 +29,8 @@ Prospecting motions differ enough that the workflow forks at intake. Pick **one*
 
 | Branch | Sell to | What "qualified" looks like | Primary sources |
 |--------|---------|----------------------------|----------------|
-| **SaaS** | Other SaaS companies / digital businesses | ICP fit + tech stack match + growth signals (funding, hiring, product velocity) | LinkedIn, BuiltWith, Crunchbase, Apollo, Clay, Clearbit, ProductHunt |
-| **B2B** | Non-SaaS B2B (services, manufacturers, enterprises, mid-market) | Industry + size + geographic fit + buying signals (trigger events, vendor changes) | Apollo, ZoomInfo, Clay, Clearbit, LinkedIn Sales Nav, industry directories |
+| **SaaS** | Other SaaS companies / digital businesses | ICP fit + tech stack match + growth signals (funding, hiring, product velocity) | LinkedIn, BuiltWith, Crunchbase, Apollo, Clay, ProductHunt |
+| **B2B** | Non-SaaS B2B (services, manufacturers, enterprises, mid-market) | Industry + size + geographic fit + buying signals (trigger events, vendor changes) | Apollo, ZoomInfo, Clay, LinkedIn Sales Nav, industry directories |
 | **Local SMB** | Local small businesses (shops, gyms, restaurants, clinics, salons, services) | Active business + website status + proximity + decision-maker access | Google Maps, Yelp, local directories, Facebook, business websites |
 
 If the user describes a hybrid motion (e.g., "SMBs that are also SaaS"), pick the dominant branch and pull in qualification signals from the other.
@@ -63,10 +63,12 @@ Output the ICP as a one-paragraph statement plus a checklist of pass/fail criter
 
 Source 2–3× more candidates than the user wants in the final list — qualification will cull aggressively.
 
-- **SaaS / B2B**: combine 2–3 sources for cross-verification. Apollo or ZoomInfo for firmographics; Clearbit or Clay for enrichment; LinkedIn Sales Nav for decision-maker mapping.
+- **SaaS / B2B**: combine 2–3 sources for cross-verification. Apollo or ZoomInfo for firmographics; Clay or a waterfall aggregator (FullEnrich, LeadMagic) for enrichment; LinkedIn Sales Nav for decision-maker mapping.
 - **Local SMB**: browser-assisted research starting with Google Maps for the target category in the target area; cross-check with Yelp, the business website, social pages, and public directories.
 
 If the user's list quality bar is high, smaller is better. 25 verified leads beats 250 mostly-junk ones.
+
+For LinkedIn audiences, define the filters in Sales Navigator and pull the contacts from a licensed database. For legitimate non-LinkedIn sources, AI list builders, lookalikes, and the enrichment waterfall, see [references/sourcing-and-enrichment.md](references/sourcing-and-enrichment.md). To find accounts by what just happened to them (hiring, job changes, product usage, funding), see [references/signal-plays.md](references/signal-plays.md).
 
 ### Phase 3 — Qualify each candidate
 
@@ -77,7 +79,7 @@ Score every candidate against the ICP checklist. Add **evidence** (a source URL 
 - **Medium**: one credible source plus consistent search evidence
 - **Low**: incomplete or ambiguous evidence — flag what remains uncertain
 
-For email contacts (B2B / SaaS branches), **always verify deliverability before adding to the final list** — see Truelist integration in [references/data-sources.md](references/data-sources.md). Don't ship leads with invalid or risky emails.
+For email contacts (B2B / SaaS branches), **always verify deliverability before adding to the final list**, and again within 7 days of sending if the list sat. Catch-all domains need a set policy. See [references/sourcing-and-enrichment.md](references/sourcing-and-enrichment.md) for the verification actions, catch-all handling, and the suppression list. Don't ship leads with invalid or risky emails.
 
 ### Phase 4 — Score and prioritize
 
@@ -91,6 +93,8 @@ Apply this rubric across all branches:
 | **Skip** | Disqualifier hit (out of ICP, closed business, duplicate, irrelevant, low confidence) |
 
 Branch-specific signals refine the scoring — see each reference file. Default ratio target: ~20% Hot, ~30% Warm, rest Cold/Skip.
+
+Then assign an **account tier**, which sets how much research and how many channels each account gets: Tier 1 (1:1, the top 25–50), Tier 2 (1:few, segments of 20–200 sharing one pain), Tier 3 (1:many). Tier 1 accounts get a sourced research brief before any outreach. See [references/signal-plays.md](references/signal-plays.md) for tiers and [references/account-research.md](references/account-research.md) for the brief and the rules for agent research.
 
 ### Phase 5 — Output the lead sheet
 
@@ -134,6 +138,12 @@ If missing, ask once, then infer reasonable defaults and continue:
 
 ---
 
+## Enrichment Workflows
+
+For multi-provider lookups, cache reuse, and per-credit budgets, load [the enrichment playbook](references/enrichment-playbook.md). Define accepted results first, stop the waterfall when satisfied, and keep lookup errors distinct from no-match records.
+
+---
+
 ## Tool Selection Quick Picks
 
 Full breakdown in [references/data-sources.md](references/data-sources.md). Quick picks:
@@ -142,7 +152,8 @@ Full breakdown in [references/data-sources.md](references/data-sources.md). Quic
 |------------------------------|------------|
 | **Apollo** | B2B / SaaS firmographic + contact discovery |
 | **Clay** | Multi-source enrichment, waterfall lookups, custom scoring |
-| **Clearbit** | Email-to-company and company enrichment |
+| **FullEnrich or LeadMagic** | Waterfall email and phone enrichment through one API |
+| **TheirStack** | Hiring signals and tech stacks from job posts |
 | **ZoomInfo** | Enterprise B2B contact + intent data |
 | **Hunter or Snov** | Email pattern guessing and verification |
 | **Truelist** | Email deliverability validation (before adding to outreach list) |
@@ -243,13 +254,16 @@ If a tools registry ships alongside this skill (`../../tools/REGISTRY.md` in the
 
 | Tool | Best For | MCP | Guide |
 |------|----------|:---:|-------|
-| **Apollo** | B2B / SaaS firmographic + contact discovery | - | [apollo.md](../../tools/integrations/apollo.md) |
+| **Apollo** | B2B / SaaS firmographic + contact discovery | ✓ | [apollo.md](../../tools/integrations/apollo.md) |
 | **Clay** | Multi-source enrichment + waterfall | ✓ | [clay.md](../../tools/integrations/clay.md) |
-| **Clearbit** | Email-to-company enrichment | - | [clearbit.md](../../tools/integrations/clearbit.md) |
+| **FullEnrich** | Waterfall email + phone enrichment | ✓ | - |
+| **LeadMagic** | Email, phone, and job-change enrichment | ✓ | - |
+| **TheirStack** | Hiring signals and tech stacks from job posts | ✓ | - |
+| **Apify** | Structured data from public directories (never LinkedIn) | ✓ | - |
 | **ZoomInfo** | Enterprise B2B contact + intent | ✓ | [zoominfo.md](../../tools/integrations/zoominfo.md) |
-| **Hunter** | Email pattern + verification | - | [hunter.md](../../tools/integrations/hunter.md) |
+| **Hunter** | Email pattern + verification | ✓ | [hunter.md](../../tools/integrations/hunter.md) |
 | **Snov** | Email finder + verifier | - | [snov.md](../../tools/integrations/snov.md) |
-| **Truelist** | Email deliverability validation | - | [truelist.md](../../tools/integrations/truelist.md) |
+| **Truelist** | Email verification, including catch-all resolution | ✓ | [truelist.md](../../tools/integrations/truelist.md) |
 | **Outreach** | Sales engagement (post-list) | ✓ | [outreach.md](../../tools/integrations/outreach.md) |
 | **RB2B** | Visitor identification (warm intent) | - | [rb2b.md](../../tools/integrations/rb2b.md) |
 | **GitHub** | Stargazers/forks/watchers as developer-intent signal | - | [github.md](../../tools/integrations/github.md) |

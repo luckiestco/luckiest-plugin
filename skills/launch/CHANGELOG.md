@@ -1,5 +1,12 @@
 # Changelog — luckiest-launch
 
+## 1.2.0 — 2026-10-16
+From coreyhaines31/marketingskills at 1efedbc (issue #174, MIT).
+
+- New references: shipped-changes (turn merged work into changelog and announcement copy) and site-launch-qa (pre-launch QA for new sites, redesigns, migrations), linked from the checklist.
+- New triggers: site launch, go live, pre-launch QA, changelog, release notes.
+- Fixed the update check reporting 1.1.0.
+
 ## 1.1.1 — 2026-10-03
 - Points at `luckiest-video-studio-composition` (when installed) for focal point, grid, white space, and safe areas.
 

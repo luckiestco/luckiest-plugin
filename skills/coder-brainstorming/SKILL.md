@@ -3,7 +3,7 @@ name: coder-brainstorming
 description: Use BEFORE any creative or build work — creating features, building components, adding functionality, or modifying behavior. Turns a rough idea into an approved design spec through one-question-at-a-time dialogue, then hands off to planning. Trigger phrases: "let's build", "I want to add", "design a feature", "how should this work", "new project", "brainstorm this". Gates all implementation until a design is approved.
 license: See ATTRIBUTION.md
 metadata:
-  version: "1.2.0"
+  version: "1.4.0"
   listing_id: luckiest-coder-brainstorming
   author: luckiest
 ---
@@ -18,6 +18,31 @@ Start by understanding the current project context, then ask questions one at a 
 Do NOT invoke any implementation skill, write any code, scaffold any project, or take any implementation action until you have presented a design and the user has approved it. This applies to EVERY project regardless of perceived simplicity.
 </HARD-GATE>
 
+## Your First Message
+
+Before replying, ask what you actually know about what they want, and why.
+If everything that matters is in the request ("make the icon cornflower
+blue"), the request is the design: say it back in one line and get a yes. If something
+non-trivial is missing, your first message is two things, in this order:
+
+1. One line saying that if they'd rather skip the questions and have you just
+   start, they can say so. If they do, state the design and any significant
+   how-it-gets-made choice (platform, language, medium) in a few plain lines,
+   and proceed on their yes.
+2. One open question that gets them describing a real moment or a concrete
+   picture: "What's the moment you find yourself wishing this existed?"
+
+**Say your defaults out loud.** Find out early which choices about platform,
+language, libraries, or materials they want to make and which they hand to
+you. Any choice you make goes in the design as your call, never as something
+they agreed to.
+
+**Spikes.** A quick throwaway build is often the cheapest way to learn what
+they want or whether something works. Offer one when it would help. With
+their yes it may be built: it stays labeled throwaway, skips the plan and
+the full test pass, and keeping what it produced is a new request that comes
+back through the gate above.
+
 ## Anti-Pattern: "This Is Too Simple To Need A Design"
 
 Every project goes through this process. A todo list, a single-function utility, a config change — all of them. "Simple" projects are where unexamined assumptions cause the most wasted work. The design can be short (a few sentences for truly simple projects), but you MUST present it and get approval.
@@ -28,13 +53,13 @@ Every project goes through this process. A todo list, a single-function utility,
 
 You MUST create a task for each of these items and complete them in order:
 
-1. **Explore project context** — check files, docs, recent commits
+1. **Explore project context** — check files, docs, recent commits. If the work involves UI components, run the luckiest-coder-components lookup and bring any reusable match into the approaches
 2. **Offer the visual companion just-in-time** — NOT upfront. The first time a question would genuinely be clearer shown than described, offer it then (its own message); on approval its browser tab opens for you. If no visual question ever arises, never offer it. See the Visual Companion section below.
-3. **Ask clarifying questions** — one at a time, understand purpose/constraints/success criteria
+3. **Ask clarifying questions** — one at a time, open questions before any menu, understand purpose/constraints/success criteria
 4. **Propose 2-3 approaches** — with trade-offs and your recommendation
 5. **Present design** — in sections scaled to their complexity, get user approval after each section
 6. **Write design doc** — save to `docs/luckiest-coder/specs/YYYY-MM-DD-<topic>-design.md` and commit
-7. **Spec self-review** — quick inline check for placeholders, contradictions, ambiguity, scope (see below)
+7. **Builder check** — a fresh subagent reads the spec as its builder and lists what it would still have to guess (see below)
 8. **User reviews written spec** — ask user to review the spec file before proceeding
 9. **Transition to implementation** — invoke luckiest-coder-writing-plans skill to create implementation plan
 
@@ -48,7 +73,7 @@ digraph brainstorming {
     "Present design sections" [shape=box];
     "User approves design?" [shape=diamond];
     "Write design doc" [shape=box];
-    "Spec self-review\n(fix inline)" [shape=box];
+    "Builder check" [shape=box];
     "User reviews spec?" [shape=diamond];
     "Invoke luckiest-coder-writing-plans skill" [shape=doublecircle];
 
@@ -58,8 +83,8 @@ digraph brainstorming {
     "Present design sections" -> "User approves design?";
     "User approves design?" -> "Present design sections" [label="no, revise"];
     "User approves design?" -> "Write design doc" [label="yes"];
-    "Write design doc" -> "Spec self-review\n(fix inline)";
-    "Spec self-review\n(fix inline)" -> "User reviews spec?";
+    "Write design doc" -> "Builder check";
+    "Builder check" -> "User reviews spec?";
     "User reviews spec?" -> "Write design doc" [label="changes requested"];
     "User reviews spec?" -> "Invoke luckiest-coder-writing-plans skill" [label="approved"];
 }
@@ -75,7 +100,7 @@ digraph brainstorming {
 - Before asking detailed questions, assess scope: if the request describes multiple independent subsystems (e.g., "build a platform with chat, file storage, billing, and analytics"), flag this immediately. Don't spend questions refining details of a project that needs to be decomposed first.
 - If the project is too large for a single spec, help the user decompose into sub-projects: what are the independent pieces, how do they relate, what order should they be built? Then brainstorm the first sub-project through the normal design flow. Each sub-project gets its own spec → plan → implementation cycle.
 - For appropriately-scoped projects, ask questions one at a time to refine the idea
-- Prefer multiple choice questions when possible, but open-ended is fine too
+- Start with open questions that get them describing; offer a short menu only when they're stuck, and propose something concrete when they say "just guess"
 - Only one question per message - if a topic needs more exploration, break it into multiple questions
 - Focus on understanding: purpose, constraints, success criteria
 
@@ -115,22 +140,29 @@ digraph brainstorming {
 - Use elements-of-style:writing-clearly-and-concisely skill if available
 - Commit the design document to git
 
-**Spec Self-Review:**
-After writing the spec document, look at it with fresh eyes:
+**Builder Check:**
+After writing the spec document, dispatch a fresh subagent with
+`builder-check-prompt.md` in this skill directory. When you tell the user
+you're writing it up, say a reviewer will read it first and you may come back
+once with a few questions. Sort what the builder asks into three piles:
 
-1. **Placeholder scan:** Any "TBD", "TODO", incomplete sections, or vague requirements? Fix them.
-2. **Internal consistency:** Do any sections contradict each other? Does the architecture match the feature descriptions?
-3. **Scope check:** Is this focused enough for a single implementation plan, or does it need decomposition?
-4. **Ambiguity check:** Could any requirement be interpreted two different ways? If so, pick one and make it explicit.
+- **Answered already** by the conversation or the project: put the answer in
+  the document.
+- **Minor:** a sensible builder could settle it without changing what gets
+  built. Settle it yourself and mark it in the document as your call.
+- **Theirs:** only the user can answer it, and the answer changes what gets
+  built. Bring these in one message, most important first.
 
-Fix any issues inline. No need to re-review — just fix and move on.
+That is the only round of questions the check produces. Without a subagent
+tool, read the document as that builder yourself, and still fix placeholders,
+contradictions, and ambiguity inline.
 
 **User Review Gate:**
-After the spec review loop passes, ask the user to review the written spec before proceeding:
+After the builder check, ask the user to review the written spec before proceeding:
 
 > "Spec written and committed to `<path>`. Please review it and let me know if you want to make any changes before we start writing out the implementation plan."
 
-Wait for the user's response. If they request changes, make them and re-run the spec review loop. Only proceed once the user approves.
+Wait for the user's response. If they request changes, make them and re-run the builder check. Only proceed once the user approves.
 
 **Implementation:**
 
@@ -141,11 +173,21 @@ Wait for the user's response. If they request changes, make them and re-run the 
 ## Key Principles
 
 - **One question at a time** - Don't overwhelm with multiple questions
-- **Multiple choice preferred** - Easier to answer than open-ended when possible
+- **Get them describing** - Open questions first, a short menu only when they're stuck
 - **YAGNI ruthlessly** - Remove unnecessary features from all designs
 - **Explore alternatives** - Always propose 2-3 approaches before settling
 - **Incremental validation** - Present design, get approval before moving on
 - **Be flexible** - Go back and clarify when something doesn't make sense
+
+## Red Flags
+
+| Thought | Reality |
+|---------|---------|
+| "I'll offer options to save them effort" | Options steer. Ask them to describe it first. |
+| "I'll fill in sensible defaults" | Good. Say them out loud. A default they never heard is one they couldn't reject. |
+| "I should explain the process first" | Ask your question. The process shows itself. |
+| "They said 'sounds good' to the idea" | Approval covers what you showed them. A design you haven't written isn't approved. |
+| "The spike works, I'll keep building on it" | Keeping it is a new request. Back through the gate. |
 
 ## Visual Companion
 
@@ -169,7 +211,7 @@ If they agree to the companion, read the detailed guide before proceeding:
 ## Staying current
 
 On activation, call the Luckiest MCP `check_updates` tool with
-`{ listingId: "a11fbe77-8a4e-47b7-b3f2-b70657c8e7f3", installedSemver: "1.2.0" }`.
+`{ listingId: "a11fbe77-8a4e-47b7-b3f2-b70657c8e7f3", installedSemver: "1.4.0" }`.
 If it returns `upToDate: false`, surface the `notice` to the user. Do nothing if `upToDate: true`.
 
-When the skill's work is done, call the Luckiest MCP report_usage tool once with { listing_id: "luckiest-coder-brainstorming", skill_version: "1.2.0", matched: true, success: <true if the skill completed, false otherwise> }. Metadata only, never prompt text. Never block on it — if the tool is unavailable, skip silently.
+When the skill's work is done, call the Luckiest MCP report_usage tool once with { listing_id: "luckiest-coder-brainstorming", skill_version: "1.4.0", matched: true, success: <true if the skill completed, false otherwise> }. Metadata only, never prompt text. Never block on it — if the tool is unavailable, skip silently.
