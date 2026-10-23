@@ -98,7 +98,12 @@ def select_caption(info: dict, language: str = 'auto') -> dict | None:
     manual = {k: v for k, v in (info.get('subtitles') or {}).items() if v and k != 'live_chat'}
     automatic = {k: v for k, v in (info.get('automatic_captions') or {}).items() if v and k != 'live_chat'}
     youtube = str(info.get('extractor_key') or info.get('extractor') or '').lower().startswith('youtube')
-    originals = sorted(k for k in automatic if youtube and k.endswith('-orig'))
+    # Several originals (e.g. bn-orig and en-orig): English first, then the declared language, then alphabetical.
+    declared = str(info.get('language') or '').split('-')[0]
+    def original_rank(key):
+        base = key.removesuffix('-orig').split('-')[0]
+        return base != 'en', base != declared, key
+    originals = sorted((k for k in automatic if youtube and k.endswith('-orig')), key=original_rank)
     original = originals[0][:-5] if len(originals) == 1 else None
     target = language if language != 'auto' else original or info.get('language')
     def matches(key):
