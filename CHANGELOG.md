@@ -1,3 +1,9 @@
+## 0.1.50 — 2026-10-23 (npm luckiest-co 1.0.51)
+
+- Releases now ship on merge. `.github/workflows/release.yml` publishes luckiest-co to npm (trusted publishing, no token) and syncs luckiestco/luckiest-plugin, merging the sync PR. A merge without a bump stops at "already on npm".
+- New PR check `bin/release-check.js` (not shipped): a PR that changes shipped plugin files fails until it runs `npm run bump`.
+- `npm run sync-plugin` works in CI: auth via `GH_TOKEN` and `gh auth setup-git`, a release-bot git identity when none is set, and `--merge`.
+
 ## 0.1.49 — 2026-10-23 (npm luckiest-co 1.0.50)
 - Upstream updates: 18 marketing skills from marketingskills 06d647e, Trends 1.2.1 (last30days 13a6cc5), Research 1.1.1 (PixelRAG), plus gstack and the weave model router.
 
