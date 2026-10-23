@@ -1,5 +1,13 @@
 # Changelog: luckiest-video-watcher
 
+## 1.1.2 (2026-10-23)
+
+- Auto caption mode picks English when YouTube lists several original
+  auto-caption tracks (for example bn-orig and en-orig), then the video's
+  declared language, then the first. It used to take the first alphabetically,
+  so an English talk came back with Bangla captions. New test:
+  `scripts/test_download.py`.
+
 ## 1.1.1 (2026-10-10)
 
 - Security: the WhisperX setup's uv installer is pinned to 0.11.16 and saved to a

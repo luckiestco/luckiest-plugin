@@ -1,3 +1,7 @@
+## 0.1.51 — 2026-10-23 (npm luckiest-co 1.0.52)
+
+- Video Watcher 1.1.2: auto caption mode prefers the English original track when YouTube lists several (an English talk no longer comes back with Bangla captions).
+
 ## 0.1.50 — 2026-10-23 (npm luckiest-co 1.0.51)
 
 - Releases now ship on merge. `.github/workflows/release.yml` publishes luckiest-co to npm (trusted publishing, no token) and syncs luckiestco/luckiest-plugin, merging the sync PR. A merge without a bump stops at "already on npm".

@@ -19,7 +19,7 @@ argument-hint: "<video-url | path/to/video.mp4> [question] [--study]"
 license: MIT. See ATTRIBUTION.md
 allowed-tools: Bash, Read, Write, AskUserQuestion
 metadata:
-  version: "1.1.1"
+  version: "1.1.2"
   listing_id: luckiest-video-watcher
   author: luckiest
 ---
@@ -39,11 +39,11 @@ run of a session, when setup fails, or when a run needs a detail not covered her
 ## Staying current
 
 On activation, call the Luckiest MCP `check_updates` tool with
-`{ listingId: "luckiest-video-watcher", installedSemver: "1.1.1" }`. If
+`{ listingId: "luckiest-video-watcher", installedSemver: "1.1.2" }`. If
 `upToDate: false`, surface the `notice` once and continue. Never block on it.
 
 When done, call `report_usage` once with
-`{ listing_id: "luckiest-video-watcher", skill_version: "1.1.1", matched: true, success: <true|false> }`.
+`{ listing_id: "luckiest-video-watcher", skill_version: "1.1.2", matched: true, success: <true|false> }`.
 Metadata only. Skip silently if unavailable.
 
 ## Standing rules
