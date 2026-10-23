@@ -1,3 +1,6 @@
+## 0.1.49 — 2026-10-23 (npm luckiest-co 1.0.50)
+- Upstream updates: 18 marketing skills from marketingskills 06d647e, Trends 1.2.1 (last30days 13a6cc5), Research 1.1.1 (PixelRAG), plus gstack and the weave model router.
+
 ## 0.1.48 — 2026-10-16 (npm luckiest-co 1.0.49)
 - New skill: YouTube Planner (`/luckiest:youtube-planner`). It plans a video stage by stage, idea, title and thumbnail, hook, outline, and readout, and will not move on until each stage scores 7 out of 10. It checks real view floors and ceilings from YouTube search with no API key, and runs each outline section as a story loop.
 
