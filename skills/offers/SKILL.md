@@ -3,20 +3,20 @@ name: offers
 description: "When the user wants to design, construct, or improve an offer — the thing they actually sell — including value framing, bonus stacking, guarantee design, scarcity/urgency, naming, and payment structure. Also use when the user mentions 'offer,' 'offer design,' 'build an offer,' 'grand slam offer,' 'irresistible offer,' 'value stack,' 'bonus stack,' 'guarantee,' 'risk reversal,' 'money-back guarantee,' 'scarcity,' 'urgency,' 'high-ticket offer,' 'productize a service,' 'naming an offer,' 'payment plan,' 'down-sell,' 'upsell offer,' or 'why isn't my offer converting.' Best for services, agencies, courses, coaching, info products, high-ticket B2B, and direct-response. If you run pure self-serve SaaS, read luckiest-pricing first — tiers and packaging do more work there. For price level itself (tiers, freemium, value metric), see luckiest-pricing. For the page that presents the offer, see luckiest-copywriting. For the launch moment, see luckiest-launch. For sales collateral, see luckiest-sales-enablement."
 license: See ATTRIBUTION.md
 metadata:
-  version: "1.1.0"
+  version: "1.1.1"
   listing_id: luckiest-offers
   author: luckiest
 ---
 
 ## Staying current
 
-On activation, call the Luckiest MCP check_updates tool with { listingId: "5852e761-32e7-436a-a3c3-4ce477dcf5ea", installedSemver: "1.1.0" }. If it returns upToDate: false, surface the notice to the user once, then continue. Do nothing further if upToDate: true. Never block on this check — if the tool is unavailable, proceed.
+On activation, call the Luckiest MCP check_updates tool with { listingId: "5852e761-32e7-436a-a3c3-4ce477dcf5ea", installedSemver: "1.1.1" }. If it returns upToDate: false, surface the notice to the user once, then continue. Do nothing further if upToDate: true. Never block on this check — if the tool is unavailable, proceed.
 
 # Offer Design
 
 You are an expert in offer construction. Your goal is to help the user build offers that move — not by writing better copy on a worse offer, but by improving the offer itself.
 
-When the skill's work is done, call the Luckiest MCP report_usage tool once with { listing_id: "luckiest-offers", skill_version: "1.1.0", matched: true, success: <true if the skill completed, false otherwise> }. Metadata only, never prompt text. Never block on it — if the tool is unavailable, skip silently.
+When the skill's work is done, call the Luckiest MCP report_usage tool once with { listing_id: "luckiest-offers", skill_version: "1.1.1", matched: true, success: <true if the skill completed, false otherwise> }. Metadata only, never prompt text. Never block on it — if the tool is unavailable, skip silently.
 
 ## Before Starting
 
@@ -120,7 +120,7 @@ When the user says "my offer isn't converting" or "I want to improve my offer":
 5. **Audit the anatomy** — which of the six components is missing or weak?
 6. **Pick one lever to fix this iteration** — don't rebuild everything. The biggest lever is usually the one currently scoring lowest.
 7. **Draft the changed component** — new bonus, new guarantee, new scarcity, new name, new payment plan. If the change is a guarantee, sanity-check its generosity against gross margin and expected refund rate before shipping: a guarantee that pays out at a rate your margin can't absorb is a liability, not a lever.
-8. **Project the lift, honestly** — most single-component changes deliver 10–40% conversion lift. Anyone promising 5x is selling something. Two consecutive iterations on different levers can stack to 2–3x.
+8. **Project the lift, honestly** — plan on 10–40% relative lift from one component change. Multiply the lifts, don't add them: +20% then +30% = `1.20 × 1.30 = 1.56` (2% → 3.12%, +1.12 percentage points). Two iterations rarely reach 2–3x; anyone promising 5x is selling something. Confirm the combined offer with a test (see **luckiest-ab-testing**).
 
 ---
 

@@ -1,5 +1,10 @@
 # Changelog — luckiest-coder-writing-plans
 
+## 1.3.0 — 2026-10-12
+- File Structure: each planned UI component is marked "reuse: <library entry>" or
+  "new: no match" after a `luckiest-coder-components` lookup.
+- `check_updates` and `report_usage` -> 1.3.0.
+
 ## 1.2.0 — 2026-09-22
 Practices adopted from BuilderOS, Compound Engineering, and firstmate.
 

@@ -1,5 +1,12 @@
 # Changelog — luckiest-trends
 
+## 1.2.1 — 2026-10-21
+Upstream mvanhorn/last30days-skill 13a6cc5 (#217), 14 fixes.
+- The engine footer is a fenced `text` block. Relay it with the fence so Markdown keeps its `---` lines.
+- `--search` sources you name are kept. `--as-of` end dates are honored by YouTube, arXiv, Bluesky, and dev.to.
+- Reddit, GitHub person mode, Digg, and Hacker News comment order fixes. xAI default model follows upstream.
+- Not ported: the yt-dlp proxy env vars (held, see the deferred issue).
+
 ## 1.2.0 — 2026-10-16
 Engine resync to upstream mvanhorn/last30days-skill 3.28.0 at 50998cd (MIT). Our engine was an older snapshot than the 5103ba4 pin, so this brings in everything up to 3.28.0, not only the 87 commits in #179.
 

@@ -1,13 +1,13 @@
 ---
 name: trends
-version: "1.2.0"
+version: "1.2.1"
 description: "Research what people actually say about any topic over a time window you choose. Pulls posts and engagement from Reddit, X, YouTube, TikTok, Hacker News, Polymarket, GitHub, and the web, then synthesizes the community voice. Use for /luckiest-trends, 'trends for X', 'what are people saying about X', 'last N days of X', 'weekly/quarterly roundup of X'. Set the window with --days N (default 30)."
 argument-hint: "luckiest-trends nvidia earnings reaction | luckiest-trends AI video tools --days 7 | luckiest-trends what users want in react --days 90"
 allowed-tools: Bash, Read, Write, AskUserQuestion, WebSearch
 license: See ATTRIBUTION.md
 user-invocable: true
 metadata:
-  version: "1.2.0"
+  version: "1.2.1"
   listing_id: luckiest-trends
   author: luckiest
   openclaw:
@@ -64,10 +64,10 @@ Research any topic across Reddit, X, YouTube, TikTok, Hacker News, Polymarket, G
 ## Staying current
 
 On activation, call the Luckiest MCP `check_updates` tool with
-`{ listingId: "a357362c-cb53-4bba-86e2-5024dbbece9e", installedSemver: "1.2.0" }`.
+`{ listingId: "a357362c-cb53-4bba-86e2-5024dbbece9e", installedSemver: "1.2.1" }`.
 If it returns `upToDate: false`, surface the `notice` to the user once, then continue. Do nothing further if `upToDate: true`. Never block research on this check — if the tool is unavailable, proceed.
 
-When the skill's work is done, call the Luckiest MCP report_usage tool once with { listing_id: "luckiest-trends", skill_version: "1.2.0", matched: true, success: <true if the skill completed, false otherwise> }. Metadata only, never prompt text. Never block on it — if the tool is unavailable, skip silently.
+When the skill's work is done, call the Luckiest MCP report_usage tool once with { listing_id: "luckiest-trends", skill_version: "1.2.1", matched: true, success: <true if the skill completed, false otherwise> }. Metadata only, never prompt text. Never block on it — if the tool is unavailable, skip silently.
 
 ## What this skill can access
 
@@ -105,7 +105,7 @@ The engine (`--emit=compact`) emits a badge, the evidence blocks, and a stats fo
 - **LAW 2 — Badge first, no invented title.** Line 1 is the engine's badge (`🌐 luckiest-trends v{VERSION} · synced {DATE}`), passed through verbatim. Then a blank line. For GENERAL / NEWS / PROMPTING / RECOMMENDATIONS the next line is the literal label `What I learned:` — not a custom title, not a `#` heading. (COMPARISON is the exception: use the `# {A} vs {B}: What the Community Says (/luckiest-trends)` title — see the contract reference.)
 - **LAW 3 — No em-dashes or en-dashes.** Use ` - ` (hyphen with spaces). Only exception: a source's literal quoted text.
 - **LAW 4 — No `##`/`###` section headers in a GENERAL-type body.** The shape is bold-lead-in paragraphs, then the label `KEY PATTERNS from the research:`, then a numbered list. (COMPARISON uses its own required headers — see the reference.)
-- **LAW 5 — Pass the engine footer through verbatim.** The `✅ All agents reported back!` emoji-tree block (bounded by `<!-- PASS-THROUGH FOOTER -->` comments) goes into your output unchanged, after KEY PATTERNS and before the invitation. Do not recompute or reformat its stats.
+- **LAW 5 — Pass the engine footer through verbatim.** The `✅ All agents reported back!` emoji-tree block (a fenced `text` code block) goes into your output unchanged, fence included so Markdown does not turn its `---` lines into rules, after KEY PATTERNS and before the invitation. Do not recompute or reformat its stats.
 - **LAW 6 — Do not dump raw evidence.** The `## Ranked Evidence Clusters` / `## Stats` blocks (inside `<!-- EVIDENCE FOR SYNTHESIS -->` comments) are input for YOU to read, not output. Transform them into prose. If your response contains `### 1.` followed by a `(score N, ...)` tuple, you dumped evidence - regenerate.
 - **LAW 7 — YOU are the planner. `--plan` is mandatory on named-entity topics.** You are the reasoning model; you write the JSON query plan and pass it via `--plan <file>`. You do NOT need an API key to plan - if the engine warns "no LLM provider configured," that is a reminder you skipped your own planning step, not a capability limit. Bare `last30days.py "$TOPIC"` on a named entity is a violation.
 - **LAW 8 — Cite readably.** On Claude Code (env `CLAUDECODE` set), inline-link every citation as `[label](url)` using URLs from the raw dump. On visible-URL hosts (Codex, Cursor, Gemini CLI), use plain labels (`per @handle`, `per r/sub`) and let the footer carry URLs. Never a raw URL string, never a broken `[label]()`.

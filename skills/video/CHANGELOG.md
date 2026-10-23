@@ -31,7 +31,7 @@ Rebranded from video (marketingskills, MIT).
 
 ### Improve pass (/refract)
 - Emphasized generate-to-ratio then crop workflow and model-selection guidance across current AI video tools.
-- Neutralized dead `../../tools/integrations/` registry links to plain tool references.
+- Neutralized dead `tools/integrations/` registry links to plain tool references.
 
 ### Network hook
 - share-with-tribe — offer-only ("Share with your tribe"), never auto-posts; never shares private scripts, unreleased footage, or a cloned likeness without explicit ask; no credentials.

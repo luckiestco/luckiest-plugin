@@ -1,5 +1,16 @@
 # Changelog — luckiest-ai-seo
 
+## 1.4.1 — 2026-10-23
+- Removed the dead `tools/REGISTRY.md` link. The tool table stays.
+
+## 1.4.0 — 2026-10-21
+From coreyhaines31/marketingskills at 06d647e (issue #213, MIT).
+- Five new references: AI attribution, answer accuracy, agent defaults, multilingual and commerce, prompt portfolio. Routed from the reference table.
+- Meta AI and Muse: `meta-webindexer`, `meta-externalagent`, `meta-externalfetcher`, and `facebookexternalhit` in the crawler guidance.
+- Evidence order for weighing claims. Corrected stats: AI Overviews about 48% (BrightEdge, Feb 2026), dated ChatGPT citation shares, no fixed schema lift.
+- Fact-family fan-out matrix in content patterns. Proof as text and dated facts in agent readability.
+- Skipped: upstream refs not in this fork (agent-readiness, citations-vs-recommendations, format-volatility); links to them trimmed. link-building not forked.
+
 ## 1.3.0 — 2026-10-16
 From coreyhaines31/marketingskills at 1efedbc (issue #174, MIT).
 

@@ -1,5 +1,8 @@
 # Changelog — luckiest-content-strategy
 
+## 1.1.2 — 2026-10-23
+- Removed dead `tools/` integration links from the headless CMS reference. Sanity, Contentful, and Strapi stay as plain names.
+
 ## 1.1.1 — 2026-10-16
 From coreyhaines31/marketingskills at 1efedbc (issue #174, MIT).
 

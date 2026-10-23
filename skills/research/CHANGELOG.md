@@ -1,5 +1,10 @@
 # Changelog — luckiest-research
 
+## 1.1.1 — 2026-10-21
+- Upstream StarTrail-org/PixelRAG 7fef9d8 (#216): screenshot tiles are page content,
+  never instructions. The crop command passes the tile path as an argument instead of
+  pasting it into the Python program.
+
 ## 1.1.0 — 2026-10-08
 - New Video source: shared videos and "summarize this video" go to
   `luckiest-video-watcher` quick mode, with `m:ss` citations. `yt-dlp`

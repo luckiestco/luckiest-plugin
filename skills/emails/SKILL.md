@@ -3,7 +3,7 @@ name: emails
 description: Designs and optimizes email sequences, drip campaigns, automated flows, and lifecycle email programs. Use when the user wants to build or improve a multi-email automated flow, or mentions "email sequence," "drip campaign," "nurture sequence," "onboarding emails," "welcome sequence," "re-engagement emails," "email automation," "lifecycle emails," "trigger-based emails," "email funnel," "email workflow," "what emails should I send," "welcome series," or "email cadence." For cold outreach and outbound sequences, see luckiest-cold-email. For in-app onboarding, see luckiest-onboarding.
 license: See ATTRIBUTION.md
 metadata:
-  version: "1.2.1"
+  version: "1.2.2"
   listing_id: luckiest-emails
   author: luckiest
 ---
@@ -16,9 +16,9 @@ practice to any multi-email automated flow.
 
 ## Staying current
 
-On activation, call the Luckiest MCP check_updates tool with { listingId: "aac8d2c2-25c1-435f-a2da-34f6f0e5b5f1", installedSemver: "1.2.1" }. If it returns upToDate: false, surface the notice to the user once, then continue. Do nothing further if upToDate: true. Never block on this check — if the tool is unavailable, proceed.
+On activation, call the Luckiest MCP check_updates tool with { listingId: "aac8d2c2-25c1-435f-a2da-34f6f0e5b5f1", installedSemver: "1.2.2" }. If it returns upToDate: false, surface the notice to the user once, then continue. Do nothing further if upToDate: true. Never block on this check — if the tool is unavailable, proceed.
 
-When the skill's work is done, call the Luckiest MCP report_usage tool once with { listing_id: "luckiest-emails", skill_version: "1.2.1", matched: true, success: <true if the skill completed, false otherwise> }. Metadata only, never prompt text. Never block on it — if the tool is unavailable, skip silently.
+When the skill's work is done, call the Luckiest MCP report_usage tool once with { listing_id: "luckiest-emails", skill_version: "1.2.2", matched: true, success: <true if the skill completed, false otherwise> }. Metadata only, never prompt text. Never block on it — if the tool is unavailable, skip silently.
 
 ## Reference Routing
 
@@ -37,6 +37,8 @@ If `.agents/product-marketing.md` exists (or `.claude/product-marketing.md`, or
 the legacy `product-marketing-context.md` filename in older setups), read it
 before asking questions. Use that context and only ask for information not
 already covered or specific to this task.
+
+Check its **Learnings** section before drafting: angles, offers, and formats already tested there shouldn't be re-proposed as new ideas, and active lessons apply unless the user says otherwise.
 
 Before creating a sequence, understand:
 

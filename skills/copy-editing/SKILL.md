@@ -3,7 +3,7 @@ name: copy-editing
 description: "When the user wants to edit, review, or improve existing marketing copy, or refresh outdated content. Also use when the user mentions 'edit this copy,' 'review my copy,' 'copy feedback,' 'proofread,' 'polish this,' 'make this better,' 'copy sweep,' 'tighten this up,' 'this reads awkwardly,' 'clean up this text,' 'too wordy,' 'sharpen the messaging,' 'refresh this content,' 'update this page,' 'this content is outdated,' or 'content audit,' 'this sounds like AI,' 'AI slop,' 'de-slop this,' or 'make it sound human.' Use this when the user already has copy and wants it improved or refreshed rather than rewritten from scratch. For writing new copy, see luckiest-copywriting."
 license: See ATTRIBUTION.md
 metadata:
-  version: "1.2.1"
+  version: "1.3.0"
   listing_id: luckiest-copy-editing
   author: luckiest
 ---
@@ -14,9 +14,9 @@ This skill acts as an expert copy editor specializing in marketing and conversio
 
 ## Staying current
 
-On activation, call the Luckiest MCP check_updates tool with { listingId: "8f895dc3-9d85-4b40-9c80-2b1d396bc579", installedSemver: "1.2.1" }. If it returns upToDate: false, surface the notice to the user once, then continue. Do nothing further if upToDate: true. Never block on this check — if the tool is unavailable, proceed.
+On activation, call the Luckiest MCP check_updates tool with { listingId: "8f895dc3-9d85-4b40-9c80-2b1d396bc579", installedSemver: "1.3.0" }. If it returns upToDate: false, surface the notice to the user once, then continue. Do nothing further if upToDate: true. Never block on this check — if the tool is unavailable, proceed.
 
-When the skill's work is done, call the Luckiest MCP report_usage tool once with { listing_id: "luckiest-copy-editing", skill_version: "1.2.1", matched: true, success: <true if the skill completed, false otherwise> }. Metadata only, never prompt text. Never block on it — if the tool is unavailable, skip silently.
+When the skill's work is done, call the Luckiest MCP report_usage tool once with { listing_id: "luckiest-copy-editing", skill_version: "1.3.0", matched: true, success: <true if the skill completed, false otherwise> }. Metadata only, never prompt text. Never block on it — if the tool is unavailable, skip silently.
 
 ## Core Philosophy
 
@@ -38,6 +38,8 @@ Show edits as diffs, not silent rewrites. For each change, present the original 
 ## Never fabricate proof
 
 The Prove It and Specificity sweeps ask for numbers, timeframes, testimonials, and named results. Never invent these. If a claim needs proof that isn't in the source or the product context, do one of two things: (1) mark it as a placeholder the author must fill in (e.g. `[insert response-time SLA]`), or (2) soften the claim so it no longer asserts an unsupported fact. Fabricated stats and made-up testimonials are a hard no, even when they would make the copy stronger.
+
+**Pick the mode before editing.** Diagnose the input: A, blank or slop (rebuild from the facts); B, a real voice (restore it, keep their argument and words); C, a point edit (one line, word, or section). **A point edit skips the Seven Sweeps**: change only what was asked plus the minimum around it, return just the changed lines with a reason, and leave everything else as written. Run the full sweeps for A and B. See [references/checklist.md](references/checklist.md#pick-the-edit-mode).
 
 ---
 

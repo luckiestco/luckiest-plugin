@@ -1,5 +1,9 @@
 # Changelog — luckiest-copy-editing
 
+## 1.3.0 — 2026-10-21
+From coreyhaines31/marketingskills at 06d647e (issue #213, MIT).
+- Pick the edit mode before editing. A point edit skips the Seven Sweeps and returns only the changed lines. New point-edit eval.
+
 ## 1.2.1 — 2026-10-16
 From coreyhaines31/marketingskills at 1efedbc (issue #174, MIT).
 

@@ -1,5 +1,13 @@
 # Changelog — luckiest-analytics
 
+## 1.2.1 — 2026-10-23
+- Removed dead `tools/` registry and integration links. The tool table keeps names, use cases, and MCP availability.
+
+## 1.2.0 — 2026-10-21
+From coreyhaines31/marketingskills at 06d647e (issue #213, MIT).
+- Compute, don't eyeball; match observation windows; recommend against the stated goal.
+- UTM rules rewritten (hyphens, one spelling per source, no personal data, test the final URL), UTM patterns by partner type, and traffic from AI assistants.
+
 ## 1.1.1 — 2026-10-16
 From coreyhaines31/marketingskills at 1efedbc (issue #174, MIT).
 

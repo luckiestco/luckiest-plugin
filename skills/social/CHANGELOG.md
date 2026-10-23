@@ -1,5 +1,9 @@
 # Changelog — luckiest-social
 
+## 1.4.0 — 2026-10-21
+From coreyhaines31/marketingskills at 06d647e (issue #213, MIT).
+- Telegram in platform strategies, X listening through Grok, contrast hooks for short-form video.
+
 ## 1.3.1 — 2026-10-16
 From coreyhaines31/marketingskills at 1efedbc (issue #174, MIT).
 
