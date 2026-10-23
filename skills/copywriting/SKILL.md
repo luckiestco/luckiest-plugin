@@ -3,7 +3,7 @@ name: copywriting
 description: "Writes, rewrites, and improves conversion marketing copy for any page — homepage, landing pages, pricing pages, feature pages, about pages, or product pages. Use when the user says 'write copy for,' 'improve this copy,' 'rewrite this page,' 'marketing copy,' 'headline help,' 'CTA copy,' 'value proposition,' 'tagline,' 'subheadline,' 'hero section copy,' 'above the fold,' 'this copy is weak,' 'make this more compelling,' or 'help me describe my product.' Use whenever someone is working on website text that needs to persuade or convert. For email copy, see luckiest-emails. For popup copy, see luckiest-popups. For editing existing copy, see luckiest-copy-editing. For the offer underneath the copy (bonuses, guarantees, value framing), see luckiest-offers."
 license: See ATTRIBUTION.md
 metadata:
-  version: "1.2.0"
+  version: "1.3.0"
   listing_id: luckiest-copywriting
   author: luckiest
 ---
@@ -14,14 +14,15 @@ This skill drives an expert conversion copywriter. The goal is to write marketin
 
 ## Staying current
 
-On activation, call the Luckiest MCP check_updates tool with { listingId: "56b1b8dd-a19e-4056-89c1-c476aefcf08b", installedSemver: "1.2.0" }. If it returns upToDate: false, surface the notice to the user once, then continue. Do nothing further if upToDate: true. Never block on this check — if the tool is unavailable, proceed.
+On activation, call the Luckiest MCP check_updates tool with { listingId: "56b1b8dd-a19e-4056-89c1-c476aefcf08b", installedSemver: "1.3.0" }. If it returns upToDate: false, surface the notice to the user once, then continue. Do nothing further if upToDate: true. Never block on this check — if the tool is unavailable, proceed.
 
-When the skill's work is done, call the Luckiest MCP report_usage tool once with { listing_id: "luckiest-copywriting", skill_version: "1.2.0", matched: true, success: <true if the skill completed, false otherwise> }. Metadata only, never prompt text. Never block on it — if the tool is unavailable, skip silently.
+When the skill's work is done, call the Luckiest MCP report_usage tool once with { listing_id: "luckiest-copywriting", skill_version: "1.3.0", matched: true, success: <true if the skill completed, false otherwise> }. Metadata only, never prompt text. Never block on it — if the tool is unavailable, skip silently.
 
 ## Before Writing
 
 **Check for product marketing context first:**
 If `.agents/product-marketing.md` exists (or `.claude/product-marketing.md`, or the legacy `product-marketing-context.md` filename, in older setups), read it before asking questions. Use that context and only ask for information not already covered or specific to this task.
+Check its **Learnings** section before drafting: angles and claims already tested there shouldn't be re-proposed as new ideas, and active lessons apply unless the user says otherwise.
 
 Gather this context (ask if not provided):
 
@@ -64,6 +65,45 @@ Cold ad traffic usually lands at unaware/problem-aware. Branded search and prici
 
 ---
 
+## Diagnose the Situation First
+
+Before drafting, decide which of three situations you're in. Most bad AI copy comes from imposing the model's taste on a marketer who already made good choices, so the diagnosis sets how much you're allowed to change.
+
+| Situation | What you were given | Your job |
+|---|---|---|
+| **A. Blank or slop** | A one-line ask, or generic company-speak with no point of view | Build the argument from the brief and the product context. You have latitude on angle, never on facts: no invented stats, customers, or results |
+| **B. Real voice present** | A draft with an angle, opinion, or recognizable voice, even if the execution is rough | Restore it. Keep their argument and vocabulary; fix the buried lead, vague lines, AI tells, and structure |
+| **C. Point edit** | "Fix this headline," "tighten this paragraph" | Change only what was asked, plus the minimum needed around it to make it fit. Return the rest untouched |
+
+State the diagnosis in one line with the evidence ("B: the draft argues against agencies in the founder's voice, uses 'ship' and 'stuff'") before writing.
+
+**Read taste out of the input (B and C).** What they gave you is evidence of their judgment:
+- **Vocabulary is a voice choice.** If they write "stuff" and "ship," don't upgrade to "solutions" and "deploy."
+- **Where they spent words is a priority choice.** Keep the emphasis.
+- **What they left out is a scope choice.** Don't add sections they didn't ask for.
+- **Their angle is the positioning.** Deepen it; don't replace it with one you like better.
+
+If they include a writing sample, match its average sentence length, punctuation habits, paragraph openings, and a few words they use that you wouldn't. A sample beats the default voice when the two conflict.
+
+## Drafting Protocol
+
+**Decompose and lock.** Don't write the page in one pass. Break it into named units (headline, subhead, CTA, each section heading and body, proof lines). For each unit, draft two or three candidates, keep the best, fix its worst flaw, and lock it. Assemble and read the whole page once for flow. In Situation B, lines that already work are locked from the start.
+
+**The three-question gate.** Run every line you write or keep through three questions:
+1. **Can the reader picture it?** A specific image, scene, or object beats an abstraction.
+2. **Can it be proven true or false?** A falsifiable claim is a claim; "best-in-class" is decoration.
+3. **Could a competitor write this exact sentence?** If yes, it fails (the swap test).
+
+Three passes, keep it. Two, sharpen the weak one. One or none, rewrite it from the facts or flag what's missing with `[NEED: ...]`.
+
+**Ration the punch.** Most lines should be plain, specific, and declarative. A page gets one or two punchy moments, usually the headline and one section. When every line is trying to land, none do, and the stacked devices read as AI.
+
+**The leave-it-alone test.** Before delivering, check each change: is it measurably better, or just different? Revert changes you can't give a reason for. This matters most in Situations B and C.
+
+*Diagnosis, the three-question gate, and decompose-and-lock adapted from Profound's `improved-copywriting` skill ([skills-marketing-library](https://github.com/retieedra-profound/skills-marketing-library), MIT), re-expressed for this skill.*
+
+---
+
 ## Copywriting Principles
 
 ### Clarity Over Cleverness
@@ -81,6 +121,15 @@ Use words your customers use. Mirror voice-of-customer from reviews, interviews,
 
 ### One Idea Per Section
 Each section should advance one argument. Build a logical flow down the page.
+
+### Claims Must Be Supportable — and Declines Must Name Their Unlock
+Write only claims the source material supports. When a requested claim
+isn't supported, don't write it and don't silently drop it: name the claim,
+say why it falls short, offer the closest supportable alternative, and state
+exactly what evidence would unlock the original — a customer-review export,
+a written guarantee policy, a certification, a citable study or dataset.
+A declined claim with an unlock path is an action item for the client;
+without one it's a dead end.
 
 ---
 
@@ -117,6 +166,8 @@ Specific numbers, testimonials, customer names, and case-study results are the h
 - When proof is missing, write the structure with a placeholder and tell the user exactly what to supply (e.g. `[PLACEHOLDER — insert real onboarding time saved]`).
 
 Persuasive-but-false copy is worse than honest copy with gaps.
+
+Removing tells leaves copy clean but flat. For a full rewrite, build a writer first (who's writing, what they know cold, what they'd cut, what they think) and check for second-generation tells such as wisdom-shaped sentences and tidy closers.
 
 ---
 
@@ -285,7 +336,9 @@ Maintain consistency, but adjust intensity:
 
 ## Output Format
 
-When writing copy, provide:
+For a point edit (Situation C), return only the changed lines with a one-line reason each. Skip the annotations and alternatives below unless asked.
+
+When writing page copy, provide:
 
 ### Page Copy
 Organized by section:

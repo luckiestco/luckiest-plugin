@@ -1,5 +1,12 @@
 # Changelog — luckiest-churn-prevention
 
+## 1.1.3 — 2026-10-23
+- Removed dead `tools/` registry and PostHog guide links. The tool tables stay.
+
+## 1.1.2 — 2026-10-21
+From coreyhaines31/marketingskills at 06d647e (issue #213, MIT).
+- Health score components share one 0-100 scale; missing signals are unavailable, not healthy. Detractor wording fixed. Dunning ROI shown gross and net of tooling.
+
 ## 1.1.1 — 2026-10-16
 From coreyhaines31/marketingskills at 1efedbc (issue #174, MIT).
 

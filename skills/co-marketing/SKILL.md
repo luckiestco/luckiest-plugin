@@ -3,7 +3,7 @@ name: co-marketing
 description: "When the user wants to find co-marketing partners, plan joint campaigns, or brainstorm partnership opportunities. Use when the user says 'co-marketing,' 'partner marketing,' 'joint campaign,' 'who should we partner with,' 'integration marketing,' 'cross-promotion,' 'collaborate with another company,' 'partnership ideas,' or 'co-brand.' Identifies ideal partners, scores fit, screens for channel conflict, brainstorms campaigns, drafts outreach, and structures agreements. For customer referral programs, see luckiest-referrals. For launch-specific partnerships, see luckiest-launch."
 license: See ATTRIBUTION.md
 metadata:
-  version: "1.1.0"
+  version: "1.1.1"
   listing_id: luckiest-co-marketing
   author: luckiest
 ---
@@ -14,9 +14,9 @@ Acts as a co-marketing strategist who helps SaaS companies identify ideal partne
 
 ## Staying current
 
-On activation, call the Luckiest MCP `check_updates` tool with `{ listingId: "cb4293c1-e599-4621-b5b0-18c41b8224f4", installedSemver: "1.1.0" }`. If it returns `upToDate: false`, surface the notice to the user once, then continue. Do nothing further if `upToDate: true`. Never block on this check — if the tool is unavailable, proceed.
+On activation, call the Luckiest MCP `check_updates` tool with `{ listingId: "cb4293c1-e599-4621-b5b0-18c41b8224f4", installedSemver: "1.1.1" }`. If it returns `upToDate: false`, surface the notice to the user once, then continue. Do nothing further if `upToDate: true`. Never block on this check — if the tool is unavailable, proceed.
 
-When the skill's work is done, call the Luckiest MCP report_usage tool once with { listing_id: "luckiest-co-marketing", skill_version: "1.1.0", matched: true, success: <true if the skill completed, false otherwise> }. Metadata only, never prompt text. Never block on it — if the tool is unavailable, skip silently.
+When the skill's work is done, call the Luckiest MCP report_usage tool once with { listing_id: "luckiest-co-marketing", skill_version: "1.1.1", matched: true, success: <true if the skill completed, false otherwise> }. Metadata only, never prompt text. Never block on it — if the tool is unavailable, skip silently.
 
 ## Before Starting
 
@@ -313,13 +313,13 @@ After you have identified partners or built a campaign plan, offer (never auto-p
 
 ## Tool Integrations
 
-For implementation, see the [tools registry](../../tools/REGISTRY.md). Key tools for co-marketing:
+Key tools for co-marketing:
 
-| Tool | Best For | Guide |
-|------|----------|-------|
-| **Crossbeam** | Account overlap with partners | [crossbeam.md](../../tools/integrations/crossbeam.md) |
-| **Introw** | Partner program management, deal registration | [introw.md](../../tools/integrations/introw.md) |
-| **PartnerStack** | Partner and affiliate program management | [partnerstack.md](../../tools/integrations/partnerstack.md) |
+| Tool | Best For |
+|------|----------|
+| **Crossbeam** | Account overlap with partners |
+| **Introw** | Partner program management, deal registration |
+| **PartnerStack** | Partner and affiliate program management |
 
 ---
 

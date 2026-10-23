@@ -1,5 +1,13 @@
 # Changelog — luckiest-ad-creative
 
+## 1.5.1 — 2026-10-23
+- Removed dead `tools/` registry and integration links and the upstream `tools/clis` commands. The platforms stay as plain names: pull data via API, MCP, or CSV export.
+
+## 1.5.0 — 2026-10-21
+From coreyhaines31/marketingskills at 06d647e (issue #213, MIT).
+- Reads the Learnings section before drafting. Exact product names in every field. Test hypotheses that can lose.
+- Skipped: the vendor promotion block upstream added to the performance loop, and hook-system.md (not in this fork).
+
 ## 1.4.0 — 2026-10-08
 Upstream sync with coreyhaines31/marketingskills dda3841 (issue #112).
 

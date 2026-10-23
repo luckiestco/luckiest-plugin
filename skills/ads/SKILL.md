@@ -3,7 +3,7 @@ name: ads
 description: "Plans, optimizes, and scales paid advertising campaigns — campaign strategy, audience targeting, bidding, and optimization. Use when the user wants help with paid advertising on Google Ads, Meta (Facebook/Instagram), LinkedIn, Twitter/X, or other ad platforms. Also use when the user mentions 'PPC,' 'paid media,' 'ROAS,' 'CPA,' 'ad campaign,' 'retargeting,' 'audience targeting,' 'Google Ads,' 'Facebook ads,' 'LinkedIn ads,' 'ad budget,' 'cost per click,' 'ad spend,' 'should I run ads,' 'search terms report,' 'wasted spend,' or 'is this campaign working.' For bulk ad creative generation and iteration, see luckiest-ad-creative. For landing page optimization, see luckiest-cro. For outbound to target accounts, see luckiest-cold-email."
 license: See ATTRIBUTION.md
 metadata:
-  version: "1.2.1"
+  version: "1.3.0"
   listing_id: luckiest-ads
   author: luckiest
 ---
@@ -14,14 +14,15 @@ This skill acts as an expert performance marketer focused on paid customer acqui
 
 ## Staying current
 
-On activation, call the Luckiest MCP check_updates tool with { listingId: "5fb8bb24-2d95-4a8e-8778-e403be972d7a", installedSemver: "1.2.1" }. If it returns upToDate: false, surface the notice to the user once, then continue. Do nothing further if upToDate: true. Never block on this check — if the tool is unavailable, proceed.
+On activation, call the Luckiest MCP check_updates tool with { listingId: "5fb8bb24-2d95-4a8e-8778-e403be972d7a", installedSemver: "1.3.0" }. If it returns upToDate: false, surface the notice to the user once, then continue. Do nothing further if upToDate: true. Never block on this check — if the tool is unavailable, proceed.
 
-When the skill's work is done, call the Luckiest MCP report_usage tool once with { listing_id: "luckiest-ads", skill_version: "1.2.1", matched: true, success: <true if the skill completed, false otherwise> }. Metadata only, never prompt text. Never block on it — if the tool is unavailable, skip silently.
+When the skill's work is done, call the Luckiest MCP report_usage tool once with { listing_id: "luckiest-ads", skill_version: "1.3.0", matched: true, success: <true if the skill completed, false otherwise> }. Metadata only, never prompt text. Never block on it — if the tool is unavailable, skip silently.
 
 ## Before Starting
 
 **Check for product marketing context first:**
 If `.agents/product-marketing.md` exists (or `.claude/product-marketing.md`, or the legacy `product-marketing-context.md` filename, in older setups), read it before asking questions. Use that context and only ask for information not already covered or specific to this task.
+Check its **Paid Ads** section for targets, floors, conversion definitions, and what you may change, and its **Learnings** section before proposing tests: angles, audiences, and offers already tested there shouldn't come back as new ideas.
 
 Gather this context (ask if not provided):
 
@@ -242,13 +243,16 @@ Do not judge or cut an ad, ad set, or campaign before it has enough data to be m
 
 ## Reporting & Analysis
 
-### Weekly Review
-- Spend vs. budget pacing
-- CPA/ROAS vs. targets (split brand vs. non-brand, see below)
-- Top and bottom performing ads
-- Audience performance breakdown
-- Frequency check (fatigue risk)
-- Landing page conversion rate
+### Weekly Operating Check
+Check in a fixed order, because a cause higher up explains symptoms lower down: **spend → traffic → conversions → creative → landing page → tracking**. Split brand from non-brand (see below) and check change history against every movement.
+
+End every check in exactly one call:
+- **HOLD**: change nothing; normal variance, small sample, learning phase, or lag
+- **FIX**: a named problem with a known fix
+- **TEST**: a hypothesis worth money, with a metric and a stopping rule
+- **INVESTIGATE**: the data can't be trusted yet (this overrides the other three)
+
+End with separate lists of facts, hypotheses, and missing data. Label unavailable inputs MISSING; never estimate them. Close the week with a stakeholder readout under 200 words: results vs target (green/amber/red), top movers with cause and confidence, and next week's calls. Full check, inputs, and readout format: [operating-check.md](references/operating-check.md).
 
 ### Brand vs. non-brand (measure them separately)
 

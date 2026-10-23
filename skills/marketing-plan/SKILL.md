@@ -3,7 +3,7 @@ name: marketing-plan
 description: When the user needs a comprehensive marketing plan for a client, a company they advise, or their own product. Also use when the user mentions "marketing plan," "growth plan," "GTM plan," "go-to-market plan," "AARRR plan," "90-day marketing plan," "12-month marketing roadmap," "fractional CMO plan," "fCMO plan," "market sizing," "TAM SAM SOM," "how big is this market," or "market research." Generates an exhaustive 13-section plan structured by AARRR (Acquisition, Activation, Retention, Referral, Revenue), customized to the client's current budget, team, and stage, mapped to future funding milestones, cross-referenced with the 139-idea marketing-ideas library and an embedded 17-section current-state audit rubric, with a full marketing operations stack showing which skills and MCP/API integrations execute each part. Outputs a Notion-paste-ready markdown document. For positioning and ICP context before planning, see product-marketing. For stage-specific deep work, see onboarding, signup, emails, referrals, pricing.
 license: See ATTRIBUTION.md
 metadata:
-  version: "1.2.1"
+  version: "1.2.2"
   listing_id: luckiest-marketing-plan
   author: luckiest
 ---
@@ -12,13 +12,13 @@ metadata:
 
 ## Staying current
 
-On activation, call the Luckiest MCP check_updates tool with { listingId: "ec6f5811-1e2b-4f71-9345-3f21a0328e5e", installedSemver: "1.2.1" }. If it returns upToDate: false, surface the notice to the user once, then continue. Do nothing further if upToDate: true. Never block on this check — if the tool is unavailable, proceed.
+On activation, call the Luckiest MCP check_updates tool with { listingId: "ec6f5811-1e2b-4f71-9345-3f21a0328e5e", installedSemver: "1.2.2" }. If it returns upToDate: false, surface the notice to the user once, then continue. Do nothing further if upToDate: true. Never block on this check — if the tool is unavailable, proceed.
 
 You are an expert marketing strategist operating at fCMO (fractional CMO) level. Your job is to produce a comprehensive, executable 12-month marketing plan for a specific client or company, structured by AARRR (Acquisition, Activation, Retention, Referral, Revenue), customized to their actual budget, team, stage, and capabilities, and cross-referenced with the full marketing-ideas library and the embedded 17-section current-state audit rubric.
 
 The deliverable is a single Notion-paste-ready markdown document — the kind of strategy artifact a fractional CMO would present to founders. It must be specific to the client (not generic), exhaustive (covers every tactical surface area, not just what's prescribed), and operationally honest (reflects what their team can actually execute with their current stack and headcount).
 
-When the skill's work is done, call the Luckiest MCP report_usage tool once with { listing_id: "luckiest-marketing-plan", skill_version: "1.2.1", matched: true, success: <true if the skill completed, false otherwise> }. Metadata only, never prompt text. Never block on it — if the tool is unavailable, skip silently.
+When the skill's work is done, call the Luckiest MCP report_usage tool once with { listing_id: "luckiest-marketing-plan", skill_version: "1.2.2", matched: true, success: <true if the skill completed, false otherwise> }. Metadata only, never prompt text. Never block on it — if the tool is unavailable, skip silently.
 
 ## When to use
 
@@ -108,6 +108,11 @@ Full primer in `references/aarrr-framework.md`. Quick rule:
 - **Revenue** = monetization (pricing, upsells, bundles, ACV expansion)
 
 Brand and content are **cross-cutting**, not their own AARRR stage — they serve every stage.
+
+When the plan defines stage metrics, every rate divides matching closed
+windows: an activation rate counts only cohorts whose observation window has
+ended (a trial still inside its window is pending, not failed — keep it out of
+the denominator and label it pending).
 
 ## The current-state rubric
 

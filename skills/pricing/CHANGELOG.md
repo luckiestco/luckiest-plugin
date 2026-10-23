@@ -1,5 +1,9 @@
 # Changelog — luckiest-pricing
 
+## 1.1.2 — 2026-10-21
+From coreyhaines31/marketingskills at 06d647e (issue #213, MIT).
+- Van Westendorp: validate responses and plot the cheap curves as decreasing shares.
+
 ## 1.1.1 — 2026-10-16
 From coreyhaines31/marketingskills at 1efedbc (issue #174, MIT).
 

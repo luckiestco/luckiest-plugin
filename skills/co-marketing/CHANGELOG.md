@@ -1,5 +1,8 @@
 # Changelog — luckiest-co-marketing
 
+## 1.1.1 — 2026-10-23
+- Removed dead `tools/` registry and integration links. The tool table keeps names and use cases.
+
 ## 1.1.0 — 2026-07-06
 Skill updater pass: analytics integration.
 

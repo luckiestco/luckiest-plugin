@@ -3,7 +3,7 @@ name: prospecting
 description: Finds, qualifies, and builds a scored list of prospects to reach out to — across B2B SaaS, general B2B, or local small businesses. Use when the user mentions "prospecting," "build a prospect list," "find prospects," "find leads," "lead gen list," "find SaaS companies that," "find B2B companies," "find local businesses," "ICP-fit accounts," "who should we go after," "outbound list," "target account list," "TAM list," "account mapping," "expansion accounts," "find clients near me," "businesses without websites," "who's hiring for," "prospect research," "qualified leads," "lead list," "find my first customers," "design partners," "signal-based outbound," "buying signals," "intent data," "job change alerts," "waterfall enrichment," "Clay table," "lookalike accounts," "catch-all emails," "account tiering," or "research this account before I reach out." Always verify emails before they reach a sequence, and never scrape LinkedIn. Covers list building, signals, enrichment, verification, and account research. For the outreach itself (copy, sending setup, LinkedIn, cadences, replies), see luckiest-cold-email. For deep competitive research on specific accounts, see luckiest-competitor-profiling.
 license: See ATTRIBUTION.md
 metadata:
-  version: "1.3.0"
+  version: "1.3.1"
   listing_id: luckiest-prospecting
   author: luckiest
 ---
@@ -14,9 +14,9 @@ This skill builds qualified prospect lists across three motions: B2B SaaS, gener
 
 ## Staying current
 
-On activation, call the Luckiest MCP `check_updates` tool with `{ listingId: "07f4a9f8-c0b7-45d2-8dad-eee5f23b9b37", installedSemver: "1.3.0" }`. If it returns `upToDate: false`, surface the notice to the user once, then continue. Do nothing further if `upToDate: true`. Never block on this check — if the tool is unavailable, proceed.
+On activation, call the Luckiest MCP `check_updates` tool with `{ listingId: "07f4a9f8-c0b7-45d2-8dad-eee5f23b9b37", installedSemver: "1.3.1" }`. If it returns `upToDate: false`, surface the notice to the user once, then continue. Do nothing further if `upToDate: true`. Never block on this check — if the tool is unavailable, proceed.
 
-When the skill's work is done, call the Luckiest MCP report_usage tool once with { listing_id: "luckiest-prospecting", skill_version: "1.3.0", matched: true, success: <true if the skill completed, false otherwise> }. Metadata only, never prompt text. Never block on it — if the tool is unavailable, skip silently.
+When the skill's work is done, call the Luckiest MCP report_usage tool once with { listing_id: "luckiest-prospecting", skill_version: "1.3.1", matched: true, success: <true if the skill completed, false otherwise> }. Metadata only, never prompt text. Never block on it — if the tool is unavailable, skip silently.
 
 ## Before Starting
 
@@ -250,25 +250,25 @@ score,business,category,area,distance_km,website_status,website_url,social_urls,
 
 ## Tool Integrations
 
-If a tools registry ships alongside this skill (`../../tools/REGISTRY.md` in the original layout), consult it for per-tool setup. Otherwise treat the integration links below as reference names for tools the user configures on their side. Key prospecting tools:
+Key prospecting tools:
 
-| Tool | Best For | MCP | Guide |
-|------|----------|:---:|-------|
-| **Apollo** | B2B / SaaS firmographic + contact discovery | ✓ | [apollo.md](../../tools/integrations/apollo.md) |
-| **Clay** | Multi-source enrichment + waterfall | ✓ | [clay.md](../../tools/integrations/clay.md) |
-| **FullEnrich** | Waterfall email + phone enrichment | ✓ | - |
-| **LeadMagic** | Email, phone, and job-change enrichment | ✓ | - |
-| **TheirStack** | Hiring signals and tech stacks from job posts | ✓ | - |
-| **Apify** | Structured data from public directories (never LinkedIn) | ✓ | - |
-| **ZoomInfo** | Enterprise B2B contact + intent | ✓ | [zoominfo.md](../../tools/integrations/zoominfo.md) |
-| **Hunter** | Email pattern + verification | ✓ | [hunter.md](../../tools/integrations/hunter.md) |
-| **Snov** | Email finder + verifier | - | [snov.md](../../tools/integrations/snov.md) |
-| **Truelist** | Email verification, including catch-all resolution | ✓ | [truelist.md](../../tools/integrations/truelist.md) |
-| **Outreach** | Sales engagement (post-list) | ✓ | [outreach.md](../../tools/integrations/outreach.md) |
-| **RB2B** | Visitor identification (warm intent) | - | [rb2b.md](../../tools/integrations/rb2b.md) |
-| **GitHub** | Stargazers/forks/watchers as developer-intent signal | - | [github.md](../../tools/integrations/github.md) |
-| **Firecrawl** | Single-target site extraction (prospect's own website) | ✓ | [firecrawl.md](../../tools/integrations/firecrawl.md) |
-| **Browserbase** | Real-browser site research when rendering or interaction needed | ✓ | [browserbase.md](../../tools/integrations/browserbase.md) |
+| Tool | Best For | MCP |
+|------|----------|:---:|
+| **Apollo** | B2B / SaaS firmographic + contact discovery | ✓ |
+| **Clay** | Multi-source enrichment + waterfall | ✓ |
+| **FullEnrich** | Waterfall email + phone enrichment | ✓ |
+| **LeadMagic** | Email, phone, and job-change enrichment | ✓ |
+| **TheirStack** | Hiring signals and tech stacks from job posts | ✓ |
+| **Apify** | Structured data from public directories (never LinkedIn) | ✓ |
+| **ZoomInfo** | Enterprise B2B contact + intent | ✓ |
+| **Hunter** | Email pattern + verification | ✓ |
+| **Snov** | Email finder + verifier | - |
+| **Truelist** | Email verification, including catch-all resolution | ✓ |
+| **Outreach** | Sales engagement (post-list) | ✓ |
+| **RB2B** | Visitor identification (warm intent) | - |
+| **GitHub** | Stargazers/forks/watchers as developer-intent signal | - |
+| **Firecrawl** | Single-target site extraction (prospect's own website) | ✓ |
+| **Browserbase** | Real-browser site research when rendering or interaction needed | ✓ |
 
 ---
 

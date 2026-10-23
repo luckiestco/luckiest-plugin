@@ -1,5 +1,9 @@
 # Changelog — luckiest-marketing-plan
 
+## 1.2.2 — 2026-10-21
+From coreyhaines31/marketingskills at 06d647e (issue #213, MIT).
+- Stage rates divide matching closed windows; trials still in their window are pending, not failed.
+
 ## 1.2.1 — 2026-10-16
 From coreyhaines31/marketingskills at 1efedbc (issue #174, MIT).
 

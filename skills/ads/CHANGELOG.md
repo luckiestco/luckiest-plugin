@@ -1,5 +1,11 @@
 # Changelog — luckiest-ads
 
+## 1.3.0 — 2026-10-21
+From coreyhaines31/marketingskills at 06d647e (issue #213, MIT).
+- Weekly Operating Check: fixed check order, one call per check (HOLD, FIX, TEST, INVESTIGATE), facts, hypotheses, and missing data, and a stakeholder readout. New references/operating-check.md.
+- Reads the Paid Ads and Learnings sections of the product marketing context. New eval for the operating check.
+- Skipped: hunks for references this fork lacks (audit guardrails, playbooks); full resync stays in #201.
+
 ## 1.2.1 — 2026-10-16
 From coreyhaines31/marketingskills at 1efedbc (issue #174, MIT).
 

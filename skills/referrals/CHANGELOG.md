@@ -1,5 +1,9 @@
 # Changelog — luckiest-referrals
 
+## 1.2.1 — 2026-10-21
+From coreyhaines31/marketingskills at 06d647e (issue #213, MIT).
+- Referral return uses contribution, not revenue, with an incrementality caveat and a worked margin check.
+
 ## 1.2.0 — 2026-10-16
 From coreyhaines31/marketingskills at 1efedbc (issue #174, MIT).
 

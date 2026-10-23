@@ -1,5 +1,9 @@
 # Changelog — luckiest-revops
 
+## 1.2.1 — 2026-10-21
+From coreyhaines31/marketingskills at 06d647e (issue #213, MIT).
+- Lead scoring built from decision-time features, split before tuning, and checked on an untouched holdout.
+
 ## 1.2.0 — 2026-10-16
 From coreyhaines31/marketingskills at 1efedbc (issue #174, MIT).
 

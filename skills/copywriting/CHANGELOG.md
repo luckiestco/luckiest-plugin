@@ -1,5 +1,11 @@
 # Changelog — luckiest-copywriting
 
+## 1.3.0 — 2026-10-21
+From coreyhaines31/marketingskills at 06d647e (issue #213, MIT).
+- Diagnose the situation first (blank, real voice, point edit), drafting protocol with the three-question gate, supportable claims with an unlock path.
+- Reads the Learnings section before drafting. New real-voice eval.
+- Skipped: references/ai-tells.md (luckiest-copywriting-humanize covers it).
+
 ## 1.2.0 — 2026-10-08
 Upstream sync with coreyhaines31/marketingskills dda3841 (issue #112).
 

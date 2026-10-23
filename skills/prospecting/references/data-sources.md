@@ -36,8 +36,6 @@ Tool selection guide for prospecting across all three branches.
 - Email accuracy ~60–80% — always validate
 - Bulk export limits apply
 
-**Integration**: see [apollo.md](../../../tools/integrations/apollo.md)
-
 ---
 
 ## Clay
@@ -54,8 +52,6 @@ Tool selection guide for prospecting across all three branches.
 **Watch out for**:
 - Per-credit pricing can spike on large lists
 - Complexity overhead — easy to over-engineer workflows
-
-**Integration**: see [clay.md](../../../tools/integrations/clay.md)
 
 ---
 
@@ -74,8 +70,6 @@ Tool selection guide for prospecting across all three branches.
 - Overkill for SMB prospecting
 - Locked into multi-year contracts typically
 
-**Integration**: see [zoominfo.md](../../../tools/integrations/zoominfo.md)
-
 ---
 
 ## Waterfall aggregators (FullEnrich, LeadMagic)
@@ -91,8 +85,6 @@ Tool selection guide for prospecting across all three branches.
 ## Clearbit (legacy)
 
 Clearbit was absorbed into HubSpot (Breeze Intelligence). Its free tools ended in 2025, and new standalone API access is no longer generally available. Use HubSpot's enrichment if you're on HubSpot; otherwise use the providers above.
-
-**Integration**: see [clearbit.md](../../../tools/integrations/clearbit.md)
 
 ---
 
@@ -114,8 +106,6 @@ Clearbit was absorbed into HubSpot (Breeze Intelligence). Its free tools ended i
 - Both are pattern-guessing tools — accuracy depends on the target company's email pattern being inferable
 - Always run results through a dedicated validator (Truelist or similar) before outreach
 
-**Integrations**: see [hunter.md](../../../tools/integrations/hunter.md), [snov.md](../../../tools/integrations/snov.md)
-
 ---
 
 ## Truelist
@@ -132,8 +122,6 @@ Clearbit was absorbed into HubSpot (Breeze Intelligence). Its free tools ended i
 - Pay-per-email pricing
 
 **Why this matters**: Cold email reputation craters when bounce rates exceed 2%. Validating before sending is non-negotiable. Apollo/ZoomInfo/Hunter data is often 60–80% accurate — Truelist catches the rest.
-
-**Integration**: see [truelist.md](../../../tools/integrations/truelist.md)
 
 ---
 
@@ -205,8 +193,6 @@ Cross-reference both for high-confidence tech stack signals.
 - Very-popular repos (100K+ stars) are mostly noise; smaller targeted repos (5K–25K) give better signal density
 - Most prospects are individuals, not company contacts directly — need to figure out their company from `company` field or LinkedIn
 
-**Integration**: see [github.md](../../../tools/integrations/github.md)
-
 ---
 
 ## Firecrawl / Browserbase (single-target site research)
@@ -234,8 +220,6 @@ Both tools can technically point at any URL. The hard rule:
 
 Discovery happens on platforms (manual browser-assisted research). Extraction happens on individual public business sites.
 
-**Integrations**: see [firecrawl.md](../../../tools/integrations/firecrawl.md), [browserbase.md](../../../tools/integrations/browserbase.md)
-
 ---
 
 ## Visitor identification (RB2B, Warmly, Vector)
@@ -250,8 +234,6 @@ Discovery happens on platforms (manual browser-assisted research). Extraction ha
 **Watch out for**:
 - Privacy/GDPR considerations — verify your privacy policy disclosures
 - Person-level identification raises higher concerns than company-level
-
-**Integration**: see [rb2b.md](../../../tools/integrations/rb2b.md)
 
 ## Free / browser-only fallbacks
 

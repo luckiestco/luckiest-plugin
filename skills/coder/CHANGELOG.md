@@ -1,5 +1,24 @@
 # Changelog — luckiest-coder
 
+## 1.3.0 — 2026-10-12
+Skill updater pass: component reuse, ideas from BuilderIO Mitosis (MIT).
+
+### Added
+- Skill Priority route: "build a component" goes to the new
+  `luckiest-coder-components` sub-skill first, so a proven component from this
+  project or the shared cross-project library is adapted instead of rewritten.
+- New sub-skill `luckiest-coder-components` 1.0.0: reuse-first lookup, shared
+  library at `~/.luckiest/components/` with a `uses` count, save-back after a
+  verified build, Mitosis multi-framework authoring checklist, and a shadcn
+  registry path for sharing the library across machines.
+
+### Security
+- No new findings in the kernel. The sub-skill treats library files as data,
+  scans for secrets before saving, and never installs on lookup.
+
+### Analytics
+- `check_updates` installedSemver and `report_usage` skill_version -> 1.3.0.
+
 ## 1.2.0 — 2026-09-22
 Skill updater pass: best practices pulled from BuilderOS, Compound Engineering,
 and firstmate (analysis in the PR description).

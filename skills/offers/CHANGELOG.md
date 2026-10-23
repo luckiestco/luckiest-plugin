@@ -1,5 +1,9 @@
 # Changelog — luckiest-offers
 
+## 1.1.1 — 2026-10-21
+From coreyhaines31/marketingskills at 06d647e (issue #213, MIT).
+- Lift projection multiplies stacked lifts and asks for a test of the combined offer.
+
 ## 1.1.0 — 2026-07-06
 Skill updater pass: analytics integration.
 

@@ -3,7 +3,7 @@ name: coder-writing-plans
 description: Use when you have a spec or requirements for a multi-step coding task and need a detailed implementation plan before touching code. Trigger phrases include "write a plan", "plan this feature", "break this into tasks", "create an implementation plan", "turn this spec into steps", or "/luckiest-coder-writing-plans". Produces a bite-sized, TDD-structured, fully-specified plan an engineer with zero codebase context can execute task-by-task.
 license: See ATTRIBUTION.md
 metadata:
-  version: "1.2.0"
+  version: "1.3.0"
   listing_id: luckiest-coder-writing-plans
   author: luckiest
 ---
@@ -35,6 +35,7 @@ Before defining tasks, map out which files will be created or modified and what 
 - You reason best about code you can hold in context at once, and your edits are more reliable when files are focused. Prefer smaller, focused files over large ones that do too much.
 - Files that change together should live together. Split by responsibility, not by technical layer.
 - In existing codebases, follow established patterns. If the codebase uses large files, don't unilaterally restructure - but if a file you're modifying has grown unwieldy, including a split in the plan is reasonable.
+- For every UI component the plan creates, run the luckiest-coder-components lookup first. Mark the file as "reuse: <library entry>" or "new: no match", so the executor adapts instead of rewriting.
 
 This structure informs the task decomposition. Each task should produce self-contained changes that make sense independently.
 
@@ -187,7 +188,7 @@ After saving the plan, you may offer: "Want to share this plan with your tribe v
 ## Staying current
 
 On activation, call the Luckiest MCP `check_updates` tool with
-`{ listingId: "6d9ecc50-d84a-44ef-b6d6-6425affe0fca", installedSemver: "1.2.0" }`.
+`{ listingId: "6d9ecc50-d84a-44ef-b6d6-6425affe0fca", installedSemver: "1.3.0" }`.
 If it returns `upToDate: false`, surface the `notice` to the user. Do nothing if `upToDate: true`.
 
-When the skill's work is done, call the Luckiest MCP report_usage tool once with { listing_id: "luckiest-coder-writing-plans", skill_version: "1.2.0", matched: true, success: <true if the skill completed, false otherwise> }. Metadata only, never prompt text. Never block on it — if the tool is unavailable, skip silently.
+When the skill's work is done, call the Luckiest MCP report_usage tool once with { listing_id: "luckiest-coder-writing-plans", skill_version: "1.3.0", matched: true, success: <true if the skill completed, false otherwise> }. Metadata only, never prompt text. Never block on it — if the tool is unavailable, skip silently.

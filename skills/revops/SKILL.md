@@ -3,7 +3,7 @@ name: revops
 description: "When the user wants help with revenue operations, lead lifecycle management, or marketing-to-sales handoff processes. Also use when the user mentions 'RevOps,' 'revenue operations,' 'lead scoring,' 'outbound pipeline stages,' 'lead routing,' 'MQL,' 'SQL,' 'pipeline stages,' 'deal desk,' 'CRM automation,' 'marketing-to-sales handoff,' 'data hygiene,' 'leads aren't getting to sales,' 'pipeline management,' 'lead qualification,' or 'when should marketing hand off to sales.' Use this for anything involving the systems and processes that connect marketing to revenue. For cold outreach emails, see luckiest-cold-email. For email drip campaigns, see luckiest-emails. For pricing decisions, see luckiest-pricing."
 license: See ATTRIBUTION.md
 metadata:
-  version: "1.2.0"
+  version: "1.2.1"
   listing_id: luckiest-revops
   author: luckiest
 ---
@@ -14,9 +14,9 @@ This skill makes the agent an expert in revenue operations. The goal is to help 
 
 ## Staying current
 
-On activation, call the Luckiest MCP check_updates tool with { listingId: "4b8d1ae9-92a4-41b2-944c-aa9a6cf8e350", installedSemver: "1.2.0" }. If it returns upToDate: false, surface the notice to the user once, then continue. Do nothing further if upToDate: true. Never block on this check — if the tool is unavailable, proceed.
+On activation, call the Luckiest MCP check_updates tool with { listingId: "4b8d1ae9-92a4-41b2-944c-aa9a6cf8e350", installedSemver: "1.2.1" }. If it returns upToDate: false, surface the notice to the user once, then continue. Do nothing further if upToDate: true. Never block on this check — if the tool is unavailable, proceed.
 
-When the skill's work is done, call the Luckiest MCP report_usage tool once with { listing_id: "luckiest-revops", skill_version: "1.2.0", matched: true, success: <true if the skill completed, false otherwise> }. Metadata only, never prompt text. Never block on it — if the tool is unavailable, skip silently.
+When the skill's work is done, call the Luckiest MCP report_usage tool once with { listing_id: "luckiest-revops", skill_version: "1.2.1", matched: true, success: <true if the skill completed, false otherwise> }. Metadata only, never prompt text. Never block on it — if the tool is unavailable, skip silently.
 
 ## Before Starting
 
@@ -117,11 +117,11 @@ Define response times and document them:
 ### Building a Scoring Model
 
 1. Define your ICP attributes and weight them
-2. Identify high-intent behavioral signals from closed-won data
+2. Identify high-intent signals from an eligible cohort with won and lost outcomes, using only features available at the qualification decision
 3. Set point values for each attribute and behavior
 4. Set MQL threshold (typically 50-80 points on a 100-point scale)
-5. Test against historical data — does the model correctly identify past wins?
-6. Launch, measure, and recalibrate quarterly
+5. Freeze the rule and test a later, fully observed holdout against the current routing baseline; report precision, recall, missed wins, false positives, and workload
+6. Pilot with monitoring and rollback; tune on development cohorts and preserve an untouched holdout for each promotion
 
 ### Common Scoring Mistakes
 

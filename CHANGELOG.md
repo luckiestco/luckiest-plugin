@@ -1,3 +1,7 @@
+## 0.1.52 — 2026-10-23 (npm luckiest-co 1.0.53)
+
+- 25 plugin skills caught up with their luckiest.co sources: the 1.0.50 upstream port (marketingskills 06d647e, Trends 1.2.1, Research 1.1.1, Coder 1.3.0) and the dead `tools/` link removals in ad-creative, ai-seo, analytics, churn-prevention, co-marketing, content-strategy, and prospecting. Plugin and npm installs had been shipping the 1.0.40 copies.
+
 ## 0.1.51 — 2026-10-23 (npm luckiest-co 1.0.52)
 
 - Video Watcher 1.1.2: auto caption mode prefers the English original track when YouTube lists several (an English talk no longer comes back with Bangla captions).

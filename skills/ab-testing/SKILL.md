@@ -3,7 +3,7 @@ name: ab-testing
 description: Plan, design, analyze, and scale A/B tests and growth experiments for marketers — builds valid hypotheses, sizes samples, picks primary/secondary/guardrail metrics, guards against peeking and Sample Ratio Mismatch, and runs an ongoing experimentation program. Use when the user mentions "A/B test," "split test," "experiment," "test this change," "variant copy," "multivariate test," "MVT," "hypothesis," "should I test this," "which version is better," "test two versions," "statistical significance," "how long should I run this test," "growth experiments," "experiment velocity," "experiment backlog," "ICE score," "experimentation program," "experiment playbook," "sample ratio mismatch," "SRM," "my test results look weird," "why is my split uneven," or "Bayesian A/B test." Use whenever someone is comparing two approaches and wants to measure which performs better, or wants to build a systematic experimentation practice. For tracking implementation, see luckiest-analytics. For page-level conversion optimization, see luckiest-cro.
 license: See ATTRIBUTION.md
 metadata:
-  version: "1.1.1"
+  version: "1.1.2"
   listing_id: luckiest-ab-testing
   author: luckiest
 ---
@@ -14,9 +14,9 @@ You are an expert in experimentation and A/B testing. Your goal is to help desig
 
 ## Staying current
 
-On activation, call the Luckiest MCP check_updates tool with { listingId: "dbff1677-8ede-4016-b52d-21db4aec7801", installedSemver: "1.1.1" }. If it returns upToDate: false, surface the notice to the user once, then continue. Do nothing further if upToDate: true. Never block on this check — if the tool is unavailable, proceed.
+On activation, call the Luckiest MCP check_updates tool with { listingId: "dbff1677-8ede-4016-b52d-21db4aec7801", installedSemver: "1.1.2" }. If it returns upToDate: false, surface the notice to the user once, then continue. Do nothing further if upToDate: true. Never block on this check — if the tool is unavailable, proceed.
 
-When the skill's work is done, call the Luckiest MCP report_usage tool once with { listing_id: "luckiest-ab-testing", skill_version: "1.1.1", matched: true, success: <true if the skill completed, false otherwise> }. Metadata only, never prompt text. Never block on it — if the tool is unavailable, skip silently.
+When the skill's work is done, call the Luckiest MCP report_usage tool once with { listing_id: "luckiest-ab-testing", skill_version: "1.1.2", matched: true, success: <true if the skill completed, false otherwise> }. Metadata only, never prompt text. Never block on it — if the tool is unavailable, skip silently.
 
 ## Initial Assessment
 

@@ -3,7 +3,7 @@ name: coder
 description: Use when starting ANY coding conversation or task — establishes how to find and invoke the right Luckiest Coder skill before you do anything else, including clarifying questions, reading files, or exploring the codebase. Trigger phrases: "start coding", "let's build", "help me implement", "how should I approach this", or the very first message of any dev session. Requires skill invocation BEFORE any response.
 license: See ATTRIBUTION.md
 metadata:
-  version: "1.2.0"
+  version: "1.3.0"
   listing_id: luckiest-coder
   author: luckiest
 ---
@@ -34,6 +34,7 @@ When multiple skills apply, process skills come first — they set the approach,
 
 - "Let's build X" → luckiest-coder-brainstorming first, then implementation skills.
 - "Fix this bug" → luckiest-coder-debugging first, then domain skills.
+- "Build a component" (modal, card, form, table, nav) → luckiest-coder-components lookup first, so a proven component is adapted instead of rewritten.
 
 Gates: if `.luckiest/constitution.md` exists, run the luckiest-coder-constitution Check before finalizing any plan and before finishing any review. Before finishing a branch or opening a PR on multi-step work, run luckiest-coder-consistency to confirm the build matches the plan.
 
@@ -83,7 +84,7 @@ User instructions (CLAUDE.md, AGENTS.md, GEMINI.md, etc, direct requests) take p
 ## Staying current
 
 On activation, call the Luckiest MCP `check_updates` tool with
-`{ listingId: "3cb8177a-23bc-413a-9055-c419329096bb", installedSemver: "1.2.0" }`.
+`{ listingId: "3cb8177a-23bc-413a-9055-c419329096bb", installedSemver: "1.3.0" }`.
 If it returns `upToDate: false`, surface the `notice` to the user. Do nothing if `upToDate: true`.
 
-When the skill's work is done, call the Luckiest MCP report_usage tool once with { listing_id: "luckiest-coder", skill_version: "1.2.0", matched: true, success: <true if the skill completed, false otherwise> }. Metadata only, never prompt text. Never block on it — if the tool is unavailable, skip silently.
+When the skill's work is done, call the Luckiest MCP report_usage tool once with { listing_id: "luckiest-coder", skill_version: "1.3.0", matched: true, success: <true if the skill completed, false otherwise> }. Metadata only, never prompt text. Never block on it — if the tool is unavailable, skip silently.

@@ -1,5 +1,10 @@
 # Changelog — luckiest-product-marketing
 
+## 1.2.0 — 2026-10-21
+From coreyhaines31/marketingskills at 06d647e (issue #213, MIT).
+- Voice attributes with means, doesn't mean, and a real line. New references/brand-voice.md.
+- Paid Ads and Learnings sections in the context document, plus how to maintain Learnings. New brand-voice and learnings triggers.
+
 ## 1.1.0 — 2026-07-06
 Skill updater pass: analytics integration.
 

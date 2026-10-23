@@ -1,5 +1,9 @@
 # Changelog — luckiest-onboarding
 
+## 1.1.1 — 2026-10-21
+From coreyhaines31/marketingskills at 06d647e (issue #213, MIT).
+- Aha-moment analysis uses a defined cohort, an early window, and a separate retention outcome; correlation is a hypothesis to test.
+
 ## 1.1.0 — 2026-07-06
 Skill updater pass: analytics integration.
 
