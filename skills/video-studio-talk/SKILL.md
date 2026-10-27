@@ -15,7 +15,7 @@ user-invocable: false
 license: MIT. See ATTRIBUTION.md
 allowed-tools: Bash, Read, Write, Edit, Glob, Grep, AskUserQuestion
 metadata:
-  version: "1.3.0"
+  version: "1.4.0"
   listing_id: luckiest-video-studio-talk
   author: luckiest
 ---
@@ -29,11 +29,11 @@ word and earns its place, or it is cut.
 ## Staying current
 
 On activation, call the Luckiest MCP `check_updates` tool with
-`{ listingId: "luckiest-video-studio-talk", installedSemver: "1.3.0" }`. If
+`{ listingId: "luckiest-video-studio-talk", installedSemver: "1.4.0" }`. If
 `upToDate: false`, surface the `notice` once and continue. Never block on it.
 
 When done, call `report_usage` once with
-`{ listing_id: "luckiest-video-studio-talk", skill_version: "1.3.0", matched: true, success: <true|false> }`.
+`{ listing_id: "luckiest-video-studio-talk", skill_version: "1.4.0", matched: true, success: <true|false> }`.
 Metadata only. Skip silently if unavailable.
 
 ## Standing rules
@@ -59,6 +59,9 @@ Ask once if the brief does not say:
 
 - **Short** (9:16, 1080x1920, 10 to 60 s): hook in the first three seconds, dense
   rhythm, captions on. Read [references/short-form.md](references/short-form.md).
+  When the user gives no style, use
+  [references/house-reel.md](references/house-reel.md) as the default: pacing,
+  layouts, story order, B-roll order, captions, and sound. The brief wins.
 - **Long** (16:9, 1920x1080, minutes): the speaker stays on screen with lower
   thirds, and occasional full-frame takeovers carry the big ideas. Read
   [references/long-form.md](references/long-form.md).
@@ -155,12 +158,30 @@ the coordinator's Step 4, up to v3.
 Pass `--tokens <file>` to `tokens` when the video locks its own values. Gates do
 not replace looking. Then inspect:
 
-- the first encoded frame and the first three seconds, frame by frame
-- a contiguous strip across every transition (`ffmpeg ... tile=6x7`); single hero
-  frames miss pops, freezes, and two moves that should be one
+- the first encoded frame and the first 2.5 s, frame by frame, plus the first
+  frame of every face shot: nothing over the mouth or chin, since the first
+  second is when a viewer decides the person is real
+- a contiguous strip across every cut and transition, 10 frames each side
+  (`ffmpeg ... tile=6x7`); single hero frames miss one-frame empty panels,
+  captions flashing over the wrong shot, pops, and freezes
+- caption contrast against the actual pixels behind each caption, not the
+  design color; never white on light
 - every hero frame at full size and at phone size: face clear, text inside the
   safe area, nothing within 60 px of an edge
+- lip sync: cut frames compared against the raw clip. A matching frame count
+  does not prove the right frames were picked. Select exact frames in one pass;
+  encoding segments separately and concatenating drifts sync by about a frame
+- every word whole: transcribe `final.mp4` again and compare the words at every
+  cut with `clean.json`. Speech-to-text can guess a clipped word correctly while
+  a listener hears it broken, so also listen across the joins when you can
+- loudness and true peak measured on the encoded stereo delivery
+  (`ffmpeg -i final.mp4 -af ebur128=peak=true -f null -`), not the WAV
 - sound across every join: no clipped word tails, voice above the music
+
+An AI watch test (a video model watching the render) can list candidate
+problems, but it is noisy and invents effects. Check each complaint on real
+frames before acting. "Would this viewer finish, and where would they stop?"
+is more useful than a 1 to 10 score. The user's own viewing is the final gate.
 
 Write `talk/VERIFY.md` with what was checked, how (watched, listened, or signal
 analysis only), and what is still open. Never claim a viewing or listening pass

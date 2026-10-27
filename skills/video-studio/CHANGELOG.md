@@ -1,5 +1,15 @@
 # Changelog — luckiest-video-studio
 
+## 1.20.0 — 2026-10-27
+- `references/audio.md`: level every voice line then limit only peaks, re-transcribe
+  narration before render, one beat grid for the whole timeline, measure loudness on
+  the encoded stereo file.
+- `references/lessons.md`: transforms over `top`/`left`, real footage over dim UI
+  panels, and a new "Notes become rules" section.
+- Sub-skills cuts 1.2.0, talk 1.4.0, script 1.4.0. The HyperFrames student kit is now
+  Herk Edit Kit (`nateherkai/herk-edit-kit`), recorded in `upstreams.json` at 10511e5a.
+- Fixed the stale `installedSemver` in `check_updates` (was 1.18.0).
+
 ## 1.19.0 — 2026-10-15
 
 - New motion-design style card `product-flight` (Continuous Product Flight): one camera flight around one hero object, speed ramps between stops on downbeats, side captions, glass callouts with pointer lines, one procedural VFX peak. Distilled from the approved PSA slab film and its review corrections. Offered for collectible and single premium product reveals. 39 styles.

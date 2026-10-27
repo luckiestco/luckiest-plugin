@@ -42,3 +42,14 @@ that layout does not cover.
   two renders on one machine starve each other and time out.
 - **Use absolute paths in background commands.** A background shell does not keep
   your working directory.
+- **Animate transforms (x, y, scale), not `top` or `left`.**
+- **Dim UI panels and waveforms lose viewers.** Put real footage in those scenes.
+
+## Notes become rules
+
+The edits get better only if a note never has to be given twice. When the user
+gives a note on a draft ("I can't read that caption", "that shot doesn't move"),
+fix the edit, then offer to write the note into the skill as a rule, a check, or
+a script change: this file for build traps, the sub-skill's reference for style
+and editing rules. Record the note and the resulting rule together. Fixing only
+the current video is half the job.

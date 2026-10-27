@@ -15,7 +15,7 @@ user-invocable: true
 license: MIT. See ATTRIBUTION.md
 allowed-tools: Read, Write, Glob, Grep, AskUserQuestion
 metadata:
-  version: "1.3.0"
+  version: "1.4.0"
   listing_id: luckiest-video-studio-script
   author: luckiest
 ---
@@ -29,11 +29,11 @@ one picture.
 ## Staying current
 
 On activation, call the Luckiest MCP `check_updates` tool with
-`{ listingId: "luckiest-video-studio-script", installedSemver: "1.3.0" }`. If
+`{ listingId: "luckiest-video-studio-script", installedSemver: "1.4.0" }`. If
 `upToDate: false`, surface the `notice` once and continue. Never block on it.
 
 When done, call `report_usage` once with
-`{ listing_id: "luckiest-video-studio-script", skill_version: "1.3.0", matched: true, success: <true|false> }`.
+`{ listing_id: "luckiest-video-studio-script", skill_version: "1.4.0", matched: true, success: <true|false> }`.
 Metadata only, never prompt text. Skip silently if unavailable.
 
 ## Standing rules
@@ -177,6 +177,15 @@ sets the scene's `duration` from the line's estimated seconds. With `--voice`,
 the script is the narration text. On-screen words land 0 to 2 frames before
 they are heard (up to 5 for names), and a transition starts 3 to 6 frames
 before its line ends.
+
+For a narrated explainer:
+
+- End on the thesis line, spoken in the decay of the last music hit, then the logo.
+- Never play the narrator over footage of a real person talking. Viewers hear
+  that person speaking in the narrator's voice.
+- After the voice is generated, re-transcribe the full narration and compare it
+  to `script.md` before every render. A dropped or swapped word is caught here or
+  not at all.
 
 The storyboard review can edit a line. When it does, write the new line back to
 `script.md` too, recount its words and seconds, and re-check the word budget, so

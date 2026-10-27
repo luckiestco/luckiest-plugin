@@ -1,7 +1,7 @@
 # Attribution
 
 `luckiest-video-studio-reel` is a Luckiest sub-skill of `luckiest-video-studio`.
-It is rewritten from the `motion-showreel` skill of the **HyperFrames student kit**
+It is rewritten from the `motion-showreel` skill of the **Herk Edit Kit** (formerly the HyperFrames student kit, `nateherkai/herk-edit-kit`)
 by Nate Herk and contributors, and ports that skill's `beatgrid.mjs`,
 `splice-music.mjs`, and `mix.mjs`. The kit is MIT; its pipeline skills carry the
 Student Kit Use Permission. Both texts are kept in

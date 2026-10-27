@@ -3,7 +3,7 @@
 `luckiest-video-studio-cards` is a Luckiest sub-skill of `luckiest-video-studio`.
 Its two card packs, blueprint, scene templates, and the `build-registry.mjs` and
 `new-pack.mjs` scripts come from the style library and style templates of the
-**HyperFrames student kit** by Nate Herk and contributors. The kit is MIT; its
+**Herk Edit Kit** (formerly the HyperFrames student kit, `nateherkai/herk-edit-kit`) by Nate Herk and contributors. The kit is MIT; its
 style library and templates carry the Student Kit Use Permission. Both texts are
 kept in `luckiest-video-studio/LICENSE-student-kit` and
 `LICENSE-student-kit-pipeline`.
