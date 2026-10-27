@@ -14,7 +14,7 @@ user-invocable: false
 license: MIT. See ATTRIBUTION.md
 allowed-tools: Bash, Read, Write, Glob, AskUserQuestion
 metadata:
-  version: "1.1.0"
+  version: "1.2.0"
   listing_id: luckiest-video-studio-cuts
   author: luckiest
 ---
@@ -28,11 +28,11 @@ decides. Nothing here changes the words that stay.
 ## Staying current
 
 On activation, call the Luckiest MCP `check_updates` tool with
-`{ listingId: "luckiest-video-studio-cuts", installedSemver: "1.1.0" }`. If
+`{ listingId: "luckiest-video-studio-cuts", installedSemver: "1.2.0" }`. If
 `upToDate: false`, surface the `notice` once and continue. Never block on it.
 
 When done, call `report_usage` once with
-`{ listing_id: "luckiest-video-studio-cuts", skill_version: "1.1.0", matched: true, success: <true|false> }`.
+`{ listing_id: "luckiest-video-studio-cuts", skill_version: "1.2.0", matched: true, success: <true|false> }`.
 Metadata only. Skip silently if unavailable.
 
 ## Standing rules
@@ -79,8 +79,18 @@ a readable `raw.silence-decisions.md`. Drop `--apply` for a plan without a rende
    node <skill-dir>/scripts/find-cut-candidates.mjs \
      <run-dir>/footage/raw.silence-transcript.json --out-dir <run-dir>/footage
    ```
-   Types: `stutter` (a word said twice), `retake` (a near-duplicate line),
-   `false_start` (a short phrase abandoned and restarted).
+   Types: `filler` (um, uh), `stutter` (a word said twice), `retake` (a
+   near-duplicate line), `false_start` (a short phrase abandoned and restarted).
+
+   **Cut between phrases, never inside one.** A phrase is what is said in one
+   breath. A cut edge needs at least 0.1 s of silence on its side: transcripts end
+   words 40 to 80 ms before the sound dies, so a tighter edge clips the
+   neighbouring word, and padding it with silence makes that word sound muted. A
+   filler that runs straight into the next word stays (`recommend: "keep"`).
+   Retakes join only where both sides are silent; otherwise play one take whole.
+   Candidates flagged `insidePhrase` drop to `review`. Fewer cuts, all between
+   phrases, beat a tighter cut that clips words. Keep natural beats (after a
+   comma, after "First,") and never speed the voice up.
 2. Read every candidate in context. Emphasis ("never, never"), a repeated word
    before a question ("the point is, is this"), and lists look like stutters but
    are not. Present each one with your recommendation and collect the user's

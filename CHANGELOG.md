@@ -1,3 +1,7 @@
+## 0.1.53 — 2026-10-27 (npm luckiest-co 1.0.54)
+
+- Video Studio 1.20.0 with Cuts 1.2.0, Talk 1.4.0, Script 1.4.0, ported from Herk Edit Kit's editing playbook (10511e5a): cuts land between phrases and never clip a word, a default house reel style for talking-head reels, stricter checks before delivery (mouth-free first 2.5 s, frame strips across cuts, caption contrast, re-transcribe the final render, loudness on the encoded file), and narration leveling. Attribution renamed from the HyperFrames student kit.
+
 ## 0.1.52 — 2026-10-23 (npm luckiest-co 1.0.53)
 
 - 25 plugin skills caught up with their luckiest.co sources: the 1.0.50 upstream port (marketingskills 06d647e, Trends 1.2.1, Research 1.1.1, Coder 1.3.0) and the dead `tools/` link removals in ad-creative, ai-seo, analytics, churn-prevention, co-marketing, content-strategy, and prospecting. Plugin and npm installs had been shipping the 1.0.40 copies.

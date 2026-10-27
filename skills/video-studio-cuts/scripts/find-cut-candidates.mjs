@@ -62,23 +62,60 @@ let cid = 0;
 const ctx = (i, before = 6, after = 6) =>
   displayText(words.slice(Math.max(0, i - before), Math.min(words.length, i + after)));
 
+// Cut between phrases, never inside one. Transcripts end words 40-80 ms before
+// the sound decays, so a cut edge needs at least this much silence on its side or
+// it clips the neighbouring word. Words in one breath run ~0.04-0.1 s apart.
+const PHRASE_GAP = 0.1;
+// Silence on each side of removed words first..last (word indexes).
+function edgeGaps(first, last) {
+  return {
+    before: first > 0 ? words[first].start - words[first - 1].end : Infinity,
+    after: last < words.length - 1 ? words[last + 1].start - words[last].end : Infinity,
+  };
+}
+function insidePhrase(first, last) {
+  const g = edgeGaps(first, last);
+  return g.before < PHRASE_GAP || g.after < PHRASE_GAP;
+}
+const INSIDE_NOTE = "inside a phrase: cutting clips the words around it";
+
+// ---- 0) fillers: cut only with silence on both sides ----
+const FILLERS = new Set(["um", "uh", "erm", "er", "ah", "hmm", "mm"]);
+for (let i = 0; i < words.length; i++) {
+  if (!FILLERS.has(words[i].token)) continue;
+  const inside = insidePhrase(i, i);
+  candidates.push({
+    id: `c${String(++cid).padStart(3, "0")}`,
+    type: "filler",
+    confidence: inside ? "low" : "high",
+    recommend: inside ? "keep" : "cut",
+    cut: { start: Number(words[i].start.toFixed(3)), end: Number((words[i + 1]?.start ?? words[i].end).toFixed(3)) },
+    removes: words[i].text,
+    context: ctx(i),
+    note: inside ? INSIDE_NOTE : "filler between phrases",
+  });
+}
+
 // ---- 1) stutters / immediate repeats ----
 for (let i = 1; i < words.length; i++) {
   const a = words[i - 1], b = words[i];
   if (!b.token || b.token.length < 1) continue;
   const closeGap = b.start - a.end < 0.5;
   if (a.token === b.token && closeGap) {
+    // The repeat itself is the join; only the silence before the first copy matters.
+    const inside = edgeGaps(i - 1, i - 1).before < PHRASE_GAP;
     candidates.push({
       id: `c${String(++cid).padStart(3, "0")}`,
       type: "stutter",
-      confidence: "high",
-      recommend: "cut",
+      confidence: inside ? "medium" : "high",
+      recommend: inside ? "review" : "cut",
+      ...(inside && { insidePhrase: true }),
       // remove the first utterance, keep the second
       cut: { start: Number(a.start.toFixed(3)), end: Number(b.start.toFixed(3)) },
       removes: a.text,
       keeps: b.text,
       context: ctx(i),
-      note: `repeated "${a.token}"`,
+      note: `repeated "${a.token}"${inside ? `; ${INSIDE_NOTE}` : ""}`,
     });
   }
 }
@@ -120,18 +157,21 @@ for (let i = 0; i < segments.length; i++) {
       const firstLen = segments[i].end - segments[i].start;
       // A short first take that restarts soon after reads as a false start.
       const isFalseStart = sameOpening && firstLen < 6 && segments[j].start - segments[i].end < 12;
+      // Join two takes only where both sides are silent; otherwise play one take whole.
+      const inside = insidePhrase(segments[i].wordStart, segments[j].wordStart - 1);
       candidates.push({
         id: `c${String(++cid).padStart(3, "0")}`,
         type: isFalseStart ? "false_start" : "retake",
         confidence: score >= 0.45 ? "high" : score >= 0.34 ? "medium" : "low",
-        recommend: score >= 0.34 ? "cut" : "review",
+        recommend: score >= 0.34 && !inside ? "cut" : "review",
+        ...(inside && { insidePhrase: true }),
         score: Number(score.toFixed(3)),
         // default: remove the earlier take up to the start of the cleaner restart
         cut: { start: Number(segments[i].start.toFixed(3)), end: Number(segments[j].start.toFixed(3)) },
         removes: segments[i].text,
         keeps: segments[j].text,
         gapBetween: Number((segments[j].start - segments[i].end).toFixed(2)),
-        note: `seg ${segments[i].id} ~ seg ${segments[j].id} (jaccard ${score.toFixed(2)}${sameOpening ? ", same opening" : ""})`,
+        note: `seg ${segments[i].id} ~ seg ${segments[j].id} (jaccard ${score.toFixed(2)}${sameOpening ? ", same opening" : ""})${inside ? `; ${INSIDE_NOTE}` : ""}`,
       });
     }
   }

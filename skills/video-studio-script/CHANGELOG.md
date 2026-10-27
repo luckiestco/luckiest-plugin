@@ -1,5 +1,10 @@
 # Changelog — luckiest-video-studio-script
 
+## 1.4.0 — 2026-10-27
+- Narrated explainers end on the thesis line, never put a narrator over a real
+  person talking, and re-transcribe the narration against `script.md` before
+  every render. From the Herk Edit Kit editing playbook.
+
 ## 1.3.0 — 2026-10-12
 
 - Word budgets for short films (28 to 38 words per 15 s, 60 to 80 per 30 s) and slower sign-offs.

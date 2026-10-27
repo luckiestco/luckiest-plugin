@@ -2,7 +2,7 @@
 
 `luckiest-video-studio-cuts` is a Luckiest sub-skill of `luckiest-video-studio`.
 It is built from the `cut-silences` and `cut-mistakes` skills of the
-**HyperFrames student kit** by Nate Herk and
+**Herk Edit Kit** (formerly the HyperFrames student kit, `nateherkai/herk-edit-kit`) by Nate Herk and
 contributors. The kit is MIT; its pipeline skills and editing tools carry the
 Student Kit Use Permission. Both texts are kept in
 `luckiest-video-studio/LICENSE-student-kit` and `LICENSE-student-kit-pipeline`.

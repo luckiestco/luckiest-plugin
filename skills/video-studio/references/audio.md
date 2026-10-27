@@ -227,6 +227,15 @@ The bundled library has no whooshes or risers. Source them with HyperFrames
   text holds on screen.
 - **Duck under the voice.** With narration, the music sits about 9 dB lower while
   a line plays (80 ms down, 300 ms back up).
+- **Level every voice line to the same loudness, then limit only the peaks.**
+  Scaling a whole line down to fit its loudest peak leaves that line several dB
+  quieter than the rest.
+- **Re-transcribe the narration against the script before every render**, and
+  never fade the last spoken word.
+- **Put the whole timeline on one beat grid** so picture, music, and SFX move
+  together when a line changes. Never hard-code the time a word should land.
+- **Measure the delivered file.** Loudness and true peak come from the encoded
+  stereo MP4, not the WAV; a mono file reads about 3 dB lower.
 - **Normalize SFX to a -3 dBFS peak** before the gain ladder, so gains mean the
   same thing for every file.
 - **Grid at 30fps:** 120 BPM is exactly 15 frames per beat, so cuts land on whole

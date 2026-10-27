@@ -1,5 +1,14 @@
 # Changelog: luckiest-video-studio-talk
 
+## 1.4.0 — 2026-10-27
+- New `references/house-reel.md`: the default reel style when the user gives none
+  (pacing, layouts, story order, B-roll order, captions, sound, raw reel and
+  long-to-Short variants), and the note-becomes-a-rule loop.
+- Step 4 inspection adds the mouth-free first 2.5 s, 10-frame strips across cuts,
+  caption contrast on real pixels, lip sync against the raw, re-transcribing the
+  final render, loudness on the encoded stereo file, and how to treat AI watch tests.
+- From the Herk Edit Kit editing playbook, in our own words.
+
 ## 1.3.0 — 2026-10-05
 - Follows `art-direction.json` and runs the director's score loop when installed.
 

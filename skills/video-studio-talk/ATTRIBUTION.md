@@ -2,7 +2,7 @@
 
 `luckiest-video-studio-talk` is a Luckiest sub-skill of `luckiest-video-studio`.
 It is rewritten from the `short-form-edit`, `hyperframes-video-beats`, and
-`video-storytelling` skills of the **HyperFrames student kit** by Nate Herk and
+`video-storytelling` skills of the **Herk Edit Kit** (formerly the HyperFrames student kit, `nateherkai/herk-edit-kit`) by Nate Herk and
 contributors, and ports that kit's `validate-plan.mjs` and `validate-footage.mjs`.
 The kit is MIT; its pipeline skills carry the Student Kit Use Permission. Both
 texts are kept in `luckiest-video-studio/LICENSE-student-kit` and
