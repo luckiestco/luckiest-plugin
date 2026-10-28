@@ -1,3 +1,7 @@
+## 0.1.54 — 2026-10-27 (npm luckiest-co 1.0.55)
+
+- YouTube Planner 1.2.0, with ideas from Jakeschincariol/youtube-agent-skill: `pairing.py` lints the title and thumbnail as one pairing, `floor_ceiling.py --channel` ranks videos by their multiple over their own channel median, and `retention.py` reads a Studio retention export (hook leak, cliffs with the words spoken, slide). It also adds opening-line rules for the hook, on-screen notes, chapters, and Short candidates in the body, and comment triage plus a one-fix report in the readout.
+
 ## 0.1.53 — 2026-10-27 (npm luckiest-co 1.0.54)
 
 - Video Studio 1.20.0 with Cuts 1.2.0, Talk 1.4.0, Script 1.4.0, ported from Herk Edit Kit's editing playbook (10511e5a): cuts land between phrases and never clip a word, a default house reel style for talking-head reels, stricter checks before delivery (mouth-free first 2.5 s, frame strips across cuts, caption contrast, re-transcribe the final render, loudness on the encoded file), and narration leveling. Attribution renamed from the HyperFrames student kit.
