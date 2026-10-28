@@ -31,16 +31,18 @@ Real views check: a video with very high views but almost no comments or likes,
 or a channel whose other videos get a tiny fraction of that, is a sign of
 bought or bot views. Leave it out of the floor.
 
-Own-channel outliers: when the user gave a channel, compare each candidate's
-top videos with their channel's own median. A video at 5x its channel's median
-says more than a big channel's ordinary video.
+Own-channel outliers: `floor_ceiling.py --channel` divides each video's views
+by its own channel's median. A video at 5x its channel's median says more than
+a big channel's ordinary video. Channels with fewer than 4 counted videos are
+skipped, since a median of two or three is noise. The pattern the outliers
+share is the signal, not any single one.
 
 ## 2. Packaging
 
 | Score | Means |
 |---|---|
-| 9-10 | A cross-niche pattern with a stated reason, a thumbnail readable at phone size, title and thumbnail that do not repeat each other, a promise the outline keeps |
-| 7-8 | All of the above, with a weaker reason or a busier thumbnail |
+| 9-10 | A cross-niche pattern with a stated reason, a thumbnail readable at phone size, title and thumbnail that do not repeat each other, a promise the outline keeps, `pairing.py` at 85 or more, and all 3 queries pass the query test |
+| 7-8 | All of the above, with a weaker reason, a busier thumbnail, or `pairing.py` at 70 to 84 |
 | 4-6 | Copies one outlier, or the title and thumbnail say the same thing |
 | 1-3 | Clickbait the body cannot pay off |
 
@@ -65,9 +67,9 @@ Thumbnail jobs:
 
 | Score | Means |
 |---|---|
-| 9-10 | All four Ps answered in under 30 seconds, proof is specific and true, plan names every step |
+| 9-10 | All four Ps answered in under 30 seconds, proof is specific and true, plan names every step, the first sentence confirms the title, and nothing about the channel comes before the promise |
 | 7-8 | All four Ps, with vague proof or plan |
-| 4-6 | Missing one P |
+| 4-6 | Missing one P, or it opens with an intro, a "who I am", or a subscribe ask |
 | 1-3 | A tease with no promise or plan |
 
 Persona matters most when the packaging could pull in two audiences. Say
@@ -77,8 +79,8 @@ plainly who it is for, so the wrong viewers leave early and the right ones stay.
 
 | Score | Means |
 |---|---|
-| 9-10 | Every outline item traces to the title's promise, first value in the first minute, nothing unrelated, at least one item that beats the expectation, and each section runs a full story loop that reopens before it closes |
-| 7-8 | Every item traces to the promise, value arrives late |
+| 9-10 | Every outline item traces to the title's promise, first value in the first minute, nothing unrelated, at least one item that beats the expectation, each section runs a full story loop that reopens before it closes, every beat has an `[ON SCREEN]` note, and every section has a name of 5 words or fewer |
+| 7-8 | Every item traces to the promise, value arrives late, or some beats have nothing on screen |
 | 4-6 | Some sections serve the creator, not the promise |
 | 1-3 | An info dump of everything the creator knows |
 
@@ -111,9 +113,16 @@ subscribe, and buy, and YouTube shows the video to more people like them.
 Signal to stage map:
 - Low CTR: inspect packaging (stage 2). Low CTR alone is not proof. Hits have
   run at 2 to 3%.
-- Early retention drop (first 30 seconds): inspect the hook (stage 3).
+- Early retention drop (first 30 seconds): inspect the hook (stage 3). From
+  `retention.py`, a hook leak under 25 points is healthy, under 40 is leaking,
+  and 40 or more is severe. Fix the first lines of the script, not the edit.
 - A cliff later: inspect that moment in the body (stage 4), for example a hard
-  call to action. Trim it after publishing if needed.
+  call to action, a sponsor read, or a topic change with no signpost. Trim it
+  after publishing if needed.
+- A steady slide across the middle: pacing. Fix it by cutting, not rewriting.
+- Hook leak healthy and the slide flat, but views low: the video is fine, so
+  inspect packaging (stage 2).
+- Comments full of the same question: that question is the next video's idea.
 - Views flat but comments glowing: inspect the idea (stage 1). The ceiling may be low.
 - Many negative or "this isn't what the title said" comments: the promise and
   the body do not match (stages 2 and 4).

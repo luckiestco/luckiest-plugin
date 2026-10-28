@@ -26,7 +26,8 @@ Dropped: <topic>: <reason>
 ## 2. Packaging
 | Title | Pattern | Why it works here | Thumbnail |
 |---|---|---|---|
-Pick: <title + thumbnail>
+Pick: <title + thumbnail> · pairing.py <n>/100
+Queries: <query 1> · <query 2> · <query 3> (all words in the title or first 2 description lines: yes/no)
 
 ## 3. Hook
 - Promise:
@@ -37,10 +38,12 @@ Pick: <title + thumbnail>
 
 ## 4. Body
 Must be true for the title to be true:
-1. <item>
-   - <sub-item>
-First value lands at: <m:ss>
+1. <section name, 5 words or fewer>
+   - <sub-item> [ON SCREEN: <what the viewer sees>]
+First value lands at: <m:ss> · Runtime: <m:ss> at 150 wpm
 Beats expectation by: <item>
+Chapters: 00:00 <name> · <m:ss> <name> · <m:ss> <name>
+Shorts: <m:ss-m:ss> "<new first line>" (x3)
 
 ## 5. Readout
 Review on: <date>
@@ -50,7 +53,8 @@ Review on: <date>
 | Likes per view | | Body |
 | Subs per view | | Persona |
 | CTR | | Packaging |
-| Retention drops | | Hook / that moment |
+| Hook leak (first 30s) | under 25 points | Hook |
+| Retention cliffs | none over a few points | That moment in the body |
 
 ## Next
 <weakest stage>: <one action>

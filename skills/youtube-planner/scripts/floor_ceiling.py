@@ -3,10 +3,15 @@
 
 Usage:
   floor_ceiling.py '<topic>' [--limit 30] [--json]
+  floor_ceiling.py --channel <url> [--channel <url> ...] [--limit 30] [--min 2.0] [--json]
   floor_ceiling.py --self-test
 
 Floor = median views. Ceiling = p90 and max views. Fresh = share uploaded in the
 last 12 months. Entries with no view count or date are counted, never guessed.
+
+--channel ranks each channel's recent uploads by their multiple over that
+channel's own median, so a small channel's hit counts as much as a big one's.
+Channels with under 4 videos that have view counts are skipped, not ranked.
 Stdlib only. Calls yt-dlp as an external tool, with no shell.
 """
 import argparse
@@ -19,6 +24,7 @@ import subprocess
 import sys
 
 FRESH_DAYS = 365
+MIN_VIDEOS = 4
 
 
 def percentile(sorted_vals, p):
@@ -70,6 +76,52 @@ def search(topic, limit):
     return entries
 
 
+def channel_videos(url, limit):
+    if not shutil.which("yt-dlp"):
+        sys.exit("yt-dlp not found. Install it, or ask the user for view counts.")
+    url = url.rstrip("/")
+    if not url.endswith("/videos"):
+        url += "/videos"
+    cmd = ["yt-dlp", "--flat-playlist", "-J", "--no-warnings", "--ignore-errors",
+           "--playlist-end", str(limit), url]
+    out = subprocess.run(cmd, capture_output=True, text=True, timeout=300).stdout
+    try:
+        d = json.loads(out)
+    except json.JSONDecodeError:
+        return url, []
+    name = d.get("channel") or d.get("uploader") or d.get("title") or url
+    return name, [{k: e.get(k) for k in ("view_count", "title", "url")} for e in d.get("entries") or []]
+
+
+def outliers(channels, min_multiple):
+    """channels: {name: [entries]}. Returns (rows sorted by multiple, skipped)."""
+    rows, skipped = [], []
+    for name, entries in channels.items():
+        counted = [e for e in entries if isinstance(e.get("view_count"), int)]
+        if len(counted) < MIN_VIDEOS:
+            skipped.append({"channel": name, "videos": len(counted)})
+            continue
+        med = statistics.median(e["view_count"] for e in counted)
+        for e in counted:
+            m = e["view_count"] / med if med else 0
+            if m >= min_multiple:
+                rows.append({"channel": name, "median": int(med), "views": e["view_count"],
+                             "multiple": round(m, 2), "title": e.get("title"), "url": e.get("url")})
+    rows.sort(key=lambda r: -r["multiple"])
+    return rows, skipped
+
+
+def report_outliers(rows, skipped, min_multiple):
+    print(f"Outliers at {min_multiple}x their own channel median or more:")
+    for r in rows[:25]:
+        print(f"  {r['multiple']:>6.2f}x  {r['views']:>12,} vs median {r['median']:>10,}  "
+              f"{(r['channel'] or '')[:20]:<20}  {(r['title'] or '')[:60]}")
+    if not rows:
+        print("  none. Lower --min or raise --limit.")
+    for s in skipped:
+        print(f"Skipped {s['channel']}: {s['videos']} videos with views, need {MIN_VIDEOS} for a median.")
+
+
 def fmt(n):
     return "unknown" if n is None else f"{n:,}"
 
@@ -106,21 +158,39 @@ def self_test():
     assert s["top"][0]["views"] == 300000
     empty = summarize([], today)
     assert empty["floor_median"] is None and empty["fresh_share"] is None
+    chans = {
+        "small": [{"view_count": v, "title": f"s{v}"} for v in (1000, 1200, 800, 9000)],
+        "big": [{"view_count": v, "title": f"b{v}"} for v in (500000, 400000, 600000, 700000)],
+        "thin": [{"view_count": 50, "title": "t"}, {"view_count": None, "title": "u"}],
+    }
+    rows, skipped = outliers(chans, 2.0)
+    assert [r["title"] for r in rows] == ["s9000"], rows  # 9000 / median 1100 = 8.18x
+    assert rows[0]["multiple"] == 8.18 and rows[0]["median"] == 1100
+    assert skipped == [{"channel": "thin", "videos": 1}], skipped
     print("self-test ok")
 
 
 def main():
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     ap.add_argument("topic", nargs="?")
+    ap.add_argument("--channel", action="append", default=[])
+    ap.add_argument("--min", type=float, default=2.0)
     ap.add_argument("--limit", type=int, default=30)
     ap.add_argument("--json", action="store_true")
     ap.add_argument("--self-test", action="store_true")
     a = ap.parse_args()
     if a.self_test:
         return self_test()
+    a.limit = max(1, min(a.limit, 100))
+    if a.channel:
+        rows, skipped = outliers(dict(channel_videos(u, a.limit) for u in a.channel), a.min)
+        if a.json:
+            print(json.dumps({"outliers": rows, "skipped": skipped}, indent=2))
+        else:
+            report_outliers(rows, skipped, a.min)
+        return
     if not a.topic:
         ap.error("topic is required")
-    a.limit = max(1, min(a.limit, 100))
     s = summarize(search(a.topic, a.limit), dt.date.today())
     if a.json:
         print(json.dumps({"topic": a.topic, **s}, indent=2))
