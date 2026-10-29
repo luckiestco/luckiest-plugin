@@ -1,3 +1,7 @@
+## 0.1.55 — 2026-10-28 (npm luckiest-co 1.0.56)
+
+- Coder Components 1.1.0 now ships in the plugin as `coder-components`. Coder 1.3.0 routes "build a component" to it, so plugin users no longer hit a missing sub-skill.
+
 ## 0.1.54 — 2026-10-27 (npm luckiest-co 1.0.55)
 
 - YouTube Planner 1.2.0, with ideas from Jakeschincariol/youtube-agent-skill: `pairing.py` lints the title and thumbnail as one pairing, `floor_ceiling.py --channel` ranks videos by their multiple over their own channel median, and `retention.py` reads a Studio retention export (hook leak, cliffs with the words spoken, slide). It also adds opening-line rules for the hook, on-screen notes, chapters, and Short candidates in the body, and comment triage plus a one-fix report in the readout.
