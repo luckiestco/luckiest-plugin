@@ -4,7 +4,7 @@
 - Source: mg-styles-15 `prompts/20-pixel.md` (MIT, Vincentwei1021)
 - Best for: game trailers and attract screens, 8-bit music videos, nostalgic brand marketing, indie game promos
 - Not for: smooth premium brand films, photoreal, long text
-- Triggers: pixel art, 8-bit, 16-bit, retro game, sprite, chiptune, side scroller, CRT, dithering, PICO-8, Aseprite, Minecraft, Terraria
+- Triggers: pixel art, 8-bit, 16-bit, retro game, sprite, chiptune, side scroller, CRT, dithering, PICO-8, Aseprite, Minecraft, Terraria, 16-bit rpg, jrpg, dialog box, save screen
 - Tone cell: kinetic-sharp
 - Clock: stepped 10-12 fps for sprites (30 fps timeline for scrolling)
 
@@ -49,3 +49,13 @@ Fractional positions cause shimmer. Never use a smooth scale or rotation on spri
 - Sprites: rasterize each part on its own layer, drop alpha under 110, quantize to a 14-color palette, give each part its own 1px black outline. Draw small props directly at low resolution, never scaled down from smooth paths.
 - HUD text at full resolution in Press Start 2P (OFL) with an 8px drop shadow; icons as 8x8 bitmaps.
 - Motion stepped: 4-pose loops at 15 fps, integer pixel shakes `[0,1,0,-1]`, coin pop as a half sine of 9px, 1px cloud moves every 2 frames. Transition in: pixel blocks scale up then down.
+
+## 16-bit RPG variant (Lemo-Opuscar `pixel-rpg`)
+- Tell the story the way a mid-90s console RPG does: dialog boxes with portraits, menus, status bars, battle messages, save files. Native 320x180 scaled x6, no scanlines and no grain.
+- Rendering: an indexed framebuffer of palette indices shown through a lookup table, so the whole palette can change in one frame. About 32 master colors, gradients and glows only as 4x4 Bayer dither, camera moves in integer pixels with each parallax layer rounding its own offset.
+- Color roles: palette is feeling, changed by table and never by alpha. Older era means fewer colors and lower resolution (16-bit, 8-bit, 4-shade). One or two protected indices (the brand accent is the natural pick) are exempt from every effect and become the thread for match cuts between eras. Keep warm hues in reduced subsets and map by luminance, not rank.
+- Type: the dialog box is the subtitle, drawn in the framebuffer in the bottom quarter. Layered rounded border, dithered dark fill, 32x32 portrait on the left, an OFL pixel face (Pixelify Sans or Silkscreen) with a 1px shadow, typing with the voice at about 38-40 characters per second and a blinking arrow when done. Keep characters above the box.
+- Motion: walk at 8 fps, flames and blinks at 12 fps, windows slide in about 0.3s in whole pixels, a hand cursor bobs 1px at 4 fps and stops when the character hesitates. Transitions are mosaic, encounter swirl, 3-2-1px shake and 4-step palette fades, never alpha fades.
+- Native move: palette collapse or flood. Color depth drops one level per beat, or full color floods back through a dither wave, while the protected color stays put.
+- Sound: pulse leads at 12.5, 25 and 50% duty, triangle bass, noise drums, a few echo taps. Fidelity follows color depth. Text blips pitch per speaker, and silence includes the echo tails.
+- Watch out: quantizing a finished full-color scene to 4 shades is mud, so draw low eras natively at half resolution. A scene with no warm hue in its reduced palette turns a sunset solid red.

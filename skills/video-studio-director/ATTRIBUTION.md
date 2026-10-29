@@ -8,6 +8,7 @@
 | **video-storyboard** by Skill Me (`SkillMedev/motion-video-direction`, https://github.com/SkillMedev/motion-video-direction/tree/main/skills/video-storyboard) | MIT, Copyright (c) 2026 Alexander Ouellet | Five-beat spine (hook, problem, reveal, proof, CTA) and scene-type length table | `LICENSE-skillme` |
 | **creative-director-skill** by smixs with Paul Deadcough (https://github.com/smixs/creative-director-skill) | CC BY 4.0 | Insight before ideas, three method categories (structural, associative, disruptive), six weighted criteria and their weights. Wording is original; the 571-case library is not included | https://creativecommons.org/licenses/by/4.0/ |
 | **motionmaxxing** by Tejas Makwana (`Tejashmakwana/motionmaxxing`, FinalMotion, finalmotion.video), commit 8c8ec0f2 | Apache-2.0 | PAGE, the brand inventory, idea kinds and the cover-the-logo test, the per-scene belief line and delete test, the importance budget, beat-length skeletons, and the ending rules. Rewritten in our own words; no code, runtime, media, studies or `library/` rows are copied | `LICENSE-motionmaxxing` |
+| **Lemo-Opuscar** by lemomo-ai (`lemomo-ai/lemo-opuscar`), commit ea34ff95 | MIT | Benchmark-first, the native move on the peak, silences and sound as transition, and the differ-from-the-sample check, from `DIRECTOR.md`. Rewritten | `LICENSE-lemo-opuscar` |
 
 ## Changes in this edition
 

@@ -1,5 +1,12 @@
 # Changelog — luckiest-video-studio-director
 
+## 1.6.0 — 2026-10-28
+
+- Benchmark works (what to learn, what not to take), one native move on the peak,
+  two real silences and two J- or L-cut sound transitions in films over 20 seconds,
+  and a six-point check against the style card's beat seed. From Lemo-Opuscar
+  `DIRECTOR.md` (MIT), rewritten.
+
 ## 1.5.0 — 2026-10-12
 
 - Anchored 1-10 scale in the score loop and a Style fidelity score when a style is set.

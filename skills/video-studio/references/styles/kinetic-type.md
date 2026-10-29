@@ -55,4 +55,4 @@ Beat-driven: kick every beat, clap on 2 and 4, hat on offbeats, bass root note p
 - Type that keeps drifting while being read.
 - Animation that lands off the beat grid, or aimed at the transition's first frame instead of the reveal frame. Each stray landing loosens the whole piece.
 - Dense four-pages-in-a-row of the same layout becomes a slideshow.
-- Real lyric videos land about once per beat. Eighth-note density works for a short opener only.
+- Real lyric videos land about once per beat. Eighth-note density works for a short opener only. For word-synced lyrics, follow the lyric video section of [audio.md](../audio.md).

@@ -1,3 +1,7 @@
+## 0.1.56 — 2026-10-28 (npm luckiest-co 1.0.57)
+
+- Video Studio 1.21.0: six new style cards (news package, exploded teardown, blueprint, risograph, transit map, 60s title sequence) and four variants, a word-synced lyric video route, and a starter prompts menu with deliverable packs. Director 1.6.0 adds benchmark works, a native move on the peak, silences and sound transitions. Art director 1.9.0 adds a brand mascot route. Ported from Lemo-Opuscar, pdoom-video and ClaudeAnimationBase (MIT).
+
 ## 0.1.55 — 2026-10-28 (npm luckiest-co 1.0.56)
 
 - Coder Components 1.1.0 now ships in the plugin as `coder-components`. Coder 1.3.0 routes "build a component" to it, so plugin users no longer hit a missing sub-skill.

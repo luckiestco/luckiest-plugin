@@ -18,7 +18,7 @@ user-invocable: true
 license: MIT. See ATTRIBUTION.md
 allowed-tools: Bash, Read, Write, Edit, Glob, Grep, AskUserQuestion
 metadata:
-  version: "1.5.0"
+  version: "1.6.0"
   listing_id: luckiest-video-studio-director
   author: luckiest
 ---
@@ -139,6 +139,12 @@ two angles into one. Then plan the hook, the
 first 2 seconds, before anything else. It must show the product or state the
 tension in the first frame. A logo or a title card is not a hook.
 
+Pick one or two benchmark works (a film, title sequence, ad, or game) that set
+the bar for this style and this topic, chosen for this film, not the style
+card's. Write two lines in `plan.md`: what to learn (composition, pacing, camera
+grammar, color logic, score shape) and what not to take (characters, designs,
+melodies, specific shots, logos, type designs).
+
 ## 3. Energy map
 
 Draw energy per second across the duration: low open or cold open, build, one
@@ -152,6 +158,17 @@ reading time plus 0.5 to 1 second. Big needs small around it. The strongest
 frame sits 60 to 75% of the way through, not in the first second and not on the
 end card. A designed breath (0.6 to 1.5 seconds of near stillness before a
 payoff) is allowed when the plan states why; one living thing keeps moving in it.
+
+Put one native move on the peak: a moment only this style can do (a fold that
+becomes the transition, ink that blooms into the next scene, a grid that snaps
+into the logo). Name it in the plan. The style card's signature features are the
+menu; invent one when none fits the story.
+
+Sound shapes the energy too. Films over 20 seconds get at least two real
+silences or near-silences, before the turn and before the peak, and the first
+sound after each is one of the film's most important. Use sound as a transition
+at least twice: the next scene's sound starts early (J-cut) or the last scene's
+sound runs over the cut (L-cut).
 
 ## 4. Shot list
 
@@ -291,7 +308,7 @@ tribe for a second eye. Never post automatically.
 | A scene that creates no belief | Run the delete test and cut it |
 | Every scene is "the point" | Re-rate importance; at most a quarter are 3 |
 | Long static end card | Hold 0.6 to 1.4 seconds, then end |
-| Copying the sample | A style card's beat seed or a reference's layout pasted in. Keep the technique, recompose for this topic |
+| Copying the sample | A style card's beat seed or a reference's layout pasted in. Keep the technique, recompose for this topic. Compare six things with the card's beat seed or the reference: structure, opening, signature shot, camera path, score shape, ending. At least four must differ |
 | No concrete object | Every shot names a noun and what it does. No object, no shot |
 | Dead background | A large area unchanged while a small piece moves. The hero fills at least half the frame; the background changes with the content |
 | Real material drawn in code | Screenshots, photos and quotes go full frame; code only annotates them |
