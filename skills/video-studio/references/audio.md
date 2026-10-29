@@ -349,6 +349,29 @@ If no source is available (no preset, no Python deps, and `hyperframes beats` no
 Music cue guidance: unavailable; continue without beat/cue sync.
 ```
 
+### Lyric video
+
+A lyric video is the one format where the song drives the cut instead of biasing it. Words appear in sync with the singer, so it needs real word timings, not guesses.
+
+**Rights first.** Make a lyric video only for a song the user or client owns or has licensed. Ask before starting. Never use a famous artist's track.
+
+**Timing data**, in this order of preference:
+
+1. **The user's own timings.** An LRC file, a karaoke export, or a lyrics sheet with line start times. Line-level is enough for one line per scene; word-level needs option 2.
+2. **Word alignment from the audio.** Split the vocal out first (Demucs `htdemucs_ft`, run one-off with `uvx demucs`), then get word timestamps from the vocal stem with Whisper word timestamps (`faster-whisper` or `whisperx`), constrained by the user's lyric text, never transcribed free. Ask before running: the models download a few GB. Spot-check 3 lines by ear and fix any word off by more than 0.1 s.
+3. **Neither available.** Say so, and fall back to one line per beat-snapped scene with no word highlight. Never claim word sync without timings.
+
+Write the result to `<output-dir>/composition/assets/music/lyrics.json`: `lines[]` of `{text, start, end, words: [{w, start, end}]}`. Get the beat map from source 2 or 3 above.
+
+**Building it:**
+
+- Anchor each scene window to a lyric line and snap its cut to the nearest beat or downbeat. Find lines by their text, never by a hard-coded time, so a re-alignment does not break the edit.
+- A word highlights at its `start` and is complete by its `end`. The line may show dim up to 0.4 s early. Highlighting never runs ahead of the voice.
+- Sung words full strength, unsung at 30-40% opacity or outline only.
+- The words are part of the picture, not subtitles laid on top. Give each section its own way of carrying them (written by a moving point, riding a curve, stamped, typed), and give the chorus one recurring treatment that escalates each time it returns.
+- Keep lyrics inside title safe (5% from every edge) and clear of any 9:16 platform UI.
+- QA: scrub each chorus at 0.2 s steps and confirm no word lights before it is sung.
+
 ### Adding SFX elements
 
 Put the music bed on a low track and give each overlapping SFX its own ascending track-index (e.g. music at 10, SFX from 11 up). Never share a track-index between overlapping audio.

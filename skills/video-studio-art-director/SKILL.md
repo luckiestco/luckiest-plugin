@@ -20,7 +20,7 @@ user-invocable: true
 license: MIT. See ATTRIBUTION.md
 allowed-tools: Bash, Read, Write, Edit, Glob, Grep, AskUserQuestion
 metadata:
-  version: "1.8.0"
+  version: "1.9.0"
   listing_id: luckiest-video-studio-art-director
   author: luckiest
 ---
@@ -302,7 +302,8 @@ used: when the parent skill has a disclosure or provenance rule, it still applie
 
 Allowed character routes, one per film: (a) a generated frame library through
 `luckiest-image` under section 3b, (b) hands, backs and silhouettes only, (c) no
-characters: the product or object is the protagonist. Never draw a generic chibi
+characters: the product or object is the protagonist, (d) the brand's own mascot,
+drawn in code (below). Never draw a generic chibi
 (round head, bean eyes, blush, no neck), a white-shell robot with a visor, faces
 on objects, or stick figures acting out a story. Objects act through shape,
 motion, scale and contrast instead (ions bunch when cold, spread when warm).
@@ -311,6 +312,25 @@ When a character ships, check on a 2x close-up: the silhouette reads filled
 black; neck, shoulders, elbows and wrists exist; hands hold things; two shading
 levels plus a highlight lit like the scene; a specific performance each time; the
 same line and color treatment as the scene; identical across shots.
+
+Route (d), a brand mascot drawn in code (brush-painted, cel or flat), only when
+the brand has one or the user asks for one:
+- Model sheet before any shot: turnaround through drawn key views (front, 3/4,
+  side, back), an emotion sheet of 4 to 8 acted expressions with one idle motion
+  each, 2 or 3 key poses, and the palette. Render it with the real drawing code,
+  approve it, then shoot. Turns step through the drawn views, never a projected
+  3D rotation.
+- Emotions change through anticipation, a squint, the take and an overshoot.
+  Never swap eyes or mouth between two frames. Check eyebrow direction at final
+  size: worried and angry are one flip apart.
+- Size: in a medium shot the mascot is at least a quarter of frame height; tiny
+  only in establishing wides.
+- No twinning (both arms, both eyes or a crowd moving in unison). Held props sit
+  between the palms. Show it, do not write it: a sign or caption that repeats the
+  story is a failed shot; reactions are painted marks (!, ?, sweat, a bulb).
+- Painted fills are slow without a GPU. Draft with flat fills, motion blur off and
+  `render-scenes.mjs --quality draft` on single scenes; paint only the approved
+  cut.
 
 With a style card, everything passes through the same renderer. A character or
 UI drawn flat over a brushwork or paper background looks pasted on; this is the

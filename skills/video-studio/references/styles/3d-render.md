@@ -4,7 +4,7 @@
 - Source: mg-styles-15 `prompts/04-3d-render.md` (MIT, Vincentwei1021)
 - Best for: premium product ident, brand sting, phone/drink/sneaker spots, satisfying loops
 - Not for: fast cutty edits, flat graphic looks, long runtimes on a weak GPU
-- Triggers: 3D, C4D, Cinema 4D, Octane, Redshift, Blender render, clay render, soft pastel 3D, jelly, glossy plastic, cloner, satisfying, ASMR, product ident, Maxon reel
+- Triggers: 3D, C4D, Cinema 4D, Octane, Redshift, Blender render, clay render, soft pastel 3D, jelly, glossy plastic, cloner, satisfying, ASMR, product ident, Maxon reel, glass render, glass product, transparent product, exploded view, dispersion
 - Tone cell: calm-soft
 - Clock: smooth 24 fps
 
@@ -42,3 +42,13 @@ Rule from logo-design (MIT, kaankiziltug): the entrance is built from the mark's
 
 ## Watch out
 Browser render cost: cap sub-frames and instance counts. Muddy transmission on dark backgrounds. SSS is faked, tune with a rim light. Without DOF and motion blur it reads as a game engine.
+
+## Glass product variant (Lemo-Opuscar `glass-product`)
+- Swap the pastel cyc for an infinite black studio. The hero is glass, metal and light, with internals visible like a display case.
+- Lighting: a small scene of emissive strips rebuilt into the environment every frame instead of an HDRI, plus one tall sweep strip on an arc behind the camera. Its highlight, refraction and dispersion move physically, so never paint a 2D highlight. Clear glass: full transmission, near-zero roughness, dispersion on. Frosted glass needs a bright opaque emitter inside or behind it or it reads as dark plastic. Anything inside glass must be opaque.
+- Color roles: neutral world (black, greys, metal tints). One accent family reserved for light only (emission, caustic rings), optionally drifting between two neighboring hues. Rainbow dispersion only at thick glass edges. Use neutral tone mapping, since filmic AgX washes accents to white.
+- Type: ultra-thin (weight 200) grotesk such as Inter Tight, very large with wide tracking in the upper third, a glint crossing the letters in sync with the sweep light. Subtitles on a frosted slab filled with the blurred live frame.
+- Motion and camera: the camera always drifts (slow orbit or push), never locked, cuts and sweeps only on beats. Exploded view: long ease-out apart, short hover, very short ease-in snap on a downbeat, with the axis about 40 degrees to camera, since edge-on parts collapse to lines.
+- Native move: show the invisible thing the product does as light traveling inside the glass, with a ring-shaped caustic spreading across the floor from each pulse.
+- Sound: minimal electronic, never piano and strings. Glass shimmer for sweeps, magnetic clicks for snaps, a real beat of silence before a release.
+- Watch out: concave glass facing camera prints a front light card as a grey rectangle (turn it off), and pure side profiles read as simple pots and mushrooms (use 3/4 views).

@@ -4,7 +4,7 @@
 - Source: huashu-art-motion `references/动画语法/t2_keynote_ui.md` (MIT)
 - Best for: product or feature launches, release notes, "three new features", pricing and spec reveals, UI walkthrough steps. 30-90s, voiceover made of nouns and numbers.
 - Not for: explaining how something works (use a morphing style), data trends, bad news or serious events, topics with no product or object to enlarge.
-- Triggers: apple keynote, apple event, product launch video, linear, stripe, openai launch, release video, feature announcement, glass card, ui walkthrough, screen recording explainer
+- Triggers: apple keynote, apple event, product launch video, linear, stripe, openai launch, release video, feature announcement, glass card, ui walkthrough, screen recording explainer, dark keynote, dark tech launch, snap grid ui, software launch film
 - Tone cell: calm-sharp
 - Clock: smooth 30/60 fps
 
@@ -57,3 +57,13 @@ Clean minimal electronic or soft piano, 90-110 BPM or no beat. Soft click on tex
 - Floating cards and constant slow push were old habits in the source and should not be copied.
 - A count that restarts from 0 after a card expands, or a second copy of the same text during the expand.
 - Bright good-news mood used on serious subject matter.
+
+## Dark keynote variant (Lemo-Opuscar `dark-keynote`)
+- Use when the product is software with no physical object: the hero is original UI drawn in code (windows, notification cards, tiles, a cursor), not a real screenshot. Windows carry only a small glyph and title, no OS chrome.
+- Stage: near-black with a radial lift at upper center, one faint cool glow off-center, corner vignette, and a hairline grid (white at about 3%, every 4th line brighter) on a 48px module. Three steps of raised dark surface, 1px border, no grain, no glass blur.
+- Color roles: cool-tinted neutrals only. The brand accent goes to the one thing the product is or does (protagonist, call to action, key number). A warning color may appear only while the problem exists and never returns after the turn. Other hues only as desaturated category trails in motion.
+- Type: Inter for UI and headlines, Inter Tight 600 with about -4% tracking for the giant number, JetBrains Mono for filenames and labels (all OFL). The number gets its own screen with no caption over it. Captions are a bottom-center toast pill with a small accent dot.
+- Motion: everything lands on the grid and on the beat, fast-out with one small back overshoot then an immediate settle. Shot changes are a UI element expanding into the frame or the frame collapsing into one, started a frame early, never a fade. Things leave by retracting one part per beat.
+- Native move: light reveal. A soft band sweeps across and only pixels it has passed turn on, glint at 20% or less, done within about 1.3s. Also fits: generated pile-up of hundreds of UI items, then a snap into one grid in a single beat.
+- Sound: tuned percussion and pads (marimba, vibraphone, felt piano) in one mode. Disorder sounds scattered and detuned, the product sounds one family. Digital silence on a freeze.
+- Watch out: a hard white glint reads as a sticker, and too few generated items leave holes in the grid that look like a mistake.

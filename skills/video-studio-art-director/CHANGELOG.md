@@ -1,5 +1,13 @@
 # Changelog — luckiest-video-studio-art-director
 
+## 1.9.0 — 2026-10-28
+
+- Section 3c route (d): a brand mascot drawn in code, with a model sheet and emotion
+  sheet approved before shots, acted emotion changes, size, no-twinning and
+  show-don't-write rules, and draft-first rendering for painted fills. From
+  ClaudeAnimationBase `ANIMATION_GUIDE.md` and Lemo-Opuscar `DIRECTOR.md` (both MIT),
+  rewritten.
+
 ## 1.8.0 — 2026-10-12
 
 - Section 2b: the film's idea in one sentence in `plan.md` and `art-direction.json` (`idea`, `ideaCheckedAgainst`) before the look is locked. Rejected and rewritten when it could describe a competitor's film.

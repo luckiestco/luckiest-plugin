@@ -1,5 +1,18 @@
 # Changelog — luckiest-video-studio
 
+## 1.21.0 — 2026-10-28
+- Six new style cards from Lemo-Opuscar (MIT): `news-package`, `teardown`, `blueprint`,
+  `risograph`, `transit-map`, `spy-titles`, plus dark keynote, glass product, Swiss
+  motion and 16-bit RPG variants on `keynote-ui`, `3d-render`, `bauhaus` and `pixel`.
+  `styles.md` now indexes 45 styles with four new offer rows.
+- `references/audio.md`: lyric video route (rights check, LRC or aligned word
+  timings from a Demucs vocal stem, lines anchored to the beat grid, karaoke
+  highlight rules) from pdoom-video (MIT). `kinetic-type.md` links it.
+- `references/starter-prompts.md`: nine request shapes, effort and length guidance,
+  one note per revision, the `.env` deny rule, crew mode for long films, and
+  deliverable packs. Linked from Step 0b.
+- Sub-skills director 1.6.0 and art director 1.9.0.
+
 ## 1.20.0 — 2026-10-27
 - `references/audio.md`: level every voice line then limit only peaks, re-transcribe
   narration before render, one beat grid for the whole timeline, measure loudness on

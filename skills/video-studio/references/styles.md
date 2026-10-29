@@ -1,6 +1,6 @@
 # Style library
 
-39 visual styles plus 18 era styles, each a card in `styles/`. A style decides the
+45 visual styles plus 18 era styles, each a card in `styles/`. A style decides the
 renderer, texture, motion signature, clock and transition family. The brand still
 decides the colors and faces when it has a design system (art director section 0):
 map the card's palette roles onto the brand palette instead of replacing it.
@@ -29,9 +29,13 @@ map the card's palette roles onto the brand palette instead of replacing it.
 | Vertical social (9:16) | `variety-show`, `kinetic-type`, `collage` |
 | Logo showcase | `morph`, `liquid`, `bauhaus` |
 | Collectible, single premium product reveal | `product-flight`, `3d-render`, `aurora-glass` |
+| Hardware, what is inside | `teardown`, `blueprint`, `product-flight` |
+| News, weekly round-up | `news-package`, `newsroom-collage`, `kinetic-type` |
+| Roadmap, growth, rollout | `transit-map`, `finance-chart`, `isometric` |
+| Title sequence, event opener | `spy-titles`, `kinetic-type`, `bauhaus` |
 
    When all three offers are polished looks, swap the third for one hand-made style
-   (`collage`, `cel-boil`, `line-art`, `whiteboard`, `cut-paper`): in 2026 feeds full
+   (`collage`, `cel-boil`, `line-art`, `whiteboard`, `cut-paper`, `risograph`): in 2026 feeds full
    of glossy generated video, visible human texture is what stands out.
    "Other" lets the user type any style or paste a reference; match it like step 1.
    Label each option with the card's Name ("Synthwave VHS Retro"), never the id, and
@@ -77,6 +81,8 @@ the concept. Brand names in seeds are placeholders: use the real product.
 | [`sticker-explainer`](styles/sticker-explainer.md) | Sticker Knowledge Explainer | calm-sharp | hard-core science explainers, finance and knowledge channels, corporate documentary explainers, data-rich narration videos | sticker, knowledge video, science explainer, infographic video, big canvas, camera pan and zoom, photo cutouts with white outline, periodic table, PaperClip, Lin Chao, explainer channel |
 | [`synthwave`](styles/synthwave.md) | Synthwave VHS Retro | kinetic-sharp | retro title sequences, music videos, trend brand films, gaming and nostalgia content, Y2K chrome revivals | synthwave, outrun, 80s, retro, neon, VHS, vaporwave, Y2K, chrome text, scanlines, grid horizon, retrowave |
 | [`variety-show`](styles/variety-show.md) | Variety Show Kinetic Captions | kinetic-soft | 9:16 vlogs, pet and lifestyle shorts, interview and reaction edits, comedic re-edits, caption-heavy social video | variety show, hanazi, Chinese variety captions, kinetic captions, sticker text, fancy text, reaction text, vlog captions, burst box, outlined text, TikTok captions, Douyin, bilibili |
+| [`teardown`](styles/teardown.md) | Exploded Teardown | calm-sharp | hardware launch and "what is inside" films, device and PCB teardowns, engineering-led product explainers, open-hardware showcases | teardown, exploded view, take apart, what's inside, PCB, circuit board, CAD, STEP file, KiCad, BOM, open hardware, repair guide, iFixit, dimension lines |
+| [`spy-titles`](styles/spy-titles.md) | 60s Title Sequence | kinetic-sharp | product launch teasers, chase or delivery stories, team or lineup reveals, event and festival openers, a brand name revealed as the last thing assembled. 15-60s | saul bass, spy titles, 60s title sequence, opening credits, silhouette chase, cut-out titles, retro credits, big band, surf guitar, mid-century graphic, catch me if you can, north by northwest, vertigo titles, noir credits |
 
 ## Explainers (30-120s beat patterns)
 
@@ -91,6 +97,9 @@ the concept. Brand names in seeds are placeholders: use the real product.
 | [`science-explainer`](styles/science-explainer.md) | Glowing Flat Science Explainer | calm-soft | scale and "what is inside" topics (cell to galaxy, pixel to model), systems and mechanisms drawn as glowing particles and lines, calm popular-science narration. 45-120s. | kurzgesagt, in a nutshell, flat science animation, scale zoom, immune system explainer, cell zoom, popular science, glowing vector, optimistic nihilism, zoom into |
 | [`storytime`](styles/storytime.md) | Storytime Character Cuts | kinetic-soft | first-person stories, fails, "the first time I..." anecdotes with a setup, a pause and a punchline. A recurring cartoon avatar carries the voiceover. 60-600s, weekly cadence. | theodd1sout, jaiden animations, domics, storytime animation, story time, youtube storytime, cartoon avatar, stick figure story, reaction face, smash cut joke, animated anecdote |
 | [`whiteboard`](styles/whiteboard.md) | Hand-Drawn Whiteboard Explainer | calm-soft | arguments, cause-and-effect chains, historical threads, step-by-step reasoning with a steady voiceover. Ideas that can be drawn as a map. 45-180s. | rsa animate, minute physics, whiteboard animation, hand-drawn explainer, doodle video, videoscribe, doodly, sketch explainer, marker drawing, draw my life |
+| [`blueprint`](styles/blueprint.md) | Engineering Blueprint | calm-sharp | how-it-works explainers, hardware and mechanical products, architecture and infrastructure, engineering and developer-tool brands, 30-60s | blueprint, cyanotype, technical drawing, engineering drawing, schematic, patent drawing, exploded view, CAD, drafting, draft, cutaway, diagram, spec sheet, title block, Leonardo |
+| [`news-package`](styles/news-package.md) | Broadcast News Package | calm-sharp | weekly or daily round-ups, market and launch recaps, brand "news of the week" bulletins. 45-120s, 16:9. | news, news bulletin, broadcast, breaking news, headline, lower third, news ticker, rundown, market close, weekly roundup, news desk, tv news, split-flap, news graphics, BBC, CNN, Bloomberg, CNBC, Sky News |
+| [`transit-map`](styles/transit-map.md) | Transit Map Growth | calm-sharp | roadmaps, company or product growth over years, network or store rollouts, migration routes, careers told stop by stop, two rivals growing side by side | metro map, subway map, transit map, tube map, route map, network growth, roadmap, rollout, timeline as a map, stations, interchange, Vignelli, Beck |
 
 ## Art styles (any topic)
 
@@ -110,6 +119,7 @@ the concept. Brand names in seeds are placeholders: use the real product.
 | [`retro-cgi`](styles/retro-cgi.md) | Retro CGI Render | kinetic-sharp | nostalgia tech, intros for software, games, 3D-logo reveals, retro brand throwbacks (narrow use) | 90s cgi, early ray tracing, chrome sphere, checkerboard floor, plastic render, wireframe, pov-ray, silicon graphics |
 | [`swirl-brushwork`](styles/swirl-brushwork.md) | Swirl Brushwork (post-impressionist) | kinetic-soft | emotional launch films, night scenes, brand stories that want a hand-painted, vibrating look | van gogh, starry night, swirl, post-impressionist, thick paint, impasto, painterly night sky, oil painting video |
 | [`watercolor-anime`](styles/watercolor-anime.md) | Watercolor Anime Background | calm-soft | storybook explainers, children's content, wellness, cozy lifestyle, nature, slow narrative openers | ghibli, miyazaki, hand-painted watercolor, anime background, storybook, cozy, gouache, wind in curtains |
+| [`risograph`](styles/risograph.md) | Risograph Print | calm-soft | warm handmade brand films and launch teasers, small-figure stories with a quiet joke, zine-style explainers, event and culture promos | risograph, riso, duotone print, spot color, two-color print, overprint, misregistration, halftone, zine, screen print look, mimeograph, stencil print, Tom Haugomat, Risotto Studio |
 
 ## Era styles
 

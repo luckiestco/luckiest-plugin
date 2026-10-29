@@ -4,7 +4,7 @@
 - Source: mg-styles-15 `prompts/09-bauhaus.md` (MIT, Vincentwei1021)
 - Best for: beat-driven kinetic posters, music and festival intros, design-studio identity, exhibition promos
 - Not for: organic or soft subjects, long copy, character stories
-- Triggers: Bauhaus, geometric, Swiss, International Typographic, kinetic poster, grid, modular, Kandinsky, constructivist, primary colors, beat-synced shapes, p5.js
+- Triggers: Bauhaus, geometric, Swiss, International Typographic, kinetic poster, grid, modular, Kandinsky, constructivist, primary colors, beat-synced shapes, p5.js, swiss design, swiss motion, grid poster, flush-left type, signal colour
 - Tone cell: calm-sharp
 - Clock: smooth 30 fps (motion quantised to the 120 BPM beat grid)
 
@@ -50,3 +50,12 @@ Any overshoot or bounce breaks the style. Off-grid positions from sub-pixel roun
 - Motif motion: a long pole sweeps like a clock hand about a fixed hub (28 to 49.5 deg, ease out); a grid of window cells swaps colors at 13 fps (6 of 16 cells, never black); concentric arcs pulse outward; a ball rolls with rotation = distance / radius.
 - Transition in: red, yellow and blue shapes rotate and scale up to cover the frame in 0.20s.
 - Watch out: derive grid cell size from the inner width minus gaps, or cells overflow.
+
+## Swiss motion variant (Lemo-Opuscar `swiss-motion`)
+- Use for mid-century Swiss typographic poster logic instead of primary-shape Bauhaus. Flat page, paper, ink, light greys and exactly one saturated signal color taken from the brand accent. No gradients, shadows, particles or grain, no geometric shape set.
+- Grid: 1920x1080, 12 columns, about 96px margins, 24px gutters, 24px baseline. The frame can be a spread, with a rule-and-numeral page on the left and the artifact on the right. Let columns and rows mean a quantity (hours, floors, notes) and pick wide modules, since many thin ones read as a chart.
+- Type: one OFL neo-grotesque for the whole film (Archivo, Inter, Schibsted Grotesk or Instrument Sans), flush left and ragged right, about -2% tracking at 90px and up. Giant numeral beside tiny technical notes. Subtitles sit at column starts inside the layout, not in a bottom bar.
+- Motion: two curves only, `cubic-bezier(.7,0,.2,1)` for snaps and linear for drawn lines and the exception. Entrances are clip-reveals and wipes, never fades. Deletions are knife cuts: a thin line crosses, then the element collapses to its midline. Ripples run in order of distance from their cause.
+- Native move: the exception. One element in the signal color moves linear and unsnapped, perhaps pausing mid-flight, with a readout flipping from on grid to off grid. Drop the drums for that moment.
+- Sound: steady motorik or minimal pulse whose subdivisions set snap lengths, with dry print foley (letterpress clack, ruling-pen tss, guillotine snick) and no reverb.
+- Watch out: merged bars show hairline seams after rotation (overdraw 1px), and rotating while labeling reads as noise, so rotate, hold, then label.

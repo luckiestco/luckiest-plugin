@@ -1,10 +1,10 @@
 ---
 name: luckiest-video-studio
-description: "Make product launch videos, product demos with motion design between demo shots, and logo showcases, all editable after render, in 39 named styles. Starts with a short context interview, plans a scripted storyboard the user approves scene by scene in a review player before anything renders, builds motion scenes with HyperFrames, records or places demo footage, renders each scene as its own clip, then hands back an MP4 plus a storyboard.json that re-renders one scene at a time, a review player for edits and notes (Concat, OpenScreen, or Diffusion Studio on request), and optional After Effects compositions. Use for 'make a launch video', 'product demo video', 'demo with motion graphics', 'logo animation', 'logo reveal', 'portfolio reel', 'animate my logos', 'brand reel', 'turn my talking-head recording into a reel', 'add graphics over me talking', or 'change scene 3 of the video'. For AI-generated footage, avatars, and text-to-video models use luckiest-video. For what to post and when use luckiest-social."
+description: "Make product launch videos, product demos with motion design between demo shots, and logo showcases, all editable after render, in 45 named styles. Starts with a short context interview, plans a scripted storyboard the user approves scene by scene in a review player before anything renders, builds motion scenes with HyperFrames, records or places demo footage, renders each scene as its own clip, then hands back an MP4 plus a storyboard.json that re-renders one scene at a time, a review player for edits and notes (Concat, OpenScreen, or Diffusion Studio on request), and optional After Effects compositions. Use for 'make a launch video', 'product demo video', 'demo with motion graphics', 'logo animation', 'logo reveal', 'portfolio reel', 'animate my logos', 'brand reel', 'turn my talking-head recording into a reel', 'add graphics over me talking', or 'change scene 3 of the video'. For AI-generated footage, avatars, and text-to-video models use luckiest-video. For what to post and when use luckiest-social."
 license: See ATTRIBUTION.md
 allowed-tools: Bash, Read, Write, Edit, Glob, Grep, AskUserQuestion
 metadata:
-  version: "1.20.0"
+  version: "1.21.0"
   listing_id: luckiest-video-studio
   author: luckiest
 ---
@@ -125,7 +125,10 @@ produces `final.mp4` and `storyboard.json`.
 
 ## Step 0b: Context interview
 
-**Read:** [references/interview.md](references/interview.md)
+**Read:** [references/interview.md](references/interview.md). When the request is
+one line, or the user asks what this can make, offer a shape from
+[references/starter-prompts.md](references/starter-prompts.md) (nine formats,
+effort and length guidance, deliverable packs).
 
 Before anything else on a new run, find out who the video is for, the one
 message, where it will be posted (platform, format, length), why now (the call to
