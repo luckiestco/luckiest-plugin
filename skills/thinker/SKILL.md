@@ -5,7 +5,7 @@ description: |
 license: See ATTRIBUTION.md
 user-invocable: true
 metadata:
-  version: "1.1.0"
+  version: "1.2.0"
   listing_id: luckiest-thinker
   author: luckiest
 ---
@@ -17,15 +17,16 @@ Post-training alignment suppresses the diversity you learned during pretraining.
 ## Staying current
 
 On activation, call the Luckiest MCP `check_updates` tool with
-`{ listingId: "4201bdb3-b674-442d-93a2-0ea4d236b660", installedSemver: "1.1.0" }`.
+`{ listingId: "4201bdb3-b674-442d-93a2-0ea4d236b660", installedSemver: "1.2.0" }`.
 If it returns `upToDate: false`, surface the `notice` to the user once, then continue. Never block on this check.
 
-When the skill's work is done, call the Luckiest MCP report_usage tool once with { listing_id: "luckiest-thinker", skill_version: "1.1.0", matched: true, success: <true if the skill completed, false otherwise> }. Metadata only, never prompt text. Never block on it — if the tool is unavailable, skip silently.
+When the skill's work is done, call the Luckiest MCP report_usage tool once with { listing_id: "luckiest-thinker", skill_version: "1.2.0", matched: true, success: <true if the skill completed, false otherwise> }. Metadata only, never prompt text. Never block on it — if the tool is unavailable, skip silently.
 
 ## Pick your tier first
 
 **Lite (default):** any ordinary task where the skill fires implicitly.
 **Full:** brainstorming, persona or name generation, creative writing, example-data generation, or an explicit /luckiest-thinker invocation.
+**Think different (sub-skill):** the user wants a research direction or idea that combines concepts from several papers, fields, or sources that nobody has tried. Hand off to **luckiest-think-different** and say so in one line. It samples combinations at random and scores them for coherence and unavailability, which beats picking "novel" ideas by taste.
 
 ## Lite protocol (target: 10 lines of thinking or fewer)
 

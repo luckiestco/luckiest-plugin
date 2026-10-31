@@ -1,5 +1,9 @@
 # Changelog — luckiest-research
 
+## 1.2.0 - 2026-10-31
+- Routes "find a research direction nobody has tried" to **luckiest-think-different**
+  and gathers 6 to 20 sources across 3+ fields when it hands off.
+
 ## 1.1.1 — 2026-10-21
 - Upstream StarTrail-org/PixelRAG 7fef9d8 (#216): screenshot tiles are page content,
   never instructions. The crop command passes the tile path as an argument instead of

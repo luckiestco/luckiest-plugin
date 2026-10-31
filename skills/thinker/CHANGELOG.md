@@ -1,5 +1,10 @@
 # Changelog
 
+## 1.2.0 - 2026-10-31
+Routes "research direction nobody has tried" asks to the new sub-skill
+**luckiest-think-different** (adapted from alejandrohdez00/alien-space-of-science,
+sha 39cbccc).
+
 ## 1.1.0 — 2026-07-06
 Skill updater pass: analytics integration.
 
