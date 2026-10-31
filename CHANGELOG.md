@@ -1,3 +1,7 @@
+## 0.1.57 — 2026-10-31 (npm luckiest-co 1.0.58)
+
+- New Think Different 1.0.0 (thinker sub-skill): finds research directions that hold together but few experts would combine, by sampling idea combinations at random and ranking coherence against unavailability. Adapted from alejandrohdez00/alien-space-of-science (MIT). Thinker 1.2.0 and Research 1.2.0 route to it.
+
 ## 0.1.56 — 2026-10-28 (npm luckiest-co 1.0.57)
 
 - Video Studio 1.21.0: six new style cards (news package, exploded teardown, blueprint, risograph, transit map, 60s title sequence) and four variants, a word-synced lyric video route, and a starter prompts menu with deliverable packs. Director 1.6.0 adds benchmark works, a native move on the peak, silences and sound transitions. Art director 1.9.0 adds a brand mascot route. Ported from Lemo-Opuscar, pdoom-video and ClaudeAnimationBase (MIT).
