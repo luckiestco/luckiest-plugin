@@ -1,5 +1,8 @@
 # Changelog — luckiest-churn-prevention
 
+## 1.2.0 — 2026-11-01
+- Support message signals: the same optional `scripts/triage.py` reads churn risk, refund asks and frustration from support text as a health score input. Runs only when the user prefers Laya; exit 2 means skip it.
+
 ## 1.1.3 — 2026-10-23
 - Removed dead `tools/` registry and PostHog guide links. The tool tables stay.
 

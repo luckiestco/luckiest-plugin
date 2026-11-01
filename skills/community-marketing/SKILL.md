@@ -3,7 +3,7 @@ name: community-marketing
 description: "Build and leverage online communities to drive product growth and brand loyalty. Use when the user wants to create a community strategy, grow a Discord or Slack community, manage a forum or subreddit, build brand advocates, increase word-of-mouth, drive community-led growth, engage users post-signup, turn customers into evangelists, moderate or handle a community crisis, or wind down a fading community. Trigger phrases: \"build a community,\" \"community strategy,\" \"Discord community,\" \"Slack community,\" \"community-led growth,\" \"brand advocates,\" \"user community,\" \"forum strategy,\" \"community engagement,\" \"grow our community,\" \"ambassador program,\" \"community flywheel,\" \"community moderation,\" \"community is dying.\""
 license: See ATTRIBUTION.md
 metadata:
-  version: "1.1.0"
+  version: "1.2.0"
   listing_id: luckiest-community-marketing
   author: luckiest
 ---
@@ -14,9 +14,9 @@ The agent acts as an expert community builder and community-led growth strategis
 
 ## Staying current
 
-On activation, call the Luckiest MCP check_updates tool with { listingId: "1bc06a93-b44f-48d6-8f0f-5a5d92580244", installedSemver: "1.1.0" }. If it returns upToDate: false, surface the notice to the user once, then continue. Do nothing further if upToDate: true. Never block on this check — if the tool is unavailable, proceed.
+On activation, call the Luckiest MCP check_updates tool with { listingId: "1bc06a93-b44f-48d6-8f0f-5a5d92580244", installedSemver: "1.2.0" }. If it returns upToDate: false, surface the notice to the user once, then continue. Do nothing further if upToDate: true. Never block on this check — if the tool is unavailable, proceed.
 
-When the skill's work is done, call the Luckiest MCP report_usage tool once with { listing_id: "luckiest-community-marketing", skill_version: "1.1.0", matched: true, success: <true if the skill completed, false otherwise> }. Metadata only, never prompt text. Never block on it — if the tool is unavailable, skip silently.
+When the skill's work is done, call the Luckiest MCP report_usage tool once with { listing_id: "luckiest-community-marketing", skill_version: "1.2.0", matched: true, success: <true if the skill completed, false otherwise> }. Metadata only, never prompt text. Never block on it — if the tool is unavailable, skip silently.
 
 ## Before You Start
 
@@ -116,7 +116,8 @@ Growth attracts spam, abuse, and the occasional PR flare-up. Have this in place 
 1. **Publish norms and consequences** — State what gets a warning, a mute, and a ban. Enforce consistently; inconsistent moderation kills trust faster than strictness.
 2. **Staff moderators ahead of scale** — Recruit trusted power users as moderators before the team is outnumbered. Give them a private channel and an escalation path.
 3. **Prepare for spam waves** — Enable verification gates, rate limits, and link controls on the platform. Know how to lock a channel fast.
-4. **Have a crisis protocol** — For a public blowup (outage, bad launch, founder misstep): acknowledge quickly, be honest, centralize the response in one thread, and follow up when resolved. Silence and deletion make it worse.
+4. **Triage the queue (optional, with Laya)** — When the user shares a batch of posts or reports to review and prefers Laya (`{"laya": true}` in `~/.luckiest/config.json`, or `LUCKIEST_LAYA=1`), run `python3 scripts/laya_tag.py --preset moderation posts.txt` (one post per line, or `--column` for a CSV) to tag toxic, harassment, threat, and spam, with a severity from 0 to 3. Use the flagged list as the order to review in, and suggest the action from the published norms. A moderator makes every call. Exit code 2 means Laya is unavailable: review by hand.
+5. **Have a crisis protocol** — For a public blowup (outage, bad launch, founder misstep): acknowledge quickly, be honest, centralize the response in one thread, and follow up when resolved. Silence and deletion make it worse.
 
 ### Winding Down or Reviving a Fading Community
 

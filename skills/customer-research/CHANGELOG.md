@@ -1,5 +1,8 @@
 # Changelog — luckiest-customer-research
 
+## 1.3.0 — 2026-11-01
+- Optional Laya tagging: `scripts/triage.py` tags reviews, tickets and survey answers locally (intent, refund, frustration, urgency, churn risk) when the user prefers Laya (`{"laya": true}` or `LUCKIEST_LAYA=1`). Exit 2 means skip it; the skill works as before without Laya.
+
 ## 1.2.0 — 2026-10-08
 Upstream sync with coreyhaines31/marketingskills dda3841 (issue #112).
 

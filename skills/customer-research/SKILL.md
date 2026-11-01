@@ -3,7 +3,7 @@ name: customer-research
 description: "When the user wants to conduct, analyze, or synthesize customer research. Use when the user mentions \"customer research,\" \"ICP research,\" \"talk to customers,\" \"analyze transcripts,\" \"customer interviews,\" \"survey analysis,\" \"support ticket analysis,\" \"voice of customer,\" \"VOC,\" \"build personas,\" \"customer personas,\" \"jobs to be done,\" \"JTBD,\" \"what do customers say,\" \"what are customers struggling with,\" \"Reddit mining,\" \"G2 reviews,\" \"review mining,\" \"digital watering holes,\" \"community research,\" \"forum research,\" \"competitor reviews,\" \"customer sentiment,\" or \"find out why customers churn/convert/buy.\" Use for both analyzing existing research assets AND gathering new research from online sources. For writing copy informed by research, see luckiest-copywriting. For acting on research to improve pages, see luckiest-cro."
 license: See ATTRIBUTION.md
 metadata:
-  version: "1.2.0"
+  version: "1.3.0"
   listing_id: luckiest-customer-research
   author: luckiest
 ---
@@ -16,9 +16,9 @@ This skill acts as an expert customer researcher. Its goal is to help uncover wh
 
 ## Staying current
 
-On activation, call the Luckiest MCP check_updates tool with { listingId: "8e289fdd-4950-4503-ae10-c1426e861a12", installedSemver: "1.2.0" }. If it returns upToDate: false, surface the notice to the user once, then continue. Do nothing further if upToDate: true. Never block on this check — if the tool is unavailable, proceed.
+On activation, call the Luckiest MCP check_updates tool with { listingId: "8e289fdd-4950-4503-ae10-c1426e861a12", installedSemver: "1.3.0" }. If it returns upToDate: false, surface the notice to the user once, then continue. Do nothing further if upToDate: true. Never block on this check — if the tool is unavailable, proceed.
 
-When the skill's work is done, call the Luckiest MCP report_usage tool once with { listing_id: "luckiest-customer-research", skill_version: "1.2.0", matched: true, success: <true if the skill completed, false otherwise> }. Metadata only, never prompt text. Never block on it — if the tool is unavailable, skip silently.
+When the skill's work is done, call the Luckiest MCP report_usage tool once with { listing_id: "luckiest-customer-research", skill_version: "1.3.0", matched: true, success: <true if the skill completed, false otherwise> }. Metadata only, never prompt text. Never block on it — if the tool is unavailable, skip silently.
 
 ## Before Starting
 
@@ -65,6 +65,20 @@ Most engagements combine both. Establish which mode applies before proceeding.
 **NPS responses**
 - Passives and detractors are higher signal than promoters for improvement work
 - Pair scores with verbatims — a 9 with a specific complaint beats a 10 with no comment
+
+### Optional: fast tagging with Laya
+
+When there are more than about 30 short messages (reviews, tickets, survey answers, call notes split one per line), try tagging them locally first:
+
+```bash
+python3 scripts/triage.py messages.txt            # one message per line
+python3 scripts/triage.py reviews.csv --column body
+```
+
+- It runs only when the user prefers Laya (`{"laya": true}` in `~/.luckiest/config.json`, or `LUCKIEST_LAYA=1`) and Laya is installed.
+- Exit code 2 means Laya is off, missing, or failed. Skip this step and work through the messages by hand as below. Nothing else changes.
+- On success it prints intent counts, the share of messages that are urgent, ask for a refund, or hint at leaving, average frustration (0 to 3), and up to 20 flagged messages. Use the counts for frequency and intensity scoring, and read the flagged messages first for pains and money quotes. Laya tags support intent, not jobs to be done, so still run the extraction framework on what you read.
+- Messages Laya is unsure about are counted as `unsure`. Read a sample of them by hand.
 
 ### Extraction Framework
 

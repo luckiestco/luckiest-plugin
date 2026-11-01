@@ -1,5 +1,8 @@
 # Changelog — luckiest-social
 
+## 1.5.0 — 2026-11-01
+- Optional Laya comment sorting: `scripts/laya_tag.py --preset moderation` tags spam, toxic, threat and harassment before replies are drafted. The user still decides and publishes; skipped when Laya is off (exit 2).
+
 ## 1.4.0 — 2026-10-21
 From coreyhaines31/marketingskills at 06d647e (issue #213, MIT).
 - Telegram in platform strategies, X listening through Grok, contrast hooks for short-form video.

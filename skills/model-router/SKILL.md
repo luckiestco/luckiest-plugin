@@ -3,7 +3,7 @@ name: model-router
 description: Use when the user asks which agent or which model should handle a task. Two modes. Agent mode detects which of Claude, Codex, Cursor, Conductor, or Factory is installed and picks the best fit for the prompt. Model mode tags each task with a Haiku, Sonnet, or Opus tier by task type, so subagents run on the smallest model that fits. Triggers include "which tool should I use", "route this", "best model for this task", "haiku or opus", "which model for each task", "tag tasks with models", and /luckiest plan drafting a task list. Use it whenever someone is choosing between coding agents or model sizes, even if they don't name one.
 license: See ATTRIBUTION.md
 metadata:
-  version: "2.2.0"
+  version: "2.3.0"
   listing_id: luckiest-model-router
   author: luckiest
 ---
@@ -21,9 +21,9 @@ Rules for both modes:
 
 ## Staying current
 
-On activation, call the Luckiest MCP check_updates tool with { listingId: "641e0cd7-0695-4caf-b97a-f7a0b3f872ec", installedSemver: "2.1.0" }. If it returns upToDate: false, surface the notice to the user once, then continue. Do nothing further if upToDate: true. Never block on this check. If the tool is unavailable, proceed.
+On activation, call the Luckiest MCP check_updates tool with { listingId: "641e0cd7-0695-4caf-b97a-f7a0b3f872ec", installedSemver: "2.3.0" }. If it returns upToDate: false, surface the notice to the user once, then continue. Do nothing further if upToDate: true. Never block on this check. If the tool is unavailable, proceed.
 
-When the skill's work is done, call the Luckiest MCP report_usage tool once with { listing_id: "luckiest-model-router", skill_version: "2.2.0", matched: true, success: <true if the skill completed, false otherwise> }. Send metadata only, never prompt text. Never block on it. If the tool is unavailable, skip silently.
+When the skill's work is done, call the Luckiest MCP report_usage tool once with { listing_id: "luckiest-model-router", skill_version: "2.3.0", matched: true, success: <true if the skill completed, false otherwise> }. Send metadata only, never prompt text. Never block on it. If the tool is unavailable, skip silently.
 
 ## Model mode
 
@@ -62,6 +62,15 @@ Use this mode when the question is about model size, or when /luckiest plan is t
    - A dependent task never drops below the tier of the task it builds on, so a chain can share one model and its context. It can still move up if it needs more. If the output has `warnings`, a `depends_on` index was wrong. Fix the index and route again.
 4. Treat the script as a starting point. When the title undersells the task, raise the tier and say why in the reason. Only lower a tier when the task is clearly trivial.
 5. Model IDs: light `claude-haiku-5-5`, standard `claude-sonnet-5-5`, heavy `claude-opus-5-5`. Setting `LUCKIEST_MODEL_PROVIDER=openai` or `google` switches to that provider's table, which matches the server. When showing tiers to the user, say **Haiku**, **Sonnet** or **Opus**. When a subagent runs the task, always pass its model explicitly. Claude Code subagents inherit the session model when none is set, and that is Opus by default.
+
+### Laya engine (optional)
+
+Users who have [Laya](https://huggingface.co/convaiinnovations/laya) installed can prefer it. Turn it on with `{"laya": true}` in `~/.luckiest/config.json` (the shared switch other skills read too) or `{"model_router": "laya"}` for routing only. `LUCKIEST_LAYA=1` and `LUCKIEST_MODEL_ROUTER=laya` do the same from the environment. `LUCKIEST_MODEL_ROUTER=rules` turns Laya off for routing and wins over everything else. The script finds `laya` on PATH or at `~/.venvs/laya/bin/laya` and makes one batch call for the whole plan.
+
+- The rules above still decide. Laya picks the tier only for tasks the rules mark unsure, and otherwise moves the rules' tier by one step when it is at least 60% sure. The light floor for tool-heavy work still applies.
+- Give each batch item an optional `detail` (for example the task's "done means" line). Laya tells tasks apart much better with a sentence than with a bare title.
+- A reason that contains `laya:` means Laya picked or nudged that tier.
+- If Laya is missing, slow (over 60 seconds plus half a second per task), fails, or is unsure, the rules' pick stands and the output has a warning.
 
 ### Escalation during execution
 

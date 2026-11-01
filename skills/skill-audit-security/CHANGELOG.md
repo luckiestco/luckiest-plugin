@@ -1,5 +1,8 @@
 # Changelog
 
+## 1.1.0 (2026-11-01)
+- Optional Laya first pass (step 2b): `scripts/laya_tag.py --preset guard` flags passages aimed at the AI so the source review reads them first. Only adds things to read; never clears a finding or changes a verdict. Skipped when Laya is off (exit 2).
+
 ## 1.0.1 (2026-10-10)
 - Requires SkillSpector 2.12.0+: older SC4 matched CVEs by package name and ignored version floors.
 - AE1 from `reference_missing` (files the skill writes at runtime) is a caveat, not a risk.

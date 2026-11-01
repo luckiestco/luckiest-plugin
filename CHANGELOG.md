@@ -1,3 +1,9 @@
+## 0.1.59 — 2026-11-01 (npm luckiest-co 1.0.60)
+
+- Model router 2.3.0: optional Laya engine. Users who prefer Laya get its read on each task, with the built-in rules still in charge. The plan command passes each task's "done means" line so Laya can tell tasks apart.
+- Customer research 1.3.0 and churn prevention 1.2.0: optional Laya triage (`scripts/triage.py`) tags support messages and reviews locally. One shared switch, `{"laya": true}` in `~/.luckiest/config.json` or `LUCKIEST_LAYA=1`, now turns Laya on for these skills and the model router. Without Laya every skill works as before.
+- Skill audit security 1.1.0, research 1.3.0, social 1.5.0, community marketing 1.2.0: optional Laya passes through one shared `scripts/laya_tag.py` (guard set for text aimed at AI, moderation set for comments). Each only adds things to read first and is skipped when Laya is off. Model router Laya calls now allow 60 seconds plus half a second per task, since a cold start can pass 30 seconds.
+
 ## 0.1.58 — 2026-10-31 (npm luckiest-co 1.0.59)
 
 - Think Different 1.0.1: the sources-apart score is graded (source overlap, field spread, field rarity) so it stops maxing out with few sources, and step 1 asks for 12 to 20 sources. Research 1.2.1 matches the new minimum.
