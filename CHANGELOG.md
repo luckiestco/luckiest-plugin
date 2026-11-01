@@ -1,3 +1,7 @@
+## 0.1.58 — 2026-10-31 (npm luckiest-co 1.0.59)
+
+- Think Different 1.0.1: the sources-apart score is graded (source overlap, field spread, field rarity) so it stops maxing out with few sources, and step 1 asks for 12 to 20 sources. Research 1.2.1 matches the new minimum.
+
 ## 0.1.57 — 2026-10-31 (npm luckiest-co 1.0.58)
 
 - New Think Different 1.0.0 (thinker sub-skill): finds research directions that hold together but few experts would combine, by sampling idea combinations at random and ranking coherence against unavailability. Adapted from alejandrohdez00/alien-space-of-science (MIT). Thinker 1.2.0 and Research 1.2.0 route to it.

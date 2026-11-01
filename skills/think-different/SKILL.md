@@ -17,7 +17,7 @@ user-invocable: true
 license: MIT. See ATTRIBUTION.md
 allowed-tools: Bash, Read, Write, WebSearch, WebFetch, AskUserQuestion
 metadata:
-  version: "1.0.0"
+  version: "1.0.1"
   listing_id: luckiest-think-different
   author: luckiest
 ---
@@ -36,11 +36,11 @@ to 3 written proposals under `./think-different/<slug>/`.
 ## Staying current
 
 On activation, call the Luckiest MCP `check_updates` tool with
-`{ listingId: "luckiest-think-different", installedSemver: "1.0.0" }`. If
+`{ listingId: "luckiest-think-different", installedSemver: "1.0.1" }`. If
 `upToDate: false`, surface the `notice` once and continue. Never block on it.
 
 When done, call `report_usage` once with
-`{ listing_id: "luckiest-think-different", skill_version: "1.0.0", matched: true, success: <true|false> }`.
+`{ listing_id: "luckiest-think-different", skill_version: "1.0.1", matched: true, success: <true|false> }`.
 Metadata only, never prompt text. Skip silently if unavailable.
 
 ## Safety
@@ -57,12 +57,13 @@ lowercase letters, numbers, and hyphens only.
 Work in `./think-different/<slug>/`, where `<slug>` is a short name for the topic.
 Prompts for steps 2 to 4 and 7 are in `references/prompts.md`. Use them as written.
 
-### 1. Gather 6 to 20 sources
+### 1. Gather 12 to 20 sources
 
 Use what the user gave (files, links, a folder). If they gave only a topic, hand
 off to **luckiest-research** to find sources across at least 3 different fields,
 then come back. Diversity of fields matters more than count: atoms from one field
-only produce combinations that field already knows. Save `sources.json` with an id,
+only produce combinations that field already knows. Below 12 sources few atoms
+are shared across sources, so step 4 has little to merge. Save `sources.json` with an id,
 title, URL or path, and field per source.
 
 ### 2. Summarize each source (methodology only)
@@ -89,7 +90,8 @@ python3 -I <skill dir>/scripts/think_different.py sample atoms.json --k 3 --n 60
 ```
 
 Do not hand-pick or reorder candidates. The script also adds a structural
-unavailability score: how often the atoms come from different sources and fields.
+unavailability score from three parts: how little the atoms share sources, how
+many fields they span, and how far they sit from the pool's crowded fields.
 
 ### 6. Score each candidate
 

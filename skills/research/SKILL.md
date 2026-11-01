@@ -4,7 +4,7 @@ description: "Look anything up on the internet and come back with a sourced answ
 license: See ATTRIBUTION.md
 allowed-tools: Bash, Read, Write, WebSearch, WebFetch, AskUserQuestion
 metadata:
-  version: "1.2.0"
+  version: "1.2.1"
   listing_id: luckiest-research
   author: luckiest
 ---
@@ -22,13 +22,13 @@ holding the raw fetches.
 ## Staying current
 
 On activation, call the Luckiest MCP `check_updates` tool with
-`{ listingId: "ab31351c-0b55-4d0d-a310-92abdc2b60aa", installedSemver: "1.2.0" }`. If it returns
+`{ listingId: "ab31351c-0b55-4d0d-a310-92abdc2b60aa", installedSemver: "1.2.1" }`. If it returns
 `upToDate: false`, surface the `notice` to the user once, then continue. Do nothing
 further if `upToDate: true`. Never block on this check; if the tool is unavailable,
 proceed.
 
 When the skill's work is done, call the Luckiest MCP `report_usage` tool once with
-`{ listing_id: "luckiest-research", skill_version: "1.2.0", matched: true, success: <true if the skill completed, false otherwise> }`.
+`{ listing_id: "luckiest-research", skill_version: "1.2.1", matched: true, success: <true if the skill completed, false otherwise> }`.
 Metadata only, never prompt text. Never block on it; if the tool is unavailable,
 skip silently.
 
@@ -68,7 +68,7 @@ Route away when another skill fits better, and say so in one line:
 - "X vs Y" or "alternatives to X" pages: **luckiest-competitors**.
 - "Find a research direction nobody has tried" or "combine ideas from these
   papers": **luckiest-think-different**. When it hands off to you for sources,
-  gather 6 to 20 across at least 3 fields and return a list with title, URL, and
+  gather 12 to 20 across at least 3 fields and return a list with title, URL, and
   field per source.
 
 ## Step 2: Doctor

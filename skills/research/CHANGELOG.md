@@ -1,5 +1,8 @@
 # Changelog — luckiest-research
 
+## 1.2.1 - 2026-10-31
+- Think Different hand-off gathers 12 to 20 sources, up from 6.
+
 ## 1.2.0 - 2026-10-31
 - Routes "find a research direction nobody has tried" to **luckiest-think-different**
   and gathers 6 to 20 sources across 3+ fields when it hands off.

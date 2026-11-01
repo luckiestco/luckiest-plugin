@@ -9,6 +9,7 @@ scored.json: candidates.json with "coherence" (1-10) and "typical" (1-10) added 
 Stdlib only. Run `python3 think_different.py selftest` to check the math.
 """
 import argparse
+import collections
 import itertools
 import json
 import random
@@ -16,13 +17,20 @@ import statistics
 import sys
 
 
-def struct_unavailability(atoms):
-    # Share of atom pairs that never appear in the same source, plus field spread.
+def struct_unavailability(atoms, pool=None):
+    # Mean of three 0-1 parts, each graded so few sources do not saturate it:
+    #   apart  - mean source-set Jaccard distance over atom pairs
+    #   spread - share of distinct fields
+    #   rare   - atoms from outside the pool's crowded fields, cited by fewer sources
     # ponytail: source co-occurrence stands in for the paper's trained author model; upgrade = full-model.md recipe
+    pool = pool or atoms
+    fields = collections.Counter(a.get("field", "") for a in pool)
     pairs = list(itertools.combinations(atoms, 2))
-    apart = sum(1 for a, b in pairs if not set(a["sources"]) & set(b["sources"])) / len(pairs)
+    apart = sum(1 - len(set(a["sources"]) & set(b["sources"])) / len(set(a["sources"]) | set(b["sources"]))
+                for a, b in pairs) / len(pairs)
     spread = (len({a.get("field", "") for a in atoms}) - 1) / (len(atoms) - 1)
-    return round(0.5 * apart + 0.5 * spread, 4)
+    rare = sum((1 - fields[a.get("field", "")] / len(pool)) / len(a["sources"]) for a in atoms) / len(atoms)
+    return round((apart + spread + rare) / 3, 4)
 
 
 def sample(atoms, k, n, seed=None):
@@ -41,7 +49,7 @@ def sample(atoms, k, n, seed=None):
         seen.add(combo)
         picked = [atoms[i] for i in combo]
         out.append({"id": f"C{len(out) + 1}", "atoms": [a["id"] for a in picked],
-                    "struct_unavailability": struct_unavailability(picked)})
+                    "struct_unavailability": struct_unavailability(picked, atoms)})
     return out
 
 
@@ -65,8 +73,11 @@ def rank(cands, beta, top, floor):
 
 def selftest():
     atoms = [{"id": f"A{i}", "field": f"f{i % 3}", "sources": [f"s{i // 2}"]} for i in range(8)]
-    assert struct_unavailability(atoms[:2]) == 0.5  # same source, two fields
-    assert struct_unavailability([atoms[0], atoms[2], atoms[4]]) == 1.0  # all apart, three fields
+    same = struct_unavailability(atoms[:2], atoms)  # same source, two fields
+    apart = struct_unavailability([atoms[0], atoms[2], atoms[4]], atoms)  # all apart, three fields
+    assert same < apart, (same, apart)
+    merged = [dict(atoms[0], sources=["s0", "s1"]), atoms[2], atoms[4]]  # A0 now cited twice, shares s1 with A2
+    assert struct_unavailability(merged, atoms) < apart  # graded, not saturated at the same value
     cands = sample(atoms, 3, 1000, seed=1)
     assert len(cands) == 56 and len({tuple(c["atoms"]) for c in cands}) == 56
     pool = [{"id": "x", "coherence": 9, "typical": 2, "struct_unavailability": 0.9},
