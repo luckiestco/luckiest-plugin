@@ -1,5 +1,8 @@
 # Changelog — luckiest-research
 
+## 1.3.0 - 2026-11-01
+- Optional Laya check before synthesis: saved page text is tagged with the guard set, and pages with instructions aimed at AI are named in the report. Read-only; skipped when Laya is off (exit 2).
+
 ## 1.2.1 - 2026-10-31
 - Think Different hand-off gathers 12 to 20 sources, up from 6.
 

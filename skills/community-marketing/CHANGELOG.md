@@ -1,5 +1,8 @@
 # Changelog — luckiest-community-marketing
 
+## 1.2.0 — 2026-11-01
+- Optional Laya queue triage in Moderation & Crisis Response: posts tagged with the moderation set and reviewed in flagged order. A moderator makes every call; skipped when Laya is off (exit 2).
+
 ## 1.1.0 — 2026-07-06
 Skill updater pass: analytics integration.
 

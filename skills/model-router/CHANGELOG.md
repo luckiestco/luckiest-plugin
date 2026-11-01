@@ -1,5 +1,15 @@
 # Changelog — luckiest-model-router
 
+## 2.3.0 — 2026-11-01
+Optional Laya engine for model mode.
+
+- Users who prefer Laya set `{"model_router": "laya"}` in `~/.luckiest/config.json`
+  or `LUCKIEST_MODEL_ROUTER=laya`. One `laya --preset router --batch` call per plan.
+- Rules stay in charge: Laya picks the tier only when the rules are unsure, and
+  otherwise moves it one step when at least 60% sure. Light floor still applies.
+- Batch items take an optional `detail` (the "done means" line) for Laya.
+- Missing, slow (60s + 0.5s per task), failing or unsure Laya leaves the rules' pick and adds a warning.
+
 ## 2.2.0 — 2026-10-16
 Model ids refreshed (issue #198), matching `server/mcp/modelHint.js`.
 

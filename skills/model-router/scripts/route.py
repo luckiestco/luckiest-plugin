@@ -7,7 +7,8 @@ Usage:
     python3 route.py --list        # just show what's installed
     python3 route.py --model "task title" [--prefer quality|balanced|cheap]
     python3 route.py --model --batch tasks.json   # or JSON on stdin
-        tasks.json: [{"title": ..., "skill": ..., "depends_on": [0]}]
+        tasks.json: [{"title": ..., "skill": ..., "depends_on": [0], "detail": ...}]
+        detail (optional) is only read by the Laya engine.
 
 --model picks a model tier (light/standard/heavy) per task. The rules are
 ported from Weave Router (Apache 2.0): route each task on its own, classify
@@ -25,6 +26,7 @@ import json
 import os
 import re
 import shutil
+import subprocess
 import sys
 
 # How each tool announces itself on the system. First hit wins.
@@ -165,7 +167,87 @@ def _shift(tier, n):
     return TIERS[max(0, min(len(TIERS) - 1, TIERS.index(tier) + n))]
 
 
-def route_task(title, skill=None, prefer="balanced"):
+# ---- Laya engine (opt-in) -------------------------------------------------
+# Users who prefer Laya set {"laya": true} (any skill) or {"model_router": "laya"}
+# in ~/.luckiest/config.json, or LUCKIEST_LAYA=1 / LUCKIEST_MODEL_ROUTER=laya. Laya's router preset scores difficulty 0-3 and
+# says whether the task needs tools or is sensitive; laya_tier maps that to a
+# tier. The rules stay in charge: Laya decides only when they are unsure, and
+# otherwise moves their tier one step when it is confident. On short task text
+# Laya's scores bunch together, so it is an assistant, not the judge.
+# Any Laya failure or low confidence leaves the rules' pick as is.
+LAYA_CONFIDENCE_FLOOR = 0.4
+LAYA_NUDGE_CONFIDENCE = 0.6
+LAYA_TIMEOUT = 60  # cold start alone can pass 30s; plus half a second per task
+CONFIG_PATH = os.path.expanduser("~/.luckiest/config.json")
+
+
+def laya_preferred():
+    # LUCKIEST_MODEL_ROUTER (laya or rules) wins for routing; LUCKIEST_LAYA and
+    # {"laya": true} are the shared "use Laya wherever skills support it" switch.
+    env = os.environ.get("LUCKIEST_MODEL_ROUTER")
+    if env:
+        return env.strip().lower() == "laya"
+    env = os.environ.get("LUCKIEST_LAYA")
+    if env:
+        return env.strip().lower() in ("1", "true", "yes", "on")
+    try:
+        with open(CONFIG_PATH) as f:
+            cfg = json.load(f)
+        return cfg.get("model_router") == "laya" or cfg.get("laya") is True
+    except (OSError, ValueError, AttributeError):
+        return False
+
+
+def laya_bin():
+    venv = os.path.expanduser("~/.venvs/laya/bin/laya")
+    return shutil.which("laya") or (venv if os.access(venv, os.X_OK) else None)
+
+
+def laya_answers(titles):
+    """One Laya batch call for all titles. Returns a list of answer dicts, or None."""
+    exe = laya_bin()
+    if not exe:
+        return None
+    lines = "\n".join(" ".join(t.split()) or "-" for t in titles) + "\n"
+    try:
+        run = subprocess.run([exe, "--preset", "router", "--json", "--batch", "-"],
+                             input=lines, capture_output=True, text=True, timeout=LAYA_TIMEOUT + len(titles) // 2)
+        if run.returncode != 0:
+            return None
+        rows = [json.loads(l) for l in run.stdout.splitlines() if l.strip()]
+        answers = [r["answers"] for r in rows]
+    except (OSError, subprocess.TimeoutExpired, ValueError, KeyError, TypeError):
+        return None
+    return answers if len(answers) == len(titles) else None
+
+
+def laya_tier(ans):
+    """Map Laya router answers to (tier, reason, confidence), or None when Laya is unsure."""
+    try:
+        d = ans["difficulty"]
+        confidence = float(d["answer_confidence"])
+        if confidence < LAYA_CONFIDENCE_FLOOR:
+            return None
+        score = float(d["score"])
+        tools = ans["needs_tools"]["noul"] >= 0.5
+        sensitive = ans["is_sensitive"]["noul"] >= 0.5
+    except (KeyError, TypeError, ValueError):
+        return None
+    # ponytail: cutoffs tuned on a handful of tasks; Laya's expected score bunches
+    # around 1-2, so "hard" starts at 1.8. Retune against real plans if tiers drift.
+    if score >= 1.8 or (sensitive and score >= 1.5):
+        tier = "heavy"
+    elif score < 1.2 and not tools:
+        tier = "light"
+    else:
+        tier = "standard"
+    reason = f"laya: difficulty {score:.1f}"
+    reason += ", sensitive" if sensitive else ""
+    reason += ", needs tools" if tools else ""
+    return tier, reason, confidence
+
+
+def route_task(title, skill=None, prefer="balanced", laya=None):
     text = f"{title} {skill or ''}"
     task_type, tier, hits = None, None, []
     for name, base, pattern in TASK_TYPES:
@@ -173,27 +255,35 @@ def route_task(title, skill=None, prefer="balanced"):
         if m:
             task_type, tier, hits = name, base, [m.group(0)]
             break
-    if task_type is None:
+    picked = laya_tier(laya) if laya else None
+    if task_type is None and not picked:
         # Weave rule: never fail open to the cheap model. Unsure means standard.
         return {"tier": "standard", "model": MODELS["standard"], "task_type": "unsure",
                 "reason": "unsure: no task-type signal, defaulting to standard", "signals": []}
-    reason = f"{task_type} task"
-    up = re.search(UPSHIFT, text, re.I)
-    if up:
-        tier = _shift(tier, 1)
-        hits.append(up.group(0))
-        reason += f", upshift for '{up.group(0)}'"
-    elif "```" in title or len(title.split()) > 60:
-        # Same rule as the server fallback: pasted code or a long spec is heavier work.
-        tier = _shift(tier, 1)
-        reason += ", upshift for long or code-bearing task"
+    if task_type is None:
+        tier, reason = picked[0], picked[1]  # rules unsure: Laya decides
+    else:
+        reason = f"{task_type} task"
+        up = re.search(UPSHIFT, text, re.I)
+        if up:
+            tier = _shift(tier, 1)
+            hits.append(up.group(0))
+            reason += f", upshift for '{up.group(0)}'"
+        elif "```" in title or len(title.split()) > 60:
+            # Same rule as the server fallback: pasted code or a long spec is heavier work.
+            tier = _shift(tier, 1)
+            reason += ", upshift for long or code-bearing task"
+        if picked and picked[2] >= LAYA_NUDGE_CONFIDENCE and picked[0] != tier:
+            step = 1 if TIERS.index(picked[0]) > TIERS.index(tier) else -1
+            tier = _shift(tier, step)
+            reason += f", {picked[1]}, nudged {'up' if step > 0 else 'down'}"
     if PREFER_SHIFT.get(prefer, 0):
         tier = _shift(tier, PREFER_SHIFT[prefer])
         reason += f", prefer {prefer}"
-        if tier == "light" and task_type not in LIGHT_FLOOR_EXEMPT:
-            tier = "standard"
-            reason += ", held at standard (tool-heavy work loops on small models)"
-    return {"tier": tier, "model": MODELS[tier], "task_type": task_type,
+    if tier == "light" and task_type not in LIGHT_FLOOR_EXEMPT:
+        tier = "standard"
+        reason += ", held at standard (tool-heavy work loops on small models)"
+    return {"tier": tier, "model": MODELS[tier], "task_type": task_type or "unsure",
             "reason": reason, "signals": hits}
 
 
@@ -203,9 +293,15 @@ def route_batch(tasks, prefer="balanced"):
     A task that depends on another inherits the higher of the two tiers, so a
     chain shares one model and its context, unless a later task needs more.
     """
-    out = [dict(route_task(t.get("title", ""), t.get("skill"), prefer), title=t.get("title", ""))
-           for t in tasks]
     warnings = []
+    # Laya separates tasks far better with a sentence of detail than a bare title.
+    texts = [f"{t.get('title', '')} {t.get('detail') or ''}" for t in tasks]
+    answers = laya_answers(texts) if laya_preferred() else None
+    if laya_preferred() and answers is None:
+        warnings.append("laya preferred but unavailable, used built-in rules")
+    answers = answers or [None] * len(tasks)
+    out = [dict(route_task(t.get("title", ""), t.get("skill"), prefer, a), title=t.get("title", ""))
+           for t, a in zip(tasks, answers)]
     for i, t in enumerate(tasks):
         for dep in t.get("depends_on") or []:
             if not (isinstance(dep, int) and 0 <= dep < i):
@@ -267,7 +363,11 @@ def model_main(args):
     title = " ".join(args).strip() or (sys.stdin.read().strip() if not sys.stdin.isatty() else "")
     if not title:
         sys.exit("give a task title")
-    print(json.dumps(dict(route_task(title, None, prefer), prefer=prefer), indent=2))
+    routed, warnings = route_batch([{"title": title}], prefer)
+    result = dict(routed[0], prefer=prefer)
+    if warnings:
+        result["warnings"] = warnings
+    print(json.dumps(result, indent=2))
 
 
 if __name__ == "__main__":

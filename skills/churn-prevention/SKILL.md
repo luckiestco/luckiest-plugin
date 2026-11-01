@@ -3,7 +3,7 @@ name: churn-prevention
 description: "When the user wants to reduce churn, build cancellation flows, set up save offers, recover failed payments, or implement retention strategies. Also use when the user mentions 'churn,' 'cancel flow,' 'offboarding,' 'save offer,' 'dunning,' 'failed payment recovery,' 'win-back,' 'retention,' 'exit survey,' 'pause subscription,' 'involuntary churn,' 'people keep canceling,' 'churn rate is too high,' 'how do I keep users,' or 'customers are leaving.' Use this whenever someone is losing subscribers or wants to build systems to prevent it. For post-cancel win-back email sequences, see luckiest-emails. For in-app upgrade paywalls, see luckiest-paywalls."
 license: See ATTRIBUTION.md
 metadata:
-  version: "1.1.3"
+  version: "1.2.0"
   listing_id: luckiest-churn-prevention
   author: luckiest
 ---
@@ -14,9 +14,9 @@ This skill provides expert guidance on SaaS retention and churn prevention. Its 
 
 ## Staying current
 
-On activation, call the Luckiest MCP check_updates tool with { listingId: "b4e5958d-e47d-4e84-a936-0ed6cfc99317", installedSemver: "1.1.3" }. If it returns upToDate: false, surface the notice to the user once, then continue. Do nothing further if upToDate: true. Never block on this check — if the tool is unavailable, proceed.
+On activation, call the Luckiest MCP check_updates tool with { listingId: "b4e5958d-e47d-4e84-a936-0ed6cfc99317", installedSemver: "1.2.0" }. If it returns upToDate: false, surface the notice to the user once, then continue. Do nothing further if upToDate: true. Never block on this check — if the tool is unavailable, proceed.
 
-When the skill's work is done, call the Luckiest MCP report_usage tool once with { listing_id: "luckiest-churn-prevention", skill_version: "1.1.3", matched: true, success: <true if the skill completed, false otherwise> }. Metadata only, never prompt text. Never block on it — if the tool is unavailable, skip silently.
+When the skill's work is done, call the Luckiest MCP report_usage tool once with { listing_id: "luckiest-churn-prevention", skill_version: "1.2.0", matched: true, success: <true if the skill completed, false otherwise> }. Metadata only, never prompt text. Never block on it — if the tool is unavailable, skip silently.
 
 ## Before Starting
 
@@ -238,6 +238,8 @@ Track these leading indicators of churn:
 | Team seats removed | High | 1-2 weeks before cancel |
 | Data export initiated | Critical | Days before cancel |
 | Individual recommendation rating is 0–6 (detractor) | Medium | 1-3 months before cancel |
+
+**Support message signals (optional, with Laya):** to read churn risk from support tickets, exit survey free text, or reviews, run `python3 scripts/triage.py messages.txt` (or `--column <name>` for a CSV). It tags each message for cancellation or refund intent, frustration, urgency, and hints of leaving for a competitor, and lists the riskiest messages first. Use `churn_risk_pct`, `refund_pct`, and `avg_frustration` as a support-sentiment input to the health score, and route flagged messages to proactive outreach. It runs only when the user prefers Laya (`{"laya": true}` in `~/.luckiest/config.json`, or `LUCKIEST_LAYA=1`) and Laya is installed. Exit code 2 means Laya is unavailable: skip it and read the messages by hand.
 
 ### Health Score Model
 
