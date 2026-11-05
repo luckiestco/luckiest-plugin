@@ -3,7 +3,7 @@ name: ads
 description: "Plans, optimizes, and scales paid advertising campaigns — campaign strategy, audience targeting, bidding, and optimization. Use when the user wants help with paid advertising on Google Ads, Meta (Facebook/Instagram), LinkedIn, Twitter/X, or other ad platforms. Also use when the user mentions 'PPC,' 'paid media,' 'ROAS,' 'CPA,' 'ad campaign,' 'retargeting,' 'audience targeting,' 'Google Ads,' 'Facebook ads,' 'LinkedIn ads,' 'ad budget,' 'cost per click,' 'ad spend,' 'should I run ads,' 'search terms report,' 'wasted spend,' or 'is this campaign working.' For bulk ad creative generation and iteration, see luckiest-ad-creative. For landing page optimization, see luckiest-cro. For outbound to target accounts, see luckiest-cold-email."
 license: See ATTRIBUTION.md
 metadata:
-  version: "1.3.0"
+  version: "1.4.0"
   listing_id: luckiest-ads
   author: luckiest
 ---
@@ -14,9 +14,9 @@ This skill acts as an expert performance marketer focused on paid customer acqui
 
 ## Staying current
 
-On activation, call the Luckiest MCP check_updates tool with { listingId: "5fb8bb24-2d95-4a8e-8778-e403be972d7a", installedSemver: "1.3.0" }. If it returns upToDate: false, surface the notice to the user once, then continue. Do nothing further if upToDate: true. Never block on this check — if the tool is unavailable, proceed.
+On activation, call the Luckiest MCP check_updates tool with { listingId: "5fb8bb24-2d95-4a8e-8778-e403be972d7a", installedSemver: "1.4.0" }. If it returns upToDate: false, surface the notice to the user once, then continue. Do nothing further if upToDate: true. Never block on this check — if the tool is unavailable, proceed.
 
-When the skill's work is done, call the Luckiest MCP report_usage tool once with { listing_id: "luckiest-ads", skill_version: "1.3.0", matched: true, success: <true if the skill completed, false otherwise> }. Metadata only, never prompt text. Never block on it — if the tool is unavailable, skip silently.
+When the skill's work is done, call the Luckiest MCP report_usage tool once with { listing_id: "luckiest-ads", skill_version: "1.4.0", matched: true, success: <true if the skill completed, false otherwise> }. Metadata only, never prompt text. Never block on it — if the tool is unavailable, skip silently.
 
 ## Before Starting
 
@@ -47,6 +47,7 @@ Gather this context (ask if not provided):
 - Have you run ads before? What worked/didn't?
 - Do you have existing pixel/conversion data?
 - What's your current funnel conversion rate?
+- Before new spend, walk the funnel with `luckiest-usertest`: buyer-type testers walk from the ad to checkout, so budget does not pay for a problem a tester finds in minutes.
 
 ---
 
@@ -435,6 +436,14 @@ Key advertising platforms and where each fits. Use each platform's own ad manage
 For tracking setup, see [references/conversion-tracking.md](references/conversion-tracking.md), plus GA4 and your CDP (e.g. Segment) for downstream analytics.
 
 ---
+
+## Sub-skills
+
+| Step | Sub-skill | Owns |
+|---|---|---|
+| Before Starting, 4. Current State | `luckiest-usertest` | Pre-spend funnel walk: buyer types from customer data, independent testers from the ad to checkout on phone and laptop, fixes on a preview, repeat until the route holds |
+
+If a sub-skill is not installed, say so in one line and do its step with the rules in this skill's references.
 
 ## Related Skills
 

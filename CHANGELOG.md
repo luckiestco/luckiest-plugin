@@ -1,3 +1,9 @@
+## 0.1.60 — 2026-11-04 (npm luckiest-co 1.0.61)
+
+- New skill: usertest 1.0.0. It finds up to five buyer types in your customer data and sends an independent tester per type through your funnel on phone and laptop, labeling each step clear, friction, or blocked. Fixes go to a preview, rounds repeat until the route holds, and real analytics replace the guesses after launch. Testers never buy, message customers, publish, or deploy. Adapted from Angus Sewell's funnel testing playbook.
+- Plan: when a plan ends in visitors reaching a funnel (launch, ads, landing, pricing, signup, checkout, onboarding), it adds a usertest task before the launch or ad-spend task.
+- Ads 1.4.0 and launch 1.3.0: usertest is a sub-skill (the walk before spend, and the walk before friendly testers).
+
 ## 0.1.59 — 2026-11-01 (npm luckiest-co 1.0.60)
 
 - Model router 2.3.0: optional Laya engine. Users who prefer Laya get its read on each task, with the built-in rules still in charge. The plan command passes each task's "done means" line so Laya can tell tasks apart.
