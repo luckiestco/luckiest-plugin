@@ -1,5 +1,8 @@
 # Changelog — luckiest-launch
 
+## 1.3.0 - 2026-11-04
+- New sub-skill: luckiest-usertest walks the funnel with blind personas before friendly testers (Phase 1).
+
 ## 1.2.0 — 2026-10-16
 From coreyhaines31/marketingskills at 1efedbc (issue #174, MIT).
 

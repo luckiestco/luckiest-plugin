@@ -1,5 +1,8 @@
 # Changelog — luckiest-ads
 
+## 1.4.0 - 2026-11-04
+- New sub-skill: luckiest-usertest walks the funnel with blind personas before ad spend (Before Starting, step 4).
+
 ## 1.3.0 — 2026-10-21
 From coreyhaines31/marketingskills at 06d647e (issue #213, MIT).
 - Weekly Operating Check: fixed check order, one call per check (HOLD, FIX, TEST, INVESTIGATE), facts, hypotheses, and missing data, and a stakeholder readout. New references/operating-check.md.
