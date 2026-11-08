@@ -1,3 +1,9 @@
+## 0.1.61 — 2026-11-07 (npm luckiest-co 1.0.62)
+
+- Prompt rewrite 1.3.0: new token cost pass adapted from behrouzbk/tokensaver. It always applies safe fixes (JSON minify, whitespace). It lists review fixes with their savings: duplicates, repeated rules, filler, long examples. It puts static parts first for prompt caching and keeps fixed parts in English.
+- Skill audit 1.3.0: new optional token weight step (`tokensaver scan`). It reports the largest skills and flags duplicate paragraphs and repeated rules. It never auto-edits.
+- Plan: working prompts now put the parts shared across tasks first and the task-specific part last, so subagent calls share a cached prefix.
+
 ## 0.1.60 — 2026-11-04 (npm luckiest-co 1.0.61)
 
 - New skill: usertest 1.0.0. It finds up to five buyer types in your customer data and sends an independent tester per type through your funnel on phone and laptop, labeling each step clear, friction, or blocked. Fixes go to a preview, rounds repeat until the route holds, and real analytics replace the guesses after launch. Testers never buy, message customers, publish, or deploy. Adapted from Angus Sewell's funnel testing playbook.

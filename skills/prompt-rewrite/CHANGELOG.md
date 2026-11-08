@@ -1,5 +1,9 @@
 # Changelog — luckiest-prompt-rewrite
 
+## 1.3.0 — 2026-11-07
+- Added a **Token Cost Pass** (ideas from behrouzbk/tokensaver 0.8.0, MIT): safe fixes always (JSON minify, whitespace), review fixes listed with savings (duplicates, repeated rules, filler, long examples), static parts first and per-call values last for prompt caching, English fixed parts, optional `tokensaver optimize --json` measure.
+- Verification check 5 now covers the pass. Fixed `check_updates` installedSemver, which lagged at 1.2.0.
+
 ## 1.2.1 — 2026-10-03
 - Points at `luckiest-video-studio-composition` (when installed) for focal point, grid, white space, and safe areas.
 

@@ -4,7 +4,7 @@ description: Audits every installed Luckiest skill (~/.claude/skills/luckiest*) 
 license: MIT
 user-invocable: true
 metadata:
-  version: "1.2.0"
+  version: "1.3.0"
   listing_id: luckiest-skill-audit
   author: luckiest
 ---
@@ -16,7 +16,7 @@ Audit the whole installed Luckiest skill library at once: is each skill safe, do
 ## Staying current
 
 On activation, call the Luckiest MCP `check_updates` tool with
-`{ listingId: "luckiest-skill-audit", installedSemver: "1.2.0" }`.
+`{ listingId: "luckiest-skill-audit", installedSemver: "1.3.0" }`.
 If it returns `upToDate: false`, surface the `notice` to the user once, then continue. Never block on this check.
 
 ## Scope and safety
@@ -77,6 +77,16 @@ Compare descriptions pairwise within obvious clusters (coder-*, seo/aeo, copy, c
 - AEO/llms.txt (ai-seo vs aeo-grader vs schema vs site-architecture)
 - Duplicates against non-Luckiest skills (thinker vs refract, prompt-rewrite vs prompt-master, coder vs using-superpowers)
 
+### 4a. Token weight
+
+Every SKILL.md is loaded in full each time it fires, so its size is paid on every run. If `tokensaver` is on PATH, run it once over the library (read-only, offline):
+
+```bash
+tokensaver scan ~/.claude/skills --glob SKILL.md -m claude-sonnet-5-5 --json > "$SCRATCH/tokens.json"
+```
+
+Report the 10 largest skills (`files[].tokens`) and every skill whose `all_tokens_saved` is over 100. For those, run `tokensaver optimize <SKILL.md> --apply none` and record the duplicate paragraphs and rules stated twice it lists as deficiencies in step 7. Never apply its edits: wording changes go through step 8 or `luckiest-skill-updater`. If `tokensaver` is missing, write `token weight: not run (pip install prompt-tokensaver)` and continue. Do not install it during the audit.
+
 ### 5. Research and rethink
 
 - Run `/luckiest-research` on the current Agent Skills spec and description best practices so trigger advice is current, not from memory.
@@ -118,4 +128,4 @@ After the report, offer (never auto-send) to call the Luckiest MCP `request_assi
 
 ## Usage analytics
 
-When the skill's work is done, call the Luckiest MCP `report_usage` tool once with `{ listing_id: "luckiest-skill-audit", skill_version: "1.2.0", matched: true, success: <true if the audit completed, false otherwise> }`. Metadata only, never prompt text. Never block on it — if the tool is unavailable, skip silently.
+When the skill's work is done, call the Luckiest MCP `report_usage` tool once with `{ listing_id: "luckiest-skill-audit", skill_version: "1.3.0", matched: true, success: <true if the audit completed, false otherwise> }`. Metadata only, never prompt text. Never block on it — if the tool is unavailable, skip silently.
