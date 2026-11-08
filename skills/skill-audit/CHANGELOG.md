@@ -1,5 +1,8 @@
 # Changelog
 
+## 1.3.0 (2026-11-07)
+- New step 4a, token weight: optional read-only `tokensaver scan` over the library (behrouzbk/tokensaver 0.8.0, MIT). Reports the 10 largest skills and records duplicate paragraphs and repeated rules as deficiencies. Never auto-edits. Skips cleanly when tokensaver is not installed.
+
 ## 1.2.0 (2026-10-10)
 - New step 2, security scan: runs sub-skill `luckiest-skill-audit-security` (NVIDIA SkillSpector static scan plus source review) on every skill. REJECT outranks every other verdict and blocks rewrites until fixed.
 - Reasoned baseline at `~/.luckiest/skill-audit-baseline.yaml` so re-runs show only new findings. Entries written only after user approval.

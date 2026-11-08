@@ -12,6 +12,10 @@ template library (`references/templates.md`), and the credit-killing pattern
 reference (`references/patterns.md`) are carried over from the original. See
 `CHANGELOG.md` for the full record.
 
+The Token Cost Pass (1.3.0) adapts the optimizer rules and caching advice of
+**tokensaver** (https://github.com/behrouzbk/tokensaver) by behrouzbk, MIT License.
+Only ideas were ported, no code.
+
 ## Original license
 
 ```
