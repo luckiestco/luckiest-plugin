@@ -1,3 +1,7 @@
+## 0.1.63 — 2026-11-09 (npm luckiest-co 1.0.64)
+
+- Copywriting humanize 1.1.0: new plain technical mode for tool descriptions, error messages, procedures, agent instructions, READMEs, and PR descriptions. It has strict and light levels with rules adapted from ASD-STE100 (danyuchn/asd-ste100-skill, MIT). It keeps a single real hedge, turns off the voice section, and adds an optional stdlib linter, scripts/ste-lint.py.
+
 ## 0.1.62 — 2026-11-09 (npm luckiest-co 1.0.63)
 
 - Research 1.4.0: optional JS read with Obscura (`obscura fetch --dump markdown`) for pages that need JavaScript to render. The doctor reports it as `js-read`, and it runs after WebFetch and before pixelshot. It never uses `--stealth`.
