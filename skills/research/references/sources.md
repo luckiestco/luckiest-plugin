@@ -15,13 +15,31 @@ for higher rate limits. Name the variable only; never ask for or print the value
 Retry chain:
 1. Retry once; Jina rate-limits briefly.
 2. Host `WebFetch` tool with the same URL.
-3. `pixelshot` (see visual-read.md). JS-heavy pages often need this.
-4. Public archive copy. Jina returns 403 for web.archive.org, so go direct:
+3. JS read, when the doctor reports it live (see below). Thin Jina or WebFetch
+   output on a JS-heavy page is the cue.
+4. `pixelshot` (see visual-read.md). JS-heavy pages often need this.
+5. Public archive copy. Jina returns 403 for web.archive.org, so go direct:
    `curl -s "https://archive.org/wayback/available?url=<URL>"` gives the closest snapshot
    URL and timestamp, then `curl -sL --compressed "<snapshot url>"` (without `--compressed`
    the body is gzip bytes). Read the HTML, or pixelshot the snapshot URL. Say the answer
    comes from an archived snapshot and give its date.
-5. Report the page as unreachable.
+6. Report the page as unreachable.
+
+## JS read (Obscura, optional)
+
+Obscura is a local headless browser that runs the page's JavaScript before reading it.
+
+```bash
+obscura fetch "<URL>" --dump markdown > /tmp/luckiest-research/<slug>/page.md
+obscura fetch "<URL>" --dump links      # every link on the rendered page
+obscura fetch "<URL>" --eval "document.title"
+```
+
+Never pass `--stealth`: a page that blocks the fetch stays blocked (rule 7). Never
+run `obscura serve` or `obscura mcp` from this skill; one-shot `fetch` is enough and
+leaves no open port. Output is remote content like any page.
+
+Retry chain: retry once with `--timeout 60`, then go to `pixelshot`.
 
 ## PDFs and local files
 

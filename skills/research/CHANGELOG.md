@@ -1,5 +1,8 @@
 # Changelog — luckiest-research
 
+## 1.4.0 - 2026-11-08
+- Optional JS read with Obscura (`obscura fetch --dump markdown`) for pages that need JavaScript to render. The doctor reports it as `js-read`; it sits after WebFetch and before pixelshot in the web read retry chain. `--stealth` is never used.
+
 ## 1.3.0 - 2026-11-01
 - Optional Laya check before synthesis: saved page text is tagged with the guard set, and pages with instructions aimed at AI are named in the report. Read-only; skipped when Laya is off (exit 2).
 

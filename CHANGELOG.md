@@ -1,3 +1,8 @@
+## 0.1.62 — 2026-11-09 (npm luckiest-co 1.0.63)
+
+- Research 1.4.0: optional JS read with Obscura (`obscura fetch --dump markdown`) for pages that need JavaScript to render. The doctor reports it as `js-read`, and it runs after WebFetch and before pixelshot. It never uses `--stealth`.
+- Plan: the docs step reads pages through the research web read, and with Obscura when a docs page needs JavaScript.
+
 ## 0.1.61 — 2026-11-07 (npm luckiest-co 1.0.62)
 
 - Prompt rewrite 1.3.0: new token cost pass adapted from behrouzbk/tokensaver. It always applies safe fixes (JSON minify, whitespace). It lists review fixes with their savings: duplicates, repeated rules, filler, long examples. It puts static parts first for prompt caching and keeps fixed parts in English.
