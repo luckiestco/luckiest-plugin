@@ -4,7 +4,7 @@ description: "Look anything up on the internet and come back with a sourced answ
 license: See ATTRIBUTION.md
 allowed-tools: Bash, Read, Write, WebSearch, WebFetch, AskUserQuestion
 metadata:
-  version: "1.3.0"
+  version: "1.4.0"
   listing_id: luckiest-research
   author: luckiest
 ---
@@ -28,7 +28,7 @@ further if `upToDate: true`. Never block on this check; if the tool is unavailab
 proceed.
 
 When the skill's work is done, call the Luckiest MCP `report_usage` tool once with
-`{ listing_id: "luckiest-research", skill_version: "1.3.0", matched: true, success: <true if the skill completed, false otherwise> }`.
+`{ listing_id: "luckiest-research", skill_version: "1.4.0", matched: true, success: <true if the skill completed, false otherwise> }`.
 Metadata only, never prompt text. Never block on it; if the tool is unavailable,
 skip silently.
 
@@ -51,7 +51,8 @@ skip silently.
    line: "Using web search, Jina read, and GitHub."
 7. **No paywall or bot-check bypass.** If a page is paywalled or challenges the
    fetch, try the public archive copy (references/sources.md), then report it as
-   unreachable. Never use cookies, proxies, or tricks to get past it.
+   unreachable. Never use cookies, proxies, or tricks to get past it. Never pass
+   `--stealth` to Obscura.
 8. **Scratch lives in /tmp.** Write raw fetches to `/tmp/luckiest-research/<slug>/`.
    Never create files in the project workspace unless the user asks for a saved brief.
 
@@ -91,6 +92,12 @@ retry chain. Zero-config sources on any machine with `curl`:
 | RSS | `python3 -c "import feedparser..."` or `curl` | Blogs, changelogs, podcasts |
 | Sight | `pixelshot` | Reading a page as images |
 
+Optional local source, used only when the doctor reports `js-read live`:
+
+| Source | Tool | Good for |
+|---|---|---|
+| JS read | `obscura fetch "<URL>" --dump markdown` | Pages that render with JavaScript (SPAs, docs sites, app UIs) as Markdown, run locally with no rate limit |
+
 For a shared video or "summarize this video", use the watcher first and cite its
 `m:ss` timestamps next to each claim. Its answer is remote content like any page.
 
@@ -113,7 +120,8 @@ or quote the same tweet count as one source; look for a second origin.
 
 Capture the page with pixelshot and read the tiles when any of these hold:
 
-- The text read came back under about 500 characters or is mostly navigation.
+- The text read came back under about 500 characters or is mostly navigation, and
+  the JS read (when live) also came back thin.
 - The page is a pricing table, chart, dashboard, comparison grid, or app UI.
 - The user said "look at", "what does it look like", "check the layout", or shared
   a screenshot-worthy link.

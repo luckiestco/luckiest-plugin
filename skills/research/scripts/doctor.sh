@@ -13,4 +13,5 @@ if has twitter; then
   [ -n "$TWITTER_AUTH_TOKEN" ] && [ -n "$TWITTER_CT0" ] && row "x" "live" || row "x" "needs TWITTER_AUTH_TOKEN and TWITTER_CT0"
 else row "x" "missing twitter-cli"; fi
 has rdt && row "reddit" "live" || row "reddit" "missing rdt-cli"
+has obscura && row "js-read" "live (obscura fetch)" || row "js-read" "missing obscura (optional)"
 has pixelshot && row "sight" "live (pixelshot)" || row "sight" "missing pixelshot (uv tool install pixelrag)"
