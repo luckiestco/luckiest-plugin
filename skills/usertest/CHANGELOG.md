@@ -1,5 +1,17 @@
 # Changelog: luckiest-usertest
 
+## 1.1.0 - 2026-11-09
+The phone leg can run on a real iPhone or the iOS Simulator, not only a
+phone-sized browser.
+- New `references/iphone.md`: pick the phone driver (phoneuse on a Linux PC,
+  then iOS Simulator, then phone-sized browser) and record it per round.
+- Real-phone entry points: social ad links opened in the app's in-app browser,
+  Safari, and App Store pages.
+- Welcome leg in Mail and push checks with `read_notifications`.
+- Safety stops: never confirm Apple Pay, unlock only through `phoneuse unlock`
+  with the user's approval, test device or test Apple ID required.
+- Step 3 and `walk.md` name the driver in the helper brief and the issue rows.
+
 ## 1.0.0 - 2026-11-05
 New skill. Method adapted from Angus Sewell's reel "Vibe code a fake customer
 army" (facebook.com/reel/1158451790077266) and his free guide "IShowSpeed's

@@ -1,3 +1,7 @@
+## 0.1.64 — 2026-11-09 (npm luckiest-co 1.0.65)
+
+- Usertest 1.1.0: the phone leg can run on a real iPhone through phoneuse (github.com/lxe/phoneuse, Linux PC) or the iOS Simulator, with a phone-sized browser as the fallback. New `references/iphone.md` covers driver choice, in-app browser entry from social ads, the welcome email in Mail, push checks, and safety stops (never confirm Apple Pay, unlock only with the user's approval).
+
 ## 0.1.63 — 2026-11-09 (npm luckiest-co 1.0.64)
 
 - Copywriting humanize 1.1.0: new plain technical mode for tool descriptions, error messages, procedures, agent instructions, READMEs, and PR descriptions. It has strict and light levels with rules adapted from ASD-STE100 (danyuchn/asd-ste100-skill, MIT). It keeps a single real hedge, turns off the voice section, and adds an optional stdlib linter, scripts/ste-lint.py.
