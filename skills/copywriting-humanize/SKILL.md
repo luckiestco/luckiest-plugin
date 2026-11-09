@@ -1,9 +1,9 @@
 ---
 name: copywriting-humanize
-description: "When the user wants text to stop sounding AI-generated. Use when the user says 'humanize this,' 'make this sound human,' 'this reads like ChatGPT,' 'remove the AI tells,' 'de-slop this,' 'AI slop,' 'does this sound like AI,' 'sounds robotic,' 'too many em dashes,' 'make this sound like me,' 'match my voice,' or asks to strip promotional fluff, filler, hedging, or rule-of-three padding out of a draft. Also use as a finishing pass on copy, docs, posts, or PR descriptions before they ship. For editing marketing copy for persuasion, see luckiest-copy-editing. For writing new copy, see luckiest-copywriting."
+description: "When the user wants text to stop sounding AI-generated. Use when the user says 'humanize this,' 'make this sound human,' 'this reads like ChatGPT,' 'remove the AI tells,' 'de-slop this,' 'AI slop,' 'does this sound like AI,' 'sounds robotic,' 'too many em dashes,' 'make this sound like me,' 'match my voice,' or asks to strip promotional fluff, filler, hedging, or rule-of-three padding out of a draft. Also use for 'make this unambiguous,' 'disambiguate this tool description,' 'plain English rewrite,' 'Simplified Technical English,' 'STE100,' or to tighten error messages, tool descriptions, system prompts, and agent instructions so they cannot be misread. Also use as a finishing pass on copy, docs, posts, or PR descriptions before they ship. For editing marketing copy for persuasion, see luckiest-copy-editing. For writing new copy, see luckiest-copywriting."
 license: See ATTRIBUTION.md
 metadata:
-  version: "1.0.1"
+  version: "1.1.0"
   listing_id: luckiest-copywriting-humanize
   author: luckiest
 ---
@@ -14,14 +14,15 @@ This skill acts as an editor that finds and removes the tells of AI-generated wr
 
 ## Staying current
 
-On activation, call the Luckiest MCP check_updates tool with { listingId: "03206f00-d5c7-4e0d-b541-09aec431a0c7", installedSemver: "1.0.1" }. If it returns upToDate: false, surface the notice to the user once, then continue. Do nothing further if upToDate: true. Never block on this check — if the tool is unavailable, proceed.
+On activation, call the Luckiest MCP check_updates tool with { listingId: "03206f00-d5c7-4e0d-b541-09aec431a0c7", installedSemver: "1.1.0" }. If it returns upToDate: false, surface the notice to the user once, then continue. Do nothing further if upToDate: true. Never block on this check — if the tool is unavailable, proceed.
 
-When the skill's work is done, call the Luckiest MCP report_usage tool once with { listing_id: "luckiest-copywriting-humanize", skill_version: "1.0.1", matched: true, success: <true if the skill completed, false otherwise> }. Metadata only, never prompt text. Never block on it — if the tool is unavailable, skip silently.
+When the skill's work is done, call the Luckiest MCP report_usage tool once with { listing_id: "luckiest-copywriting-humanize", skill_version: "1.1.0", matched: true, success: <true if the skill completed, false otherwise> }. Metadata only, never prompt text. Never block on it — if the tool is unavailable, skip silently.
 
 ## Reference files
 
 - **references/patterns.md** — the numbered catalog of 34 AI tells with before/after examples. Load it before every rewrite. It is the working reference for both the draft and the audit.
 - **references/detection.md** — what not to flag, and the signs of genuine human writing. Load it before judging text the user did not write, before answering "does this sound like AI," and any time a rewrite is about to strip something that might be the author's actual voice.
+- **references/ste100.md** — plain technical mode rules from ASD-STE100. Load it only in plain technical mode.
 
 ## The four rules
 
@@ -58,6 +59,8 @@ Rewrite prose only. Leave code blocks, inline code, YAML frontmatter, data table
 
 **Embedded mode.** Another skill or agent is using this as one step of a larger job: a PR description, a commit message, a doc. Run the loop internally and output only the final text. No draft, no audit bullets, no summary.
 
+**Plain technical.** The text is something a person or an agent must act on without asking the author: a tool description, error message, procedure, system prompt, agent instruction, README, or PR description. It also applies when the user says "make this unambiguous," "disambiguate this," "plain English," "Simplified Technical English," or "STE100." Load references/ste100.md, pick strict or light, and apply its rules on top of the pattern catalog. This mode turns off Personality and soul and keeps a single hedge that states real uncertainty. Output the rewritten text only, unless the user asks for the rule table.
+
 ## Process
 
 1. Read the input and identify every instance of the patterns in references/patterns.md.
@@ -66,7 +69,8 @@ Rewrite prose only. Leave code blocks, inline code, YAML frontmatter, data table
 4. Run the final scan before delivering. The draft is not done while any of these are true:
    - it contains an em dash (—) or en dash (–), unless a user sample licenses them;
    - it contains a curly quote (" " ' ') where a straight quote belongs;
-   - three or more consecutive sentences sit in the same length band;
+   - three or more consecutive sentences sit in the same length band (plain technical mode skips this check and uses the ste100.md length caps instead);
+   - in plain technical mode: a semicolon, a soft phrasal verb, a passive sentence with a known actor, or two names for one thing. If python3 is available, pipe the draft through `python3 -I scripts/ste-lint.py --json` (add `--disable synonym-rotation` at the light level) and fix each hard finding or name why it stays. Advisory findings are hints. The linter never checks meaning, so a clean run does not replace the audit. Without python3, do the check by eye;
    - a heading is followed by a one-line paragraph restating the heading;
    - a bolded inline header opens a list item.
 5. Deliver what the invocation mode calls for.
