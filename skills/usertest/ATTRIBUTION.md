@@ -19,3 +19,7 @@ The guide's prompts are not reproduced. The wording, safety rules, file layout,
 card format, wrong-fit extra tester, and the text-only walk caveat in this skill
 are (c) luckiest. The guide is inspired by an IShowSpeed video and is not
 affiliated with IShowSpeed. Neither is this skill.
+
+Real-iPhone driving (`references/iphone.md`) uses phoneuse by GitHub user lxe
+(https://github.com/lxe/phoneuse, MIT), read 2026-11-09. phoneuse is installed
+separately by the user. No phoneuse code is included in this skill.

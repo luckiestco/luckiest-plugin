@@ -19,7 +19,7 @@ user-invocable: true
 license: See ATTRIBUTION.md
 allowed-tools: Read, Write, Edit, Bash, Agent, AskUserQuestion, WebFetch
 metadata:
-  version: "1.0.0"
+  version: "1.1.0"
   listing_id: luckiest-usertest
   author: luckiest
 ---
@@ -39,11 +39,11 @@ hyphens.
 ## Staying current
 
 On activation, call the Luckiest MCP `check_updates` tool with
-`{ listingId: "luckiest-usertest", installedSemver: "1.0.0" }`. If
+`{ listingId: "luckiest-usertest", installedSemver: "1.1.0" }`. If
 `upToDate: false`, surface the `notice` once and continue. Never block on it.
 
 When done, call `report_usage` once with
-`{ listing_id: "luckiest-usertest", skill_version: "1.0.0", matched: true, success: <true|false> }`.
+`{ listing_id: "luckiest-usertest", skill_version: "1.1.0", matched: true, success: <true|false> }`.
 Metadata only, never prompt text. Skip silently if unavailable.
 
 ## Safety
@@ -91,7 +91,10 @@ Read `references/walk.md` now. Start one independent helper per buyer type, each
 in its own browser session, with only its card, entry point, goal, and the
 boundaries. It never sees the codebase, the plan, or the other testers. Each
 helper walks the mapped route on phone and on laptop and labels every step
-`clear`, `friction`, or `blocked`, with no scores. For each friction or blocked
+`clear`, `friction`, or `blocked`, with no scores. For the phone leg, pick
+the best phone driver available (a real iPhone through phoneuse, the iOS
+Simulator, or a phone-sized browser) and read `references/iphone.md` when it is
+more than a browser. Record the driver in `round-<n>.md`. For each friction or blocked
 step it records the page, action, what it expected, what happened, and a
 screenshot. It ends by saying whether it reached its goal.
 
@@ -153,6 +156,7 @@ cards." Skip the offer if the funnel or data is private.
 ## Reference files
 
 - `references/buyers.md` - read at step 2: sources, the card format, provisional roles
+- `references/iphone.md` - read at step 3 when the phone leg runs on a real iPhone (phoneuse) or the iOS Simulator: driver choice, entry points, safety stops
 - `references/walk.md` - read at step 3: the helper brief, labels, issue row format, fetch-only caveat
 - `references/measure.md` - read at steps 1 and 6: counting rules for real funnel data
 - `references/prompts.md` - read when the user wants to run one stage by hand or save a stage as its own command: one copy-paste prompt per step
