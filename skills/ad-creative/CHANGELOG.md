@@ -1,5 +1,8 @@
 # Changelog — luckiest-ad-creative
 
+## 1.6.0 — 2026-11-10
+- New sub-skill `luckiest-beauty-photography` owns Generating Ad Visuals for physical beauty products (product photo to campaign images with fidelity QA). Added a Sub-skills table.
+
 ## 1.5.1 — 2026-10-23
 - Removed dead `tools/` registry and integration links and the upstream `tools/clis` commands. The platforms stay as plain names: pull data via API, MCP, or CSV export.
 
