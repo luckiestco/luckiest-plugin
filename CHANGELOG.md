@@ -1,3 +1,8 @@
+## 0.1.65 — 2026-11-10 (npm luckiest-co 1.0.66)
+
+- New skill beauty-photography 1.0.0: turns a perfume, skincare, or makeup product photo into luxury campaign images with product-fidelity QA and an optional short video ad. Rebranded from FancyAI's beauty-photography-master (Apache-2.0).
+- Ad-creative 1.6.0: new Sub-skills table. Generating Ad Visuals routes beauty products to beauty-photography.
+
 ## 0.1.64 — 2026-11-09 (npm luckiest-co 1.0.65)
 
 - Usertest 1.1.0: the phone leg can run on a real iPhone through phoneuse (github.com/lxe/phoneuse, Linux PC) or the iOS Simulator, with a phone-sized browser as the fallback. New `references/iphone.md` covers driver choice, in-app browser entry from social ads, the welcome email in Mail, push checks, and safety stops (never confirm Apple Pay, unlock only with the user's approval).

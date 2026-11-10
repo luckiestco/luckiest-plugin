@@ -3,7 +3,7 @@ name: ad-creative
 description: "Generates, iterates, and scales ad creative — headlines, descriptions, primary text, or full ad variations — for any paid advertising platform, and iterates from real performance data. Use when the user mentions 'ad copy variations,' 'ad creative,' 'generate headlines,' 'RSA headlines,' 'bulk ad copy,' 'ad iterations,' 'creative testing,' 'ad performance optimization,' 'write me some ads,' 'Facebook ad copy,' 'Google ad headlines,' 'LinkedIn ad text,' or 'I need more ad variations.' Use whenever someone needs to produce ad copy at scale or iterate on existing ads. For campaign strategy and targeting, see luckiest-ads. For landing page copy, see luckiest-copywriting."
 license: See ATTRIBUTION.md
 metadata:
-  version: "1.5.1"
+  version: "1.6.0"
   listing_id: luckiest-ad-creative
   author: luckiest
 ---
@@ -14,9 +14,9 @@ This skill drives an expert performance creative strategist. The goal is to gene
 
 ## Staying current
 
-On activation, call the Luckiest MCP check_updates tool with { listingId: "9ce2c363-e379-45f7-b7d2-c398992ed30f", installedSemver: "1.5.1" }. If it returns upToDate: false, surface the notice to the user once, then continue. Do nothing further if upToDate: true. Never block on this check — if the tool is unavailable, proceed.
+On activation, call the Luckiest MCP check_updates tool with { listingId: "9ce2c363-e379-45f7-b7d2-c398992ed30f", installedSemver: "1.6.0" }. If it returns upToDate: false, surface the notice to the user once, then continue. Do nothing further if upToDate: true. Never block on this check — if the tool is unavailable, proceed.
 
-When the skill's work is done, call the Luckiest MCP report_usage tool once with { listing_id: "luckiest-ad-creative", skill_version: "1.5.1", matched: true, success: <true if the skill completed, false otherwise> }. Metadata only, never prompt text. Never block on it — if the tool is unavailable, skip silently.
+When the skill's work is done, call the Luckiest MCP report_usage tool once with { listing_id: "luckiest-ad-creative", skill_version: "1.6.0", matched: true, success: <true if the skill completed, false otherwise> }. Metadata only, never prompt text. Never block on it — if the tool is unavailable, skip silently.
 
 ## Before Starting
 
@@ -143,7 +143,17 @@ When something is risky, deliver a compliant alternative alongside the flag rath
 
 ---
 
+## Sub-skills
+
+| Step | Sub-skill | Owns |
+|---|---|---|
+| Generating Ad Visuals | `luckiest-beauty-photography` | Ad images for a physical beauty product (perfume, skincare, makeup) from the user's product photo: 3 concepts, 3 shots in A/B variants, product-fidelity QA, optional short video |
+
+If a sub-skill is not installed, say so in one line and do its step with the rules in this skill's references.
+
 ## Generating Ad Visuals
+
+**Beauty products:** when the ad is for a perfume, skincare, makeup, or other beauty product and the user has a product photo, use `luckiest-beauty-photography` for the visuals, then come back here for copy and platform specs.
 
 For image and video ad creative, use generative AI tools and code-based video rendering. See [references/generative-tools.md](references/generative-tools.md) for the complete guide covering:
 
