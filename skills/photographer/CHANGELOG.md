@@ -1,6 +1,9 @@
-# Changelog — luckiest-beauty-photography
+# Changelog — luckiest-photographer
 
 ## 1.0.0 — 2026-11-10
+Renamed from luckiest-beauty-photography before its listing went live (the old
+name shipped only in npm luckiest-co 1.0.66 / plugin 0.1.65).
+
 Rebranded from beauty-photography-master (FancyAI skills, Apache-2.0), commit
 d3b0f022, recovered from fork DYAI2025/industry-skills after the original repo
 was deleted.

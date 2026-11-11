@@ -1,5 +1,8 @@
 # Changelog — luckiest-ad-creative
 
+## 1.6.1 — 2026-11-10
+- Sub-skill renamed: luckiest-beauty-photography is now luckiest-photographer.
+
 ## 1.6.0 — 2026-11-10
 - New sub-skill `luckiest-beauty-photography` owns Generating Ad Visuals for physical beauty products (product photo to campaign images with fidelity QA). Added a Sub-skills table.
 
