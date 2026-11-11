@@ -1,3 +1,7 @@
+## 0.1.66 — 2026-11-10 (npm luckiest-co 1.0.67)
+
+- Renamed beauty-photography to photographer (luckiest-photographer). Same skill, simpler name. Ad-creative 1.6.1 points at the new name. An npm 1.0.66 install keeps a stale luckiest-beauty-photography folder in ~/.claude/skills until removed by hand.
+
 ## 0.1.65 — 2026-11-10 (npm luckiest-co 1.0.66)
 
 - New skill beauty-photography 1.0.0: turns a perfume, skincare, or makeup product photo into luxury campaign images with product-fidelity QA and an optional short video ad. Rebranded from FancyAI's beauty-photography-master (Apache-2.0).

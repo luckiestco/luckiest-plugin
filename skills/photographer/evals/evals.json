@@ -1,5 +1,5 @@
 {
-  "skill_name": "luckiest-beauty-photography",
+  "skill_name": "luckiest-photographer",
   "evals": [
     {
       "id": 0,
@@ -105,7 +105,7 @@
       "assertions": [
         {
           "name": "skill_triggers",
-          "description": "The luckiest-beauty-photography skill activates on this Chinese-language prompt"
+          "description": "The luckiest-photographer skill activates on this Chinese-language prompt"
         },
         {
           "name": "bilingual_interaction",

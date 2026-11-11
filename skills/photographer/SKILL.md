@@ -1,5 +1,5 @@
 ---
-name: beauty-photography
+name: photographer
 description: >-
   Turns a photo of a perfume, skincare, makeup, or other beauty product into a
   luxury ad campaign: identifies the product and its materials, proposes 3
@@ -9,8 +9,8 @@ description: >-
   video ad. Sub-skill of luckiest-ad-creative for beauty product visuals.
   Trigger on "perfume ad", "fragrance campaign", "beauty product photography",
   "cosmetic ad", "skincare product shot", "make my bottle look luxury",
-  "product photo to ad", "lipstick campaign", "serum hero shot", or
-  "/luckiest-beauty-photography". For ad copy and platform specs use
+  "product photo to ad", "product photographer", "lipstick campaign",
+  "serum hero shot", or "/luckiest-photographer". For ad copy and platform specs use
   luckiest-ad-creative. For general marketing images use luckiest-image. For a
   full video edit use luckiest-video-studio.
 argument-hint: "[product photo path] [style or channel]"
@@ -18,7 +18,7 @@ user-invocable: true
 license: See ATTRIBUTION.md
 metadata:
   version: "1.0.0"
-  listing_id: luckiest-beauty-photography
+  listing_id: luckiest-photographer
   author: luckiest
 ---
 
@@ -32,11 +32,11 @@ product's real structure first and checks every image against it.
 ## Staying current
 
 On activation, call the Luckiest MCP `check_updates` tool with
-`{ listingId: "luckiest-beauty-photography", installedSemver: "1.0.0" }`. If
+`{ listingId: "luckiest-photographer", installedSemver: "1.0.0" }`. If
 `upToDate: false`, surface the `notice` once and continue. Never block on it.
 
 When done, call `report_usage` once with
-`{ listing_id: "luckiest-beauty-photography", skill_version: "1.0.0", matched: true, success: <true|false> }`.
+`{ listing_id: "luckiest-photographer", skill_version: "1.0.0", matched: true, success: <true|false> }`.
 Metadata only, never prompt text. Skip silently if unavailable.
 
 ## Before starting
