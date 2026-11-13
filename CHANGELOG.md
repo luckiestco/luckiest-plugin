@@ -1,3 +1,7 @@
+## 0.1.67 — 2026-11-12 (npm luckiest-co 1.0.68)
+
+- Upstream obra/superpowers v7.0.1 (#233): brainstorm and coder-brainstorming 1.5.0 read the project before asking and ask sharper questions; coder-subagent-driven-development 1.3.0 and coder-writing-skills 1.2.0 move long sections into references/ so they survive compaction.
+
 ## 0.1.66 — 2026-11-10 (npm luckiest-co 1.0.67)
 
 - Renamed beauty-photography to photographer (luckiest-photographer). Same skill, simpler name. Ad-creative 1.6.1 points at the new name. An npm 1.0.66 install keeps a stale luckiest-beauty-photography folder in ~/.claude/skills until removed by hand.

@@ -1,5 +1,9 @@
 # Changelog — luckiest-coder-subagent-driven-development
 
+## 1.3.0 — 2026-11-12
+
+- Moved "Constructing Reviewer Prompts" and "Example Workflow" into `references/` so SKILL.md stays under 20,000 characters and survives compaction (idea from obra/superpowers v7.0.1, 2ce8aa1, MIT).
+
 ## 1.2.1 — 2026-10-16
 
 - `sdd-workspace` writes its `.gitignore` only when none exists, so a repo's committed one is kept (from obra/superpowers at bb92a77 (v7.0.0, MIT)).

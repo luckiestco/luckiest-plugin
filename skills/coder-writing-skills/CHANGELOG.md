@@ -1,5 +1,9 @@
 # Changelog — luckiest-coder-writing-skills
 
+## 1.2.0 — 2026-11-12
+
+- Moved Skill Discovery Optimization, Flowchart Usage, and Bulletproofing into `references/` so SKILL.md stays under 20,000 characters and survives compaction (obra/superpowers v7.0.1, 2ce8aa1, MIT).
+
 ## 1.1.0 — 2026-07-06
 Skill updater pass: analytics integration.
 
