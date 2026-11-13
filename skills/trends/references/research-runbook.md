@@ -66,12 +66,12 @@ Then display (use "and more" if 5+ sources, otherwise list all with Oxford comma
 
 For GENERAL / NEWS / RECOMMENDATIONS / PROMPTING queries:
 ```
-/last30days - searching {ACTIVE_SOURCES_LIST} for what people are saying about {TOPIC}.
+/luckiest-trends - searching {ACTIVE_SOURCES_LIST} for what people are saying about {TOPIC}.
 ```
 
 For COMPARISON queries:
 ```
-/last30days - comparing {TOPIC_A} vs {TOPIC_B} across {ACTIVE_SOURCES_LIST}.
+/luckiest-trends - comparing {TOPIC_A} vs {TOPIC_B} across {ACTIVE_SOURCES_LIST}.
 ```
 
 Do NOT show a multi-line "Parsed intent" block with TOPIC=, TARGET_TOOL=, QUERY_TYPE= variables. Do NOT promise a specific time. Do NOT list sources that aren't configured.

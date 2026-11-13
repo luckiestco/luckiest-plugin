@@ -1,3 +1,7 @@
+## 0.1.72 — 2026-11-13 (npm luckiest-co 1.0.73)
+
+- trends 1.3.1: references say /luckiest-trends wherever users see the command name.
+
 ## 0.1.71 — 2026-11-12 (npm luckiest-co 1.0.72)
 
 - Upstream marketingskills (#232): ad-creative 1.7.0, ai-seo 1.5.0, directory-submissions 1.2.2, paywalls 1.2.0 (mobile subscription reference), prospecting 1.4.0, video 1.5.0.

@@ -51,3 +51,9 @@ test('reads the version from each real release file, including the nested market
     assert.ok(m && /^\d+\.\d+\.\d+$/.test(m[1]), f);
   }
 });
+
+test('a PR based on anything but main fails before looking at files', async () => {
+  const r = await releaseCheck({ changed: ['server/x.js'], versions: v('1.0.50'), base: 'origin/claude/upstream-272', fetchImpl: () => { throw new Error('should not fetch'); } });
+  assert.strictEqual(r.ok, false);
+  assert.match(r.message, /not main.*gh pr edit --base main/);
+});

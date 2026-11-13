@@ -14,6 +14,6 @@ Use `--hiring-signals` when the user asks what a company's jobs page, careers pa
 
 **`--hiring-signals` is jobs-scoped - do not build a multi-source plan for it.** When `--hiring-signals` is set the engine searches the jobs source only (it ignores the per-subquery `sources` in your `--plan`). So for a pure hiring-signals run, skip the Step 0.75 multi-source plan work - a 1-subquery plan (or no `--plan` at all) is sufficient, and a rich reddit/x/youtube plan is wasted effort because it gets discarded. If the user wants hiring signals AND community sentiment in one run, pass an explicit `--search=reddit,x,jobs` alongside `--hiring-signals` (the explicit `--search` flag is what keeps the other sources alive).
 
-The output must distinguish evidence from interpretation. Good: "3 current roles mention SSO, SOC 2, and procurement workflows, which signals increased enterprise-readiness focus." Bad: "They will ship enterprise SSO next quarter." In standard `/last30days Company` runs, include Hiring Signals only when the engine surfaces a strong signal; otherwise omit the topic entirely.
+The output must distinguish evidence from interpretation. Good: "3 current roles mention SSO, SOC 2, and procurement workflows, which signals increased enterprise-readiness focus." Bad: "They will ship enterprise SSO next quarter." In standard `/luckiest-trends Company` runs, include Hiring Signals only when the engine surfaces a strong signal; otherwise omit the topic entirely.
 
 ---

@@ -181,7 +181,7 @@ here for the conversation, not the press release.
 Apply root LAWs 2–4 to the following normal-query template. Comparison uses its separate template.
 
 ```
-🌐 last30days v{VERSION} · synced {YYYY-MM-DD}
+🌐 luckiest-trends v{VERSION} · synced {YYYY-MM-DD}
 
 What I learned:
 
@@ -278,7 +278,7 @@ I'm now an expert on {TOPIC}. Some things I can help with:
 
 **Example invitation (quality bar reference):**
 
-For `/last30days kanye west` (GENERAL):
+For `/luckiest-trends kanye west` (GENERAL):
 > I'm now an expert on Kanye West. Some things I can help with:
 > - What's the real story behind the apology letter - genuine or PR move?
 > - Break down the BULLY tracklist reactions and what fans are expecting
