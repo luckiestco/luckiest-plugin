@@ -1,5 +1,11 @@
 # Changelog — luckiest-video
 
+## 1.5.0 — 2026-11-12
+From coreyhaines31/marketingskills at 17772c7 (issue #232, MIT).
+
+- Hyperframes and Remotion compared by what you write, not ranked. HeyGen no longer marked recommended.
+- New Personalized Video per Account section.
+
 ## 1.4.0 — 2026-10-08
 Upstream sync with coreyhaines31/marketingskills dda3841 (issue #112).
 

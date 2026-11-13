@@ -1,5 +1,10 @@
 # Changelog — luckiest-paywalls
 
+## 1.2.0 — 2026-11-12
+From coreyhaines31/marketingskills at 17772c7 (issue #232, MIT).
+
+- New reference mobile-subscription-paywalls.md (onboarding paywall, yearly-first plans, trials, store fees, web checkout, revenue per download). New mobile triggers in the description.
+
 ## 1.1.0 — 2026-07-06
 Skill updater pass: analytics integration.
 

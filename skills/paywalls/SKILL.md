@@ -1,9 +1,9 @@
 ---
 name: paywalls
-description: When the user wants to create or optimize in-app paywalls, upgrade screens, upsell modals, or feature gates. Also use when the user mentions "paywall," "upgrade screen," "upgrade modal," "upsell," "feature gate," "convert free to paid," "freemium conversion," "trial expiration screen," "limit reached screen," "plan upgrade prompt," "in-app pricing," "free users won't upgrade," "trial to paid conversion," or "how do I get users to pay." Use this for any in-product moment where the user is asking someone to upgrade. Distinct from public pricing pages (see luckiest-cro) — this focuses on in-product upgrade moments where the user has already experienced value. For pricing decisions, see luckiest-pricing.
+description: When the user wants to create or optimize in-app paywalls, upgrade screens, upsell modals, or feature gates. Also use when the user mentions "paywall," "upgrade screen," "upgrade modal," "upsell," "feature gate," "convert free to paid," "freemium conversion," "trial expiration screen," "limit reached screen," "plan upgrade prompt," "in-app pricing," "free users won't upgrade," "trial to paid conversion," "how do I get users to pay," "mobile app paywall," "subscription app paywall," or "App Store subscription pricing." Use this for any in-product moment where the user is asking someone to upgrade. Distinct from public pricing pages (see luckiest-cro) — this focuses on in-product upgrade moments where the user has already experienced value. For pricing decisions, see luckiest-pricing.
 license: See ATTRIBUTION.md
 metadata:
-  version: "1.1.0"
+  version: "1.2.0"
   listing_id: luckiest-paywalls
   author: luckiest
 ---
@@ -14,9 +14,9 @@ This skill guides expert work on in-app paywalls and upgrade flows. The goal is 
 
 ## Staying current
 
-On activation, call the Luckiest MCP check_updates tool with { listingId: "79b3ef34-041b-421a-95c1-7cefd14e6111", installedSemver: "1.1.0" }. If it returns upToDate: false, surface the notice to the user once, then continue. Do nothing further if upToDate: true. Never block on this check — if the tool is unavailable, proceed.
+On activation, call the Luckiest MCP check_updates tool with { listingId: "79b3ef34-041b-421a-95c1-7cefd14e6111", installedSemver: "1.2.0" }. If it returns upToDate: false, surface the notice to the user once, then continue. Do nothing further if upToDate: true. Never block on this check — if the tool is unavailable, proceed.
 
-When the skill's work is done, call the Luckiest MCP report_usage tool once with { listing_id: "luckiest-paywalls", skill_version: "1.1.0", matched: true, success: <true if the skill completed, false otherwise> }. Metadata only, never prompt text. Never block on it — if the tool is unavailable, skip silently.
+When the skill's work is done, call the Luckiest MCP report_usage tool once with { listing_id: "luckiest-paywalls", skill_version: "1.2.0", matched: true, success: <true if the skill completed, false otherwise> }. Metadata only, never prompt text. Never block on it — if the tool is unavailable, skip silently.
 
 ## Initial Assessment
 
@@ -159,6 +159,8 @@ Native mobile paywalls are not free-form web pages. Account for store rules:
 - **Server-side entitlement** - Grant access based on validated receipts, not client state, so paid features unlock reliably across devices.
 
 When the platform is unknown, ask before giving mobile-specific pricing or CTA copy.
+
+**For consumer iOS/Android subscription apps** (paywall inside onboarding, yearly-first plans, trials and reminders, store fees, web checkout, revenue per download): load [references/mobile-subscription-paywalls.md](references/mobile-subscription-paywalls.md).
 
 ---
 

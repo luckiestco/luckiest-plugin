@@ -1,5 +1,10 @@
 # Changelog — luckiest-directory-submissions
 
+## 1.2.2 — 2026-11-12
+From coreyhaines31/marketingskills at 17772c7 (issue #232, MIT).
+
+- Notion Integrations Gallery renamed to Notion Marketplace, with its review and scope rules.
+
 ## 1.2.1 — 2026-10-16
 From coreyhaines31/marketingskills at 1efedbc (issue #174, MIT).
 

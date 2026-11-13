@@ -1,5 +1,8 @@
 # Changelog — luckiest-research
 
+## 1.5.0 - 2026-11-12
+- From Panniantong/Agent-Reach (14c2134, MIT): stop a source on a rate limit, captcha, or login wall instead of retrying with another account or tool; a network error is not a login wall; check body, comments, and transcripts separately and list snippet-only sources as partial. PixelRAG (16f35e5) reviewed, nothing ported.
+
 ## 1.4.0 - 2026-11-08
 - Optional JS read with Obscura (`obscura fetch --dump markdown`) for pages that need JavaScript to render. The doctor reports it as `js-read`; it sits after WebFetch and before pixelshot in the web read retry chain. `--stealth` is never used.
 

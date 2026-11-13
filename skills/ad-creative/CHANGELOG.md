@@ -1,5 +1,10 @@
 # Changelog — luckiest-ad-creative
 
+## 1.7.0 — 2026-11-12
+From coreyhaines31/marketingskills at 17772c7 (issue #232, MIT).
+
+- Code-based video names Remotion and Hyperframes as equal options; generative-tools rewritten as options by need, not rankings, with a note that prices are snapshots.
+
 ## 1.6.1 — 2026-11-10
 - Sub-skill renamed: luckiest-beauty-photography is now luckiest-photographer.
 

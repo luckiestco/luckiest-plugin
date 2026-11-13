@@ -1,5 +1,13 @@
 # Changelog — luckiest-ai-seo
 
+## 1.5.0 — 2026-11-12
+From coreyhaines31/marketingskills at 17772c7 (issue #232, MIT).
+
+- Robots.txt: default to one wildcard rule, named groups only for deliberate exceptions.
+- Omnia added to the monitoring tools.
+- prompt-portfolio: read results by topic and fix existing pages before writing new ones.
+- platform-ranking-factors: Bing AI Performance report and Brave crawl requests.
+
 ## 1.4.1 — 2026-10-23
 - Removed the dead `tools/REGISTRY.md` link. The tool table stays.
 

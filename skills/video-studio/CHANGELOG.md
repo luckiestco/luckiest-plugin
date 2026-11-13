@@ -1,5 +1,10 @@
 # Changelog — luckiest-video-studio
 
+## 1.22.0 — 2026-11-12
+
+- Rule 8, maps without borders by default (from lemomo-ai/lemo-opuscar bebbbe1, DIRECTOR.md section 13, MIT, rewritten): coastlines and terrain instead of national borders, regional views, disputed areas framed out, ask which country's view when borders are needed, check map shots enlarged, credit the data and its view. The news-package card merges non-story land into one borderless shape.
+- report_usage and check_updates now carry the skill's real version (were 1.20.0).
+
 ## 1.21.0 — 2026-10-28
 - Six new style cards from Lemo-Opuscar (MIT): `news-package`, `teardown`, `blueprint`,
   `risograph`, `transit-map`, `spy-titles`, plus dark keynote, glass product, Swiss
