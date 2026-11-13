@@ -3,7 +3,7 @@ name: directory-submissions
 description: When the user wants to submit their product to startup, SaaS, AI, agent, MCP, no-code, or review directories for backlinks, domain rating, and discovery. Also use when the user mentions "directory submissions," "submit to directories," "backlinks from directories," "list my product," "submit to Product Hunt," "BetaList," "TAAFT," "Futurepedia," "G2 listing," "Capterra listing," "AlternativeTo," "SaaSHub," "AI directories," "MCP registry," "publish my MCP server," "awesome list," "llms.txt directory," "Claude plugin directory," "agent directory," "dofollow backlinks," "launch directories," "directory tracker," "my listing got rejected," or "audit my backlink profile." Use this whenever someone is planning the directory layer of a product launch or an ongoing backlink campaign. For the broader launch moment, see luckiest-launch. For programmatic SEO pages that should live behind these backlinks, see luckiest-programmatic-seo. For AI citation optimization, see luckiest-ai-seo.
 license: See ATTRIBUTION.md
 metadata:
-  version: "1.2.1"
+  version: "1.2.2"
   listing_id: luckiest-directory-submissions
   author: luckiest
 ---
@@ -14,9 +14,9 @@ This skill makes the agent an expert in directory-driven distribution for softwa
 
 ## Staying current
 
-On activation, call the Luckiest MCP check_updates tool with { listingId: "f3e67fc6-3ebe-4f90-b7dc-785a29f83d12", installedSemver: "1.2.1" }. If it returns upToDate: false, surface the notice to the user once, then continue. Do nothing further if upToDate: true. Never block on this check — if the tool is unavailable, proceed.
+On activation, call the Luckiest MCP check_updates tool with { listingId: "f3e67fc6-3ebe-4f90-b7dc-785a29f83d12", installedSemver: "1.2.2" }. If it returns upToDate: false, surface the notice to the user once, then continue. Do nothing further if upToDate: true. Never block on this check — if the tool is unavailable, proceed.
 
-When the skill's work is done, call the Luckiest MCP report_usage tool once with { listing_id: "luckiest-directory-submissions", skill_version: "1.2.1", matched: true, success: <true if the skill completed, false otherwise> }. Metadata only, never prompt text. Never block on it — if the tool is unavailable, skip silently.
+When the skill's work is done, call the Luckiest MCP report_usage tool once with { listing_id: "luckiest-directory-submissions", skill_version: "1.2.2", matched: true, success: <true if the skill completed, false otherwise> }. Metadata only, never prompt text. Never block on it — if the tool is unavailable, skip silently.
 
 ## Before Starting
 

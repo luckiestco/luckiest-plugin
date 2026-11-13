@@ -4,7 +4,7 @@ description: "Look anything up on the internet and come back with a sourced answ
 license: See ATTRIBUTION.md
 allowed-tools: Bash, Read, Write, WebSearch, WebFetch, AskUserQuestion
 metadata:
-  version: "1.4.0"
+  version: "1.5.0"
   listing_id: luckiest-research
   author: luckiest
 ---
@@ -22,13 +22,13 @@ holding the raw fetches.
 ## Staying current
 
 On activation, call the Luckiest MCP `check_updates` tool with
-`{ listingId: "ab31351c-0b55-4d0d-a310-92abdc2b60aa", installedSemver: "1.3.0" }`. If it returns
+`{ listingId: "ab31351c-0b55-4d0d-a310-92abdc2b60aa", installedSemver: "1.5.0" }`. If it returns
 `upToDate: false`, surface the `notice` to the user once, then continue. Do nothing
 further if `upToDate: true`. Never block on this check; if the tool is unavailable,
 proceed.
 
 When the skill's work is done, call the Luckiest MCP `report_usage` tool once with
-`{ listing_id: "luckiest-research", skill_version: "1.4.0", matched: true, success: <true if the skill completed, false otherwise> }`.
+`{ listing_id: "luckiest-research", skill_version: "1.5.0", matched: true, success: <true if the skill completed, false otherwise> }`.
 Metadata only, never prompt text. Never block on it; if the tool is unavailable,
 skip silently.
 
@@ -52,7 +52,9 @@ skip silently.
 7. **No paywall or bot-check bypass.** If a page is paywalled or challenges the
    fetch, try the public archive copy (references/sources.md), then report it as
    unreachable. Never use cookies, proxies, or tricks to get past it. Never pass
-   `--stealth` to Obscura.
+   `--stealth` to Obscura. On a rate limit, captcha, or login wall, stop that
+   source: do not retry with another account, CLI, or browser. A network error or
+   timeout is not a login wall; say which one it was.
 8. **Scratch lives in /tmp.** Write raw fetches to `/tmp/luckiest-research/<slug>/`.
    Never create files in the project workspace unless the user asks for a saved brief.
 
@@ -112,6 +114,10 @@ call or one batch of tool calls. On a failure, follow that source's retry chain 
 references/sources.md, then move on; never loop on a dead source. Save each raw
 result to the scratch folder with the URL and fetch time in the first line.
 
+Check body text, comments, and transcripts separately. A search snippet, a page
+shell, a comment count, or a list of caption tracks is not the body, the comments,
+or the transcript. Note which of these you actually have for each source.
+
 Stop reaching when the answer is stable across two independent sources, or when
 every live source has been tried once. Two pages that repeat the same press release
 or quote the same tweet count as one source; look for a second origin.
@@ -145,6 +151,7 @@ Lead with the answer. Then:
 - When the text read and the visual read disagree, trust the visual read and note the
   difference; text extractors drop cells, strike-throughs, and toggled tabs.
 - A "Not reached" list: each source that was missing, blocked, or empty, and why.
+  When you only got a snippet or a page shell, list it here as "partial", not as read.
 - Confidence in one word (high, medium, low) with the reason if not high.
 
 Keep it short. A table when comparing, a list when enumerating, prose otherwise.

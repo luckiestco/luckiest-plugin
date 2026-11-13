@@ -1,5 +1,13 @@
 # Changelog — luckiest-trends
 
+## 1.3.0 — 2026-11-12
+Upstream mvanhorn/last30days-skill cce767e (#237), 36 commits (last30days 3.28.0 to 3.30.0).
+- YouTube: `LAST30DAYS_YOUTUBE_BACKEND=yt-dlp` keeps YouTube off paid ScrapeCreators; transcripts yt-dlp can fetch no longer cost credits; paid rescues capped; partial results kept through lane deadlines; a timeout no longer prescribes a yt-dlp upgrade.
+- Cookies: browser cookie databases are read through a SQLite backup snapshot (includes WAL, keeps 0600), not a file copy.
+- `setup-pass.sh` checks for existing entries without decrypting and no longer overwrites without `--replace`.
+- GitHub searches bound by the window end; repo metrics kept apart from comments. Instagram, TikTok, Reddit Arctic, Digg, grounding, person-identity, and X evidence fixes. Model-visible output drops the LAW N framing.
+- Held back: the per-build grok tool-boundary audit (`grok_audit.py`) and the grok_x changes that depend on it. X via grok still requires the audited 1.0.46 build. See #271.
+
 ## 1.2.1 — 2026-10-21
 Upstream mvanhorn/last30days-skill 13a6cc5 (#217), 14 fixes.
 - The engine footer is a fenced `text` block. Relay it with the fence so Markdown keeps its `---` lines.

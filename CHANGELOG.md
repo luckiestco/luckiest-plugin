@@ -1,3 +1,19 @@
+## 0.1.71 — 2026-11-12 (npm luckiest-co 1.0.72)
+
+- Upstream marketingskills (#232): ad-creative 1.7.0, ai-seo 1.5.0, directory-submissions 1.2.2, paywalls 1.2.0 (mobile subscription reference), prospecting 1.4.0, video 1.5.0.
+
+## 0.1.70 — 2026-11-12 (npm luckiest-co 1.0.71)
+
+- Upstream lemo-opuscar (#255): video-studio 1.22.0 adds rule 8, maps without borders by default, and the news-package card merges non-story land into one borderless shape.
+
+## 0.1.69 — 2026-11-12 (npm luckiest-co 1.0.70)
+
+- Upstream last30days (#237): trends 1.3.0 adds a yt-dlp-only YouTube pin, safer cookie snapshots and pass setup, and 36 upstream fixes.
+
+## 0.1.68 — 2026-11-12 (npm luckiest-co 1.0.69)
+
+- Upstream Agent-Reach (#236) and PixelRAG (#263): research 1.5.0 stops a source on a rate limit, captcha, or login wall and lists snippet-only sources as partial.
+
 ## 0.1.67 — 2026-11-12 (npm luckiest-co 1.0.68)
 
 - Upstream obra/superpowers v7.0.1 (#233): brainstorm and coder-brainstorming 1.5.0 read the project before asking and ask sharper questions; coder-subagent-driven-development 1.3.0 and coder-writing-skills 1.2.0 move long sections into references/ so they survive compaction.

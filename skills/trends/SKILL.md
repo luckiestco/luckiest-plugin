@@ -1,13 +1,13 @@
 ---
 name: trends
-version: "1.2.1"
+version: "1.3.0"
 description: "Research what people actually say about any topic over a time window you choose. Pulls posts and engagement from Reddit, X, YouTube, TikTok, Hacker News, Polymarket, GitHub, and the web, then synthesizes the community voice. Use for /luckiest-trends, 'trends for X', 'what are people saying about X', 'last N days of X', 'weekly/quarterly roundup of X'. Set the window with --days N (default 30)."
 argument-hint: "luckiest-trends nvidia earnings reaction | luckiest-trends AI video tools --days 7 | luckiest-trends what users want in react --days 90"
 allowed-tools: Bash, Read, Write, AskUserQuestion, WebSearch
 license: See ATTRIBUTION.md
 user-invocable: true
 metadata:
-  version: "1.2.1"
+  version: "1.3.0"
   listing_id: luckiest-trends
   author: luckiest
   openclaw:
@@ -64,10 +64,10 @@ Research any topic across Reddit, X, YouTube, TikTok, Hacker News, Polymarket, G
 ## Staying current
 
 On activation, call the Luckiest MCP `check_updates` tool with
-`{ listingId: "a357362c-cb53-4bba-86e2-5024dbbece9e", installedSemver: "1.2.1" }`.
+`{ listingId: "a357362c-cb53-4bba-86e2-5024dbbece9e", installedSemver: "1.3.0" }`.
 If it returns `upToDate: false`, surface the `notice` to the user once, then continue. Do nothing further if `upToDate: true`. Never block research on this check — if the tool is unavailable, proceed.
 
-When the skill's work is done, call the Luckiest MCP report_usage tool once with { listing_id: "luckiest-trends", skill_version: "1.2.1", matched: true, success: <true if the skill completed, false otherwise> }. Metadata only, never prompt text. Never block on it — if the tool is unavailable, skip silently.
+When the skill's work is done, call the Luckiest MCP report_usage tool once with { listing_id: "luckiest-trends", skill_version: "1.3.0", matched: true, success: <true if the skill completed, false otherwise> }. Metadata only, never prompt text. Never block on it — if the tool is unavailable, skip silently.
 
 ## What this skill can access
 

@@ -169,7 +169,7 @@ def _compute_relevance(
 # GitHub search qualifiers the planner sometimes writes straight into the topic
 # string (e.g. "open source AI stars:>1000 created:>2025-03-20"). They must not
 # reach the query builder in `search_github`: it appends its own
-# `created:>{from_date}`, and when two `created:` qualifiers collide GitHub
+# `created:{from_date}..{to_date}`, and when two `created:` qualifiers collide GitHub
 # honours the FIRST and silently ignores ours. The API then returns
 # out-of-window items that `parse_github_response`'s date filter drops
 # wholesale — a source that fetches results and reports zero (issue #949).
@@ -301,7 +301,7 @@ def search_github(
     _log(f"Searching for '{core}' (raw: '{topic}', since {from_date}, count={count})")
 
     # Build search query with date filter
-    base_q = f"{core} created:>{from_date}"
+    base_q = f"{core} created:{from_date}..{to_date}"
 
     def _search(qualifier: Optional[str]) -> Optional[Dict[str, Any]]:
         q = f"{base_q} {qualifier}" if qualifier else base_q
@@ -846,7 +846,7 @@ def search_github_person(
         "snippet": velocity_text,
         "relevance": 0.95,
         "why_relevant": f"GitHub profile: @{username} - {merged_count} PRs merged across {num_repos} repos",
-        "engagement": {"merged_prs": merged_count, "comments": total_prs},
+        "engagement": {"merged_prs": merged_count, "total_prs": total_prs},
         "metadata": {
             "labels": ["person-profile", "velocity"],
             "state": "open",
@@ -907,11 +907,11 @@ def search_github_person(
                 "snippet": "\n".join(snippet_parts),
                 "relevance": min(0.9, 0.6 + math.log1p(stars) / 30 + min(0.15, pr_count / 20)),
                 "why_relevant": f"GitHub contribution: {pr_count} PRs merged to {repo} ({stars_str} stars)",
-                "engagement": {"stars": stars, "comments": pr_count},
+                "engagement": {"stars": stars, "contributed_prs": pr_count},
                 "metadata": {
                     "labels": ["person-profile", "external-repo"],
                     "state": "open",
-                    "comment_count": pr_count,
+                    "comment_count": 0,
                     "reactions": stars,
                     "is_pr": False,
                     "date_is_snapshot": not _has_in_window_release(releases, from_date, to_date),
@@ -966,11 +966,11 @@ def search_github_person(
                 "snippet": "\n".join(snippet_parts),
                 "relevance": min(0.95, 0.7 + math.log1p(stars) / 25),
                 "why_relevant": f"GitHub own project: {repo_name} ({stars_str} stars)",
-                "engagement": {"stars": stars, "comments": open_issues},
+                "engagement": {"stars": stars, "open_issues": open_issues},
                 "metadata": {
                     "labels": ["person-profile", "own-repo"],
                     "state": "open",
-                    "comment_count": open_issues,
+                    "comment_count": 0,
                     "reactions": stars,
                     "is_pr": False,
                     "date_is_snapshot": not _has_in_window_release(releases, from_date, to_date),
@@ -1129,11 +1129,11 @@ def _person_recent_pushes(
                 f"GitHub activity: @{repo['actor']} pushed {name} on {repo['pushed']} "
                 f"({stars_str} stars)"
             ),
-            "engagement": {"stars": stars, "comments": open_issues},
+            "engagement": {"stars": stars, "open_issues": open_issues},
             "metadata": {
                 "labels": ["person-profile", "recent-push"],
                 "state": "open",
-                "comment_count": open_issues,
+                "comment_count": 0,
                 "reactions": stars,
                 "is_pr": False,
                 "event_type": "PushEvent",
@@ -1271,11 +1271,11 @@ def search_github_project(
                 "snippet": "\n".join(snippet_parts),
                 "relevance": min(0.95, 0.7 + math.log1p(stars) / 25),
                 "why_relevant": f"GitHub project: {repo} ({stars_str} stars, live)",
-                "engagement": {"stars": stars, "comments": open_issues},
+                "engagement": {"stars": stars, "open_issues": open_issues},
                 "metadata": {
                     "labels": ["project-mode"],
                     "state": "open",
-                    "comment_count": open_issues,
+                    "comment_count": 0,
                     "reactions": stars,
                     "is_pr": False,
                     "date_is_snapshot": not _has_in_window_release(releases, from_date, to_date),

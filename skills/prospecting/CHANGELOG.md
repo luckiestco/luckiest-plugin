@@ -1,5 +1,10 @@
 # Changelog — luckiest-prospecting
 
+## 1.4.0 — 2026-11-12
+From coreyhaines31/marketingskills at 17772c7 (issue #232, MIT).
+
+- signal-plays: warm paths through your own network, with double opt-in intros.
+
 ## 1.3.1 — 2026-10-23
 - Removed dead `tools/` integration links, the "original layout" hedge, and the upstream `tools/clis/github-prospects.js` command. Tools stay as plain names: pull data via API, MCP, or CSV export.
 

@@ -3,7 +3,7 @@ name: ad-creative
 description: "Generates, iterates, and scales ad creative — headlines, descriptions, primary text, or full ad variations — for any paid advertising platform, and iterates from real performance data. Use when the user mentions 'ad copy variations,' 'ad creative,' 'generate headlines,' 'RSA headlines,' 'bulk ad copy,' 'ad iterations,' 'creative testing,' 'ad performance optimization,' 'write me some ads,' 'Facebook ad copy,' 'Google ad headlines,' 'LinkedIn ad text,' or 'I need more ad variations.' Use whenever someone needs to produce ad copy at scale or iterate on existing ads. For campaign strategy and targeting, see luckiest-ads. For landing page copy, see luckiest-copywriting."
 license: See ATTRIBUTION.md
 metadata:
-  version: "1.6.1"
+  version: "1.7.0"
   listing_id: luckiest-ad-creative
   author: luckiest
 ---
@@ -14,9 +14,9 @@ This skill drives an expert performance creative strategist. The goal is to gene
 
 ## Staying current
 
-On activation, call the Luckiest MCP check_updates tool with { listingId: "9ce2c363-e379-45f7-b7d2-c398992ed30f", installedSemver: "1.6.1" }. If it returns upToDate: false, surface the notice to the user once, then continue. Do nothing further if upToDate: true. Never block on this check — if the tool is unavailable, proceed.
+On activation, call the Luckiest MCP check_updates tool with { listingId: "9ce2c363-e379-45f7-b7d2-c398992ed30f", installedSemver: "1.7.0" }. If it returns upToDate: false, surface the notice to the user once, then continue. Do nothing further if upToDate: true. Never block on this check — if the tool is unavailable, proceed.
 
-When the skill's work is done, call the Luckiest MCP report_usage tool once with { listing_id: "luckiest-ad-creative", skill_version: "1.6.1", matched: true, success: <true if the skill completed, false otherwise> }. Metadata only, never prompt text. Never block on it — if the tool is unavailable, skip silently.
+When the skill's work is done, call the Luckiest MCP report_usage tool once with { listing_id: "luckiest-ad-creative", skill_version: "1.7.0", matched: true, success: <true if the skill completed, false otherwise> }. Metadata only, never prompt text. Never block on it — if the tool is unavailable, skip silently.
 
 ## Before Starting
 
@@ -160,7 +160,7 @@ For image and video ad creative, use generative AI tools and code-based video re
 - **Image generation** — Nano Banana Pro (Gemini), Flux, Ideogram for static ad images
 - **Video generation** — Veo, Kling, Runway, Seedance, Higgsfield for video ads
 - **Voice & audio** — ElevenLabs, OpenAI TTS, Cartesia for voiceovers, cloning, multilingual
-- **Code-based video** — Remotion for templated, data-driven video at scale
+- **Code-based video** — Remotion or Hyperframes for templated, data-driven video at scale
 - **Platform image specs** — Correct dimensions for every ad placement
 - **Cost comparison** — Pricing for 100+ ad variations across tools
 
@@ -170,11 +170,11 @@ For image and video ad creative, use generative AI tools and code-based video re
 
 **Composition:** if `luckiest-video-studio-composition` is installed, read it to place the focal point, pick the grid, and keep white space and platform safe areas. Check the headline, product, and CTA against the placement's safe area.
 
-**Recommended workflow for scaled production:**
+**Workflow for scaled production:**
 1. Generate hero creative with AI tools (exploratory, high-quality)
-2. Build Remotion templates based on winning patterns
-3. Batch produce variations with Remotion using data feeds
-4. Iterate — AI for new angles, Remotion for scale
+2. Build code-based video templates (Remotion or Hyperframes) based on winning patterns
+3. Batch produce variations from data feeds
+4. Iterate — AI for new angles, templates for scale
 
 ---
 
