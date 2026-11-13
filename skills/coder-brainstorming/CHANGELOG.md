@@ -1,5 +1,9 @@
 # Changelog — luckiest-coder-brainstorming
 
+## 1.5.0 — 2026-11-12
+
+- Ported obra/superpowers v7.0.1 (2ce8aa1, MIT) brainstorming retune: read the project and the context the user gave before the first message, play a detailed request back with what you found and ask about the one open point, offer to skip the questions only when the user did not ask for brainstorming, and a red flag for writing the doc before laying out approaches.
+
 ## 1.4.0 — 2026-10-16
 
 - Rebuilt-brainstorming ideas from obra/superpowers at bb92a77 (v7.0.0, MIT): first message offers to skip the questions and opens with one open question, open questions before any menu, defaults said out loud, throwaway spikes with a gate exception, a builder-check subagent (`builder-check-prompt.md`) in place of the spec self-review, and a Red Flags table. Removed the unused `spec-document-reviewer-prompt.md`.
