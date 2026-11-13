@@ -8,7 +8,7 @@ Carry out only the authorized repair. Reading this guide or a doctor prescriptio
 
 ## Step 0: First-Run Setup Wizard
 
-**CRITICAL: ALWAYS execute Step 0 BEFORE Step 1 (topic research in the research runbook), even when the user provided a topic.** If the user typed `/last30days Mercer Island`, preserve that topic while handling the first-run choice. The wizard may ask for browser-cookie consent, but declining or skipping X must never stop the requested research.
+**CRITICAL: ALWAYS execute Step 0 BEFORE Step 1 (topic research in the research runbook), even when the user provided a topic.** If the user typed `/luckiest-trends Mercer Island`, preserve that topic while handling the first-run choice. The wizard may ask for browser-cookie consent, but declining or skipping X must never stop the requested research.
 
 **RESEARCH CONTINUATION OVERRIDE (dominates every optional onboarding step below):** When the invocation already includes a topic and the user declines X/browser-cookie access inside Auto setup, run the cookie-free setup path, then immediately research that topic with the sources that are available. When the user chooses Skip for now, mark setup complete and immediately research without running setup. In either case, skip the ScrapeCreators offer, source-tier prompt, retry prompt, and first-topic picker until after the useful research response. Do not ask another X question in the same run. After the findings, report X once as an optional omitted source without an unlock pitch, **then RESUME the deferred onboarding in the SAME run: present the Step 4 ScrapeCreators offer, and Step 5 source opt-in if a key gets saved.** Deferred is not dropped — `SETUP_COMPLETE=true` is already written, so a later invocation skips Step 0 entirely and this run is the only chance to make the offer. The first-topic picker stays skipped (a topic was already supplied), and the resume never re-asks X/browser-cookie consent. Browser-cookie reads still require explicit consent; a skip or no answer is never consent.
 
@@ -39,7 +39,7 @@ Carry out only the authorized repair. Reading this guide or a doctor prescriptio
 **Step 2 - Welcome + setup choice (one modal).** Call AskUserQuestion with EXACTLY this question and these options. Reproduce the question verbatim, including the welcome pitch on the first lines:
 
 Question:
-"Welcome to /last30days! I research any topic across Reddit, X, YouTube, TikTok, Digg, arXiv, Techmeme, HN, Polymarket & more - pulling what people actually said in the last 30 days.
+"Welcome to /luckiest-trends! I research any topic across Reddit, X, YouTube, TikTok, Digg, arXiv, Techmeme, HN, Polymarket & more - pulling what people actually said in the last 30 days.
 
 How would you like to set up?"
 
@@ -115,7 +115,7 @@ Options:
 - "AI Legal Prompting Techniques" - niche/professional
 - "Type my own topic"
 
-If the user picks an example, run research with it. If "Type my own", ask what they want. **If the user already supplied a topic with the command (e.g. `/last30days Mercer Island`), SKIP this picker and use their topic directly.**
+If the user picks an example, run research with it. If "Type my own", ask what they want. **If the user already supplied a topic with the command (e.g. `/luckiest-trends Mercer Island`), SKIP this picker and use their topic directly.**
 
 **END OF FIRST-RUN WIZARD.** Everything in the Modal Flow ONLY runs on first run. If `SETUP_COMPLETE=true` exists, skip ALL of it - no welcome, no modals, no topic picker - and go straight to research (Parse User Intent).
 
@@ -186,7 +186,7 @@ For a Grok Bot host. The GROK BOT HOST RULE in the root SKILL.md applies through
 
 Shown when a Claude Code user picks "Manual setup", or for anyone who wants to configure by hand. Present as plain text (not blockquoted).
 
-The magic of /last30days is Reddit comments + X posts together - and both are free. Add these to `~/.config/last30days/.env`:
+The magic of /luckiest-trends is Reddit comments + X posts together - and both are free. Add these to `~/.config/last30days/.env`:
 
 **X/Twitter (pick one - the most important source):**
 - `X_BEARER_TOKEN=xxx` - the official X API v2 (`api.x.com`) with an app-only bearer from the X developer console. Recent posts, about a week back on the Basic tier, unless your X developer project has full-archive access. Persist it with `setup --store-key X_BEARER_TOKEN` (value on stdin, masked in output). Outside a Grok Bot host also add `LAST30DAYS_X_BACKEND=xapi` so the engine selects it (`doctor` says so when the bearer is set without it).

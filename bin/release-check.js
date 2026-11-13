@@ -23,7 +23,12 @@ const newer = (a, b) => {
 };
 
 /** Returns { ok, message }. Network trouble warns and passes, like check-version.js. */
-async function releaseCheck({ changed, versions, name = 'luckiest-co', fetchImpl = fetch }) {
+async function releaseCheck({ changed, versions, base = 'origin/main', name = 'luckiest-co', fetchImpl = fetch }) {
+  // Only a merge to main releases (release.yml). A PR stacked on another PR's
+  // branch merges into that branch and never ships (#269-#275, recovered in #276).
+  if (base !== 'origin/main') {
+    return { ok: false, message: `This PR targets ${base.replace('origin/', '')}, not main. Merging it there never reaches main or releases. Change the base to main (gh pr edit --base main), rebase on main, and rerun "npm run bump" if the version now matches npm.` };
+  }
   const touched = changed.filter(shipped);
   if (!touched.length) return { ok: true, message: 'No shipped plugin files changed. No bump needed.' };
   if (versions.plugin !== versions.market) {
@@ -54,9 +59,11 @@ if (require.main === module) {
   // nests it under plugins[0].
   const version = (f) => (fs.readFileSync(path.join(dir, f), 'utf8').match(VERSION_RE) || [])[1];
   const base = process.argv[2] || 'origin/main';
-  const changed = execFileSync('git', ['diff', '--name-only', `${base}...HEAD`], { encoding: 'utf8' }).split('\n').filter(Boolean);
+  // A non-main base fails on its own, so skip the diff (it may have no merge base).
+  const changed = base !== 'origin/main' ? [] : execFileSync('git', ['diff', '--name-only', `${base}...HEAD`], { encoding: 'utf8' }).split('\n').filter(Boolean);
   releaseCheck({
     changed,
+    base,
     versions: { npm: version('package.json'), plugin: version('.claude-plugin/plugin.json'), market: version('.claude-plugin/marketplace.json') },
   }).then(({ ok, message }) => {
     console.log(`  ${message}`);

@@ -147,9 +147,9 @@ Voice contract LAWs 1, 3, 5 apply to comparisons unchanged (omit unnecessary tra
 **Required comparison structure (match the April 9 exemplar):**
 
 ````
-🌐 last30days v{VERSION} · synced {YYYY-MM-DD}
+🌐 luckiest-trends v{VERSION} · synced {YYYY-MM-DD}
 
-# {TOPIC_A} vs {TOPIC_B} [vs {TOPIC_C}]: What the Community Says (/Last30Days)
+# {TOPIC_A} vs {TOPIC_B} [vs {TOPIC_C}]: What the Community Says (/luckiest-trends)
 
 ## Quick Verdict
 
@@ -216,7 +216,7 @@ Voice contract LAWs 1, 3, 5 apply to comparisons unchanged (omit unnecessary tra
 ```
 
 I've compared {TOPIC_A} vs {TOPIC_B} [vs ...] using the latest community data. Some things you could ask:
-- [follow-up referencing comparison specifics, e.g. "Deep dive into {Entity} alone with /last30days {Entity}"]
+- [follow-up referencing comparison specifics, e.g. "Deep dive into {Entity} alone with /luckiest-trends {Entity}"]
 - [follow-up referencing a specific claim from the Strengths/Weaknesses block]
 - [follow-up on a specific dimension from the Head-to-Head table]
 - [follow-up on the emerging-stack combination pattern]

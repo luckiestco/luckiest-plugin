@@ -4,7 +4,7 @@ Read when `--agent` appears in skill arguments or the user explicitly requests m
 
 ## Agent Mode (--agent flag)
 
-If `--agent` appears in ARGUMENTS (e.g., `/last30days plaud granola --agent`):
+If `--agent` appears in ARGUMENTS (e.g., `/luckiest-trends plaud granola --agent`):
 
 1. **Skip** the intro display block ("I'll research X across Reddit...")
 2. **Skip** any `AskUserQuestion` calls - use `TARGET_TOOL = "unknown"` if not specified

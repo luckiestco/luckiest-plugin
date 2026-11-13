@@ -1,5 +1,8 @@
 # Changelog — luckiest-trends
 
+## 1.3.1 — 2026-11-13
+- References now say `/luckiest-trends` wherever users see the command, banner, or welcome line. Script names, config paths, env vars, and temp files keep their `last30days` names.
+
 ## 1.3.0 — 2026-11-12
 Upstream mvanhorn/last30days-skill cce767e (#237), 36 commits (last30days 3.28.0 to 3.30.0).
 - YouTube: `LAST30DAYS_YOUTUBE_BACKEND=yt-dlp` keeps YouTube off paid ScrapeCreators; transcripts yt-dlp can fetch no longer cost credits; paid rescues capped; partial results kept through lane deadlines; a timeout no longer prescribes a yt-dlp upgrade.

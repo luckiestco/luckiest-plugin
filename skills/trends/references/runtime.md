@@ -125,12 +125,12 @@ export LAST30DAYS_PYTHON
 If the preflight script (including the uv fallback above) emits `ERROR: last30days v3 requires Python 3.12+` (or `LAST30DAYS_PYTHON must point to Python 3.12+`) and exits, you MUST:
 
 1. Display this message to the user:
-   > "The last30days engine needs Python 3.12+. Your system has an older version. Install it with one command:
+   > "The luckiest-trends engine needs Python 3.12+. Your system has an older version. Install it with one command:
    > - **Mac:** `brew install python@3.12`
    > - **Windows:** `winget install Python.Python.3.12`
    > - **Linux:** `sudo apt install python3.12` (or `pyenv install 3.12`)
    >
-   > Then re-run `/last30days <your topic>` and the setup wizard will configure everything automatically."
+   > Then re-run `/luckiest-trends <your topic>` and the setup wizard will configure everything automatically."
 2. **Stop.** Do not attempt research. Do not fall back to WebSearch-only synthesis.
 
 WebSearch-only synthesis is not equivalent to running the engine — it misses Reddit community data, X/Twitter timelines, YouTube transcripts, TikTok, and Polymarket. Presenting it without disclosure misleads the user about what was actually searched. This is the same category of failure as a WebSearch-only run with no engine footer.
