@@ -1,5 +1,11 @@
 # Changelog — luckiest-coder-subagent-driven-development
 
+## 1.4.0 — 2026-11-18
+Upstream port: ideas from Tencent/LoopForge (MIT).
+
+### Added
+- Task reviewer Part 0 scope gate: diff files must be on the task's Files list and every stated check needs a passing result.
+
 ## 1.3.0 — 2026-11-12
 
 - Moved "Constructing Reviewer Prompts" and "Example Workflow" into `references/` so SKILL.md stays under 20,000 characters and survives compaction (idea from obra/superpowers v7.0.1, 2ce8aa1, MIT).

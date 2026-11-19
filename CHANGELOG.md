@@ -1,3 +1,7 @@
+## 0.1.73 — 2026-11-18 (npm luckiest-co 1.0.74)
+
+- coder 1.4.0, coder-writing-plans 1.4.0, coder-subagent-driven-development 1.4.0, coder-brainstorming 1.6.0: LoopForge (MIT) ports. Size triage with a small-change path, allowed-files scope gate in the task reviewer, budgeted explorer, handoff card after the spec.
+
 ## 0.1.72 — 2026-11-13 (npm luckiest-co 1.0.73)
 
 - trends 1.3.1: references say /luckiest-trends wherever users see the command name.

@@ -75,6 +75,22 @@ Subagent (general-purpose):
     Warnings or other noise in the implementer's reported test output are
     findings — test output should be pristine.
 
+    ## Part 0: Scope Gate (check first)
+
+    Two hard checks before any judgment call:
+
+    1. **Files:** every file in the diff's stat summary is listed in the
+       brief's **Files:** block. A file outside it is Critical, unless the
+       implementer's report names it as the smallest downstream change
+       needed to keep accepted behavior correct; then list it as ⚠️ for the
+       controller to accept or reject.
+    2. **Acceptance:** every step in the brief that states a command and an
+       expected result has a matching result in the implementer's report.
+       A missing or failing result is Critical.
+
+    Either Critical here means **Task quality: Needs fixes**. Still finish
+    Parts 1 and 2 so one fix dispatch covers everything.
+
     ## Part 1: Spec Compliance
 
     Compare the diff against What Was Requested:
@@ -138,6 +154,11 @@ Subagent (general-purpose):
 
     ## Output Format
 
+    ### Scope Gate
+
+    - Files: ✅ all listed | ❌ [unlisted files] | ⚠️ [downstream files to accept]
+    - Acceptance: ✅ every stated check has a passing result | ❌ [missing or failing checks]
+
     ### Spec Compliance
 
     - ✅ Spec compliant | ❌ Issues found: [what's missing/extra/misunderstood,
@@ -181,7 +202,7 @@ Subagent (general-purpose):
   package to (`scripts/review-package BASE HEAD` prints the unique path it
   wrote; the package never enters the controller's context)
 
-**Reviewer returns:** Spec Compliance verdict (✅/❌/⚠️), Strengths, Issues
+**Reviewer returns:** Scope Gate (files, acceptance), Spec Compliance verdict (✅/❌/⚠️), Strengths, Issues
 (Critical/Important/Minor), Task quality verdict
 
 A fix dispatch can address spec gaps and quality findings together;

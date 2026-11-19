@@ -1,5 +1,11 @@
 # Changelog — luckiest-coder-brainstorming
 
+## 1.6.0 — 2026-11-18
+Upstream port: ideas from Tencent/LoopForge (MIT).
+
+### Added
+- Budgeted read-only explorer for wide reading (15 calls, 500 words, four parts) and a handoff card after spec approval.
+
 ## 1.5.0 — 2026-11-12
 
 - Ported obra/superpowers v7.0.1 (2ce8aa1, MIT) brainstorming retune: read the project and the context the user gave before the first message, play a detailed request back with what you found and ask about the one open point, offer to skip the questions only when the user did not ask for brainstorming, and a red flag for writing the doc before laying out approaches.
