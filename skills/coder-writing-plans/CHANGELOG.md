@@ -1,5 +1,11 @@
 # Changelog — luckiest-coder-writing-plans
 
+## 1.4.0 — 2026-11-18
+Upstream port: ideas from Tencent/LoopForge (MIT).
+
+### Added
+- The task **Files:** block is now the allowed list the task reviewer enforces.
+
 ## 1.3.0 — 2026-10-12
 - File Structure: each planned UI component is marked "reuse: <library entry>" or
   "new: no match" after a `luckiest-coder-components` lookup.

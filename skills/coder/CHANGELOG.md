@@ -1,5 +1,11 @@
 # Changelog — luckiest-coder
 
+## 1.4.0 — 2026-11-18
+Upstream port: ideas from Tencent/LoopForge (MIT).
+
+### Added
+- Size triage with a small-change path (5 allowed files or fewer) that reverts and moves to the full path on overflow.
+
 ## 1.3.0 — 2026-10-12
 Skill updater pass: component reuse, ideas from BuilderIO Mitosis (MIT).
 

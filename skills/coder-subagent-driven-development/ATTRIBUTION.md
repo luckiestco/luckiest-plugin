@@ -24,3 +24,11 @@ AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
 LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
+
+
+---
+
+Size triage, the allowed-files scope gate, the budgeted explorer, and the
+handoff card are ideas from LoopForge (https://github.com/Tencent/LoopForge,
+pinned 451d38c8), Copyright (c) Tencent, used under the MIT License.
+Rewritten in our own words. No code copied.

@@ -3,7 +3,7 @@ name: coder
 description: Use when starting ANY coding conversation or task — establishes how to find and invoke the right Luckiest Coder skill before you do anything else, including clarifying questions, reading files, or exploring the codebase. Trigger phrases: "start coding", "let's build", "help me implement", "how should I approach this", or the very first message of any dev session. Requires skill invocation BEFORE any response.
 license: See ATTRIBUTION.md
 metadata:
-  version: "1.3.0"
+  version: "1.4.0"
   listing_id: luckiest-coder
   author: luckiest
 ---
@@ -37,6 +37,23 @@ When multiple skills apply, process skills come first — they set the approach,
 - "Build a component" (modal, card, form, table, nav) → luckiest-coder-components lookup first, so a proven component is adapted instead of rewritten.
 
 Gates: if `.luckiest/constitution.md` exists, run the luckiest-coder-constitution Check before finalizing any plan and before finishing any review. Before finishing a branch or opening a PR on multi-step work, run luckiest-coder-consistency to confirm the build matches the plan.
+
+## Size Triage
+
+After the skill check, size the change by files touched, modules affected, and risk. Size picks the path. It never skips the skill check.
+
+| Size | Signs | Path |
+|------|-------|------|
+| Small | 5 files or fewer, one module, no schema, auth, payment, or public API change | Fast path below |
+| Medium or large | Anything else, or unsure | luckiest-coder-brainstorming, then luckiest-coder-writing-plans, then execution |
+
+Fast path for small changes:
+
+1. Write a short design in chat: goal, the allowed files (5 or fewer), what you will not do, risks.
+2. Edit only the allowed files, test-first per luckiest-coder-tdd.
+3. Run the project's own build, type-check, and tests, then luckiest-coder-verification.
+
+Overflow: if the change needs a sixth file, a file outside the list, or the checks fail twice, stop. Revert only your own edits from this fast path, say why in one line, and restart on the medium path. Never stretch the list to fit.
 
 ## Hard Rules
 
@@ -84,7 +101,7 @@ User instructions (CLAUDE.md, AGENTS.md, GEMINI.md, etc, direct requests) take p
 ## Staying current
 
 On activation, call the Luckiest MCP `check_updates` tool with
-`{ listingId: "3cb8177a-23bc-413a-9055-c419329096bb", installedSemver: "1.3.0" }`.
+`{ listingId: "3cb8177a-23bc-413a-9055-c419329096bb", installedSemver: "1.4.0" }`.
 If it returns `upToDate: false`, surface the `notice` to the user. Do nothing if `upToDate: true`.
 
-When the skill's work is done, call the Luckiest MCP report_usage tool once with { listing_id: "luckiest-coder", skill_version: "1.3.0", matched: true, success: <true if the skill completed, false otherwise> }. Metadata only, never prompt text. Never block on it — if the tool is unavailable, skip silently.
+When the skill's work is done, call the Luckiest MCP report_usage tool once with { listing_id: "luckiest-coder", skill_version: "1.4.0", matched: true, success: <true if the skill completed, false otherwise> }. Metadata only, never prompt text. Never block on it — if the tool is unavailable, skip silently.
